@@ -202,7 +202,6 @@ body {
     --accent-gradient: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
     
     position: relative;
-    min-height: 100vh;
     padding: 2rem 2rem;
     background: var(--bg-gradient);
     overflow: hidden;
@@ -217,8 +216,6 @@ body {
 
 .hero-background {
     position: absolute;
-    width: 100%;
-    height: 100%;
     top: 0;
     left: 0;
     z-index: 0;

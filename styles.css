@@ -634,16 +634,16 @@ body {
     
     .expertise-list {
         grid-template-columns: 1fr;
-        padding-left: 1rem;
+        padding-left: 2rem;
     }
     
     .achievement-grid {
         grid-template-columns: 1fr;
-        padding-left: 1rem;
+        padding-left: 2rem;
     }
 
     .about-card {
-        padding-left: 1rem;
+        padding-left: 2rem;
         margin-left: 1rem;
     }
 }

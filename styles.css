@@ -228,6 +228,9 @@ body {
     align-items: center;
     height: 100%;
     padding: 8rem 0;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
 }
 
 .hero-text {
@@ -384,6 +387,12 @@ body {
     opacity: 0.1;
 }
 
+.hero-svg {
+    flex-shrink: 0;
+    max-width: 500px;
+    width: 100%;
+    animation: fadeIn 1.5s ease-in-out;
+}
 
 @media (max-width: 768px) {
     .cta-wrapper {
@@ -400,6 +409,10 @@ body {
     
     .social-bar {
         justify-content: center;
+    }
+    
+    .hero-svg {
+        display: none;
     }
 }
 

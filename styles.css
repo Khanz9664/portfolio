@@ -657,6 +657,10 @@ body {
 
     .about-card {
         padding-left: 2rem;
+        margin-left: 2rem;
+    }
+    .about-text {
+        padding-left: 1rem;
         margin-left: 1rem;
     }
 }
@@ -778,10 +782,15 @@ body {
       left: 20px;
     }
     
+    .timeline{
+      position: relative;
+      padding: 1rem 2rem;
+    }
+    
     .timeline-card {
       width: 100%;
       left: 0 !important;
-      margin: 2rem 0;
+      margin: 2rem;
     }
     
     .card-icon {

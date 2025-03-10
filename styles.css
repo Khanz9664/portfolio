@@ -647,17 +647,17 @@ body {
     
     .expertise-list {
         grid-template-columns: 1fr;
-        padding-left: 2rem;
+        padding-left: 0rem;
     }
     
     .achievement-grid {
         grid-template-columns: 1fr;
-        padding-left: 2rem;
+        padding-left: 1.5rem;
     }
 
     .about-card {
         padding-left: 2rem;
-        margin-left: 2rem;
+        margin-left: 1.5rem;
     }
     .about-text {
         padding-left: 1rem;

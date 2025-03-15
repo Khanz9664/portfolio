@@ -208,6 +208,7 @@ body {
     
     position: relative;
     padding: 1rem 2rem;
+    padding-bottom: 0rem;
     background: var(--bg-gradient);
     overflow: hidden;
 }

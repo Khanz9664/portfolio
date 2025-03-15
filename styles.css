@@ -207,7 +207,7 @@ body {
   url('img/bg.jpg') center/cover no-repeat;
     
     position: relative;
-    padding: 1rem 2rem;
+    padding: 2rem 2rem;
     padding-bottom: 0rem;
     background: var(--bg-gradient);
     overflow: hidden;
@@ -386,13 +386,6 @@ body {
     opacity: 0.1;
 }
 
-.hero-svg {
-    flex-shrink: 0;
-    max-width: 500px;
-    width: 100%;
-    animation: fadeIn 1.5s ease-in-out;
-}
-
 @media (max-width: 768px) {
     .cta-wrapper {
         flex-direction: column;
@@ -408,10 +401,6 @@ body {
     
     .social-bar {
         justify-content: center;
-    }
-    
-    .hero-svg {
-        display: none;
     }
 }
 

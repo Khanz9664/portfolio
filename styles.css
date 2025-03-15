@@ -198,11 +198,16 @@ body {
     --secondary-color: #60efff;
     --text-primary: rgba(255, 255, 255, 0.9);
     --text-secondary: rgba(255, 255, 255, 0.7);
-    --bg-gradient: linear-gradient(45deg, #0a0a0a 0%, #131313 100%);
     --accent-gradient: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+    --bg-gradient: 
+  linear-gradient(135deg, 
+    rgba(10, 10, 10, 0.9) 0%, 
+    rgba(19, 19, 19, 0.85) 40%, 
+    rgba(0, 0, 0, 0.8) 100%), 
+  url('img/bg.jpg') center/cover no-repeat;
     
     position: relative;
-    padding: 2rem 2rem;
+    padding: 1rem 2rem;
     background: var(--bg-gradient);
     overflow: hidden;
 }
@@ -212,13 +217,6 @@ body {
     max-width: 1400px;
     margin: 0 auto;
     height: 100%;
-}
-
-.hero-background {
-    position: absolute;
-    top: 0;
-    left: 0;
-    z-index: 0;
 }
 
 .hero-content {

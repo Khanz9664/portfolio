@@ -56,8 +56,9 @@ body {
 }
 
 .logo-icon {
-    font-size: 1.8rem;
-    filter: drop-shadow(0 0 5px var(--primary-color));
+    width: 60px;  /* Adjust the size of your image */
+    height: auto;
+    filter: drop-shadow(0 0 5px var(--primary-color)); /* Apply shadow effect like the original */
 }
 
 .logo-text {

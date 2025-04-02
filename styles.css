@@ -56,7 +56,7 @@ body {
 }
 
 .logo-icon {
-    width: 30px;  /* Adjust the size of your image */
+    width: 50px;  /* Adjust the size of your image */
     height: auto;
     filter: drop-shadow(0 0 5px var(--primary-color)); /* Apply shadow effect like the original */
 }

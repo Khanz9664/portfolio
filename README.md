@@ -26,7 +26,8 @@ To view this portfolio locally, follow these steps:
 ```
 cd portfolio
 ```
-3.Technologies Used
+
+ 3.Technologies Used
 
 HTML
 

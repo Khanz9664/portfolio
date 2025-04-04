@@ -26,3 +26,14 @@ To view this portfolio locally, follow these steps:
 ```
 cd portfolio
 ```
+3.Technologies Used
+HTML
+
+CSS
+
+JavaScript
+
+License
+This project is open-source and available under the MIT License.
+
+Feel free to modify or add any specific sections you'd like.

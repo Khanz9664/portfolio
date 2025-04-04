@@ -34,6 +34,6 @@ CSS
 
 JavaScript
 
-4. License:  This project is open-source and available under the MIT License.
+ 4. License:  This project is open-source and available under the MIT License.
 
 Feel free to modify or add any specific sections you'd like.

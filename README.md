@@ -21,3 +21,8 @@ To view this portfolio locally, follow these steps:
 ```
    git clone https://github.com/Khanz9664/portfolio.git
 ```
+
+2. Navigate to Portfolio
+```
+cd portfolio
+```

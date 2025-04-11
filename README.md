@@ -40,5 +40,5 @@ To run this portfolio locally, follow the steps below:
 
 ## License
 
-This project is open-source and distributed under the **MIT License**. Feel free to fork, modify, or contribute to the repository.
+This project is open-source. Feel free to fork, modify, or contribute to the repository.
 

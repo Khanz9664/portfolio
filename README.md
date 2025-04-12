@@ -17,7 +17,7 @@ This portfolio is a showcase of my work and abilities. It is built using modern 
 
 This portfolio utilizes the following technologies:
 
-- **HTML**: Markup for structure and content
+- **HTML**: Markup for structure and content of the website
 - **CSS**: Styling for layout, color schemes, and responsive design
 - **JavaScript**: Dynamic elements and interactivity
 

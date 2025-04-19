@@ -23,7 +23,7 @@ This portfolio utilizes the following technologies:
 
 ## Installation & Setup
 
-To run this portfolio locally, follow the steps below:
+To run this portfolio locally, follow these steps:
 
 1. **Clone the repository:**
     ```bash

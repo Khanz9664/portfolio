@@ -1,746 +1,167 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Shahid Ul Islam | Portfolio</title>
-    <script src="https://kit.fontawesome.com/your-kit-code.js" crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="styles.css">
-    <script defer src="script.js"></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Shahid Ul Islam | Portfolio</title>
+  
+  <!-- Fonts & Icons -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
+
+  <!-- Styles needed for this page -->
+  <link rel="stylesheet" href="css/base.css"/>
+  <link rel="stylesheet" href="css/navigation.css"/>
+  <link rel="stylesheet" href="css/hero.css"/>
+  <link rel="stylesheet" href="css/landing.css"/>  
+  <link rel="stylesheet" href="css/footer.css"/>
+  
+  <!-- Scripts -->
+  <script defer src="script.js"></script>
 </head>
 <body>
 
-    <div class="top-bar">
+  <!-- Navigation -->
+  <div class="top-bar">
     <div class="logo">
-        <img src="img/plogo.png" alt="Personal Logo" class="logo-icon">
-        <span class="logo-text">Shahid's || Portfolio</span>
+      <img src="img/plogo.png" alt="Personal Logo" class="logo-icon">
+      <span class="logo-text">Shahid's || Portfolio</span>
     </div>
-    
     <nav class="nav-container">
-        <ul class="nav-links">
-            <li><a href="#about" class="nav-link"><span>.</span> About</a></li>
-            <li><a href="#projects" class="nav-link"><span>.</span> Projects</a></li>
-            <li><a href="#skills" class="nav-link"><span>.</span> Skills</a></li>
-            <li><a href="#contact" class="nav-link"><span>.</span> Contact</a></li>
-        </ul>
-        <div class="menu-toggle">
-            <div class="hamburger"></div>
-        </div>
+      <ul class="nav-links">
+        <li><a href="index.html"       class="nav-link"><span>.</span> Home</a></li>
+        <li><a href="about.html"       class="nav-link"><span>.</span> About</a></li>
+        <li><a href="skills.html"      class="nav-link"><span>.</span> Skills</a></li>
+        <li><a href="projects.html"    class="nav-link"><span>.</span> Projects</a></li>
+        <li><a href="contact.html"     class="nav-link"><span>.</span> Contact</a></li>
+      </ul>
+      <div class="menu-toggle">
+        <div class="hamburger"></div>
+      </div>
     </nav>
-</div>
-    
-<header class="modern-hero" id="home">
+  </div>
+
+  <!-- Hero Section -->
+  <header class="modern-hero" id="home">
     <div class="hero-content">
-    <div class="hero-text">
+      <div class="hero-text">
         <h1 class="hero-title">
-            <span class="dynamic-text">Shahid Ul Islam</span>
-            <div class="typewriter">
-                <span class="tagline">Data Scientist & AI/ML Engineer</span>
-            </div>
+          <span class="dynamic-text">Shahid Ul Islam</span>
+          <div class="typewriter">
+            <span class="tagline">Data Scientist & AI/ML Engineer</span>
+          </div>
         </h1>
         <p class="hero-description">
-            Transforming Raw Data into Intelligent Solutions through
-            <span class="highlight-effect">Machine Learning</span> &
-            <span class="highlight-effect">Advanced Analytics</span>
+          Transforming Raw Data into Intelligent Solutions through
+          <span class="highlight-effect">Machine Learning</span> &
+          <span class="highlight-effect">Advanced Analytics</span>
         </p>
+
+        <!-- Primary CTAs -->
         <div class="cta-wrapper">
-            <a href="#projects" class="modern-cta primary-cta">
-                <span>Explore My Work</span>
-                <div class="arrow-wrapper">
-                    <i class="fas fa-arrow-down"></i>
-                </div>
-            </a>
-            <a href="img/resume.pdf" class="modern-cta secondary-cta">
-                <span>Download Resume</span>
-                <div class="download-icon">
-                    <i class="fas fa-download"></i>
-                </div>
-            </a>
+          <a href="img/resume.pdf"    class="modern-cta primary-cta">
+            <span>Download Resume</span>
+            <i class="fas fa-download"></i>
+          </a>
+          <a href="contact.html"  class="modern-cta secondary-cta">
+            <span>Get in Touch</span>
+            <i class="fas fa-envelope"></i>
+          </a>
         </div>
+
+        <!-- Social Icons -->
         <div class="social-container">
-            <div class="social-bar">
-                <a href="https://www.linkedin.com/in/shahid-ul-islam-13650998" target="_blank" class="social-link" aria-label="LinkedIn">
-                    <i class="fab fa-linkedin"></i>
-                </a>
-                <a href="https://github.com/Khanz9664" target="_blank" class="social-link" aria-label="GitHub">
-                    <i class="fab fa-github"></i>
-                </a>
-                <a href="https://x.com/Shaddy9664" target="_blank" class="social-link" aria-label="Twitter">
-                    <i class="fab fa-twitter"></i>
-                </a>
-                <a href="https://www.instagram.com/shaddy9664" target="_blank" class="social-link" aria-label="Instagram">
-                    <i class="fab fa-instagram"></i>
-                </a>
-            </div>
-        </div>
-    </div>
-</div>
-
-</div>
-
-</header>
-    
-    <main>
-       <!-- About Section -->
-  <section id="about" class="container about-section">
-    <h2 class="section-title">About Me</h2>
-    <div class="about-content">
-      <div class="about-image">
-        <div class="image-frame">
-          <img src="img/shahid.png" alt="Shahid Ul Islam" class="profile-image">
-          <div class="image-accent"></div>
-        </div>
-        <div class="tech-stack">
-          <div class="tech-item">AI/ML</div>
-          <div class="tech-item">NLP/DL</div>
-          <div class="tech-item">Data Science</div>
-        </div>
-      </div>
-      <div class="about-text">
-        <p class="highlight">
-          A Computer Science student fueled by a passion for 
-          <span class="accent">AI/ML</span>, 
-          <span class="accent">NLP/DL</span>, and 
-          <span class="accent">Data Science</span>.
-        </p>
-        <div class="about-card">
-          <p>
-            I thrive on crafting innovative solutions that bridge complex problems with real-world applications. My expertise spans:
-          </p>
-          <ul class="expertise-list">
-            <li>Predictive Analytics & Modeling</li>
-            <li>Natural Language Processing</li>
-            <li>Deep Learning Architectures</li>
-            <li>Data Visualization & Storytelling</li>
-          </ul>
-        </div>
-        <div class="achievement-grid">
-          <div class="achievement-item">
-            <div class="achievement-icon">📈</div>
-            <h3>Data-Driven Solutions</h3>
-            <p>Transforming raw data into actionable insights</p>
-          </div>
-          <div class="achievement-item">
-            <div class="achievement-icon">🤖</div>
-            <h3>AI Innovation</h3>
-            <p>Building intelligent systems that learn and adapt</p>
+          <div class="social-bar">
+            <a href="https://www.linkedin.com/in/shahid-ul-islam-13650998" target="_blank" class="social-link" aria-label="LinkedIn">
+              <i class="fab fa-linkedin"></i>
+            </a>
+            <a href="https://github.com/Khanz9664" target="_blank" class="social-link" aria-label="GitHub">
+              <i class="fab fa-github"></i>
+            </a>
+            <a href="https://x.com/Shaddy9664" target="_blank" class="social-link" aria-label="Twitter">
+              <i class="fab fa-twitter"></i>
+            </a>
+            <a href="https://www.instagram.com/shaddy9664" target="_blank" class="social-link" aria-label="Instagram">
+              <i class="fab fa-instagram"></i>
+            </a>
           </div>
         </div>
       </div>
     </div>
-    
-    
-    
-      <!-- Experience Section -->
-<section id="experience" class="container experience-modern">
-  <h2 class="experience-heading">Experience</h2>
-  <div class="experience-container">
-    <div class="experience-item">
-      <div class="experience-badge">
-        <i class="fas fa-briefcase"></i>
-      </div>
-      <div class="experience-info">
-        <h3 class="role-title">Python Developer</h3>
-        <span class="experience-duration">Feb 2025 – May 2025</span>
-        <p class="company-name">Immortal Software Solutions, Bangalore, India</p>
-        <p class="experience-summary">
-          • Deployed backend infrastructure on <strong>Google Cloud Platform (GCP)</strong>, including PostgreSQL setup and virtual machine configuration.<br>
-          • Used <strong>Firebase</strong> to host and manage frontend deployments.<br>
-          • Developed an <strong>Instagram scraper</strong> to extract profile data (name, bio, followers, posts) and post data (captions, hashtags, likes, comments).<br>
-          • Implemented <strong>sentiment analysis</strong> on comments, capturing positive/negative insights per post.<br>
-          • Built a modern <strong>dashboard frontend</strong> to visualize user data and engagement metrics.<br>
-          • Enabled data export in <strong>CSV, JSON, and XLSX</strong> formats for reporting and analysis.<br>
-          • Integrated multiple <strong>REST APIs</strong> to streamline data flow across services.
-        </p>
-      </div>
-    </div>
+  </header>
+
+ <!-- Welcome Blurb -->
+<section class="landing-intro">
+  <h2>Turning Data into Decisions</h2>
+  <p>
+    I’m Shahid Ul Islam—a Computer Science master’s candidate specializing in AI, ML, and advanced analytics.  </br>
+    With hands-on expertise in building end-to-end machine learning pipelines, designing deep-learning architectures, and deploying scalable data platforms, I transform complex datasets into actionable insights.  </br>
+    Explore my portfolio to see how I’ve leveraged predictive modeling, natural language processing, and interactive dashboards to solve real-world problems in healthcare, finance, and beyond.
+  </p>
+</section>
+
+<!-- Quick Overview Cards -->
+<section class="quick-overview">
+  <h2 class="overview-title">Explore the Journey</h2>
+  <div class="overview-grid">
+    <a href="about.html"    class="overview-card">
+      <div class="icon-bg"><i class="fas fa-user"></i></div>
+      <h3>About Me</h3>
+      <p>My story, skills & passions</p>
+    </a>
+    <a href="skills.html"   class="overview-card">
+      <div class="icon-bg"><i class="fas fa-tools"></i></div>
+      <h3>Skills</h3>
+      <p>Technical & soft skills spotlight</p>
+    </a>
+    <a href="projects.html" class="overview-card">
+      <div class="icon-bg"><i class="fas fa-rocket"></i></div>
+      <h3>Projects</h3>
+      <p>AI, ML & data science showcases</p>
+    </a>
+    <a href="contact.html"  class="overview-card">
+      <div class="icon-bg"><i class="fas fa-paper-plane"></i></div>
+      <h3>Contact</h3>
+      <p>Let’s connect & collaborate</p>
+    </a>
   </div>
 </section>
 
 
-
-    <div class="timeline-wrapper">
-        <!-- Education Section -->
-        <section id="education" class="container timeline-section">
-          <h2 class="section-title1">Education</h2>
-          <div class="timeline">
-            <div class="timeline-card left">
-              <div class="card-icon">
-                <i class="fas fa-graduation-cap"></i>
-              </div>
-              <div class="card-content">
-                <h3>Master of Computer Applications (MCA)</h3>
-                <span class="timeline-date">2023 - Present</span>
-                <p class="institution">Islamic University of Science and Technology, Pulwama, J&K</p>
-                <p class="description">Focused on Artificial Intelligence, Machine Learning, and Data Science. Gained hands-on experience through project work and research initiatives.</p>
-              </div>
-            </div>
-            <div class="timeline-card right">
-                <div class="card-icon">
-                  <i class="fas fa-graduation-cap"></i>
-                </div>
-                <div class="card-content">
-                  <h3>Bachelor of Computer Applications (BCA)</h3>
-                  <span class="timeline-date">2020 - 2023</span>
-                  <p class="institution">Indira Gandhi NAtional Open University, Srinagar, J&K</p>
-                  <p class="description">Focused on Programming, DSA, Web Devlopment and Networking. Gained hands-on experience through project work.</p>
-                </div>
-              </div>
-              <div class="timeline-card left">
-              <div class="card-icon">
-                <i class="fas fa-graduation-cap"></i>
-              </div>
-              <div class="card-content">
-                <h3>Senior Secondary Education</h3>
-                <span class="timeline-date">2015 - 2017</span>
-                <p class="institution">J&K State Board of School Eduation</p>
-                <p class="description">Focused on Mathematics, Physics, and Computer Science. Gained hands-on experience through project work.</p>
-              </div>
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="footer-content">
+      <div class="footer-main">
+        <div class="footer-left">
+          <p class="copyright">&copy; 2025 Shahid Ul Islam</p>
+          <p class="footer-meta">Data Scientist & AI Developer</p>
+        </div>
+        <div class="footer-right">
+          <div class="footer-links">
+            <a href="index.html#home" class="back-to-top">
+              <i class="fas fa-arrow-up"></i>
+              <span>Back to Top</span>
+            </a>
+            <div class="social-links11">
+              <a href="https://github.com/Khanz9664" target="_blank" class="social-link11">
+                <i class="fab fa-github"></i>
+              </a>
+              <a href="https://linkedin.com/in/shahid-ul-islam-13650998" target="_blank" class="social-link11">
+                <i class="fab fa-linkedin"></i>
+              </a>
+              <a href="mailto:shahid9664@gmail.com" class="social-link11">
+                <i class="fas fa-envelope"></i>
+              </a>
             </div>
           </div>
-          
-        </section>
-    </div>
-    
-</section>
-
-<section id="skills" class="container">
-    <div class="skills-header">
-        <h2 class="section-title">My Expertise</h2>
-        <p class="section-subtitle">A combination of technical proficiency and soft skills that enable me to deliver comprehensive data science solutions</p>
-    </div>
-    
-    <div class="skills-grid">
-        <!-- Technical Skills -->
-        <article class="skill-card">
-            <div class="skill-header">
-                <i class="fas fa-laptop-code skill-icon"></i>
-                <h3>Technical Skills</h3>
-            </div>
-            <div class="skill-items">
-                <div class="skill-item">
-                    <span class="skill-name">Python</span>
-                    <div class="skill-bar" data-progress="90"></div>
-                </div>
-                <div class="skill-item">
-                    <span class="skill-name">C/C++/C#</span>
-                    <div class="skill-bar" data-progress="70"></div>
-                </div>
-                <div class="skill-item">
-                    <span class="skill-name">SQL</span>
-                    <div class="skill-bar" data-progress="85"></div>
-                </div>
-                <div class="skill-item">
-                    <span class="skill-name">Matplotlib/Plotly</span>
-                    <div class="skill-bar" data-progress="70"></div>
-                </div>
-                <div class="skill-item">
-                    <span class="skill-name">TensorFlow/PyTorch</span>
-                    <div class="skill-bar" data-progress="80"></div>
-                </div>
-                <div class="skill-item">
-                    <span class="skill-name">Scikit-Learn</span>
-                    <div class="skill-bar" data-progress="85"></div>
-                </div>
-                <div class="skill-item">
-                    <span class="skill-name">Pandas/NumPy</span>
-                    <div class="skill-bar" data-progress="90"></div>
-                </div>
-                <div class="skill-item">
-                    <span class="skill-name">Looker</span>
-                    <div class="skill-bar" data-progress="80"></div>
-                </div>
-                <div class="skill-item">
-                    <span class="skill-name">Big Query</span>
-                    <div class="skill-bar" data-progress="65"></div>
-                </div>
-            </div>
-        </article>
-
-        <!-- Soft Skills -->
-        <article class="skill-card">
-            <div class="skill-header">
-                <i class="fas fa-users skill-icon"></i>
-                <h3>Soft Skills</h3>
-            </div>
-            <div class="skill-items soft-skills">
-                <span class="skill-tag">Problem Solving</span>
-                <span class="skill-tag">Critical Thinking</span>
-                <span class="skill-tag">Communication</span>
-                <span class="skill-tag">Teamwork</span>
-                <span class="skill-tag">Attention to Detail</span>
-                <span class="skill-tag">Time Management</span>
-                <span class="skill-tag">Adaptability</span>
-                <span class="skill-tag">Continuous Learning</span>
-            </div>
-        </article>
-    </div>
-</section>
-
-
-<section id="projects" class="projects-container">
-    <div class="projects-header">
-        <h2 class="section-title glitch" data-text="Featured Projects">Featured Projects</h2>
-        <p class="section-subtitle">Exploring Data Science & Machine Learning Innovations</p>
-    </div>
-    
-    <div class="projects-grid">
-        <!-- Project 1: Early Breast Cancer Prediction -->
-        <article class="project-card" data-aos="fade-up" data-aos-delay="0">
-            <div class="card-inner">
-                <div class="card-front">
-                    <div class="project-image-wrapper">
-                        <div class="project-image" style="background-image: url('img/bcncr.png')"></div>
-                        <div class="project-overlay">
-                            <div class="tech-stack">
-                                <i class="fab fa-python" title="Python"></i>
-                                <i class="fas fa-robot" title="Machine Learning"></i>
-                                <i class="fas fa-stethoscope" title="Medical Analysis"></i>
-                            </div>
-                            <span class="completion-status">Q3 2024</span>
-                        </div>
-                    </div>
-                    <div class="project-content">
-                        <div class="project-tags">
-                            <span class="tag">Healthcare</span>
-                            <span class="tag">Predictive Modeling</span>
-                            <span class="tag">Scikit-learn</span>
-                        </div>
-                        <h3 class="project-title">Early Breast Cancer Prediction</h3>
-                        <div class="project-stats">
-                            <div class="stat-item">
-                                <i class="fas fa-clock"></i>
-                                <span>3 months</span>
-                            </div>
-                            <div class="stat-item">
-                                <i class="fas fa-star"></i>
-                                <span>4.8/5</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="card-back">
-                    <p class="project-description">Advanced ML model achieving 95% accuracy in early breast cancer detection through clinical data analysis.</p>
-                    <div class="project-actions">
-                        <a href="https://github.com/Khanz9664/Breast-Cancer-Prediction" 
-                           class="project-link"
-                           target="_blank"
-                           aria-label="GitHub repository for Breast Cancer Prediction Project">
-                            <i class="fab fa-github"></i>
-                            View Code
-                        </a>
-                        <button class="details-button" aria-expanded="false" aria-controls="project1-details">
-                            <i class="fas fa-info-circle"></i>
-                            Case Study
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </article>
-        
-        <!-- Project 2: Medicine Review Categorization -->
-        <article class="project-card" data-aos="fade-up" data-aos-delay="100">
-            <div class="card-inner">
-                <div class="card-front">
-                    <div class="project-image-wrapper">
-                        <div class="project-image" style="background-image: url('img/meds.png')"></div>
-                        <div class="project-overlay">
-                            <div class="tech-stack">
-                                <i class="fab fa-python" title="Python"></i>
-                                <i class="fas fa-language" title="NLP"></i>
-                                <i class="fas fa-comment-medical" title="Medical Reviews"></i>
-                            </div>
-                            <span class="completion-status">Q2 2024</span>
-                        </div>
-                    </div>
-                    <div class="project-content">
-                        <div class="project-tags">
-                            <span class="tag">NLP</span>
-                            <span class="tag">Classification</span>
-                            <span class="tag">Python</span>
-                        </div>
-                        <h3 class="project-title">Medicine Review Categorization</h3>
-                        <div class="project-stats">
-                            <div class="stat-item">
-                                <i class="fas fa-clock"></i>
-                                <span>2 months</span>
-                            </div>
-                            <div class="stat-item">
-                                <i class="fas fa-star"></i>
-                                <span>4.6/5</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="card-back">
-                    <p class="project-description">NLP-powered system processing 10k+ reviews with sentiment analysis and categorization.</p>
-                    <div class="project-actions">
-                        <a href="https://github.com/Khanz9664/Medicine-Review-Categorization" 
-                           class="project-link"
-                           target="_blank"
-                           aria-label="GitHub repository for Medicine Review Project">
-                            <i class="fab fa-github"></i>
-                            View Code
-                        </a>
-                        <button class="details-button" aria-expanded="false" aria-controls="project2-details">
-                            <i class="fas fa-info-circle"></i>
-                            Case Study
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </article>
-        
-        <!-- Project 3: Apple Sales Analysis & Dashboard 2024 -->
-        <article class="project-card" data-aos="fade-up" data-aos-delay="200">
-            <div class="card-inner">
-                <div class="card-front">
-                    <div class="project-image-wrapper">
-                        <div class="project-image" style="background-image: url('img/apple.png')"></div>
-                        <div class="project-overlay">
-                            <div class="tech-stack">
-                                <i class="fas fa-chart-line" title="Data Visualization"></i>
-                                <i class="fab fa-apple" title="Apple Products"></i>
-                                <i class="fas fa-tachometer-alt" title="Dashboard"></i>
-                            </div>
-                            <span class="completion-status">Q1 2024</span>
-                        </div>
-                    </div>
-                    <div class="project-content">
-                        <div class="project-tags">
-                            <span class="tag">Sales Analysis</span>
-                            <span class="tag">Dash</span>
-                            <span class="tag">Plotly</span>
-                        </div>
-                        <h3 class="project-title">Apple Sales Analysis & Dashboard 2024</h3>
-                        <div class="project-stats">
-                            <div class="stat-item">
-                                <i class="fas fa-clock"></i>
-                                <span>4 months</span>
-                            </div>
-                            <div class="stat-item">
-                                <i class="fas fa-star"></i>
-                                <span>4.9/5</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="card-back">
-                    <p class="project-description">Interactive dashboard visualizing sales trends and performance metrics for Apple products.</p>
-                    <div class="project-actions">
-                        <a href="https://github.com/Khanz9664/Comprehensive-Data-Analysis-Visualization-of-Apple-Product-Sales" 
-                           class="project-link"
-                           target="_blank"
-                           aria-label="GitHub repository for Apple Sales Project">
-                            <i class="fab fa-github"></i>
-                            View Code
-                        </a>
-                        <button class="details-button" aria-expanded="false" aria-controls="project3-details">
-                            <i class="fas fa-info-circle"></i>
-                            Case Study
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </article>
-        
-        <!-- Project 4: Criminal Records Management -->
-        <article class="project-card" data-aos="fade-up" data-aos-delay="300">
-            <div class="card-inner">
-                <div class="card-front">
-                    <div class="project-image-wrapper">
-                        <div class="project-image" style="background-image: url('img/crms.png')"></div>
-                        <div class="project-overlay">
-                            <div class="tech-stack">
-                                <i class="fas fa-database" title="Database"></i>
-                                <i class="fas fa-shield-alt" title="Security"></i>
-                                <i class="fas fa-code" title="CRUD Operations"></i>
-                            </div>
-                            <span class="completion-status">Q4 2023</span>
-                        </div>
-                    </div>
-                    <div class="project-content">
-                        <div class="project-tags">
-                            <span class="tag">Database</span>
-                            <span class="tag">CRUD</span>
-                            <span class="tag">SQL</span>
-                        </div>
-                        <h3 class="project-title">Criminal Records Management</h3>
-                        <div class="project-stats">
-                            <div class="stat-item">
-                                <i class="fas fa-clock"></i>
-                                <span>5 months</span>
-                            </div>
-                            <div class="stat-item">
-                                <i class="fas fa-star"></i>
-                                <span>4.7/5</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="card-back">
-                    <p class="project-description">Secure full-stack application for managing criminal records with user authentication and data encryption.</p>
-                    <div class="project-actions">
-                        <a href="https://github.com/Khanz9664/criminal-records-system" 
-                           class="project-link"
-                           target="_blank"
-                           aria-label="GitHub repository for Criminal Records Project">
-                            <i class="fab fa-github"></i>
-                            View Code
-                        </a>
-                        <button class="details-button" aria-expanded="false" aria-controls="project4-details">
-                            <i class="fas fa-info-circle"></i>
-                            Case Study
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </article>
-        
-        <!-- Project 5: House Price Prediction -->
-        <article class="project-card" data-aos="fade-up" data-aos-delay="400">
-            <div class="card-inner">
-                <div class="card-front">
-                    <div class="project-image-wrapper">
-                        <div class="project-image" style="background-image: url('img/hpp.png')"></div>
-                        <div class="project-overlay">
-                            <div class="tech-stack">
-                                <i class="fas fa-home" title="Real Estate"></i>
-                                <i class="fas fa-chart-area" title="Regression Analysis"></i>
-                                <i class="fas fa-cube" title="Feature Engineering"></i>
-                            </div>
-                            <span class="completion-status">Q3 2023</span>
-                        </div>
-                    </div>
-                    <div class="project-content">
-                        <div class="project-tags">
-                            <span class="tag">Regression</span>
-                            <span class="tag">EDA</span>
-                            <span class="tag">Pandas</span>
-                        </div>
-                        <h3 class="project-title">House Price Prediction</h3>
-                        <div class="project-stats">
-                            <div class="stat-item">
-                                <i class="fas fa-clock"></i>
-                                <span>3 months</span>
-                            </div>
-                            <div class="stat-item">
-                                <i class="fas fa-star"></i>
-                                <span>4.5/5</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="card-back">
-                    <p class="project-description">Predictive model for real estate prices using extensive feature engineering and regression techniques.</p>
-                    <div class="project-actions">
-                        <a href="https://github.com/Khanz9664/House-Price-Prediction" 
-                           class="project-link"
-                           target="_blank"
-                           aria-label="GitHub repository for House Price Prediction">
-                            <i class="fab fa-github"></i>
-                            View Code
-                        </a>
-                        <button class="details-button" aria-expanded="false" aria-controls="project5-details">
-                            <i class="fas fa-info-circle"></i>
-                            Case Study
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </article>
-        
-        <!-- Project 6: EDA - MovieLens Dataset -->
-        <article class="project-card" data-aos="fade-up" data-aos-delay="500">
-            <div class="card-inner">
-                <div class="card-front">
-                    <div class="project-image-wrapper">
-                        <div class="project-image" style="background-image: url('img/eda.png')"></div>
-                        <div class="project-overlay">
-                            <div class="tech-stack">
-                                <i class="fas fa-film" title="Movie Data"></i>
-                                <i class="fas fa-chart-pie" title="Data Analysis"></i>
-                                <i class="fas fa-search" title="Exploratory Analysis"></i>
-                            </div>
-                            <span class="completion-status">Q2 2023</span>
-                        </div>
-                    </div>
-                    <div class="project-content">
-                        <div class="project-tags">
-                            <span class="tag">Data Analysis</span>
-                            <span class="tag">Visualization</span>
-                            <span class="tag">Matplotlib</span>
-                        </div>
-                        <h3 class="project-title">EDA - MovieLens Dataset</h3>
-                        <div class="project-stats">
-                            <div class="stat-item">
-                                <i class="fas fa-clock"></i>
-                                <span>2 months</span>
-                            </div>
-                            <div class="stat-item">
-                                <i class="fas fa-star"></i>
-                                <span>4.6/5</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="card-back">
-                    <p class="project-description">Exploratory data analysis of movie ratings, uncovering insights through interactive visualizations.</p>
-                    <div class="project-actions">
-                        <a href="https://github.com/Khanz9664/Python-For-DataScience/tree/main/10.%20Exploratory%20Analysis%20and%20Visualization%20of%20MovieLens%20Dataset" 
-                           class="project-link"
-                           target="_blank"
-                           aria-label="GitHub repository for MovieLens EDA Project">
-                            <i class="fab fa-github"></i>
-                            View Code
-                        </a>
-                        <button class="details-button" aria-expanded="false" aria-controls="project6-details">
-                            <i class="fas fa-info-circle"></i>
-                            Case Study
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </article>
-    </div>
-</section>
-        
-        
-        
-
-<section id="contact" class="contact-section">
-    <div class="contact-container">
-        <div class="contact-header">
-            <h2 class="section-title">Let's Connect</h2>
-            <p class="section-subtitle">Have a project in mind or want to discuss data solutions?<br>Let's create something amazing together.</p>
         </div>
-
-        <div class="contact-grid">
-            <!-- Contact Form -->
-            <div class="contact-form-wrapper">
-                <form id="custom-contact-form" name='submit-to-google-sheet' class="contact-form">
-                    <div class="form-group floating-label">
-                        <input type="text" id="name" name="name" required>
-                        <label for="name">Your Name</label>
-                        <div class="underline"></div>
-                    </div>
-
-                    <div class="form-group floating-label">
-                        <input type="email" id="email" name="email" required>
-                        <label for="email">Email Address</label>
-                        <div class="underline"></div>
-                    </div>
-
-                    <div class="form-group floating-label">
-                        <textarea id="message" name="message" rows="5" required></textarea>
-                        <label for="message">Your Message</label>
-                        <div class="underline"></div>
-                    </div>
-
-                    <button type="submit" class="submit-button">
-                        <span>Send Message</span>
-                        <div class="button-icon">
-                            <i class="fas fa-paper-plane"></i>
-                        </div>
-                    </button>
-                    <span id="msg"></span>
-                </form>
-                <div class="form-status"></div>
-            </div>
-
-            <!-- Contact Channels -->
-            <div class="contact-channels">
-                <div class="channel-group">
-                    <h3 class="channel-group-title">Direct Communication</h3>
-                    <div class="channel-card email-channel">
-                        <div class="channel-icon">
-                            <i class="fas fa-envelope-open-text"></i>
-                        </div>
-                        <div class="channel-content">
-                            <h4>Email Me</h4>
-                            <p>For formal inquiries and project discussions</p>
-                            <a href="mailto:shahid9664@gmail.com" class="channel-link">
-                                shahid9664@gmail.com
-                                <i class="fas fa-external-link-alt"></i>
-                            </a>
-                        </div>
-                    </div>
-
-                    <div class="channel-card whatsapp-channel">
-                        <div class="channel-icon">
-                            <i class="fab fa-whatsapp"></i>
-                        </div>
-                        <div class="channel-content">
-                            <h4>WhatsApp Chat</h4>
-                            <p>Quick questions and instant messaging</p>
-                            <a href="https://wa.me/+917780858125" class="channel-link">
-                                +91 77808 58125
-                                <i class="fas fa-external-link-alt"></i>
-                            </a>
-                        </div>
-                    </div>
-
-                    <div class="channel-card github-channel">
-                        <div class="channel-icon">
-                            <i class="fab fa-github"></i>
-                        </div>
-                        <div class="channel-content">
-                            <h4>GitHub Repos</h4>
-                            <p>Explore my projects and contributions</p>
-                            <a href="https://github.com/Khanz9664" class="channel-link">
-                                Visit GitHub
-                                <i class="fas fa-external-link-alt"></i>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+      </div>
+      <div class="made-with">
+        <p>Crafted with <span class="heart-icon">❤️</span> By Shahid</p>
+      </div>
     </div>
-</section>
-               
-        
-    </main>
+  </footer>
 
-<!-- Updated HTML -->
-<footer class="site-footer">
-    <div class="footer-content">
-        <div class="footer-main">
-            <div class="footer-left">
-                <p class="copyright">&copy; 2025 Shahid Ul Islam</p>
-                <p class="footer-meta">Data Scientist & AI Developer</p>
-            </div>
-            <div class="footer-right">
-                <div class="footer-links">
-                    <a href="#home" class="back-to-top">
-                        <i class="fas fa-arrow-up"></i>
-                        <span>Back to Top</span>
-                    </a>
-                    <div class="social-links11">
-                        <a href="https://github.com/Khanz9664" target="_blank" class="social-link11">
-                            <i class="fab fa-github"></i>
-                        </a>
-                        <a href="https://linkedin.com/in/shahid-ul-islam-13650998" target="_blank" class="social-link11">
-                            <i class="fab fa-linkedin"></i>
-                        </a>
-                        <a href="mailto:shahid9664@gmail.com" class="social-link11">
-                            <i class="fas fa-envelope"></i>
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="made-with">
-            <p>Crafted with 
-                <span class="heart-icon">❤️</span> 
-                 By Shahid
-            </p>
-        </div>
-    </div>
-</footer>
-    
 </body>
 </html>
+

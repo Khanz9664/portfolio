@@ -1,0 +1,257 @@
+/* Hero section styles here */
+.modern-hero {
+    --primary-color: #00ff88;
+    --secondary-color: #60efff;
+    --text-primary: rgba(255, 255, 255, 0.9);
+    --text-secondary: rgba(255, 255, 255, 0.7);
+    --accent-gradient: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+    --bg-gradient: 
+  linear-gradient(135deg, 
+    rgba(10, 10, 10, 0.9) 0%, 
+    rgba(19, 19, 19, 0.85) 40%, 
+    rgba(0, 0, 0, 0.8) 100%), 
+  url('../img/bg.jpg') center/cover no-repeat;
+    
+    position: relative;
+    padding: 2rem 2rem;
+    padding-bottom: 0rem;
+    background: var(--bg-gradient);
+    overflow: hidden;
+}
+
+.hero-container {
+    position: relative;
+    max-width: 1400px;
+    margin: 0 auto;
+    height: 100%;
+}
+
+.hero-content {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    height: 100%;
+    padding: 8rem 0;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.hero-text {
+    max-width: 800px;
+}
+
+.hero-title {
+    font-size: clamp(2.5rem, 8vw, 4.5rem);
+    line-height: 1.1;
+    margin-bottom: 2rem;
+}
+
+.dynamic-text {
+    display: block;
+    background: var(--accent-gradient);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    animation: text-shine 3s ease infinite;
+}
+
+.tagline {
+    font-size: clamp(1.25rem, 4vw, 1.75rem);
+    color: var(--text-primary);
+    font-weight: 300;
+    margin-top: 1rem;
+}
+
+.hero-description {
+    font-size: clamp(1rem, 3vw, 1.25rem);
+    color: var(--text-secondary);
+    line-height: 1.6;
+    margin-bottom: 3rem;
+    max-width: 600px;
+}
+
+.highlight-effect {
+    color: var(--text-primary);
+    position: relative;
+    cursor: pointer;
+}
+
+.highlight-effect::before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: var(--accent-gradient);
+    transition: width 0.3s ease;
+}
+
+.highlight-effect:hover::before {
+    width: 100%;
+}
+
+/* Modern CTA Buttons */
+.cta-wrapper {
+    display: flex;
+    gap: 1.5rem;
+    margin: 2.5rem 0;
+}
+
+.modern-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1.1rem 2.5rem;
+    border-radius: 0.5rem;
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+    border: 1px solid transparent;
+}
+
+.primary-cta {
+    background: var(--accent-gradient);
+    color: #000;
+}
+
+.secondary-cta {
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--text-primary);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.modern-cta:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px rgba(0, 255, 136, 0.1);
+}
+
+.modern-cta .arrow-wrapper,
+.modern-cta .download-icon {
+    transition: transform 0.3s ease;
+}
+
+.modern-cta:hover .arrow-wrapper {
+    transform: translateY(3px) rotate(45deg);
+}
+
+.modern-cta:hover .download-icon {
+    transform: translateY(3px) rotate(-45deg);
+}
+
+/* Social Links */
+.social-container {
+    margin-top: 3rem;
+    font-size: 2rem;
+    margin-left: 2rem;
+}
+
+.social-bar {
+    display: flex;
+    gap: 1.5rem;
+    font-size: 2rem;
+}
+
+.social-link {
+    font-size: 3rem; /* This affects the size of the icon itself */
+    color: var(--text-secondary);
+    transition: all 0.3s ease;
+    padding: 0.5rem;
+    position: relative;
+}
+
+.social-link i {
+    font-size: 3rem;  
+}
+
+.social-link::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background: var(--accent-gradient);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.social-link:hover {
+    color: var(--text-primary);
+    transform: translateY(-2px);
+}
+
+.social-link:hover::before {
+    opacity: 0.1;
+}
+
+@media (max-width: 768px) {
+    .cta-wrapper {
+        flex-direction: column;
+    }
+    
+    .modern-cta {
+        justify-content: center;
+    }
+    
+    .hero-content {
+        padding: 6rem 0;
+    }
+    
+    .social-bar {
+        justify-content: center;
+    }
+}
+
+
+/* Tech Badges */
+.tech-badges {
+    position: absolute;
+    bottom: 20%;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.tech-badge {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 0.5rem 1rem;
+    border-radius: 30px;
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    backdrop-filter: blur(5px);
+}
+
+.tech-badge i {
+    color: var(--primary-color);
+}
+
+@media (max-width: 768px) {
+    .hero-content {
+        grid-template-columns: 1fr;
+        padding: 4rem 0;
+    }
+    
+    .hero-visuals {
+        min-height: 400px;
+        margin-top: 3rem;
+    }
+    
+    .cube-container {
+        width: 250px;
+        height: 250px;
+    }
+}
+

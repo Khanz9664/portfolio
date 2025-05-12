@@ -1,0 +1,142 @@
+/* landing.css */
+
+/* Glass-style Intro Blurb */
+.landing-intro {
+  max-width: 800px;
+  margin: 3rem auto;
+  padding: 2.5rem 2rem;
+  background: linear-gradient(135deg, 
+    rgba(10, 10, 10, 0.9) 0%, 
+    rgba(19, 19, 19, 0.85) 40%, 
+    rgba(0, 0, 0, 0.8) 100%), 
+  url('../img/bg.jpg') center/cover no-repeat;
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255,255,255,0.15);
+  border-radius: 1rem;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+  text-align: center;
+  color: var(--text-color);
+}
+
+.landing-intro h2 {
+  font-size: 2.25rem;
+  margin-bottom: 1rem;
+  color: var(--primary-color);
+  letter-spacing: 1px;
+}
+
+.landing-intro p {
+  font-size: 1.125rem;
+  line-height: 1.7;
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+/* Enhanced Quick-Overview Cards */
+.quick-overview {
+  padding: 1rem 2rem;
+  background: linear-gradient(135deg, 
+    rgba(10, 10, 10, 0.9) 0%, 
+    rgba(19, 19, 19, 0.85) 40%, 
+    rgba(0, 0, 0, 0.8) 100%), 
+  url('../img/bg.jpg') center/cover no-repeat;
+}
+
+.overview-title {
+  font-size: 2.75rem;
+  color: #fff;
+  margin-bottom: 2rem;
+  text-shadow: 0 2px 6px rgba(0,0,0,0.4);
+}
+
+.overview-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.overview-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2rem;
+  background: rgba(255,255,255,0.1);
+  backdrop-filter: blur(8px);
+  border-radius: 1rem;
+  text-decoration: none;
+  color: #fff;
+  transition: transform 0.4s ease, box-shadow 0.4s ease, background 0.4s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.overview-card::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  transform: rotate(25deg);
+  z-index: 0;
+}
+
+.overview-card:hover::before {
+  opacity: 0.2;
+}
+
+.overview-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 12px 25px rgba(0,0,0,0.2);
+}
+
+.icon-bg {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background: rgba(0,0,0,0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1rem;
+  transition: background 0.3s ease;
+  z-index: 1;
+}
+
+.overview-card i {
+  font-size: 2rem;
+  color: var(--primary-color);
+}
+
+.overview-card:hover .icon-bg {
+  background: rgba(255,255,255,0.15);
+}
+
+.overview-card h3 {
+  font-size: 1.25rem;
+  margin-bottom: 0.5rem;
+  z-index: 1;
+}
+
+.overview-card p {
+  font-size: 1rem;
+  text-align: center;
+  z-index: 1;
+}
+
+/* Responsive tweaks */
+@media (max-width: 768px) {
+  .landing-intro {
+    margin: 2rem 1rem;
+    padding: 2rem 1.5rem;
+  }
+  .overview-grid {
+    grid-template-columns: 1fr;
+  }
+}
+

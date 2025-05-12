@@ -1,0 +1,153 @@
+/* projects.css */
+
+/* Section wrapper */
+.projects-section {
+  padding: 4rem 2rem;
+  background: var(--bg-gradient);
+  color: #fff;
+}
+
+/* Header */
+.projects-header {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.section-title {
+    text-align: center;
+    font-size: 3rem; 
+    margin-bottom: 3rem;
+    position: relative;
+    color: var(--primary-color);
+    font-weight: 600; 
+    letter-spacing: 2px; 
+    text-transform: uppercase; 
+    font-family: 'Roboto', sans-serif; 
+    transition: color 0.3s ease, transform 0.3s ease;
+}
+
+.section-title:hover {
+    transform: translateY(-5px); 
+    color: var(--secondary-color); 
+}
+
+.section-title::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 50%;
+    height: 4px; 
+    background: var(--primary-color);
+    border-radius: 5px; 
+    transition: width 0.3s ease; 
+}
+
+.section-title:hover::after {
+    width: 70%; 
+}
+
+.section-subtitle {
+  font-size: 1.1rem;
+  opacity: 0.8;
+}
+
+
+/* Grid layout */
+.projects-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Card styling */
+.project-card {
+  background: rgba(255,255,255,0.05);
+  backdrop-filter: blur(8px);
+  border-radius: 1rem;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.4s, box-shadow 0.4s;
+  cursor: pointer;
+}
+.project-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 12px 30px rgba(0,0,0,0.3);
+}
+
+/* Image */
+.card-image {
+  width: 100%;
+  padding-top: 56%; /* 16:9 aspect ratio */
+  background-size: cover;
+  background-position: center;
+}
+
+/* Content */
+.card-content {
+  padding: 1.5rem;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+.card-content h3 {
+  margin-bottom: 0.75rem;
+  font-size: 1.3rem;
+}
+.card-desc {
+  flex: 1;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  margin-bottom: 1rem;
+  opacity: 0.9;
+}
+
+/* Tags */
+.card-tags {
+  margin-bottom: 1rem;
+}
+.card-tags span {
+  display: inline-block;
+  background: rgba(255,255,255,0.1);
+  padding: 0.3rem 0.6rem;
+  margin-right: 0.5rem;
+  border-radius: 0.5rem;
+  font-size: 0.8rem;
+}
+
+/* Actions */
+.card-actions {
+  text-align: right;
+}
+.btn-link {
+  text-decoration: none;
+  background: var(--accent-gradient);
+  color: #000;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  font-weight: 500;
+  transition: background 0.3s;
+}
+.btn-link i {
+  margin-right: 0.4rem;
+}
+.btn-link:hover {
+  background: var(--primary-color);
+  color: #fff;
+}
+
+/* Responsive tweak */
+@media (max-width: 768px) {
+  .projects-section {
+    padding: 2rem 1rem;
+  }
+  .projects-filters {
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+}
+

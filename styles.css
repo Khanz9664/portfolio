@@ -840,6 +840,7 @@ body {
 
 /* Experience Section Styling */
 .experience-modern {
+  margin-left: 1.5rem;
   padding: 80px 40px;
   animation: gradientShift 15s ease infinite;
   color: #fff;

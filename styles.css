@@ -936,6 +936,51 @@ body {
   white-space: pre-line;
 }
 
+@media (max-width: 768px) {
+  .experience-modern {
+    padding: 40px 20px;
+    margin-left: 0;
+  }
+
+  .experience-container {
+    padding: 1rem;
+  }
+
+  .experience-item {
+    flex-direction: column;
+    padding: 20px;
+  }
+
+  .experience-badge {
+    margin-bottom: 16px;
+    align-self: center;
+  }
+
+  .experience-info {
+    text-align: center;
+  }
+
+  .role-title {
+    font-size: 1.25rem;
+    margin-bottom: 6px;
+  }
+
+  .experience-duration {
+    font-size: 0.9rem;
+    margin-bottom: 4px;
+  }
+
+  .company-name {
+    font-size: 0.95rem;
+    margin-bottom: 10px;
+  }
+
+  .experience-summary {
+    display: none;
+  }
+}
+
+
 
 
 

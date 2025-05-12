@@ -939,7 +939,7 @@ body {
 @media (max-width: 768px) {
   .experience-modern {
     padding: 40px 20px;
-    margin-left: 0;
+    margin-left: 1.5 rem;
   }
 
   .experience-container {

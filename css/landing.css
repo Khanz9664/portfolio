@@ -171,7 +171,7 @@
 
 /* Responsiveness */
 /* Small devices (phones, 320px - 480px) */
-@media (max-width: 480px) {
+@media (max-width: 480px) and (max-width: 768px) {
   .landing-intro {
     margin: 1.5rem 1rem;
     padding: 1.5rem 1rem;
@@ -237,8 +237,8 @@
   }
 }
 
-/* Large tablets and small laptops (769px - 1024px) */
-@media (min-width: 769px) and (max-width: 1024px) {
+/* Large tablets and small laptops (768px - 1024px) */
+@media (min-width: 768px) and (max-width: 1024px) {
   .landing-intro {
     padding: 2.5rem 2rem;
   }
@@ -249,6 +249,10 @@
 
   .overview-grid {
     grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .overview-card {
+    padding: 1.75rem;
   }
 }
 
@@ -268,6 +272,10 @@
 
   .overview-grid {
     grid-template-columns: repeat(3, 1fr);
+  }
+  
+  .overview-card {
+    padding: 1.75rem;
   }
 }
 

@@ -1,14 +1,16 @@
 /* Footer styles here */
 .site-footer {
-    background: linear-gradient(45deg, var(--dark-bg) 30%, var(--darker-bg) 100%);
-    border-top: 1px solid rgba(46, 204, 113, 0.1);
-    padding: 1rem 1rem;
-    margin-top: 1rem;
+    background: linear-gradient(135deg, rgba(0, 0, 0, 0.8), rgba(38, 38, 38, 1)); 
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 2.5rem 1rem;
+    margin-top: 2rem;
+    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
 }
 
 .footer-content {
-    max-width: 1200px;
+    max-width: 1300px;
     margin: 0 auto;
+    padding: 0 1.5rem;
 }
 
 .footer-main {
@@ -16,7 +18,7 @@
     justify-content: space-between;
     align-items: center;
     flex-wrap: wrap;
-    gap: 2rem;
+    gap: 2.5rem;
 }
 
 .footer-left {
@@ -24,15 +26,16 @@
 }
 
 .copyright {
-    color: var(--text-muted);
-    font-size: 0.95rem;
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 1rem;
     margin-bottom: 0.5rem;
+    letter-spacing: 0.5px;
 }
 
 .footer-meta {
-    color: var(--primary-color);
-    font-weight: 500;
-    font-size: 0.95rem;
+    color: #8e44ad;
+    font-weight: 600;
+    font-size: 1.1rem;
 }
 
 .footer-right {
@@ -42,88 +45,139 @@
 .footer-links {
     display: flex;
     flex-direction: column;
-    gap: 1rem;
+    gap: 1.5rem;
 }
 
 .back-to-top {
     display: inline-flex;
     align-items: center;
-    gap: 0.5rem;
-    color: var(--text-muted);
+    gap: 0.6rem;
+    color: rgba(255, 255, 255, 0.7);
     text-decoration: none;
-    font-size: 0.95rem;
-    transition: color 0.3s ease;
+    font-size: 1rem;
+    font-weight: 500;
+    transition: color 0.3s ease, transform 0.3s ease;
 }
 
 .back-to-top:hover {
-    color: var(--primary-color);
+    color: #8e44ad;
+    transform: translateY(-3px);
 }
 
 .social-links11 {
     display: flex;
     justify-content: flex-end;
-    gap: 1.25rem;
+    gap: 1.5rem;
 }
 
 .social-link11 {
-    color: var(--text-muted);
-    font-size: 1.3rem;
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 1.6rem;
     transition: all 0.3s ease;
     display: flex;
     align-items: center;
-    padding: 0.25rem;
+    padding: 0.3rem;
 }
 
 .social-link11:hover {
-    color: var(--primary-color);
-    transform: translateY(-2px);
+    color: #8e44ad;
+    transform: scale(1.1);
 }
 
 .made-with {
     text-align: center;
-    color: var(--text-muted);
-    font-size: 0.9rem;
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 1rem;
+    font-family: 'Poppins', sans-serif; /* Modern font */
+    font-weight: 500;
+    letter-spacing: 1px;
+    position: relative;
+    margin-top: 2rem;
     padding-top: 1.5rem;
+    border-top: 2px solid rgba(255, 255, 255, 0.2);
+    transition: all 0.3s ease;
 }
 
+/* Adding a glow effect and smooth hover transition */
 .made-with p {
     display: inline-flex;
     align-items: center;
-    gap: 0.4rem;
-    flex-wrap: wrap;
+    gap: 0.6rem;
     justify-content: center;
+    text-transform: uppercase;
+    font-size: 1.2rem;
+    color: #e74c3c;
+    animation: textGlowing 1.5s infinite alternate, fadeInUp 0.6s ease-out;
 }
 
+.made-with p:hover {
+    color: #f39c12;
+    transform: translateY(-5px);
+}
+
+/* Heart icon animation */
 .heart-icon {
+    font-size: 1.4rem;
     color: #e74c3c;
-    font-size: 1.1rem;
-    animation: heartbeat 1.5s infinite;
-    margin: 0 0.2rem;
+    animation: heartbeat 1.5s infinite, glowEffect 1.5s ease-in-out infinite alternate;
+    margin: 0 0.3rem;
+}
+
+/* Adding text glowing effect */
+@keyframes textGlowing {
+    0% {
+        text-shadow: 0 0 10px #e74c3c, 0 0 20px #e74c3c, 0 0 30px #e74c3c;
+    }
+    100% {
+        text-shadow: 0 0 15px #f39c12, 0 0 25px #f39c12, 0 0 35px #f39c12;
+    }
+}
+
+/* Subtle animation to lift the text */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Glowing effect for the heart icon */
+@keyframes glowEffect {
+    0% {
+        text-shadow: 0 0 8px #e74c3c, 0 0 15px #e74c3c, 0 0 25px #e74c3c;
+    }
+    100% {
+        text-shadow: 0 0 15px #e74c3c, 0 0 30px #e74c3c, 0 0 45px #e74c3c;
+    }
 }
 
 .tech-stack {
     display: inline-flex;
     align-items: center;
-    gap: 0.8rem;
-    margin-left: 0.5rem;
+    gap: 1rem;
+    margin-left: 1rem;
 }
 
 .tech-stack i {
-    color: var(--primary-color);
-    font-size: 1.1rem;
+    color: #8e44ad;
+    font-size: 1.3rem;
     transition: transform 0.3s ease;
 }
 
 .tech-stack i:hover {
-    transform: translateY(-2px);
+    transform: translateY(-3px);
 }
 
+/* Media Queries */
 @media (max-width: 768px) {
     .footer-main {
         flex-direction: column;
         text-align: center;
-        gap: 1.5rem;
+        gap: 2rem;
     }
     
     .footer-left {
@@ -144,55 +198,27 @@
     }
 }
 
-@media (max-width: 768px) {
-    .nav-links {
-        flex-direction: column;
-        position: fixed;
-        right: -100%;
-        top: var(--nav-height);
-        width: 250px;
-        height: calc(100vh - var(--nav-height));
-        background-color: var(--darker-bg);
-        transition: right 0.3s ease;
-        padding: 2rem;
-    }
-
-    .nav-links.active {
-        right: 0;
-    }
-
-    .about-section {
-        flex-direction: column;
-        text-align: center;
-    }
-
-    .menu-toggle {
-        display: block;
-        position: fixed;
-        right: 1rem;
-        top: 1rem;
-        color: var(--text-color);
-        font-size: 1.5rem;
-        cursor: pointer;
-        z-index: 1001;
-    }
-}
-
 @media (max-width: 480px) {
     .hero h2 {
-        font-size: 2rem;
+        font-size: 2.3rem;
     }
 
     .hero p {
-        font-size: 1rem;
+        font-size: 1.1rem;
     }
 
     .profile-image {
-        width: 200px;
+        width: 220px;
     }
 }
 
 /* Animations */
+@keyframes heartbeat {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.2); }
+    100% { transform: scale(1); }
+}
+
 @keyframes fadeIn {
     from { opacity: 0; transform: translateY(20px); }
     to { opacity: 1; transform: translateY(0); }
@@ -208,3 +234,4 @@
     opacity: 1;
     transform: translateY(0);
 }
+

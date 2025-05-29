@@ -21,7 +21,7 @@
     
     body {
       font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', sans-serif;
-      background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+      background: linear-gradient(135deg, #0f172a 0%, #3b0764 100%);
       color: var(--dark);
       line-height: 1.6;
     }
@@ -34,7 +34,7 @@
     
     a {
       text-decoration: none;
-      color: var(--dark);
+      color: white;
       transition: var(--transition);
     }
     
@@ -94,10 +94,43 @@
       margin-bottom: 8px;
     }
     
+    .cta-wrapper {
+    display: flex;
+    gap: 1.5rem;
+    margin-top: 6rem;
+    margin-left: 5rem;
+    align-items: center;
+    text-align: center;
+    }
+    
+    .modern-cta {
+    display: inline-flex;
+    align-items: center;
+    text-align: center;
+    gap: 1rem;
+    padding: 1.1rem 2.5rem;
+    border-radius: 0.5rem;
+    text-decoration: bold;
+    font-weight: 500;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+    border: 1px solid transparent;
+    }
+
+    .primary-cta {
+    background: linear-gradient(135deg, #ffedd5, #fecaca, #fca5a5);
+    color: black;
+    }
+
+    .modern-cta:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px rgba(0, 255, 136, 0.1);
+    }
     
     /* ===== Resume Content ===== */
     .resume-content {
-      margin-top: 100px;
+      margin-top: 20px;
       padding: 40px 0;
     }
     

@@ -522,6 +522,11 @@
         
         /* Responsive Design */
         @media (max-width: 768px) {
+        
+            .container{
+                margin-left: 0;
+            }
+            
             .resume-header {
                 padding: 1.8rem 1.5rem;
             }

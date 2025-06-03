@@ -1,34 +1,65 @@
 /* Base styles and root variables here */
 :root {
-    --primary-color:rgba(149, 238, 48, 0.637);
-    --secondary-color: #2778ae;
-    --dark-bg: #0a192f;
-    --darker-bg: #121212;
-    --text-color: #ccd6f6;
-    --text-muted: #b3b3b3;
-    --card-bg: #2d2d2d;
-    --nav-height: 80px;
-}
+            --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --secondary-gradient: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            --accent-gradient: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            --neural-gradient: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+            --glass-bg: rgba(255, 255, 255, 0.1);
+            --glass-border: rgba(255, 255, 255, 0.2);
+            --dark-glass: rgba(0, 0, 0, 0.2);
+            --text-primary: #ffffff;
+            --text-secondary: rgba(255, 255, 255, 0.8);
+            --text-muted: rgba(255, 255, 255, 0.6);
+            --shadow-lg: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            --shadow-xl: 0 35px 60px -15px rgba(0, 0, 0, 0.3);
+        }
 
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-* {
-    margin-top: 1.5 rem;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Poppins', sans-serif;
-}
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #0c0c0c 0%, #1a1a2e 50%, #16213e 100%);
+            color: var(--text-primary);
+            overflow-x: hidden;
+            line-height: 1.6;
+            margin-top: 3rem;
+        }
 
-body {
-    background: linear-gradient(135deg, #0c0b0b, #494239, #0c0b0b);
-    animation: gradientMotion 5s ease infinite;
-    color: var(--text-color);
-    line-height: 1.6;
-    overflow-x: hidden;
-}
+        /* Animated Background Particles */
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
 
-@keyframes gradientMotion {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
-  }
+        .particle {
+            position: absolute;
+            background: rgba(102, 126, 234, 0.1);
+            border-radius: 50%;
+            animation: float 20s infinite linear;
+        }
 
+        .particle:nth-child(odd) {
+            background: rgba(244, 144, 144, 0.1);
+            animation-duration: 25s;
+        }
+
+        .particle:nth-child(3n) {
+            background: rgba(79, 172, 254, 0.1);
+            animation-duration: 30s;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translateY(-100vh) rotate(360deg); opacity: 0; }
+        }

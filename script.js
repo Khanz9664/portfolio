@@ -19,7 +19,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // --- Smooth scroll for internal anchors only ---
+  // --- Smooth scroll for nav links ---
   navItems.forEach(link => {
     const href = link.getAttribute('href');
     if (href && href.startsWith('#')) {
@@ -35,9 +35,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // --- Highlight active page in nav (multi-page support) ---
+  // --- Highlight active nav link based on page ---
   const currentPage = window.location.pathname.split('/').pop() || 'index.html';
-
   navItems.forEach(link => {
     const hrefPage = link.getAttribute('href').split('/').pop();
     if (hrefPage === currentPage) {
@@ -45,7 +44,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // --- Scroll Spy (for single-page views only) ---
+  // --- Scroll Spy (single-page) ---
   if (sections.length > 0) {
     window.addEventListener('scroll', () => {
       let current = '';
@@ -69,7 +68,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // --- Reveal sections on scroll ---
+  // --- Section reveal on scroll (with IntersectionObserver) ---
   if ('IntersectionObserver' in window) {
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
@@ -91,7 +90,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const scrollHeight = document.documentElement.scrollHeight - window.innerHeight;
     const progress = (scrollTop / scrollHeight) * 100;
     topBar.style.background =
-  `linear-gradient(90deg, #2e2e2e ${progress}%, rgba(63,77,99,0.85) ${progress}%)`;
+      `linear-gradient(90deg, #2e2e2e ${progress}%, rgba(63,77,99,0.85) ${progress}%)`;
   });
 
   // --- Animate skill bars ---
@@ -100,7 +99,7 @@ document.addEventListener('DOMContentLoaded', () => {
     bar.style.setProperty('--progress', `${progress}%`);
   });
 
-  // --- Google Sheet contact form ---
+  // --- Contact form to Google Sheet ---
   const scriptURL = 'https://script.google.com/macros/s/AKfycbwYYD90tXcX1EmV3HxohFM3fIYhXgMFQJwceLDXt8A7e9j3u1xleqp0vmxdUABN2SNx/exec';
   const form = document.forms['submit-to-google-sheet'];
   const msg = document.getElementById('msg');
@@ -122,13 +121,93 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // --- Back to top button ---
+  // --- Back to top ---
   const backToTopBtn = document.querySelector('.back-to-top');
   if (backToTopBtn) {
     backToTopBtn.addEventListener('click', (e) => {
       e.preventDefault();
       window.scrollTo({ top: 0, behavior: 'smooth' });
     });
+  }
+
+  // === NEW: Animated background particles ===
+  function createParticles() {
+    const bgAnimation = document.querySelector('.bg-animation');
+    const particleCount = 50;
+
+    for (let i = 0; i < particleCount; i++) {
+      const particle = document.createElement('div');
+      particle.className = 'particle';
+      const size = Math.random() * 15 + 5;
+      particle.style.width = `${size}px`;
+      particle.style.height = `${size}px`;
+      particle.style.left = `${Math.random() * 100}%`;
+      particle.style.animationDelay = `${Math.random() * 20}s`;
+      bgAnimation?.appendChild(particle);
+    }
+  }
+
+  // === NEW: Scroll-triggered animations for intro & cards ===
+  function handleScrollAnimations() {
+    const elements = document.querySelectorAll('.overview-card, .intro-content');
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.style.animationPlayState = 'running';
+        }
+      });
+    }, {
+      threshold: 0.1,
+      rootMargin: '0px 0px -50px 0px'
+    });
+
+    elements.forEach(el => observer.observe(el));
+  }
+
+  // === NEW: Enhanced card hover effects ===
+  function initCardEffects() {
+    const cards = document.querySelectorAll('.overview-card');
+
+    cards.forEach(card => {
+      card.addEventListener('mouseenter', () => {
+        card.style.transform = 'translateY(-15px) scale(1.02)';
+      });
+      card.addEventListener('mouseleave', () => {
+        card.style.transform = 'translateY(0) scale(1)';
+      });
+    });
+  }
+
+  // === NEW: Smooth scrolling for other # links ===
+  function initSmoothScrolling() {
+    const links = document.querySelectorAll('a[href^="#"]');
+    links.forEach(link => {
+      link.addEventListener('click', (e) => {
+        e.preventDefault();
+        const target = document.querySelector(link.getAttribute('href'));
+        if (target) {
+          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      });
+    });
+  }
+
+  // === Initialize new features ===
+  createParticles();
+  handleScrollAnimations();
+  initCardEffects();
+  initSmoothScrolling();
+});
+
+// === NEW: Parallax hero scroll effect ===
+window.addEventListener('scroll', () => {
+  const scrolled = window.pageYOffset;
+  const hero = document.querySelector('.modern-hero');
+  const rate = scrolled * -0.5;
+
+  if (hero) {
+    hero.style.transform = `translateY(${rate}px)`;
   }
 });
 

@@ -46,7 +46,6 @@
     grid-template-columns: 1fr 1.5fr;
     gap: 3rem;
     align-items: start;
-    margin-top: 2rem;
 }
 
 .image-frame {
@@ -56,6 +55,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    margin-top: 3rem;
 }
 
 .profile-image {

@@ -60,7 +60,7 @@
         .profile-image-wrapper {
             position: relative;
             margin-bottom: 2.5rem;
-            margin-top: 2.5rem;
+            margin-top: 3rem;
             opacity: 0;
             animation: scaleIn 1s ease-out 0.3s forwards;
         }

@@ -94,12 +94,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // --- Animate skill bars ---
-    const observerOptions = {
-        root: null,
-        rootMargin: '0px',
-        threshold: 0.5
-    };
-
     const skillBarObserver = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
@@ -112,7 +106,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 });
             }
         });
-    }, observerOptions);
+    }, { root: null, rootMargin: '0px', threshold: 0.5 });
 
     // Observe skill cards for animations
     document.querySelectorAll('.skill-card').forEach(card => {
@@ -244,16 +238,45 @@ document.addEventListener('DOMContentLoaded', () => {
     handleScrollAnimations();
     initCardEffects();
     initSmoothScrolling();
-});
 
-// === NEW: Parallax hero scroll effect ===
-window.addEventListener('scroll', () => {
-    const scrolled = window.pageYOffset;
-    const hero = document.querySelector('.modern-hero');
-    const rate = scrolled * -0.5;
+    // === Parallax hero scroll effect ===
+    window.addEventListener('scroll', () => {
+        const scrolled = window.pageYOffset;
+        const hero = document.querySelector('.modern-hero');
+        const rate = scrolled * -0.5;
 
-    if (hero) {
-        hero.style.transform = `translateY(${rate}px)`;
-    }
+        if (hero) {
+            hero.style.transform = `translateY(${rate}px)`;
+        }
+    });
+
+    // --- Intersection Observer for animations ---
+    const observerOptions = {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+            }
+        });
+    }, observerOptions);
+
+    document.querySelectorAll('.fade-in').forEach(el => {
+        observer.observe(el);
+    });
+
+    // Add hover effect to cards
+    document.querySelectorAll('.expertise-card, .achievement-card, .education-card').forEach(card => {
+        card.addEventListener('mouseenter', function() {
+            this.style.transform = 'translateY(-10px) scale(1.02)';
+        });
+
+        card.addEventListener('mouseleave', function() {
+            this.style.transform = '';
+        });
+    });
 });
 

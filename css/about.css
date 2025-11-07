@@ -282,7 +282,7 @@
             font-size: 4rem;
             margin-bottom: 24px;
             filter: drop-shadow(0 4px 12px rgba(102, 126, 234, 0.3));
-            animation: float 3s ease-in-out infinite;
+            animation: float11 3s ease-in-out infinite;
         }
 
         .achievement-card h3 {
@@ -299,7 +299,7 @@
             line-height: 1.7;
         }
 
-        @keyframes float {
+        @keyframes float11 {
             0%, 100% { transform: translateY(0) rotate(0deg); opacity: 0.3; }
             50% { transform: translateY(-100px) rotate(180deg); opacity: 0.6; }
         }

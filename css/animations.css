@@ -1,0 +1,63 @@
+/* --- Keyframe Animations --- */
+
+/* Gentle Floating Effect */
+@keyframes float {
+    0% {
+        transform: translateY(0px);
+    }
+
+    50% {
+        transform: translateY(-10px);
+    }
+
+    100% {
+        transform: translateY(0px);
+    }
+}
+
+/* Pulse/Glow Effect */
+@keyframes neonPulse {
+    0% {
+        box-shadow: 0 0 5px rgba(0, 242, 255, 0.2);
+    }
+
+    50% {
+        box-shadow: 0 0 20px rgba(0, 242, 255, 0.5);
+    }
+
+    100% {
+        box-shadow: 0 0 5px rgba(0, 242, 255, 0.2);
+    }
+}
+
+/* Rotate for orbit elements */
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* Fade In Up */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.animate-float {
+    animation: float 6s ease-in-out infinite;
+}
+
+.animate-pulse {
+    animation: neonPulse 3s infinite;
+}

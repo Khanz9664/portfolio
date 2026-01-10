@@ -1,0 +1,25 @@
+:root {
+  /* --- Colors: Dark Mode First --- */
+  --bg-core: #050505;
+  --bg-glass: rgba(10, 10, 10, 0.6);
+  --bg-card: rgba(20, 20, 20, 0.4);
+  
+  --text-main: #e0e0e0;
+  --text-muted: #a0a0a0;
+  
+  --accent-cyan: #00f2ff;
+  --accent-violet: #bd00ff;
+  --accent-gradient: linear-gradient(135deg, var(--accent-cyan), var(--accent-violet));
+  
+  /* --- Typography --- */
+  --font-main: 'Poppins', sans-serif;
+  
+  /* --- Effects --- */
+  --glass-blur: blur(12px);
+  --border-light: 1px solid rgba(255, 255, 255, 0.08);
+  --shadow-neon: 0 0 20px rgba(0, 242, 255, 0.15);
+  
+  /* --- Layout --- */
+  --nav-height: 70px;
+  --container-width: 1200px;
+}

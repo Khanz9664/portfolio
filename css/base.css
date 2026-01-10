@@ -1,63 +1,74 @@
-/* Base styles and root variables here */
-:root {
-            --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            --secondary-gradient: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-            --accent-gradient: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
-            --neural-gradient: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
-            --glass-bg: rgba(255, 255, 255, 0.1);
-            --glass-border: rgba(255, 255, 255, 0.2);
-            --dark-glass: rgba(0, 0, 0, 0.2);
-            --text-primary: #ffffff;
-            --text-secondary: rgba(255, 255, 255, 0.8);
-            --text-muted: rgba(255, 255, 255, 0.6);
-            --shadow-lg: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
-            --shadow-xl: 0 35px 60px -15px rgba(0, 0, 0, 0.3);
-        }
+/* Base styles */
+/* Root variables are now in css/variables.css */
 
-        * {
-            box-sizing: border-box;
-        }
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
 
-        body {
-            font-family: 'Inter', sans-serif;
-            background: linear-gradient(135deg, #0c0c0c 0%, #1a1a2e 50%, #16213e 100%);
-            color: var(--text-primary);
-            overflow-x: hidden;
-            line-height: 1.6;
-            margin-top: 3rem;
-        }
+body {
+    font-family: var(--font-main);
+    background-color: var(--bg-core);
+    color: var(--text-main);
+    overflow-x: hidden;
+    line-height: 1.6;
+    margin-top: 0;
+    /* Nav is fixed but hero handles spacing */
+}
 
-        /* Animated Background Particles */
-        .bg-animation {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-            overflow: hidden;
-        }
+/* Scrollbar */
+::-webkit-scrollbar {
+    width: 6px;
+}
 
-        .particle {
-            position: absolute;
-            background: rgba(102, 126, 234, 0.1);
-            border-radius: 50%;
-            animation: float 20s infinite linear;
-        }
+::-webkit-scrollbar-track {
+    background: var(--bg-core);
+}
 
-        .particle:nth-child(odd) {
-            background: rgba(244, 144, 144, 0.1);
-            animation-duration: 25s;
-        }
+::-webkit-scrollbar-thumb {
+    background: var(--accent-cyan);
+    border-radius: 3px;
+}
 
-        .particle:nth-child(3n) {
-            background: rgba(79, 172, 254, 0.1);
-            animation-duration: 30s;
-        }
+/* Animated Background Container */
+.bg-animation {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    overflow: hidden;
+    pointer-events: none;
+    /* Let clicks pass through */
+}
 
-        @keyframes float {
-            0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
-            10% { opacity: 1; }
-            90% { opacity: 1; }
-            100% { transform: translateY(-100vh) rotate(360deg); opacity: 0; }
-        }
+canvas {
+    display: block;
+}
+
+/* Generic CTA Button (Used in Skills, About etc) */
+.cta-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 12px 28px;
+    background: transparent;
+    color: var(--accent-cyan);
+    border: 1px solid var(--accent-cyan);
+    border-radius: 4px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    font-size: 1rem;
+    margin-top: 1rem;
+    cursor: pointer;
+}
+
+.cta-button:hover {
+    background: rgba(0, 242, 255, 0.1);
+    box-shadow: 0 0 20px rgba(0, 242, 255, 0.3);
+    transform: translateY(-2px);
+    color: var(--accent-cyan);
+}

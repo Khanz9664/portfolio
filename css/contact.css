@@ -1,46 +1,12 @@
-/* Contact form and section styles here */
-.section-title {
-    text-align: center;
-    font-size: 3rem; 
-    margin-bottom: 3rem;
-    position: relative;
-    color: var(--primary-color);
-    font-weight: 600; 
-    letter-spacing: 2px; 
-    text-transform: uppercase; 
-    font-family: 'Roboto', sans-serif; 
-    transition: color 0.3s ease, transform 0.3s ease;
-}
-
-.section-title:hover {
-    transform: translateY(-5px); 
-    color: var(--secondary-color); 
-}
-
-.section-title::after {
-    content: '';
-    position: absolute;
-    bottom: -10px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 50%;
-    height: 4px; 
-    background: var(--primary-color);
-    border-radius: 5px; 
-    transition: width 0.3s ease; 
-}
-
-.section-title:hover::after {
-    width: 70%; 
-}
+/* Contact Section */
 .contact-section {
-    padding: 3rem 1.5rem;
-    position: relative;
-    overflow: hidden;
+    padding: 4rem 1.5rem;
+    margin: 2rem;
+    background: transparent;
 }
 
 .contact-container {
-    max-width: 1280px;
+    max-width: 1000px;
     margin: 0 auto;
 }
 
@@ -49,28 +15,20 @@
     margin-bottom: 4rem;
 }
 
-.section-subtitle {
-    color: var(--text-muted);
-    font-size: 1.1rem;
-    line-height: 1.6;
-    max-width: 600px;
-    margin: 0 auto;
-}
-
-/* Contact Grid Layout */
 .contact-grid {
     display: grid;
-    grid-template-columns: 1.25fr 1fr;
-    gap: 3rem;
-    margin-top: 1rem;
+    grid-template-columns: 1.2fr 1fr;
+    gap: 4rem;
 }
 
-/* Contact Form Styles */
+/* Form */
 .contact-form-wrapper {
-    background: linear-gradient(135deg, #2d2d2d, #4b4a86, #8d6042);
-    padding: 2.5rem;
+    background: var(--bg-card);
+    backdrop-filter: blur(10px);
+    padding: 3rem;
     border-radius: 20px;
-    box-shadow: 0 15px 40px rgba(0,0,0,0.2);
+    border: 1px solid var(--border-light);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
 }
 
 .contact-form {
@@ -81,206 +39,142 @@
 
 .form-group {
     position: relative;
-    padding-top: 1.5rem;
+    padding-top: 1rem;
 }
 
 .floating-label label {
     position: absolute;
-    top: 2.5rem;
+    top: 1rem;
     left: 0;
     color: var(--text-muted);
-    pointer-events: none;
     transition: all 0.3s ease;
+    pointer-events: none;
 }
 
 .floating-label input,
 .floating-label textarea {
     width: 100%;
-    padding: 1rem 0;
+    padding: 0.8rem 0;
     border: none;
-    border-bottom: 2px solid rgba(46, 204, 113, 0.3);
+    border-bottom: 1px solid var(--border-light);
     background: transparent;
-    color: var(--text-color);
+    color: var(--text-main);
     font-size: 1rem;
     transition: border-color 0.3s ease;
 }
 
 .floating-label textarea {
-    resize: vertical;
     min-height: 120px;
+    resize: vertical;
 }
 
 .floating-label input:focus,
 .floating-label textarea:focus {
     outline: none;
-    border-color: var(--primary-color);
+    border-bottom-color: var(--accent-cyan);
 }
 
-.floating-label input:focus ~ label,
-.floating-label input:not(:placeholder-shown) ~ label,
-.floating-label textarea:focus ~ label,
-.floating-label textarea:not(:placeholder-shown) ~ label {
-    top: 0;
-    font-size: 0.9rem;
-    color: var(--primary-color);
-}
-
-.underline {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 0;
-    height: 2px;
-    background: var(--primary-color);
-    transition: width 0.3s ease;
-}
-
-.floating-label input:focus ~ .underline,
-.floating-label textarea:focus ~ .underline {
-    width: 100%;
+.floating-label input:focus~label,
+.floating-label input:not(:placeholder-shown)~label,
+.floating-label textarea:focus~label,
+.floating-label textarea:not(:placeholder-shown)~label {
+    top: -10px;
+    font-size: 0.85rem;
+    color: var(--accent-cyan);
 }
 
 .submit-button {
-    display: flex;
+    display: inline-flex;
     align-items: center;
-    justify-content: space-between;
-    padding: 1.2rem 2rem;
-    background: rgba(163, 81, 43, 0.37);
-    color: var(--primary-color);
-    border: none;
-    border-radius: 12px;
+    justify-content: center;
+    gap: 1rem;
+    padding: 1rem 2rem;
+    background: transparent;
+    color: var(--accent-cyan);
+    border: 1px solid var(--accent-cyan);
+    border-radius: 8px;
     cursor: pointer;
-    transition: transform 0.3s ease;
+    font-size: 1rem;
+    font-weight: 600;
+    transition: all 0.3s ease;
     margin-top: 1rem;
 }
 
 .submit-button:hover {
+    background: rgba(0, 242, 255, 0.1);
+    box-shadow: 0 0 20px rgba(0, 242, 255, 0.2);
     transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(46, 204, 113, 0.3);
-}
-
-.button-icon {
-    transform: rotate(-45deg);
-    transition: transform 0.3s ease;
-}
-
-.submit-button:hover .button-icon {
-    transform: rotate(0deg);
 }
 
 #msg {
-    color: var(--primary-color);
+    color: var(--accent-cyan);
+    font-size: 0.9rem;
+    margin-top: 1rem;
+    display: block;
 }
 
-/* Contact Channels */
+/* Channels */
 .contact-channels {
     display: flex;
     flex-direction: column;
     gap: 2rem;
 }
 
-.channel-group {
-    background: linear-gradient(45deg, #2d2d2d, #2d2c50, #8d6042);
-    padding: 2rem;
-    border-radius: 20px;
-    box-shadow: 0 15px 40px rgba(0,0,0,0.2);
-}
-
 .channel-group-title {
-    color: var(--primary-color);
+    color: var(--text-muted);
     margin-bottom: 1.5rem;
-    padding-bottom: 1rem;
-    border-bottom: 2px solid rgba(46, 204, 113, 0.1);
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
 }
 
 .channel-card {
     display: flex;
-    align-items: flex-start;
+    align-items: center;
     gap: 1.5rem;
     padding: 1.5rem;
-    margin-bottom: 1.5rem;
-    border-radius: 15px;
-    transition: transform 0.3s ease;
-    background: rgba(163, 81, 43, 0.37);
+    background: var(--bg-card);
+    border: 1px solid var(--border-light);
+    border-radius: 16px;
+    transition: all 0.3s ease;
 }
 
 .channel-card:hover {
-    transform: translateY(-5px);
+    transform: translateX(10px);
+    border-color: var(--accent-cyan);
+    background: rgba(255, 255, 255, 0.03);
 }
 
 .channel-icon {
     width: 50px;
     height: 50px;
-    border-radius: 12px;
-    background: rgba(46, 204, 113, 0.1);
+    background: rgba(0, 242, 255, 0.1);
+    border-radius: 10px;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 1.5rem;
-    color: var(--primary-color);
-    flex-shrink: 0;
-}
-
-.channel-content {
-    flex: 1;
+    font-size: 1.2rem;
+    color: var(--accent-cyan);
 }
 
 .channel-content h4 {
-    color: var(--text-color);
-    margin-bottom: 0.5rem;
+    color: var(--text-main);
+    margin-bottom: 0.25rem;
 }
 
 .channel-content p {
     color: var(--text-muted);
-    font-size: 0.95rem;
-    line-height: 1.5;
-    margin-bottom: 1rem;
+    font-size: 0.9rem;
 }
 
 .channel-link {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    color: var(--primary-color);
-    text-decoration: none;
-    font-weight: 500;
-    transition: transform 0.3s ease;
+    display: none;
+    /* Hide link text inside card, whole card can be clickable or just display info */
 }
 
-.channel-link:hover {
-    transform: translateX(5px);
-}
-
-/* Responsive Design */
-@media (max-width: 1024px) {
+/* Response */
+@media (max-width: 900px) {
     .contact-grid {
         grid-template-columns: 1fr;
-        max-width: 800px;
-        margin: 0 auto;
-    }
-    
-    .contact-form-wrapper {
-        order: -1;
     }
 }
-
-@media (max-width: 768px) {
-    .section-title {
-        font-size: 2rem;
-    }
-    
-    .contact-form-wrapper {
-        padding: 1.5rem;
-    }
-    
-    .channel-card {
-        flex-direction: column;
-        align-items: center;
-        text-align: center;
-    }
-    
-    .channel-icon {
-        margin-bottom: 1rem;
-    }
-}
-

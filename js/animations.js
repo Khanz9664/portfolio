@@ -15,24 +15,33 @@ const initAnimations = () => {
     // --- Hero Animation (Timeline) ---
     const heroTl = gsap.timeline();
 
-    // Profile Image Scale & Fade
-    heroTl.from('.profile-image-wrapper', {
-        duration: 1.2,
-        scale: 0.8,
+    // 1. Navbar Drop (if at top)
+    heroTl.from('.top-bar', {
+        duration: 1,
+        y: -100,
         opacity: 0,
         ease: 'power3.out'
     });
 
-    // Text Scramble / Reveal
+    // 2. Profile Image Scale & Fade
+    heroTl.from('.profile-image-wrapper', {
+        duration: 1.2,
+        scale: 0.5,
+        opacity: 0,
+        rotation: -10,
+        ease: 'elastic.out(1, 0.75)'
+    }, '-=0.5');
+
+    // 3. Text Scramble / Reveal
     heroTl.from('.hero-title, .hero-description', {
         duration: 1,
         y: 30,
         opacity: 0,
         stagger: 0.2,
         ease: 'power3.out'
-    }, '-=0.5');
+    }, '-=0.8');
 
-    // CTA & Socials
+    // 4. CTA & Socials
     const ctaLinks = document.querySelectorAll('.cta-wrapper a');
     const socialLinks = document.querySelectorAll('.social-container a');
 
@@ -43,7 +52,7 @@ const initAnimations = () => {
             opacity: 0,
             stagger: 0.1,
             ease: 'back.out(1.7)',
-            delay: 0.2
+            delay: 0.1
         });
     }
 
@@ -54,9 +63,35 @@ const initAnimations = () => {
             opacity: 0,
             stagger: 0.1,
             ease: 'back.out(1.7)',
-            delay: 0.4
+            delay: 0.2
         });
     }
+
+
+    // --- Generic Image Animations (ScrollTrigger) ---
+    // Selects profile images in About/Intro and Project Card images
+    const featureImages = document.querySelectorAll('.profile-image, .about-image-wrapper img, .card-image');
+
+    featureImages.forEach(img => {
+        // Skip hero profile image as it's handled by timeline
+        if (img.closest('.hero-content')) return;
+
+        gsap.fromTo(img,
+            { scale: 0.8, opacity: 0, filter: 'blur(10px)' },
+            {
+                scrollTrigger: {
+                    trigger: img,
+                    start: 'top 85%',
+                    toggleActions: 'play none none reverse'
+                },
+                duration: 1.2,
+                scale: 1,
+                opacity: 1,
+                filter: 'blur(0px)',
+                ease: 'power2.out'
+            }
+        );
+    });
 
 
     // --- Text Scramble Effect ---
@@ -89,7 +124,7 @@ const initAnimations = () => {
     setTimeout(() => {
         const dynamicText = document.querySelector('.dynamic-text');
         if (dynamicText) scrambleText(dynamicText);
-    }, 1000); // Fixed delay since timeline call might depend on strict sequencing
+    }, 1500); // Delayed to match timeline
 
 
     // --- Scroll Triggers ---

@@ -149,106 +149,126 @@
 /* CTAs */
 .cta-wrapper {
     display: flex;
+    align-items: center;
     gap: 1rem;
-    /* Tighter gap */
-    margin-bottom: 2rem;
+    margin: 2rem;
 }
 
+/* Shared CTA styles */
 .modern-cta {
     padding: 10px 24px;
-    /* Smaller size */
     border-radius: 12px;
-    /* Rounder corners */
     font-weight: 500;
-    /* Slightly lighter weight */
     text-decoration: none;
-    transition: all 0.3s ease;
-    display: flex;
+    transition: background 0.3s ease, box-shadow 0.3s ease;
+    display: inline-flex;
     align-items: center;
+    justify-content: center;
     gap: 8px;
     font-size: 0.9rem;
-    /* Smaller font */
     letter-spacing: 0.3px;
     cursor: pointer;
     position: relative;
     z-index: 20;
-    /* Ensure clickable */
     opacity: 1 !important;
-    /* Force visibility */
+
+    /* 🔒 FIXES */
+    line-height: 1;
+    /* Prevent font metric shifts */
+    box-sizing: border-box;
+    /* Border included in height */
+    height: 44px;
+    /* Lock height for perfect alignment */
+    white-space: nowrap;
+    /* Prevent text reflow */
 }
 
+/* Primary CTA */
 .primary-cta {
     background: rgba(0, 242, 255, 0.15);
-    /* Stronger background */
     color: var(--accent-cyan);
     border: 2px solid var(--accent-cyan);
-    /* Thicker border */
     box-shadow: 0 0 15px rgba(0, 242, 255, 0.2);
     text-shadow: 0 0 5px rgba(0, 242, 255, 0.5);
-    /* Glowing text */
 }
 
 .primary-cta:hover {
     background: rgba(0, 242, 255, 0.3);
     box-shadow: 0 0 30px rgba(0, 242, 255, 0.5);
-    transform: translateY(-2px);
 }
 
+/* Secondary CTA */
 .secondary-cta {
     color: #fff;
-    /* Pure white text */
     border: 2px solid rgba(255, 255, 255, 0.5);
-    /* Visible border */
     background: rgba(255, 255, 255, 0.1);
+    box-shadow: 0 0 15px rgba(0, 242, 255, 0.2);
+    text-shadow: 0 0 5px rgba(0, 242, 255, 0.5);
 }
 
 .secondary-cta:hover {
-    border-color: var(--accent-violet);
-    color: var(--accent-violet);
-    transform: translateY(-2px);
     background: rgba(189, 0, 255, 0.2);
     box-shadow: 0 0 20px rgba(189, 0, 255, 0.3);
 }
 
+
 /* Socials */
 .social-container {
     display: flex;
+    align-items: center;
+    /* 🔒 lock baseline */
     gap: 1.5rem;
-    margin-top: 1rem;
+    margin-top: 2rem;
     position: relative;
     z-index: 20;
 }
 
+/* Social icon wrapper */
 .social-link {
     color: #fff;
-    /* Pure white */
     font-size: 1.5rem;
-    /* Slightly larger */
-    transition: all 0.3s ease;
-    display: flex;
+    transition: color 0.3s ease, background 0.3s ease, box-shadow 0.3s ease;
+    display: inline-flex;
+    /* 🔒 stable inline sizing */
     align-items: center;
     justify-content: center;
+
     width: 45px;
     height: 45px;
+    /* 🔒 fixed height */
+    line-height: 1;
+    /* 🔒 remove font metric shifts */
+
     border-radius: 50%;
     background: rgba(255, 255, 255, 0.1);
-    /* Visible bg */
     border: 1px solid rgba(255, 255, 255, 0.3);
+
+    box-sizing: border-box;
+    /* 🔒 include border in size */
     opacity: 1 !important;
-    /* Force visibility */
+    white-space: nowrap;
 }
 
+/* Hover — move ALL icons together */
+.social-container:hover .social-link {
+    transform: translateY(-3px);
+}
+
+/* Visual hover styling only */
 .social-link:hover {
     color: var(--accent-cyan);
     border-color: var(--accent-cyan);
     background: rgba(0, 242, 255, 0.2);
-    transform: translateY(-3px);
     box-shadow: 0 0 20px rgba(0, 242, 255, 0.4);
 }
 
+/* SVG normalization */
 .social-link svg {
+    width: 20px;
+    height: 20px;
+    display: block;
+    /* 🔒 removes inline SVG baseline */
     filter: drop-shadow(0 0 2px rgba(0, 0, 0, 0.5));
-    /* Ensure icon pops */
 }
 
 /* Intro Section */

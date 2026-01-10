@@ -17,8 +17,9 @@
 
 .contact-grid {
     display: grid;
-    grid-template-columns: 1.2fr 1fr;
+    grid-template-columns: 1fr 1fr;
     gap: 4rem;
+    align-items: center;
 }
 
 /* Form */
@@ -29,12 +30,39 @@
     border-radius: 20px;
     border: 1px solid var(--border-light);
     box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+    position: relative;
+    overflow: hidden;
+    /* For glass sheen */
+}
+
+/* Add a subtle top border glow to form */
+.contact-form-wrapper::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--accent-cyan), transparent);
+    opacity: 0.5;
+}
+
+.form-title-group h3 {
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+    color: var(--text-main);
+}
+
+.form-title-group p {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    margin-bottom: 2rem;
 }
 
 .contact-form {
     display: flex;
     flex-direction: column;
-    gap: 2rem;
+    gap: 1.5rem;
 }
 
 .form-group {
@@ -64,7 +92,7 @@
 }
 
 .floating-label textarea {
-    min-height: 120px;
+    min-height: 100px;
     resize: vertical;
 }
 
@@ -89,9 +117,9 @@
     justify-content: center;
     gap: 1rem;
     padding: 1rem 2rem;
-    background: transparent;
-    color: var(--accent-cyan);
-    border: 1px solid var(--accent-cyan);
+    background: linear-gradient(135deg, rgba(0, 242, 255, 0.1), rgba(138, 43, 226, 0.1));
+    color: var(--text-main);
+    border: 1px solid rgba(0, 242, 255, 0.3);
     border-radius: 8px;
     cursor: pointer;
     font-size: 1rem;
@@ -101,9 +129,10 @@
 }
 
 .submit-button:hover {
-    background: rgba(0, 242, 255, 0.1);
-    box-shadow: 0 0 20px rgba(0, 242, 255, 0.2);
+    background: linear-gradient(135deg, rgba(0, 242, 255, 0.2), rgba(138, 43, 226, 0.2));
+    box-shadow: 0 0 20px rgba(0, 242, 255, 0.3);
     transform: translateY(-2px);
+    border-color: var(--accent-cyan);
 }
 
 #msg {
@@ -111,24 +140,60 @@
     font-size: 0.9rem;
     margin-top: 1rem;
     display: block;
+    text-align: center;
 }
 
-/* Channels */
-.contact-channels {
+/* Animation Wrapper */
+.coder-animation-wrapper {
+    height: 100%;
+    min-height: 500px;
+    position: relative;
     display: flex;
-    flex-direction: column;
-    gap: 2rem;
+    align-items: center;
+    justify-content: center;
+    /* Glass backdrop for the illustration area? Optional, keep transparent for now */
+}
+
+/* Bottom Channels Section */
+.contact-bottom {
+    margin-top: 4rem;
+    width: 100%;
 }
 
 .channel-group-title {
     color: var(--text-muted);
-    margin-bottom: 1.5rem;
+    margin-bottom: 2rem;
     font-size: 0.9rem;
     text-transform: uppercase;
-    letter-spacing: 1px;
+    letter-spacing: 2px;
+    text-align: center;
+    position: relative;
+    display: inline-block;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.channel-group-title::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 40px;
+    height: 2px;
+    background: var(--accent-cyan);
+}
+
+.channel-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 2rem;
+    flex-wrap: wrap;
 }
 
 .channel-card {
+    flex: 1;
+    min-width: 250px;
     display: flex;
     align-items: center;
     gap: 1.5rem;
@@ -137,29 +202,38 @@
     border: 1px solid var(--border-light);
     border-radius: 16px;
     transition: all 0.3s ease;
+    text-decoration: none;
+    /* Make card clickable if anchor */
 }
 
 .channel-card:hover {
-    transform: translateX(10px);
+    transform: translateY(-5px);
     border-color: var(--accent-cyan);
-    background: rgba(255, 255, 255, 0.03);
+    box-shadow: 0 10px 30px rgba(0, 242, 255, 0.1);
 }
 
 .channel-icon {
     width: 50px;
     height: 50px;
-    background: rgba(0, 242, 255, 0.1);
-    border-radius: 10px;
+    background: rgba(0, 242, 255, 0.05);
+    border-radius: 12px;
     display: flex;
     align-items: center;
     justify-content: center;
     font-size: 1.2rem;
     color: var(--accent-cyan);
+    transition: all 0.3s ease;
+}
+
+.channel-card:hover .channel-icon {
+    background: var(--accent-cyan);
+    color: #000;
 }
 
 .channel-content h4 {
     color: var(--text-main);
     margin-bottom: 0.25rem;
+    font-weight: 600;
 }
 
 .channel-content p {
@@ -169,12 +243,53 @@
 
 .channel-link {
     display: none;
-    /* Hide link text inside card, whole card can be clickable or just display info */
 }
 
 /* Response */
 @media (max-width: 900px) {
+    .contact-section {
+        padding: 2rem;
+        /* Drastic reduction */
+        margin: 3rem;
+    }
+
+    .contact-header {
+        margin-bottom: 1.5rem;
+        /* Reduced from 4rem */
+    }
+
+    .section-subtitle {
+        font-size: 0.9rem;
+        margin-bottom: 0;
+    }
+
     .contact-grid {
         grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+
+    .coder-animation-wrapper {
+        display: none;
+    }
+
+    .contact-form-wrapper {
+        padding: 1.5rem 1rem;
+    }
+
+    .contact-bottom {
+        margin-top: 2rem;
+    }
+
+    .channel-row {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+
+    .channel-card {
+        min-width: 0;
+        width: 100%;
+        padding: 1rem;
+        /* Compact card */
     }
 }

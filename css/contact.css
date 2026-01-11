@@ -241,9 +241,7 @@
     font-size: 0.9rem;
 }
 
-.channel-link {
-    display: none;
-}
+
 
 /* Response */
 @media (max-width: 900px) {

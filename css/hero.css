@@ -276,8 +276,6 @@
   background: linear-gradient(135deg, #00f2ff 0%, #bd00ff 100%);
   background-clip: text;
   -webkit-text-fill-color: transparent;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
   position: relative;
   display: inline-block;
 }
@@ -506,15 +504,11 @@
   background: linear-gradient(135deg, #00f2ff 0%, #0078a0 100%);
   background-clip: text;
   -webkit-text-fill-color: transparent;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
   filter: drop-shadow(0 0 15px rgb(0 242 255 / 0.3));
 }
 
 .highlight-violet {
   background: linear-gradient(135deg, #bd00ff 0%, #7d00aa 100%);
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
   background-clip: text;
   -webkit-text-fill-color: transparent;
   filter: drop-shadow(0 0 15px rgb(189 0 255 / 0.3));

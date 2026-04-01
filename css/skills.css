@@ -46,14 +46,12 @@
 .title-part-1 {
     background: linear-gradient(135deg, #fff 0%, #cbd5e1 100%);
     background-clip: text;
-    background-clip: text;
     -webkit-text-fill-color: transparent;
     filter: drop-shadow(0 5px 15px rgb(255 255 255 / 0.1));
 }
 
 .title-part-2 {
     background: linear-gradient(135deg, var(--accent-cyan) 0%, #bd00ff 100%);
-    background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
     filter: drop-shadow(0 10px 20px rgb(189 0 255 / 0.2));

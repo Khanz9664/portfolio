@@ -1,0 +1,2330 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Logistic Regression — Complete Masterclass</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.min.js"></script>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=IBM+Plex+Mono:wght@400;600&family=Source+Serif+4:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap"
+    rel="stylesheet">
+  <style>
+    :root {
+      --bg: #020c1b;
+      --surface: rgba(10, 25, 47, 0.6);
+      --surface2: rgba(17, 34, 64, 0.8);
+      --border: rgba(0, 200, 255, 0.15);
+      --border2: rgba(0, 255, 136, 0.2);
+      --text: #ccd6f6;
+      --muted: #8892b0;
+      --dim: #495670;
+      --accent: #00c8ff;
+      /* cyan */
+      --accent2: #ff6b6b;
+      /* coral */
+      --accent3: #00ff88;
+      /* green */
+      --accent4: #ffd43b;
+      /* gold */
+      --accent5: #cc5de8;
+      /* purple */
+      --grad-a: #00c8ff;
+      --grad-b: #00ff88;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Lora', Georgia, serif;
+      font-size: 17px;
+      line-height: 1.85;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    #bg-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: -1;
+      pointer-events: none;
+      opacity: 0.3;
+    }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 480px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      margin-top: 50px;
+      padding: 80px 56px 56px;
+      position: relative;
+      overflow: hidden;
+      background: linear-gradient(135deg, rgba(2, 12, 27, 0.8), rgba(10, 25, 47, 0.9));
+      border-bottom: 1px solid var(--border);
+      backdrop-filter: blur(10px);
+    }
+
+    .hero-grid {
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(0, 200, 255, 0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 200, 255, 0.05) 1px, transparent 1px);
+      background-size: 40px 40px;
+    }
+
+    .hero-glow {
+      position: absolute;
+      width: 600px;
+      height: 400px;
+      background: radial-gradient(circle, rgba(0, 200, 255, 0.15) 0%, transparent 60%);
+      top: -100px;
+      left: -100px;
+      pointer-events: none;
+    }
+
+    .hero-glow2 {
+      position: absolute;
+      width: 500px;
+      height: 400px;
+      background: radial-gradient(circle, rgba(0, 255, 136, 0.1) 0%, transparent 60%);
+      bottom: -50px;
+      right: -50px;
+      pointer-events: none;
+    }
+
+    .hero-inner {
+      max-width: 940px;
+      margin: 0 auto;
+      position: relative;
+      width: 100%;
+      z-index: 2;
+    }
+
+    .hero-tag {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--accent3);
+      margin-bottom: 20px;
+      font-weight: 600;
+    }
+
+    .hero h1 {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(3rem, 7vw, 5.5rem);
+      font-weight: 400;
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+      margin-bottom: 24px;
+      color: #fff;
+      text-shadow: 0 0 30px rgba(0, 200, 255, 0.3);
+    }
+
+    .hero h1 .grad {
+      background: linear-gradient(to right, var(--accent), var(--accent3));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero-sub {
+      font-size: 16px;
+      color: var(--muted);
+      max-width: 680px;
+      font-family: 'JetBrains Mono', monospace;
+      line-height: 1.8;
+    }
+
+    .hero-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 32px;
+    }
+
+    .pill {
+      background: rgba(0, 200, 255, 0.08);
+      border: 1px solid rgba(0, 200, 255, 0.3);
+      color: var(--accent);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      padding: 6px 14px;
+      border-radius: 20px;
+      letter-spacing: 0.08em;
+      box-shadow: 0 0 10px rgba(0, 200, 255, 0.1);
+    }
+
+    /* ── TOC ── */
+    .toc-outer {
+      max-width: 940px;
+      margin: 60px auto;
+      padding: 0 32px;
+    }
+
+    .toc-wrap {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-left: 4px solid var(--accent);
+      padding: 40px;
+      border-radius: 12px;
+      backdrop-filter: blur(12px);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    }
+
+    .toc-title {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 24px;
+    }
+
+    .toc-list {
+      list-style: none;
+      columns: 2;
+      column-gap: 40px;
+    }
+
+    .toc-list li {
+      margin: 8px 0;
+      break-inside: avoid;
+    }
+
+    .toc-list a {
+      color: var(--text);
+      text-decoration: none;
+      font-size: 14.5px;
+      display: flex;
+      align-items: baseline;
+      gap: 12px;
+      transition: all 0.2s;
+    }
+
+    .toc-list a:hover {
+      color: var(--accent);
+      transform: translateX(5px);
+    }
+
+    .toc-num {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      color: var(--accent3);
+      min-width: 28px;
+      font-weight: 600;
+    }
+
+    /* ── CONTENT ── */
+    .content {
+      max-width: 940px;
+      margin: 0 auto;
+      padding: 0 32px 100px;
+      position: relative;
+      z-index: 2;
+    }
+
+    /* ── SECTION ── */
+    .section {
+      margin-bottom: 100px;
+      opacity: 0;
+      transform: translateY(30px);
+    }
+
+    .section.visible {
+      opacity: 1;
+      transform: translateY(0);
+      transition: all 0.8s ease-out;
+    }
+
+    .section-header {
+      display: flex;
+      align-items: baseline;
+      gap: 20px;
+      margin-bottom: 40px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .section-num {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 14px;
+      color: var(--accent3);
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-shadow: 0 0 10px rgba(0, 255, 136, 0.3);
+    }
+
+    .section h2 {
+      font-family: 'DM Serif Display', serif;
+      font-size: 2.4rem;
+      font-weight: 400;
+      color: #e6f1ff;
+      letter-spacing: -0.01em;
+    }
+
+    .subsection {
+      margin: 44px 0;
+    }
+
+    .subsection h3 {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--accent);
+      margin-bottom: 20px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    .subsection h3.green {
+      color: var(--accent3);
+    }
+
+    .subsection h3.coral {
+      color: var(--accent2);
+    }
+
+    .subsection h3.gold {
+      color: var(--accent4);
+    }
+
+    .subsection h3.purple {
+      color: var(--accent5);
+    }
+
+    p {
+      margin-bottom: 20px;
+      color: #a8b2d1;
+    }
+
+    /* ── MATH BLOCKS ── */
+    .math-block {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-left: 4px solid var(--accent);
+      padding: 32px 40px;
+      margin: 36px 0;
+      border-radius: 12px;
+      overflow-x: auto;
+      position: relative;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+      transition: transform 0.3s;
+    }
+
+    .math-block:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+    }
+
+    .math-block.coral {
+      border-left-color: var(--accent2);
+    }
+
+    .math-block.green {
+      border-left-color: var(--accent3);
+    }
+
+    .math-block.gold {
+      border-left-color: var(--accent4);
+    }
+
+    .math-block.purple {
+      border-left-color: var(--accent5);
+    }
+
+    .math-block .label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--accent);
+      position: absolute;
+      top: 14px;
+      right: 20px;
+      opacity: 0.8;
+    }
+
+    /* ── DERIVATION ── */
+    .derivation {
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+      margin: 36px 0;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    }
+
+    .derivation-header {
+      background: var(--surface2);
+      padding: 16px 24px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--accent);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .derivation-step {
+      padding: 20px 28px;
+      border-bottom: 1px solid var(--border);
+      display: grid;
+      grid-template-columns: 32px 1fr;
+      gap: 20px;
+      align-items: start;
+      background: var(--surface);
+      backdrop-filter: blur(5px);
+    }
+
+    .derivation-step:last-child {
+      border-bottom: none;
+    }
+
+    .step-num {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+      color: var(--accent3);
+      font-weight: 700;
+      padding-top: 4px;
+    }
+
+    .step-note {
+      font-size: 13px;
+      color: var(--muted);
+      font-style: italic;
+      margin-top: 10px;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    /* ── CALLOUTS ── */
+    .callout {
+      padding: 24px 28px;
+      border-radius: 12px;
+      margin: 32px 0;
+      border: 1px solid;
+      border-left-width: 4px;
+      backdrop-filter: blur(8px);
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+    }
+
+    .callout-insight {
+      background: rgba(0, 200, 255, 0.05);
+      border-color: rgba(0, 200, 255, 0.2);
+      border-left-color: var(--accent);
+    }
+
+    .callout-warning {
+      background: rgba(255, 107, 107, 0.05);
+      border-color: rgba(255, 107, 107, 0.2);
+      border-left-color: var(--accent2);
+    }
+
+    .callout-key {
+      background: rgba(0, 255, 136, 0.05);
+      border-color: rgba(0, 255, 136, 0.2);
+      border-left-color: var(--accent3);
+    }
+
+    .callout-gold {
+      background: rgba(255, 212, 59, 0.05);
+      border-color: rgba(255, 212, 59, 0.2);
+      border-left-color: var(--accent4);
+    }
+
+    .callout-purple {
+      background: rgba(204, 93, 232, 0.05);
+      border-color: rgba(204, 93, 232, 0.2);
+      border-left-color: var(--accent5);
+    }
+
+    .callout-title {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+
+    .callout-insight .callout-title {
+      color: var(--accent);
+    }
+
+    .callout-warning .callout-title {
+      color: var(--accent2);
+    }
+
+    .callout-key .callout-title {
+      color: var(--accent3);
+    }
+
+    .callout-gold .callout-title {
+      color: var(--accent4);
+    }
+
+    .callout-purple .callout-title {
+      color: var(--accent5);
+    }
+
+    .callout p {
+      margin-bottom: 0;
+      font-size: 16px;
+      color: #ccd6f6;
+    }
+
+    /* ── TABLES ── */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 32px 0;
+      font-size: 15px;
+      background: var(--surface);
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+    }
+
+    thead {
+      background: var(--surface2);
+    }
+
+    thead th {
+      padding: 16px 20px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--accent);
+      text-align: left;
+      border-bottom: 1px solid var(--border);
+    }
+
+    tbody tr {
+      border-bottom: 1px solid var(--border);
+      transition: background 0.2s;
+    }
+
+    tbody tr:last-child {
+      border-bottom: none;
+    }
+
+    tbody tr:hover {
+      background: rgba(0, 200, 255, 0.05);
+    }
+
+    tbody td {
+      padding: 16px 20px;
+      color: #a8b2d1;
+    }
+
+    /* ── FIGURE / SVG ── */
+    .figure {
+      margin: 40px 0;
+      text-align: center;
+      background: var(--surface);
+      padding: 30px;
+      border-radius: 16px;
+      border: 1px solid var(--border);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    }
+
+    .figure svg {
+      max-width: 100%;
+      filter: drop-shadow(0 0 15px rgba(0, 200, 255, 0.1));
+    }
+
+    .figure-cap {
+      font-size: 13px;
+      color: var(--muted);
+      margin-top: 16px;
+      font-style: italic;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    /* ── ALGORITHM ── */
+    .algo {
+      background: #020c1b;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 32px 40px;
+      margin: 32px 0;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 14px;
+      line-height: 2.2;
+      overflow-x: auto;
+      box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.5);
+    }
+
+    .algo .kw {
+      color: var(--accent5);
+      font-weight: 700;
+    }
+
+    .algo .fn {
+      color: var(--accent);
+    }
+
+    .algo .cmt {
+      color: var(--muted);
+      font-style: italic;
+    }
+
+    .algo .num {
+      color: var(--accent4);
+    }
+
+    .algo .var {
+      color: var(--accent3);
+    }
+
+    .algo .op {
+      color: var(--accent2);
+    }
+
+    .algo .hdr {
+      color: var(--accent);
+      font-size: 11px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      display: block;
+      margin-bottom: 12px;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 12px;
+    }
+
+    /* ── PROPERTY LIST ── */
+    .prop-list {
+      list-style: none;
+      margin: 16px 0;
+    }
+
+    .prop-list li {
+      padding: 12px 0 12px 32px;
+      border-bottom: 1px solid var(--border);
+      position: relative;
+      font-size: 16px;
+      line-height: 1.8;
+      color: #a8b2d1;
+    }
+
+    .prop-list li:last-child {
+      border-bottom: none;
+    }
+
+    .prop-list li::before {
+      content: '→';
+      position: absolute;
+      left: 0;
+      color: var(--accent3);
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 700;
+    }
+
+    /* ── OPTIMIZER CARDS ── */
+    .opt-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      margin: 36px 0;
+    }
+
+    @media(max-width: 680px) {
+      .opt-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .opt-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 30px;
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+
+    .opt-card:hover {
+      border-color: var(--accent);
+      transform: translateY(-5px);
+      box-shadow: 0 10px 25px rgba(0, 200, 255, 0.15);
+    }
+
+    .opt-card-name {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      margin-bottom: 16px;
+      color: var(--accent);
+    }
+
+    .opt-card p {
+      font-size: 15px;
+      margin-bottom: 0;
+    }
+
+    /* ── INLINE ── */
+    code {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.9em;
+      background: rgba(0, 200, 255, 0.1);
+      border: 1px solid rgba(0, 200, 255, 0.2);
+      padding: 2px 8px;
+      border-radius: 4px;
+      color: var(--accent);
+    }
+
+    .hl {
+      color: var(--accent);
+      font-weight: 600;
+      text-shadow: 0 0 8px rgba(0, 200, 255, 0.4);
+    }
+
+    .hl2 {
+      color: var(--accent2);
+      font-weight: 600;
+    }
+
+    .hl3 {
+      color: var(--accent3);
+      font-weight: 600;
+    }
+
+    .hl4 {
+      color: var(--accent4);
+      font-weight: 600;
+    }
+
+    .hl5 {
+      color: var(--accent5);
+      font-weight: 600;
+    }
+
+    hr.divider {
+      border: none;
+      border-top: 1px dashed var(--border);
+      margin: 80px 0;
+    }
+
+    /* ── COMPARE BLOCK ── */
+    .compare {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+      margin: 32px 0;
+    }
+
+    @media(max-width:680px) {
+      .compare {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .compare-col {
+      background: var(--surface);
+      padding: 28px;
+    }
+
+    .compare-col-title {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      margin-bottom: 16px;
+      color: var(--accent);
+    }
+
+    .compare-col p {
+      font-size: 15px;
+      margin-bottom: 12px;
+    }
+
+    /* ── LR VISUAL ZONES ── */
+    .lr-zones {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 20px;
+      margin: 32px 0;
+    }
+
+    @media(max-width:640px) {
+      .lr-zones {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .lr-zone {
+      padding: 28px 20px;
+      border-radius: 12px;
+      border: 1px solid;
+      text-align: center;
+      background: var(--surface);
+      transition: transform 0.3s;
+    }
+
+    .lr-zone:hover {
+      transform: translateY(-5px);
+    }
+
+    .lr-zone:nth-child(1) {
+      border-color: rgba(255, 212, 59, 0.3);
+    }
+
+    .lr-zone:nth-child(2) {
+      border-color: rgba(0, 255, 136, 0.3);
+    }
+
+    .lr-zone:nth-child(3) {
+      border-color: rgba(255, 107, 107, 0.3);
+    }
+
+    .lr-zone .lr-val {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 26px;
+      font-weight: 700;
+      margin-bottom: 10px;
+      color: var(--text);
+    }
+
+    .lr-zone p {
+      font-size: 14px;
+      color: var(--muted);
+      margin: 0;
+    }
+
+    /* scrollbar */
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: var(--bg);
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: rgba(0, 200, 255, 0.3);
+      border-radius: 4px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: rgba(0, 200, 255, 0.6);
+    }
+  </style>
+
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <link rel="stylesheet" href="../css/variables.css" />
+  <link rel="stylesheet" href="../css/navigation.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <script defer src="../js/common.js"></script>
+
+</head>
+
+<body>
+
+  <div class="top-bar">
+    <div class="logo">
+      <img src="../img/plogo.png" alt="Personal Logo" class="logo-icon">
+      <span class="logo-text">SHAHID<span class="logo-accent">||</span>Portfolio</span>
+    </div>
+    <nav class="nav-container">
+      <ul class="nav-links">
+        <li><a href="../index.html" class="nav-link"><span>.</span> Home</a></li>
+        <li><a href="../about.html" class="nav-link"><span>.</span> About</a></li>
+        <li><a href="../skills.html" class="nav-link"><span>.</span> Skills</a></li>
+        <li><a href="../projects.html" class="nav-link"><span>.</span> Projects</a></li>
+        <li><a href="../contact.html" class="nav-link"><span>.</span> Contact</a></li>
+        <li><a href="../articles.html" class="nav-link"><span>.</span> Articles</a></li>
+      </ul>
+      <div class="menu-toggle">
+        <div class="hamburger"></div>
+      </div>
+    </nav>
+  </div>
+
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-inner">
+      <div class="hero-tag">// Machine Learning — Mathematical Foundations</div>
+      <h1>Logistic<br><em>Regression</em></h1>
+      <p class="hero-sub">A complete theoretical and mathematical treatment — from first principles to gradient
+        derivation, MLE, regularization, and multiclass extensions.</p>
+      <div class="hero-pills">
+        <span class="pill">Sigmoid Function</span>
+        <span class="pill">Maximum Likelihood</span>
+        <span class="pill">Cross-Entropy</span>
+        <span class="pill">Gradient Descent</span>
+        <span class="pill">Decision Boundary</span>
+        <span class="pill">Regularization</span>
+        <span class="pill">Softmax / Multiclass</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOC -->
+  <div style="max-width:900px;margin:0 auto;padding:0 32px;">
+    <div class="toc-wrap">
+      <div class="toc-title">// Table of Contents</div>
+      <ol class="toc-list">
+        <li><a href="#s1"><span class="toc-num">01</span>Why Not Linear Regression? — The Motivation</a></li>
+        <li><a href="#s2"><span class="toc-num">02</span>Probability, Odds, and the Logit Function</a></li>
+        <li><a href="#s3"><span class="toc-num">03</span>The Sigmoid (Logistic) Function — Deep Dive</a></li>
+        <li><a href="#s4"><span class="toc-num">04</span>The Hypothesis and Decision Boundary</a></li>
+        <li><a href="#s5"><span class="toc-num">05</span>Why Not MSE? — The Loss Function Problem</a></li>
+        <li><a href="#s6"><span class="toc-num">06</span>Maximum Likelihood Estimation — Full Derivation</a></li>
+        <li><a href="#s7"><span class="toc-num">07</span>Binary Cross-Entropy Loss</a></li>
+        <li><a href="#s8"><span class="toc-num">08</span>Gradient Computation — The Full Chain Rule</a></li>
+        <li><a href="#s9"><span class="toc-num">09</span>Gradient Descent Update Rules</a></li>
+        <li><a href="#s10"><span class="toc-num">10</span>Regularization — L1 and L2</a></li>
+        <li><a href="#s11"><span class="toc-num">11</span>Multiclass: One-vs-Rest and Softmax</a></li>
+        <li><a href="#s12"><span class="toc-num">12</span>Geometric Interpretation</a></li>
+        <li><a href="#s13"><span class="toc-num">13</span>Assumptions of Logistic Regression</a></li>
+        <li><a href="#s14"><span class="toc-num">14</span>Logistic Regression as a Neural Network</a></li>
+        <li><a href="#s15"><span class="toc-num">15</span>Evaluation Metrics</a></li>
+        <li><a href="#s16"><span class="toc-num">16</span>The Full Mental Model — Everything Together</a></li>
+      </ol>
+    </div>
+  </div>
+
+  <div class="content">
+
+    <!-- ══════════════════════════════════════════ -->
+    <div class="section" id="s1">
+      <div class="section-header">
+        <span class="section-num">§01</span>
+        <h2>Why Not Linear Regression?</h2>
+      </div>
+
+      <p>You already know linear regression models a continuous target \( y \in \mathbb{R} \). For classification, the
+        target is categorical — binary for now: \( y \in \{0, 1\} \). The question is: <em>can we repurpose linear
+          regression?</em></p>
+
+      <p>Let's try. Fit a line \( \hat{y} = \mathbf{w}^T \mathbf{x} + b \) and threshold at 0.5. Three fundamental
+        problems arise:</p>
+
+      <div class="callout callout-warning">
+        <div class="callout-title">⚠ Problem 1 — Unbounded Output</div>
+        <p>Linear regression outputs \( \hat{y} \in (-\infty, +\infty) \). We need a probability \( P \in [0, 1] \). A
+          predicted value of 3.7 or −0.2 is <em>mathematically meaningless</em> as a probability.</p>
+      </div>
+
+      <div class="callout callout-warning">
+        <div class="callout-title">⚠ Problem 2 — Sensitivity to Outliers Shifts the Boundary</div>
+        <p>Adding an extreme outlier far from the boundary can <em>drag the regression line</em> and drastically shift
+          where it crosses the threshold — even though the boundary should be unaffected. The linear model is trying to
+          minimize distance to all points, not find a boundary.</p>
+      </div>
+
+      <div class="callout callout-warning">
+        <div class="callout-title">⚠ Problem 3 — Violated Assumptions, Wrong Loss</div>
+        <p>Linear regression assumes residuals are Gaussian-distributed around a continuous mean. Binary outputs violate
+          this entirely. MSE loss is also not a convex function when composed with a sigmoid — but log-loss is. We'll
+          formalize this in §05.</p>
+      </div>
+
+      <p>The solution: we still use a linear combination \( z = \mathbf{w}^T\mathbf{x} + b \) as the <em>raw score</em>,
+        but we <strong>squash it through a function</strong> that maps \( \mathbb{R} \to (0,1) \). That function is the
+        <span class="hl">sigmoid</span>. But to understand <em>why</em> the sigmoid specifically, we must first
+        understand odds and the logit.
+      </p>
+    </div>
+
+    <!-- ══════════════════════════════════════════ -->
+    <div class="section" id="s2">
+      <div class="section-header">
+        <span class="section-num">§02</span>
+        <h2>Probability, Odds, and the Logit</h2>
+      </div>
+
+      <p>This is the conceptual heart of logistic regression. Most textbooks jump straight to the sigmoid formula —
+        we'll derive <em>why</em> it has to be the sigmoid from probabilistic first principles.</p>
+
+      <div class="subsection">
+        <h3>From Probability to Odds</h3>
+        <p>Let \( p = P(y=1 \mid \mathbf{x}) \) — the probability the sample belongs to class 1.</p>
+        <p>The <strong>odds</strong> of an event is the ratio of the probability it happens to the probability it
+          doesn't:</p>
+
+        <div class="math-block">
+          <span class="label">Definition</span>
+          \[ \text{Odds} = \frac{p}{1-p} \]
+        </div>
+
+        <p>When \( p = 0.5 \): odds = 1 ("even odds"). When \( p = 0.75 \): odds = 3 ("3 to 1"). As \( p \to 1 \): odds
+          \( \to \infty \). As \( p \to 0 \): odds \( \to 0 \). So odds live in \( (0, +\infty) \).</p>
+      </div>
+
+      <div class="subsection">
+        <h3>From Odds to Log-Odds (Logit)</h3>
+        <p>The odds are still asymmetric (0 to ∞). Take the natural log:</p>
+
+        <div class="math-block">
+          <span class="label">Logit Function</span>
+          \[ \text{logit}(p) = \log\left(\frac{p}{1-p}\right) \]
+        </div>
+
+        <p>Now the range is \( (-\infty, +\infty) \)! The logit is symmetric around 0: \( \text{logit}(0.5) = 0 \), and
+          logit is an increasing function of \( p \).</p>
+      </div>
+
+      <div class="subsection">
+        <h3>The Central Assumption of Logistic Regression</h3>
+        <p>Logistic regression assumes the <span class="hl">log-odds are linear in the features</span>:</p>
+
+        <div class="math-block">
+          <span class="label">Core Assumption</span>
+          \[ \log\left(\frac{p}{1-p}\right) = \mathbf{w}^T\mathbf{x} + b = z \]
+        </div>
+
+        <p>This is elegant: the log-odds are unbounded (matching the range of a linear function), and the linear model
+          now lives on the correct scale. Now we just <em>invert</em> the logit to get back to probability \( p \).</p>
+      </div>
+
+      <div class="subsection">
+        <h3>Inverting the Logit → The Sigmoid</h3>
+        <div class="derivation">
+          <div class="derivation-header">// Algebraic derivation of the sigmoid from the logit assumption</div>
+          <div class="derivation-step">
+            <span class="step-num">1</span>
+            <div>
+              Start from the logit equation: \(\displaystyle \log\frac{p}{1-p} = z\)
+            </div>
+          </div>
+          <div class="derivation-step">
+            <span class="step-num">2</span>
+            <div>
+              Exponentiate both sides: \(\displaystyle \frac{p}{1-p} = e^z\)
+            </div>
+          </div>
+          <div class="derivation-step">
+            <span class="step-num">3</span>
+            <div>
+              Solve for \(p\): \(\displaystyle p = e^z(1-p) = e^z - pe^z\)
+              \(\displaystyle \Rightarrow p(1 + e^z) = e^z\)
+            </div>
+          </div>
+          <div class="derivation-step">
+            <span class="step-num">4</span>
+            <div>
+              \(\displaystyle p = \frac{e^z}{1+e^z} = \frac{1}{1+e^{-z}}\)
+              <div class="step-note">Divide numerator and denominator by \(e^z\)</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="math-block">
+          <span class="label">The Sigmoid</span>
+          \[ \sigma(z) = \frac{1}{1+e^{-z}} \]
+        </div>
+
+        <div class="callout callout-key">
+          <div class="callout-title">✓ Key Insight</div>
+          <p>The sigmoid isn't an arbitrary choice. It is the <em>exact inverse</em> of the logit function. Choosing a
+            sigmoid output is mathematically equivalent to assuming the log-odds are linear in the features.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════ -->
+    <div class="section" id="s3">
+      <div class="section-header">
+        <span class="section-num">§03</span>
+        <h2>The Sigmoid — Deep Dive</h2>
+      </div>
+
+      <div class="figure">
+        <svg viewBox="0 0 600 280" xmlns="http://www.w3.org/2000/svg" style="max-width:600px;">
+          <!-- Grid -->
+          <defs>
+            <marker id="ah" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+              <path d="M0,0 L0,6 L8,3 z" fill="#0f0e0c" />
+            </marker>
+          </defs>
+          <!-- Background -->
+          <rect width="600" height="280" fill="#f5f0e8" />
+          <!-- Grid lines -->
+          <g stroke="#c8bfaa" stroke-width="0.7" opacity="0.6">
+            <line x1="60" y1="56" x2="560" y2="56" />
+            <line x1="60" y1="140" x2="560" y2="140" />
+            <line x1="60" y1="224" x2="560" y2="224" />
+            <line x1="160" y1="30" x2="160" y2="255" />
+            <line x1="310" y1="30" x2="310" y2="255" />
+            <line x1="460" y1="30" x2="460" y2="255" />
+          </g>
+          <!-- Axes -->
+          <line x1="60" y1="250" x2="565" y2="250" stroke="#0f0e0c" stroke-width="1.5" marker-end="url(#ah)" />
+          <line x1="60" y1="250" x2="60" y2="25" stroke="#0f0e0c" stroke-width="1.5" marker-end="url(#ah)" />
+          <!-- Asymptotes -->
+          <line x1="60" y1="56" x2="560" y2="56" stroke="#c0392b" stroke-width="1" stroke-dasharray="6,4"
+            opacity="0.5" />
+          <line x1="60" y1="224" x2="560" y2="224" stroke="#c0392b" stroke-width="1" stroke-dasharray="6,4"
+            opacity="0.5" />
+          <!-- Sigmoid curve — computed: σ(z) mapped from z=-6 to 6 -->
+          <path
+            d="M60,221.5 C80,221 100,219 120,215 C140,209 155,200 170,190 C185,178 200,163 215,150 C225,140 235,130 245,122 C258,110 272,100 285,92 C300,83 315,77 330,71 C345,65 360,60 378,58 C396,56 420,55 440,54.5 C460,54.2 490,54 540,53.8"
+            fill="none" stroke="#2471a3" stroke-width="2.8" />
+          <!-- Decision point -->
+          <circle cx="310" cy="140" r="5" fill="#c0392b" />
+          <line x1="310" y1="140" x2="310" y2="250" stroke="#c0392b" stroke-width="1" stroke-dasharray="4,3" />
+          <!-- Annotations -->
+          <text x="545" y="248" font-family="IBM Plex Mono" font-size="13" fill="#0f0e0c">z</text>
+          <text x="65" y="22" font-family="IBM Plex Mono" font-size="13" fill="#0f0e0c">σ(z)</text>
+          <text x="36" y="59" font-family="IBM Plex Mono" font-size="11" fill="#c0392b">1</text>
+          <text x="28" y="144" font-family="IBM Plex Mono" font-size="11" fill="#0f0e0c">0.5</text>
+          <text x="36" y="227" font-family="IBM Plex Mono" font-size="11" fill="#c0392b">0</text>
+          <text x="305" y="268" font-family="IBM Plex Mono" font-size="11" fill="#c0392b">z=0</text>
+          <text x="148" y="268" font-family="IBM Plex Mono" font-size="10" fill="#6b6456">-3</text>
+          <text x="452" y="268" font-family="IBM Plex Mono" font-size="10" fill="#6b6456">+3</text>
+          <!-- Labels -->
+          <text x="380" y="100" font-family="Source Serif 4" font-size="13" fill="#2471a3" font-style="italic">σ(z) =
+            1/(1+e⁻ᶻ)</text>
+          <text x="390" y="58" font-family="IBM Plex Mono" font-size="10" fill="#c0392b">Asymptote y=1</text>
+          <text x="390" y="232" font-family="IBM Plex Mono" font-size="10" fill="#c0392b">Asymptote y=0</text>
+        </svg>
+        <div class="figure-cap">Fig 1. The sigmoid function — maps ℝ → (0,1) with inflection at z=0 where σ(0) = 0.5
+        </div>
+      </div>
+
+      <div class="subsection">
+        <h3>Properties You Must Know</h3>
+        <ul class="prop-list">
+          <li><strong>Range:</strong> \( \sigma(z) \in (0,1) \) — strictly, never hits 0 or 1. This models
+            <em>probability</em>.
+          </li>
+          <li><strong>Symmetry:</strong> \( \sigma(-z) = 1 - \sigma(z) \) — symmetric about the point \((0, 0.5)\).</li>
+          <li><strong>Inflection point:</strong> At \(z = 0\), \(\sigma(0) = 0.5\), and the curve bends from concave-up
+            to concave-down.</li>
+          <li><strong>Saturation:</strong> For large \(|z|\), the gradient approaches 0 — this causes the <em>vanishing
+              gradient problem</em> in deep networks.</li>
+          <li><strong>Monotonically increasing:</strong> Always increasing, so \(\sigma'(z) &gt; 0\) for all \(z\).</li>
+        </ul>
+      </div>
+
+      <div class="subsection">
+        <h3>The Derivative of the Sigmoid (Critical for Backprop)</h3>
+        <div class="derivation">
+          <div class="derivation-header">// Deriving σ'(z) — used in every gradient computation</div>
+          <div class="derivation-step">
+            <span class="step-num">1</span>
+            <div>\(\sigma(z) = (1 + e^{-z})^{-1}\)</div>
+          </div>
+          <div class="derivation-step">
+            <span class="step-num">2</span>
+            <div>
+              \(\sigma'(z) = -(1+e^{-z})^{-2} \cdot (-e^{-z}) = \dfrac{e^{-z}}{(1+e^{-z})^2}\)
+            </div>
+          </div>
+          <div class="derivation-step">
+            <span class="step-num">3</span>
+            <div>
+              Factor: \(\displaystyle = \frac{1}{1+e^{-z}} \cdot \frac{e^{-z}}{1+e^{-z}} = \frac{1}{1+e^{-z}} \cdot
+              \left(1 - \frac{1}{1+e^{-z}}\right)\)
+            </div>
+          </div>
+          <div class="derivation-step">
+            <span class="step-num">4</span>
+            <div>
+              \(\boxed{\sigma'(z) = \sigma(z)(1-\sigma(z))}\)
+              <div class="step-note">This elegant result means: the derivative is entirely expressible in terms of the
+                output itself — very efficient to compute.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="callout callout-insight">
+          <div class="callout-title">💡 Why This Matters</div>
+          <p>Because \(\sigma'(z) = \sigma(z)(1-\sigma(z))\), during backpropagation you never recompute the sigmoid —
+            you reuse the forward pass output. Also note: maximum gradient is at \(z=0\) where \(\sigma' = 0.25\),
+            meaning the gradient is already weak — explaining why sigmoid networks saturate.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════ -->
+    <div class="section" id="s4">
+      <div class="section-header">
+        <span class="section-num">§04</span>
+        <h2>The Hypothesis and Decision Boundary</h2>
+      </div>
+
+      <div class="subsection">
+        <h3>Full Hypothesis</h3>
+        <p>For a feature vector \(\mathbf{x} \in \mathbb{R}^n\), with weight vector \(\mathbf{w} \in \mathbb{R}^n\) and
+          bias \(b\):</p>
+
+        <div class="math-block">
+          <span class="label">Logistic Regression Hypothesis</span>
+          \[
+          \hat{y} = h_{\mathbf{w},b}(\mathbf{x}) = \sigma(\mathbf{w}^T\mathbf{x} + b) = \frac{1}{1 +
+          e^{-(\mathbf{w}^T\mathbf{x}+b)}}
+          \]
+          \[
+          \hat{y} \approx P(y=1 \mid \mathbf{x}; \mathbf{w}, b)
+          \]
+        </div>
+
+        <p>Note \(\hat{y}\) is interpreted as the <em>probability</em> that sample \(\mathbf{x}\) belongs to class 1.
+          The probability for class 0 is simply \(1 - \hat{y}\).</p>
+      </div>
+
+      <div class="subsection">
+        <h3>The Decision Boundary</h3>
+        <p>We classify as class 1 when \(\hat{y} \geq 0.5\), i.e., when \(\sigma(z) \geq 0.5\). Since \(\sigma\) is
+          monotone and \(\sigma(0) = 0.5\):</p>
+
+        <div class="math-block">
+          <span class="label">Decision Rule</span>
+          \[
+          \hat{y} \geq 0.5 \iff z \geq 0 \iff \mathbf{w}^T\mathbf{x} + b \geq 0
+          \]
+        </div>
+
+        <p>The decision boundary is the set of points where \(\mathbf{w}^T\mathbf{x} + b = 0\). In 2D, this is a
+          <strong>line</strong>. In \(n\) dimensions, it's a <strong>hyperplane</strong>.
+        </p>
+
+        <div class="callout callout-insight">
+          <div class="callout-title">💡 Geometric Insight</div>
+          <p>The weight vector \(\mathbf{w}\) is the <em>normal to the decision hyperplane</em>. The dot product
+            \(\mathbf{w}^T\mathbf{x}\) is the signed projection of \(\mathbf{x}\) onto \(\mathbf{w}\) — points on one
+            side have positive projection, points on the other side have negative. This is pure linear algebra from your
+            vectors background.</p>
+        </div>
+
+        <p>Since the boundary is linear in \(\mathbf{x}\), logistic regression is a <span class="hl">linear
+            classifier</span>. It can only separate linearly separable classes — unless you engineer polynomial features
+          (just like polynomial regression).</p>
+      </div>
+
+      <div class="figure">
+        <svg viewBox="0 0 560 260" xmlns="http://www.w3.org/2000/svg" style="max-width:560px;">
+          <rect width="560" height="260" fill="#f5f0e8" />
+          <!-- Regions -->
+          <polygon points="0,0 560,0 560,260" fill="#eaf4fb" opacity="0.5" />
+          <polygon points="0,0 0,260 560,260" fill="#fef5f5" opacity="0.5" />
+          <!-- Decision boundary -->
+          <line x1="0" y1="0" x2="560" y2="260" stroke="#0f0e0c" stroke-width="2.5" />
+          <!-- Class 0 points (blue circles) -->
+          <g fill="#2471a3">
+            <circle cx="100" cy="180" r="7" />
+            <circle cx="60" cy="200" r="7" />
+            <circle cx="140" cy="210" r="7" />
+            <circle cx="80" cy="150" r="7" />
+            <circle cx="180" cy="195" r="7" />
+            <circle cx="50" cy="230" r="7" />
+            <circle cx="200" cy="220" r="7" />
+            <circle cx="120" cy="135" r="7" />
+          </g>
+          <!-- Class 1 points (red squares) -->
+          <g fill="#c0392b">
+            <rect x="390" y="25" width="14" height="14" />
+            <rect x="440" y="15" width="14" height="14" />
+            <rect x="350" y="40" width="14" height="14" />
+            <rect x="480" y="30" width="14" height="14" />
+            <rect x="420" y="55" width="14" height="14" />
+            <rect x="370" y="65" width="14" height="14" />
+            <rect x="500" y="20" width="14" height="14" />
+            <rect x="455" y="70" width="14" height="14" />
+          </g>
+          <!-- Labels -->
+          <text x="60" y="110" font-family="Source Serif 4" font-size="14" fill="#2471a3" font-style="italic">Class
+            0</text>
+          <text x="60" y="128" font-family="IBM Plex Mono" font-size="11" fill="#2471a3">w·x + b &lt; 0</text>
+          <text x="390" y="120" font-family="Source Serif 4" font-size="14" fill="#c0392b" font-style="italic">Class
+            1</text>
+          <text x="390" y="138" font-family="IBM Plex Mono" font-size="11" fill="#c0392b">w·x + b &gt; 0</text>
+          <!-- Normal vector -->
+          <line x1="280" y1="130" x2="340" y2="70" stroke="#1e8449" stroke-width="2" marker-end="url(#ah)" />
+          <text x="345" y="65" font-family="IBM Plex Mono" font-size="12" fill="#1e8449">w (normal)</text>
+          <!-- Boundary label -->
+          <text x="420" y="200" font-family="IBM Plex Mono" font-size="12" fill="#0f0e0c"
+            transform="rotate(25, 420, 200)">w·x + b = 0</text>
+        </svg>
+        <div class="figure-cap">Fig 2. Linear decision boundary — the hyperplane w·x + b = 0 separates the feature
+          space. w is the normal vector.</div>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════ -->
+    <div class="section" id="s5">
+      <div class="section-header">
+        <span class="section-num">§05</span>
+        <h2>Why Not MSE? The Loss Function Problem</h2>
+      </div>
+
+      <p>You know from linear regression that we minimize MSE. Why not do the same here with the sigmoid output?</p>
+
+      <div class="math-block">
+        <span class="label">MSE with Sigmoid</span>
+        \[ J(\mathbf{w}) = \frac{1}{m}\sum_{i=1}^{m}\left(y^{(i)} - \sigma(\mathbf{w}^T\mathbf{x}^{(i)}+b)\right)^2 \]
+      </div>
+
+      <p>The problem: <strong>this loss is non-convex</strong> when composed with the sigmoid. It has many local minima,
+        making gradient descent unreliable. Here's why:</p>
+
+      <div class="figure">
+        <svg viewBox="0 0 560 200" xmlns="http://www.w3.org/2000/svg" style="max-width:560px;">
+          <rect width="560" height="200" fill="#f5f0e8" />
+          <!-- Panel 1: Non-convex MSE -->
+          <rect x="20" y="20" width="240" height="160" rx="3" fill="#fef9e7" stroke="#c8bfaa" stroke-width="1" />
+          <text x="140" y="38" font-family="IBM Plex Mono" font-size="10" fill="#b7950b" text-anchor="middle"
+            letter-spacing="0.1em">MSE + SIGMOID (non-convex)</text>
+          <!-- wavy curve -->
+          <path d="M40,130 C60,120 70,90 90,85 C110,80 120,100 140,95 C160,88 170,70 190,65 C210,60 220,80 240,75"
+            fill="none" stroke="#b7950b" stroke-width="2.5" />
+          <text x="140" y="175" font-family="Source Serif 4" font-size="12" fill="#6b6456" text-anchor="middle"
+            font-style="italic">Multiple local minima → bad</text>
+          <!-- Panel 2: Convex cross-entropy -->
+          <rect x="300" y="20" width="240" height="160" rx="3" fill="#eafaf1" stroke="#c8bfaa" stroke-width="1" />
+          <text x="420" y="38" font-family="IBM Plex Mono" font-size="10" fill="#1e8449" text-anchor="middle"
+            letter-spacing="0.1em">CROSS-ENTROPY (convex)</text>
+          <!-- convex curve -->
+          <path d="M320,160 C340,155 360,140 380,110 C400,78 420,50 440,38 C450,32 460,30 520,28" fill="none"
+            stroke="#1e8449" stroke-width="2.5" />
+          <text x="420" y="175" font-family="Source Serif 4" font-size="12" fill="#6b6456" text-anchor="middle"
+            font-style="italic">One global minimum → good</text>
+        </svg>
+        <div class="figure-cap">Fig 3. MSE with sigmoid is non-convex (multiple local minima). Cross-entropy is strictly
+          convex (one global minimum).</div>
+      </div>
+
+      <div class="callout callout-key">
+        <div class="callout-title">✓ Formal Statement</div>
+        <p>For logistic regression, the cross-entropy loss is a <strong>strictly convex function</strong> of the weights
+          \(\mathbf{w}\). This guarantees that gradient descent converges to the <em>unique global minimum</em>
+          (assuming sufficient data and appropriate learning rate). MSE does not have this guarantee.</p>
+      </div>
+
+      <p>We derive the <em>correct</em> loss from Maximum Likelihood Estimation — which also gives it a deep statistical
+        justification.</p>
+    </div>
+
+    <!-- ══════════════════════════════════════════ -->
+    <div class="section" id="s6">
+      <div class="section-header">
+        <span class="section-num">§06</span>
+        <h2>Maximum Likelihood Estimation — Full Derivation</h2>
+      </div>
+
+      <p>MLE is the principled way to derive the loss. The idea: find parameters \(\mathbf{w}, b\) that make the
+        observed training data <em>most probable</em>.</p>
+
+      <div class="subsection">
+        <h3>The Probabilistic Model</h3>
+        <p>Each label \(y^{(i)} \in \{0,1\}\) is a Bernoulli random variable. Our model predicts:</p>
+
+        <div class="math-block">
+          \[
+          P(y=1 \mid \mathbf{x}) = \hat{y} = \sigma(z), \qquad P(y=0 \mid \mathbf{x}) = 1 - \hat{y}
+          \]
+        </div>
+
+        <p>These two cases can be written compactly in a single equation using the Bernoulli PMF:</p>
+
+        <div class="math-block">
+          <span class="label">Bernoulli PMF</span>
+          \[
+          P(y \mid \mathbf{x}; \mathbf{w}) = \hat{y}^{\,y} \cdot (1-\hat{y})^{1-y}
+          \]
+        </div>
+
+        <p>Check: when \(y=1\), this gives \(\hat{y}^1 \cdot (1-\hat{y})^0 = \hat{y}\). When \(y=0\), this gives
+          \(\hat{y}^0 \cdot (1-\hat{y})^1 = 1-\hat{y}\). ✓</p>
+      </div>
+
+      <div class="subsection">
+        <h3>The Likelihood Function</h3>
+        <p>Assuming <em>i.i.d.</em> (independent, identically distributed) samples, the likelihood of the entire dataset
+          is the product over all \(m\) examples:</p>
+
+        <div class="math-block">
+          <span class="label">Likelihood</span>
+          \[
+          \mathcal{L}(\mathbf{w},b) = \prod_{i=1}^{m} P(y^{(i)} \mid \mathbf{x}^{(i)}; \mathbf{w},b) = \prod_{i=1}^{m}
+          \hat{y}_i^{\,y^{(i)}} (1-\hat{y}_i)^{1-y^{(i)}}
+          \]
+        </div>
+      </div>
+
+      <div class="subsection">
+        <h3>Log-Likelihood (Turning Products into Sums)</h3>
+        <p>Maximizing \(\mathcal{L}\) is equivalent to maximizing \(\log\mathcal{L}\) (since log is monotone). Taking
+          the log converts products to sums — numerically more stable and mathematically easier to differentiate:</p>
+
+        <div class="math-block">
+          <span class="label">Log-Likelihood</span>
+          \[
+          \ell(\mathbf{w},b) = \log\mathcal{L} = \sum_{i=1}^{m} \left[ y^{(i)}\log\hat{y}_i +
+          (1-y^{(i)})\log(1-\hat{y}_i) \right]
+          \]
+        </div>
+      </div>
+
+      <div class="subsection">
+        <h3>From Maximization to Minimization</h3>
+        <p>We want to <em>maximize</em> the log-likelihood, but gradient descent <em>minimizes</em>. We negate and
+          normalize:</p>
+
+        <div class="math-block">
+          <span class="label">Loss = Negative Mean Log-Likelihood</span>
+          \[
+          J(\mathbf{w},b) = -\frac{1}{m}\ell(\mathbf{w},b) = -\frac{1}{m}\sum_{i=1}^{m} \left[ y^{(i)}\log\hat{y}_i +
+          (1-y^{(i)})\log(1-\hat{y}_i) \right]
+          \]
+        </div>
+
+        <div class="callout callout-key">
+          <div class="callout-title">✓ Connection to Information Theory</div>
+          <p>This is precisely the <strong>Binary Cross-Entropy</strong> — the average cross-entropy between the true
+            label distribution and the predicted distribution. MLE and cross-entropy minimization are <em>the same
+              thing</em> for Bernoulli outcomes.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════ -->
+    <div class="section" id="s7">
+      <div class="section-header">
+        <span class="section-num">§07</span>
+        <h2>Binary Cross-Entropy Loss — Intuition</h2>
+      </div>
+
+      <p>The loss for a single sample is:</p>
+
+      <div class="math-block">
+        <span class="label">Single-Sample Loss</span>
+        \[
+        \mathcal{L}(\hat{y}, y) = -\left[y\log(\hat{y}) + (1-y)\log(1-\hat{y})\right]
+        \]
+      </div>
+
+      <p>Let's understand what this penalizes:</p>
+
+      <table>
+        <thead>
+          <tr>
+            <th>True y</th>
+            <th>Predicted ŷ</th>
+            <th>Loss</th>
+            <th>Interpretation</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>1</td>
+            <td>0.99</td>
+            <td>\(-\log(0.99) \approx 0.01\)</td>
+            <td>Correct, confident → tiny loss</td>
+          </tr>
+          <tr>
+            <td>1</td>
+            <td>0.50</td>
+            <td>\(-\log(0.5) \approx 0.69\)</td>
+            <td>Correct, uncertain → moderate loss</td>
+          </tr>
+          <tr>
+            <td>1</td>
+            <td>0.01</td>
+            <td>\(-\log(0.01) \approx 4.6\)</td>
+            <td>Wrong, confident → huge loss</td>
+          </tr>
+          <tr>
+            <td>0</td>
+            <td>0.01</td>
+            <td>\(-\log(0.99) \approx 0.01\)</td>
+            <td>Correct, confident → tiny loss</td>
+          </tr>
+          <tr>
+            <td>0</td>
+            <td>0.99</td>
+            <td>\(-\log(0.01) \approx 4.6\)</td>
+            <td>Wrong, confident → huge loss</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="callout callout-insight">
+        <div class="callout-title">💡 Asymmetric Penalty</div>
+        <p>Cross-entropy punishes <em>confident wrong predictions</em> extremely heavily — the loss approaches infinity
+          as \(\hat{y} \to 0\) when \(y=1\). This is exactly the right behavior: being very wrong with confidence is the
+          worst possible outcome in a probabilistic model.</p>
+      </div>
+
+      <p>The two cases of the loss function also have a clean form. When the sigmoid output \(\hat{y} = \sigma(z)\):</p>
+
+      <div class="math-block">
+        <span class="label">Loss in terms of z (useful for derivation)</span>
+        \[
+        \text{if } y=1: \quad \mathcal{L} = -\log\sigma(z) = \log(1+e^{-z})
+        \]
+        \[
+        \text{if } y=0: \quad \mathcal{L} = -\log(1-\sigma(z)) = \log(1+e^{z})
+        \]
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════ -->
+    <div class="section" id="s8">
+      <div class="section-header">
+        <span class="section-num">§08</span>
+        <h2>Gradient Computation — The Full Chain Rule</h2>
+      </div>
+
+      <p>This is the most mathematically rich section. We derive \(\frac{\partial J}{\partial w_j}\) from scratch using
+        the chain rule. You've done partial derivatives, so let's go deep.</p>
+
+      <div class="subsection">
+        <h3>The Computational Graph</h3>
+        <div class="figure">
+          <svg viewBox="0 0 580 100" xmlns="http://www.w3.org/2000/svg" style="max-width:580px;">
+            <rect width="580" height="100" fill="#f5f0e8" />
+            <!-- Boxes -->
+            <rect x="20" y="30" width="90" height="40" rx="3" fill="#eaf4fb" stroke="#2471a3" stroke-width="1.5" />
+            <text x="65" y="55" text-anchor="middle" font-family="IBM Plex Mono" font-size="12" fill="#2471a3">w, x,
+              b</text>
+            <rect x="170" y="30" width="90" height="40" rx="3" fill="#eafaf1" stroke="#1e8449" stroke-width="1.5" />
+            <text x="215" y="55" text-anchor="middle" font-family="IBM Plex Mono" font-size="12" fill="#1e8449">z =
+              w·x+b</text>
+            <rect x="320" y="30" width="90" height="40" rx="3" fill="#fef9e7" stroke="#b7950b" stroke-width="1.5" />
+            <text x="365" y="55" text-anchor="middle" font-family="IBM Plex Mono" font-size="12" fill="#b7950b">ŷ =
+              σ(z)</text>
+            <rect x="470" y="30" width="90" height="40" rx="3" fill="#fef5f5" stroke="#c0392b" stroke-width="1.5" />
+            <text x="515" y="55" text-anchor="middle" font-family="IBM Plex Mono" font-size="12" fill="#c0392b">J(ŷ,
+              y)</text>
+            <!-- Arrows -->
+            <line x1="110" y1="50" x2="168" y2="50" stroke="#0f0e0c" stroke-width="1.5" marker-end="url(#ah)" />
+            <line x1="260" y1="50" x2="318" y2="50" stroke="#0f0e0c" stroke-width="1.5" marker-end="url(#ah)" />
+            <line x1="410" y1="50" x2="468" y2="50" stroke="#0f0e0c" stroke-width="1.5" marker-end="url(#ah)" />
+            <!-- Labels -->
+            <text x="133" y="44" font-family="IBM Plex Mono" font-size="9" fill="#6b6456">linear</text>
+            <text x="283" y="44" font-family="IBM Plex Mono" font-size="9" fill="#6b6456">sigmoid</text>
+            <text x="428" y="44" font-family="IBM Plex Mono" font-size="9" fill="#6b6456">cross-ent</text>
+          </svg>
+          <div class="figure-cap">Fig 4. Computational graph of logistic regression — backprop flows right to left.
+          </div>
+        </div>
+      </div>
+
+      <div class="subsection">
+        <h3>Step 1 — Derivative of Loss w.r.t. ŷ</h3>
+
+        <div class="math-block">
+          <span class="label">∂J/∂ŷ for one sample</span>
+          \[
+          J = -\left[y\log\hat{y} + (1-y)\log(1-\hat{y})\right]
+          \]
+          \[
+          \frac{\partial J}{\partial \hat{y}} = -\frac{y}{\hat{y}} + \frac{1-y}{1-\hat{y}}
+          \]
+        </div>
+      </div>
+
+      <div class="subsection">
+        <h3>Step 2 — Derivative of ŷ w.r.t. z (Sigmoid Derivative)</h3>
+
+        <div class="math-block">
+          <span class="label">∂ŷ/∂z</span>
+          \[
+          \frac{\partial \hat{y}}{\partial z} = \sigma'(z) = \hat{y}(1-\hat{y})
+          \]
+        </div>
+      </div>
+
+      <div class="subsection">
+        <h3>Step 3 — Chain Rule: ∂J/∂z</h3>
+
+        <div class="derivation">
+          <div class="derivation-header">// Combining steps 1 and 2 via chain rule</div>
+          <div class="derivation-step">
+            <span class="step-num">1</span>
+            <div>
+              \(\displaystyle \frac{\partial J}{\partial z} = \frac{\partial J}{\partial \hat{y}} \cdot \frac{\partial
+              \hat{y}}{\partial z}\)
+            </div>
+          </div>
+          <div class="derivation-step">
+            <span class="step-num">2</span>
+            <div>
+              \(\displaystyle = \left(-\frac{y}{\hat{y}} + \frac{1-y}{1-\hat{y}}\right) \cdot \hat{y}(1-\hat{y})\)
+            </div>
+          </div>
+          <div class="derivation-step">
+            <span class="step-num">3</span>
+            <div>
+              \(\displaystyle = -y(1-\hat{y}) + (1-y)\hat{y}\)
+              <div class="step-note">Distribute: \(-\frac{y}{\hat{y}} \cdot \hat{y}(1-\hat{y}) = -y(1-\hat{y})\) and
+                \(\frac{1-y}{1-\hat{y}} \cdot \hat{y}(1-\hat{y}) = (1-y)\hat{y}\)</div>
+            </div>
+          </div>
+          <div class="derivation-step">
+            <span class="step-num">4</span>
+            <div>
+              \(\displaystyle = -y + y\hat{y} + \hat{y} - y\hat{y} = \hat{y} - y\)
+            </div>
+          </div>
+          <div class="derivation-step">
+            <span class="step-num">5</span>
+            <div>
+              \(\displaystyle \boxed{\frac{\partial J}{\partial z} = \hat{y} - y}\)
+              <div class="step-note">The sigmoid and log cancel beautifully — the gradient at the linear layer is simply
+                the prediction error!</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="callout callout-key">
+          <div class="callout-title">✓ The Beautiful Cancellation</div>
+          <p>The derivative of the log-loss with respect to the pre-activation \(z\) is simply \(\hat{y} - y\) — the
+            <em>residual</em> (prediction minus truth). This is the same form as in linear regression! The sigmoid's
+            derivative and the log's derivative cancel each other perfectly. This is not a coincidence — it's a
+            consequence of the sigmoid being the <em>canonical link function</em> for Bernoulli outcomes.
+          </p>
+        </div>
+      </div>
+
+      <div class="subsection">
+        <h3>Step 4 — Gradient w.r.t. Weights and Bias</h3>
+
+        <p>Since \(z = \mathbf{w}^T\mathbf{x} + b\):</p>
+
+        <div class="math-block">
+          <span class="label">Final Gradients</span>
+          \[
+          \frac{\partial J}{\partial w_j} = \frac{\partial J}{\partial z} \cdot \frac{\partial z}{\partial w_j} =
+          (\hat{y} - y) \cdot x_j
+          \]
+          \[
+          \frac{\partial J}{\partial b} = \frac{\partial J}{\partial z} \cdot \frac{\partial z}{\partial b} = (\hat{y} -
+          y) \cdot 1 = \hat{y} - y
+          \]
+        </div>
+
+        <p>For the full dataset with \(m\) samples (averaging over all):</p>
+
+        <div class="math-block">
+          <span class="label">Vectorized Gradients (m samples)</span>
+          \[
+          \frac{\partial J}{\partial \mathbf{w}} = \frac{1}{m} \mathbf{X}^T (\hat{\mathbf{y}} - \mathbf{y})
+          \]
+          \[
+          \frac{\partial J}{\partial b} = \frac{1}{m} \sum_{i=1}^{m}(\hat{y}^{(i)} - y^{(i)})
+          \]
+          <p style="color:#aaa;font-size:0.85em;margin-top:12px;">where \(\mathbf{X} \in \mathbb{R}^{m \times n}\),
+            \(\hat{\mathbf{y}} \in \mathbb{R}^m\), \(\mathbf{y} \in \mathbb{R}^m\)</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════ -->
+    <div class="section" id="s9">
+      <div class="section-header">
+        <span class="section-num">§09</span>
+        <h2>Gradient Descent Update Rules</h2>
+      </div>
+
+      <div class="math-block">
+        <span class="label">Parameter Updates</span>
+        \[
+        \mathbf{w} \leftarrow \mathbf{w} - \alpha \cdot \frac{\partial J}{\partial \mathbf{w}} = \mathbf{w} -
+        \frac{\alpha}{m} \mathbf{X}^T(\hat{\mathbf{y}} - \mathbf{y})
+        \]
+        \[
+        b \leftarrow b - \alpha \cdot \frac{\partial J}{\partial b} = b - \frac{\alpha}{m}\sum_{i=1}^{m}(\hat{y}^{(i)} -
+        y^{(i)})
+        \]
+      </div>
+
+      <div class="algo">
+        <span class="comment">// Batch Gradient Descent for Logistic Regression</span><br>
+        <span class="kw">Initialize</span>: <span class="var">w</span> = zeros(n), <span class="var">b</span> = <span
+          class="num">0</span><br><br>
+        <span class="kw">for</span> epoch <span class="kw">in</span> range(<span class="fn">num_epochs</span>):<br>
+        &nbsp;&nbsp;<span class="comment"># Forward pass</span><br>
+        &nbsp;&nbsp;<span class="var">z</span> = X @ <span class="var">w</span> + <span class="var">b</span>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="comment"># (m,)</span><br>
+        &nbsp;&nbsp;<span class="var">y_hat</span> = <span class="fn">sigmoid</span>(<span class="var">z</span>)
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="comment"># (m,) predictions</span><br><br>
+        &nbsp;&nbsp;<span class="comment"># Loss</span><br>
+        &nbsp;&nbsp;<span class="var">J</span> = -<span class="fn">mean</span>(<span class="var">y</span>*<span
+          class="fn">log</span>(<span class="var">y_hat</span>) + (<span class="num">1</span>-<span
+          class="var">y</span>)*<span class="fn">log</span>(<span class="num">1</span>-<span
+          class="var">y_hat</span>))<br><br>
+        &nbsp;&nbsp;<span class="comment"># Backward pass (gradients)</span><br>
+        &nbsp;&nbsp;<span class="var">error</span> = <span class="var">y_hat</span> - <span class="var">y</span>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="comment"># (m,) — the residuals</span><br>
+        &nbsp;&nbsp;<span class="var">dw</span> = (X.T @ <span class="var">error</span>) / m
+        &nbsp;&nbsp;&nbsp;&nbsp;<span class="comment"># (n,)</span><br>
+        &nbsp;&nbsp;<span class="var">db</span> = <span class="fn">mean</span>(<span class="var">error</span>)
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="comment"># scalar</span><br><br>
+        &nbsp;&nbsp;<span class="comment"># Update</span><br>
+        &nbsp;&nbsp;<span class="var">w</span> -= α * <span class="var">dw</span><br>
+        &nbsp;&nbsp;<span class="var">b</span> -= α * <span class="var">db</span>
+      </div>
+
+      <p>The three variants (from your gradient descent background):</p>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Variant</th>
+            <th>Batch Size</th>
+            <th>Update Frequency</th>
+            <th>Noise / Stability</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Batch GD</td>
+            <td>All \(m\)</td>
+            <td>Once per epoch</td>
+            <td>Stable, but slow for large data</td>
+          </tr>
+          <tr>
+            <td>Stochastic GD</td>
+            <td>1 sample</td>
+            <td>\(m\) times per epoch</td>
+            <td>Very noisy, can escape local minima</td>
+          </tr>
+          <tr>
+            <td>Mini-Batch GD</td>
+            <td>32–512</td>
+            <td>\(m/\text{batch}\) times</td>
+            <td>Balance of speed and stability ← standard</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- ══════════════════════════════════════════ -->
+    <div class="section" id="s10">
+      <div class="section-header">
+        <span class="section-num">§10</span>
+        <h2>Regularization — L1 and L2</h2>
+      </div>
+
+      <p>From your bias-variance tradeoff knowledge: when a model overfits, we add a penalty on the weights to constrain
+        their magnitude.</p>
+
+      <div class="subsection">
+        <h3>L2 Regularization (Ridge / Weight Decay)</h3>
+
+        <div class="math-block">
+          <span class="label">L2 Regularized Loss</span>
+          \[
+          J_{\text{L2}}(\mathbf{w}) = -\frac{1}{m}\sum_{i=1}^{m}\left[y^{(i)}\log\hat{y}_i +
+          (1-y^{(i)})\log(1-\hat{y}_i)\right] + \frac{\lambda}{2m}\|\mathbf{w}\|_2^2
+          \]
+        </div>
+
+        <p>The \(\frac{\lambda}{2m}\) factor is conventional (the 2 cancels the square's derivative neatly). The new
+          gradient for weights:</p>
+
+        <div class="math-block">
+          <span class="label">L2 Gradient</span>
+          \[
+          \frac{\partial J_{\text{L2}}}{\partial \mathbf{w}} = \frac{1}{m}\mathbf{X}^T(\hat{\mathbf{y}} - \mathbf{y}) +
+          \frac{\lambda}{m}\mathbf{w}
+          \]
+        </div>
+
+        <p>The update rule becomes: \(\mathbf{w} \leftarrow \mathbf{w}(1 - \frac{\alpha\lambda}{m}) -
+          \frac{\alpha}{m}\mathbf{X}^T(\hat{\mathbf{y}}-\mathbf{y})\)
+
+          — the factor \((1 - \frac{\alpha\lambda}{m}) &lt; 1\) <em>shrinks</em> the weights every step, hence the name
+            "weight decay."</p>
+
+        <p>L2 penalizes large weights but never forces them exactly to zero. It promotes <strong>small, spread-out
+            weights</strong>. Probabilistically, it corresponds to a <em>Gaussian prior</em> on the weights (MAP
+          estimation with \(\mathcal{N}(0, 1/\lambda)\)).</p>
+      </div>
+
+      <div class="subsection">
+        <h3>L1 Regularization (Lasso)</h3>
+
+        <div class="math-block">
+          <span class="label">L1 Regularized Loss</span>
+          \[
+          J_{\text{L1}}(\mathbf{w}) = -\frac{1}{m}\sum_{i=1}^{m}\left[\ldots\right] + \frac{\lambda}{m}\|\mathbf{w}\|_1
+          = -\frac{1}{m}\sum\left[\ldots\right] + \frac{\lambda}{m}\sum_{j}|w_j|
+          \]
+        </div>
+
+        <div class="math-block">
+          <span class="label">L1 Gradient</span>
+          \[
+          \frac{\partial J_{\text{L1}}}{\partial w_j} = \frac{1}{m}[\mathbf{X}^T(\hat{\mathbf{y}}-\mathbf{y})]_j +
+          \frac{\lambda}{m}\text{sign}(w_j)
+          \]
+        </div>
+
+        <p>L1 <em>can push weights exactly to zero</em>, performing implicit feature selection. This is because the L1
+          norm has corners at the axes in weight space — gradient descent tends to land exactly at zero.
+          Probabilistically, corresponds to a <em>Laplace prior</em> (Laplacian distribution) on the weights.</p>
+
+        <table>
+          <thead>
+            <tr>
+              <th>Property</th>
+              <th>L2 (Ridge)</th>
+              <th>L1 (Lasso)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Effect on weights</td>
+              <td>Shrinks, never zero</td>
+              <td>Can drive exactly to zero</td>
+            </tr>
+            <tr>
+              <td>Feature selection</td>
+              <td>No</td>
+              <td>Yes (sparse solution)</td>
+            </tr>
+            <tr>
+              <td>Differentiable?</td>
+              <td>Yes everywhere</td>
+              <td>No at \(w_j = 0\)</td>
+            </tr>
+            <tr>
+              <td>Prior equivalent</td>
+              <td>Gaussian prior</td>
+              <td>Laplace prior</td>
+            </tr>
+            <tr>
+              <td>Geometry</td>
+              <td>L2 ball (circle)</td>
+              <td>L1 ball (diamond)</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════ -->
+    <div class="section" id="s11">
+      <div class="section-header">
+        <span class="section-num">§11</span>
+        <h2>Multiclass: One-vs-Rest and Softmax</h2>
+      </div>
+
+      <p>Logistic regression extends to \(K &gt; 2\) classes in two ways.</p>
+
+      <div class="subsection">
+        <h3>Strategy 1: One-vs-Rest (OvR)</h3>
+        <p>Train \(K\) binary logistic regressors. Classifier \(k\) learns: "is this class \(k\) vs. all other classes?"
+          At test time, pick the class with the highest sigmoid score.</p>
+        <p><em>Drawback:</em> The K sigmoid outputs don't sum to 1 — they don't form a proper probability distribution
+          over classes.</p>
+      </div>
+
+      <div class="subsection">
+        <h3>Strategy 2: Softmax Regression (Multinomial Logistic Regression)</h3>
+        <p>The natural generalization. For \(K\) classes, maintain weight vectors \(\mathbf{w}_1, \ldots,
+          \mathbf{w}_K\). Compute \(K\) linear scores:</p>
+
+        <div class="math-block">
+          \[ z_k = \mathbf{w}_k^T \mathbf{x} + b_k, \quad k = 1, \ldots, K \]
+        </div>
+
+        <p>Apply the softmax function to convert to probabilities:</p>
+
+        <div class="math-block">
+          <span class="label">Softmax Function</span>
+          \[
+          P(y=k \mid \mathbf{x}) = \frac{e^{z_k}}{\sum_{j=1}^{K} e^{z_j}}
+          \]
+        </div>
+
+        <p>Properties of softmax: all outputs in (0,1), and they sum to 1. When \(K=2\), softmax reduces exactly to the
+          sigmoid — binary logistic regression is a special case.</p>
+
+        <div class="math-block">
+          <span class="label">Categorical Cross-Entropy Loss</span>
+          \[
+          J = -\frac{1}{m}\sum_{i=1}^{m}\sum_{k=1}^{K} \mathbf{1}[y^{(i)}=k] \log P(y^{(i)}=k \mid \mathbf{x}^{(i)})
+          \]
+        </div>
+
+        <p>Where \(\mathbf{1}[y^{(i)}=k]\) is 1 if sample \(i\) belongs to class \(k\), else 0. This is equivalent to:
+          for each sample, take the negative log of the predicted probability assigned to the true class.</p>
+
+        <div class="callout callout-insight">
+          <div class="callout-title">💡 Connection to Your DL Work</div>
+          <p>The final layer of any classification neural network is exactly softmax regression. When you built your
+            chest X-ray CNN, the last fully-connected layer + softmax was doing softmax regression — the rest of the
+            network was learning a feature representation. Logistic regression = neural network with <em>no hidden
+              layers</em>.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════ -->
+    <div class="section" id="s12">
+      <div class="section-header">
+        <span class="section-num">§12</span>
+        <h2>Geometric Interpretation</h2>
+      </div>
+
+      <p>Let's consolidate the geometry — leveraging your vector and linear algebra background.</p>
+
+      <ul class="prop-list">
+        <li><strong>The weight vector \(\mathbf{w}\):</strong> Points in the direction of maximum increase of the
+          log-odds. Orthogonal to the decision boundary.</li>
+        <li><strong>The bias \(b\):</strong> Translates the boundary away from the origin. Without bias, the boundary
+          must pass through the origin.</li>
+        <li><strong>Distance from a point to the boundary:</strong> \(d =
+          \frac{|\mathbf{w}^T\mathbf{x}+b|}{\|\mathbf{w}\|}\) — the signed distance scaled by the norm of
+          \(\mathbf{w}\). The further a point is from the boundary, the more extreme the sigmoid output (closer to 0 or
+          1).</li>
+        <li><strong>Confidence:</strong> \(|\mathbf{w}^T\mathbf{x}+b|\) measures how "confidently" a point is
+          classified. A value near 0 means uncertain (ŷ ≈ 0.5); large magnitude means confident.</li>
+        <li><strong>Effect of \(\|\mathbf{w}\|\):</strong> Scaling up \(\mathbf{w}\) without changing direction sharpens
+          the sigmoid — the model becomes more "peaked." At \(\|\mathbf{w}\| \to \infty\), the sigmoid approaches a hard
+          step function.</li>
+      </ul>
+    </div>
+
+    <!-- ══════════════════════════════════════════ -->
+    <div class="section" id="s13">
+      <div class="section-header">
+        <span class="section-num">§13</span>
+        <h2>Assumptions of Logistic Regression</h2>
+      </div>
+
+      <p>Unlike linear regression with its stringent Gauss-Markov assumptions, logistic regression has fewer but still
+        important assumptions:</p>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Assumption</th>
+            <th>What it Means</th>
+            <th>What Happens if Violated</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Binary (or categorical) outcome</td>
+            <td>\(y \in \{0,1\}\)</td>
+            <td>Model is inappropriate; use other methods</td>
+          </tr>
+          <tr>
+            <td>Log-odds are linear in features</td>
+            <td>\(\text{logit}(p) = \mathbf{w}^T\mathbf{x}+b\)</td>
+            <td>Underfitting; use feature engineering or nonlinear models</td>
+          </tr>
+          <tr>
+            <td>No multicollinearity</td>
+            <td>Features are not highly correlated</td>
+            <td>Unstable, large, noisy coefficients</td>
+          </tr>
+          <tr>
+            <td>Large sample size</td>
+            <td>MLE is asymptotically consistent</td>
+            <td>High variance estimates with small data; use regularization</td>
+          </tr>
+          <tr>
+            <td>No perfect separation</td>
+            <td>No feature perfectly predicts \(y\)</td>
+            <td>MLE diverges (\(\mathbf{w} \to \infty\)); regularization is required</td>
+          </tr>
+          <tr>
+            <td>Independence of observations</td>
+            <td>i.i.d. samples</td>
+            <td>Underestimated standard errors; use clustered SE</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="callout callout-warning">
+        <div class="callout-title">⚠ Perfect Separation (Hauck-Donner Effect)</div>
+        <p>For perfectly separable classes (e.g., all samples with \(x_1 &gt; 5\) are class 1), the MLE pushes
+          \(w_1 \to \infty\) — the sigmoid becomes a step function and the gradient approaches zero before convergence.
+          Adding L2 regularization bounds the weights and fixes this numerically.</p>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════ -->
+    <div class="section" id="s14">
+      <div class="section-header">
+        <span class="section-num">§14</span>
+        <h2>Logistic Regression as a Neural Network</h2>
+      </div>
+
+      <p>This connection is essential and directly bridges your ML and DL knowledge.</p>
+
+      <div class="figure">
+        <svg viewBox="0 0 520 200" xmlns="http://www.w3.org/2000/svg" style="max-width:520px;">
+          <rect width="520" height="200" fill="#f5f0e8" />
+          <!-- Input nodes -->
+          <g fill="#eaf4fb" stroke="#2471a3" stroke-width="1.5">
+            <circle cx="80" cy="60" r="22" />
+            <circle cx="80" cy="110" r="22" />
+            <circle cx="80" cy="160" r="22" />
+          </g>
+          <text x="80" y="64" text-anchor="middle" font-family="IBM Plex Mono" font-size="12" fill="#2471a3">x₁</text>
+          <text x="80" y="114" text-anchor="middle" font-family="IBM Plex Mono" font-size="12" fill="#2471a3">x₂</text>
+          <text x="80" y="164" text-anchor="middle" font-family="IBM Plex Mono" font-size="12" fill="#2471a3">xₙ</text>
+          <!-- dots -->
+          <text x="80" y="140" text-anchor="middle" font-size="14" fill="#6b6456">⋮</text>
+          <!-- Output node -->
+          <circle cx="380" cy="110" r="30" fill="#fef9e7" stroke="#b7950b" stroke-width="2" />
+          <text x="380" y="106" text-anchor="middle" font-family="IBM Plex Mono" font-size="11"
+            fill="#b7950b">σ(z)</text>
+          <text x="380" y="122" text-anchor="middle" font-family="IBM Plex Mono" font-size="10" fill="#b7950b">=
+            ŷ</text>
+          <!-- Lines (weights) -->
+          <g stroke="#c8bfaa" stroke-width="1.2">
+            <line x1="102" y1="68" x2="350" y2="100" />
+            <line x1="102" y1="110" x2="350" y2="110" />
+            <line x1="102" y1="152" x2="350" y2="120" />
+          </g>
+          <!-- Weight labels -->
+          <text x="205" y="78" font-family="IBM Plex Mono" font-size="11" fill="#1e8449">w₁</text>
+          <text x="205" y="103" font-family="IBM Plex Mono" font-size="11" fill="#1e8449">w₂</text>
+          <text x="205" y="140" font-family="IBM Plex Mono" font-size="11" fill="#1e8449">wₙ</text>
+          <!-- Output arrow -->
+          <line x1="410" y1="110" x2="465" y2="110" stroke="#0f0e0c" stroke-width="1.5" marker-end="url(#ah)" />
+          <text x="472" y="114" font-family="IBM Plex Mono" font-size="12" fill="#c0392b">ŷ</text>
+          <!-- Labels -->
+          <text x="80" y="22" text-anchor="middle" font-family="IBM Plex Mono" font-size="10" fill="#6b6456"
+            letter-spacing="0.1em">INPUT LAYER</text>
+          <text x="380" y="22" text-anchor="middle" font-family="IBM Plex Mono" font-size="10" fill="#6b6456"
+            letter-spacing="0.1em">OUTPUT LAYER</text>
+          <text x="240" y="188" text-anchor="middle" font-family="Source Serif 4" font-size="12" fill="#6b6456"
+            font-style="italic">z = w₁x₁ + w₂x₂ + ... + wₙxₙ + b</text>
+        </svg>
+        <div class="figure-cap">Fig 5. Logistic regression = a neural network with no hidden layers — input layer
+          directly connects to a single sigmoid unit.</div>
+      </div>
+
+      <p>Formally: logistic regression is a <strong>single-layer neural network</strong> with:</p>
+      <ul class="prop-list">
+        <li>No hidden layers</li>
+        <li>One output neuron (binary) or \(K\) output neurons (multiclass softmax)</li>
+        <li>Sigmoid / softmax activation</li>
+        <li>Cross-entropy loss</li>
+        <li>Gradient descent training (backpropagation with only one "layer" of weights)</li>
+      </ul>
+
+      <p>Adding hidden layers = a proper neural network. The same gradient derivation generalizes via backpropagation —
+        the chain rule we worked through in §08 applies repeatedly through each layer.</p>
+    </div>
+
+    <!-- ══════════════════════════════════════════ -->
+    <div class="section" id="s15">
+      <div class="section-header">
+        <span class="section-num">§15</span>
+        <h2>Evaluation Metrics</h2>
+      </div>
+
+      <div class="subsection">
+        <h3>Confusion Matrix and Core Metrics</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>Metric</th>
+              <th>Formula</th>
+              <th>Measures</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Accuracy</td>
+              <td>\(\frac{TP+TN}{TP+TN+FP+FN}\)</td>
+              <td>Overall correctness (misleading for imbalanced data)</td>
+            </tr>
+            <tr>
+              <td>Precision</td>
+              <td>\(\frac{TP}{TP+FP}\)</td>
+              <td>"Of predicted positives, how many were actually positive?"</td>
+            </tr>
+            <tr>
+              <td>Recall (Sensitivity)</td>
+              <td>\(\frac{TP}{TP+FN}\)</td>
+              <td>"Of actual positives, how many were caught?"</td>
+            </tr>
+            <tr>
+              <td>F1 Score</td>
+              <td>\(\frac{2 \cdot P \cdot R}{P+R}\)</td>
+              <td>Harmonic mean of Precision and Recall</td>
+            </tr>
+            <tr>
+              <td>Specificity</td>
+              <td>\(\frac{TN}{TN+FP}\)</td>
+              <td>True negative rate (important in medical diagnosis)</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="subsection">
+        <h3>AUC-ROC</h3>
+        <p>The Receiver Operating Characteristic plots TPR (Recall) vs FPR at varying thresholds. The
+          <strong>AUC</strong> (Area Under Curve) measures the probability that the model ranks a random positive sample
+          higher than a random negative one. AUC = 0.5 is random; AUC = 1.0 is perfect.
+        </p>
+
+        <div class="callout callout-insight">
+          <div class="callout-title">💡 Threshold Selection</div>
+          <p>The default threshold of 0.5 is not always optimal. In your chest X-ray work, a false negative (missed
+            disease) is far worse than a false positive — so you'd lower the threshold (e.g., 0.3) to increase recall at
+            the cost of precision. The ROC curve helps select the optimal operating threshold for your specific cost
+            structure.</p>
+        </div>
+      </div>
+
+      <div class="subsection">
+        <h3>Log-Loss (as a metric)</h3>
+        <div class="math-block">
+          \[
+          \text{Log-Loss} = -\frac{1}{m}\sum_{i=1}^{m}\left[y^{(i)}\log\hat{y}^{(i)} +
+          (1-y^{(i)})\log(1-\hat{y}^{(i)})\right]
+          \]
+        </div>
+        <p>Log-loss evaluates the <em>calibration</em> of predicted probabilities — not just whether the rank order is
+          right, but whether the probability values are accurate. A perfectly calibrated model has log-loss approaching
+          the true entropy of the data.</p>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════ -->
+    <div class="section" id="s16">
+      <div class="section-header">
+        <span class="section-num">§16</span>
+        <h2>The Full Mental Model — Everything Together</h2>
+      </div>
+
+      <div class="figure">
+        <svg viewBox="0 0 600 380" xmlns="http://www.w3.org/2000/svg" style="max-width:600px;">
+          <rect width="600" height="380" fill="#0f0e0c" />
+          <!-- Title -->
+          <text x="300" y="30" text-anchor="middle" font-family="IBM Plex Mono" font-size="11" fill="#6b6456"
+            letter-spacing="0.15em">LOGISTIC REGRESSION — COMPLETE FLOW</text>
+
+          <!-- Box 1: Input -->
+          <rect x="20" y="50" width="100" height="50" rx="3" fill="#1a1a1a" stroke="#2471a3" stroke-width="1.5" />
+          <text x="70" y="70" text-anchor="middle" font-family="IBM Plex Mono" font-size="10"
+            fill="#2471a3">Features</text>
+          <text x="70" y="86" text-anchor="middle" font-family="IBM Plex Mono" font-size="11" fill="#6696c0">x ∈
+            ℝⁿ</text>
+
+          <!-- Box 2: Linear -->
+          <rect x="170" y="50" width="110" height="50" rx="3" fill="#1a1a1a" stroke="#1e8449" stroke-width="1.5" />
+          <text x="225" y="70" text-anchor="middle" font-family="IBM Plex Mono" font-size="10" fill="#1e8449">Linear
+            Score</text>
+          <text x="225" y="86" text-anchor="middle" font-family="IBM Plex Mono" font-size="11" fill="#68b784">z = wᵀx +
+            b</text>
+
+          <!-- Box 3: Sigmoid -->
+          <rect x="330" y="50" width="110" height="50" rx="3" fill="#1a1a1a" stroke="#b7950b" stroke-width="1.5" />
+          <text x="385" y="70" text-anchor="middle" font-family="IBM Plex Mono" font-size="10"
+            fill="#b7950b">Sigmoid</text>
+          <text x="385" y="86" text-anchor="middle" font-family="IBM Plex Mono" font-size="11" fill="#d4b84d">ŷ =
+            σ(z)</text>
+
+          <!-- Box 4: Loss -->
+          <rect x="490" y="50" width="100" height="50" rx="3" fill="#1a1a1a" stroke="#c0392b" stroke-width="1.5" />
+          <text x="540" y="70" text-anchor="middle" font-family="IBM Plex Mono" font-size="10"
+            fill="#c0392b">Cross-Entropy</text>
+          <text x="540" y="86" text-anchor="middle" font-family="IBM Plex Mono" font-size="11" fill="#e06c75">J(ŷ,
+            y)</text>
+
+          <!-- Forward arrows -->
+          <defs>
+            <marker id="wh" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+              <path d="M0,0 L0,6 L8,3 z" fill="#555" />
+            </marker>
+            <marker id="red" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+              <path d="M0,0 L0,6 L8,3 z" fill="#c0392b" />
+            </marker>
+          </defs>
+          <line x1="120" y1="75" x2="168" y2="75" stroke="#555" stroke-width="1.5" marker-end="url(#wh)" />
+          <line x1="280" y1="75" x2="328" y2="75" stroke="#555" stroke-width="1.5" marker-end="url(#wh)" />
+          <line x1="440" y1="75" x2="488" y2="75" stroke="#555" stroke-width="1.5" marker-end="url(#wh)" />
+
+          <!-- Backprop arrow -->
+          <path d="M540,100 C540,130 540,150 440,150 C340,150 240,150 130,150 C80,150 70,150 70,140" fill="none"
+            stroke="#c0392b" stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#red)" />
+          <text x="300" y="168" text-anchor="middle" font-family="IBM Plex Mono" font-size="10" fill="#c0392b"
+            letter-spacing="0.1em">← BACKPROPAGATION (gradients)</text>
+
+          <!-- Gradient equations -->
+          <rect x="20" y="190" width="560" height="160" rx="3" fill="#111" stroke="#333" stroke-width="1" />
+          <text x="300" y="212" text-anchor="middle" font-family="IBM Plex Mono" font-size="10" fill="#555"
+            letter-spacing="0.15em">KEY GRADIENT RESULTS</text>
+
+          <text x="40" y="238" font-family="IBM Plex Mono" font-size="12" fill="#b7950b">∂J/∂ŷ</text>
+          <text x="100" y="238" font-family="IBM Plex Mono" font-size="12" fill="#888"> = </text>
+          <text x="120" y="238" font-family="IBM Plex Mono" font-size="12" fill="#e8dcc8">-y/ŷ + (1-y)/(1-ŷ)</text>
+
+          <text x="40" y="264" font-family="IBM Plex Mono" font-size="12" fill="#b7950b">∂ŷ/∂z</text>
+          <text x="100" y="264" font-family="IBM Plex Mono" font-size="12" fill="#888"> = </text>
+          <text x="120" y="264" font-family="IBM Plex Mono" font-size="12" fill="#e8dcc8">σ(z)(1-σ(z)) = ŷ(1-ŷ)</text>
+
+          <text x="40" y="290" font-family="IBM Plex Mono" font-size="12" fill="#c0392b">∂J/∂z</text>
+          <text x="100" y="290" font-family="IBM Plex Mono" font-size="12" fill="#888"> = </text>
+          <text x="120" y="290" font-family="IBM Plex Mono" font-size="12" fill="#e06c75">ŷ - y</text>
+          <text x="200" y="290" font-family="IBM Plex Mono" font-size="10" fill="#555"> ← log & sigmoid cancel!</text>
+
+          <text x="40" y="316" font-family="IBM Plex Mono" font-size="12" fill="#c0392b">∂J/∂w</text>
+          <text x="100" y="316" font-family="IBM Plex Mono" font-size="12" fill="#888"> = </text>
+          <text x="120" y="316" font-family="IBM Plex Mono" font-size="12" fill="#98c379">(1/m) Xᵀ(ŷ - y)</text>
+
+          <text x="40" y="338" font-family="IBM Plex Mono" font-size="12" fill="#c0392b">∂J/∂b</text>
+          <text x="100" y="338" font-family="IBM Plex Mono" font-size="12" fill="#888"> = </text>
+          <text x="120" y="338" font-family="IBM Plex Mono" font-size="12" fill="#98c379">(1/m) Σ(ŷᵢ - yᵢ)</text>
+
+          <!-- Update rule -->
+          <text x="380" y="264" font-family="IBM Plex Mono" font-size="11" fill="#2471a3">w ← w - α·∂J/∂w</text>
+          <text x="380" y="284" font-family="IBM Plex Mono" font-size="11" fill="#2471a3">b ← b - α·∂J/∂b</text>
+          <rect x="375" y="252" width="200" height="45" rx="2" fill="none" stroke="#2471a3" stroke-width="1"
+            stroke-dasharray="3,2" />
+          <text x="475" y="244" text-anchor="middle" font-family="IBM Plex Mono" font-size="9" fill="#2471a3"
+            letter-spacing="0.1em">PARAMETER UPDATE</text>
+
+          <!-- Bottom -->
+          <text x="300" y="368" text-anchor="middle" font-family="IBM Plex Mono" font-size="9" fill="#444"
+            letter-spacing="0.08em">Converges to global minimum (convex loss) · Linear decision boundary · Probabilistic
+            output</text>
+        </svg>
+        <div class="figure-cap" style="color:#888;">Fig 6. Complete computational flow of logistic regression — forward
+          pass, cross-entropy loss, gradient backpropagation, and parameter update.</div>
+      </div>
+
+      <p style="margin-top: 32px;">Here is the complete picture as a single unified narrative:</p>
+
+      <ol style="padding-left:24px; line-height: 2.2; font-size:16px;">
+        <li><strong>Assume</strong> log-odds are linear in features → sigmoid hypothesis falls out naturally.</li>
+        <li><strong>Model</strong> each label as Bernoulli with \(p = \sigma(\mathbf{w}^T\mathbf{x}+b)\).</li>
+        <li><strong>Maximize</strong> the likelihood of the training data → derive cross-entropy loss via MLE.</li>
+        <li><strong>Compute gradients</strong> via chain rule: the beautiful result \(\partial J/\partial z =
+          \hat{y}-y\).</li>
+        <li><strong>Update parameters</strong> via gradient descent: \(\mathbf{w} \leftarrow \mathbf{w} -
+          \frac{\alpha}{m}\mathbf{X}^T(\hat{\mathbf{y}}-\mathbf{y})\).</li>
+        <li><strong>Regularize</strong> with L1 or L2 to prevent overfitting and handle near-separation.</li>
+        <li><strong>Extend</strong> to multiclass via softmax regression.</li>
+        <li><strong>Evaluate</strong> with AUC-ROC, F1, log-loss — not just accuracy.</li>
+        <li><strong>Recognize</strong> it as a 0-hidden-layer neural network — foundation of all deep learning
+          classifiers.</li>
+      </ol>
+
+    </div>
+
+  </div><!-- end content -->
+
+  <!-- FOOTER -->
+  <div
+    style="background: var(--ink); color: #555; padding: 32px 48px; font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.1em;">
+    <div style="max-width:900px; margin:0 auto; display:flex; justify-content:space-between; flex-wrap:wrap; gap:12px;">
+      <span>LOGISTIC REGRESSION — MATHEMATICAL FOUNDATIONS</span>
+      <span>COVERS: SIGMOID · MLE · CROSS-ENTROPY · GRADIENTS · REGULARIZATION · SOFTMAX</span>
+    </div>
+  </div>
+
+  <script>
+    // Ensure MathJax renders dark-mode equations white
+    window.MathJax = {
+      tex: { inlineMath: [['\\(', '\\)'], ['$', '$']], displayMath: [['\\[', '\\]']] },
+      startup: {
+        ready() {
+          MathJax.startup.defaultReady();
+        }
+      }
+    };
+  </script>
+
+  <canvas id="bg-canvas"></canvas>
+  <script>
+    // Canvas math particle animation
+    const canvas = document.getElementById('bg-canvas');
+    if (canvas) {
+      const ctx = canvas.getContext('2d');
+      let width, height;
+      function resize() {
+        width = canvas.width = window.innerWidth;
+        height = canvas.height = window.innerHeight;
+      }
+      window.addEventListener('resize', resize);
+      resize();
+
+      const mathSymbols = ['∫', 'Σ', '∇', '∂', '∞', '∆', 'θ', 'λ', 'β', 'σ', 'π', 'μ', '≈'];
+      const particles = [];
+
+      for (let i = 0; i < 40; i++) {
+        particles.push({
+          x: Math.random() * width,
+          y: Math.random() * height,
+          symbol: mathSymbols[Math.floor(Math.random() * mathSymbols.length)],
+          size: Math.random() * 24 + 12,
+          speedX: (Math.random() - 0.5) * 0.4,
+          speedY: (Math.random() - 0.5) * 0.4,
+          opacity: Math.random() * 0.25 + 0.05,
+          rotation: Math.random() * Math.PI * 2,
+          rotSpeed: (Math.random() - 0.5) * 0.01
+        });
+      }
+
+      function animate() {
+        ctx.clearRect(0, 0, width, height);
+        particles.forEach(p => {
+          p.x += p.speedX; p.y += p.speedY; p.rotation += p.rotSpeed;
+          if (p.x > width + 50) p.x = -50; if (p.x < -50) p.x = width + 50;
+          if (p.y > height + 50) p.y = -50; if (p.y < -50) p.y = height + 50;
+
+          ctx.save();
+          ctx.translate(p.x, p.y); ctx.rotate(p.rotation);
+          ctx.fillStyle = `rgba(0, 200, 255, ${p.opacity})`;
+          ctx.font = `italic ${p.size}px "Times New Roman", serif`;
+          ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+          ctx.fillText(p.symbol, 0, 0);
+          ctx.restore();
+        });
+        requestAnimationFrame(animate);
+      }
+      animate();
+    }
+
+    // Scroll Animations using Intersection Observer
+    document.addEventListener('DOMContentLoaded', () => {
+      const sections = document.querySelectorAll('.section');
+      const observer = new IntersectionObserver((entries, obs) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            obs.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.03, rootMargin: "0px 0px -50px 0px" });
+
+      sections.forEach(sec => observer.observe(sec));
+    });
+  </script>
+</body>
+
+</html>

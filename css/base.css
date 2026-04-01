@@ -1,0 +1,77 @@
+/* Base styles */
+
+/* Root variables are now in css/variables.css */
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: var(--font-main);
+    background-color: var(--bg-core);
+    color: var(--text-main);
+    overflow-x: hidden;
+    line-height: 1.6;
+    margin-top: 0;
+
+    /* Nav is fixed but hero handles spacing */
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+    width: 6px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--bg-core);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--accent-cyan);
+    border-radius: 3px;
+}
+
+/* Animated Background Container */
+.bg-animation {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    overflow: hidden;
+    pointer-events: none;
+
+    /* Let clicks pass through */
+}
+
+canvas {
+    display: block;
+}
+
+/* Generic CTA Button (Used in Skills, About etc) */
+.cta-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 12px 28px;
+    background: transparent;
+    color: var(--accent-cyan);
+    border: 1px solid var(--accent-cyan);
+    border-radius: 4px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    font-size: 1rem;
+    margin-top: 1rem;
+    cursor: pointer;
+}
+
+.cta-button:hover {
+    background: rgb(0 242 255 / 0.1);
+    box-shadow: 0 0 20px rgb(0 242 255 / 0.3);
+    transform: translateY(-2px);
+    color: var(--accent-cyan);
+}

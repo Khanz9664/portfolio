@@ -1,0 +1,2529 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Breast Cancer Prediction Case Study | Shahid Ul Islam</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Instrument+Sans:ital,wght@0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@400;500&display=swap"
+    rel="stylesheet" />
+<link rel="stylesheet" href="../css/variables.css" />
+<link rel="stylesheet" href="../css/navigation.css" />
+<link rel="stylesheet" href="../css/footer.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+<script defer src="../js/common.js"></script>
+<style>
+  :root {
+    --navy: #070e1a;
+    --navy-mid: #0d1f38;
+    --navy-light: #132844;
+    --ink: #0f172a;
+    --slate: #334155;
+    --muted: #64748b;
+    --border: #1e3a5f;
+    --border-light: #e2e8f0;
+    --off-white: #f7f4ef;
+    --white: #ffffff;
+    --red: #dc2626;
+    --red-light: #fef2f2;
+    --red-mid: #fee2e2;
+    --green: #16a34a;
+    --green-light: #f0fdf4;
+    --blue: #2563eb;
+    --blue-light: #eff6ff;
+    --amber: #d97706;
+    --amber-light: #fffbeb;
+    --purple: #7c3aed;
+    --accent-glow: rgba(37, 99, 235, 0.15);
+    --font-display: 'Playfair Display', Georgia, serif;
+    --font-body: 'Instrument Sans', system-ui, sans-serif;
+    --font-mono: 'JetBrains Mono', monospace;
+  }
+
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    font-size: 16px;
+  }
+
+  body {
+    font-family: var(--font-body);
+    background: var(--off-white);
+    color: var(--ink);
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+
+  /* ── PROGRESS BAR ── */
+  #progress-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 3px;
+    width: 0%;
+    background: linear-gradient(90deg, var(--blue), var(--purple));
+    z-index: 1000;
+    transition: width 0.1s linear;
+  }
+
+  .nav-links a:hover {
+    color: #e2e8f0;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    background: var(--navy);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 100px 2rem 80px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 80% 60% at 20% 50%, rgba(37, 99, 235, 0.12) 0%, transparent 60%),
+      radial-gradient(ellipse 60% 80% at 80% 20%, rgba(220, 38, 38, 0.08) 0%, transparent 50%);
+    pointer-events: none;
+  }
+
+  .hero-grid {
+    position: absolute;
+    inset: 0;
+    opacity: 0.04;
+    background-image: linear-gradient(rgba(255, 255, 255, 0.5) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 255, 255, 0.5) 1px, transparent 1px);
+    background-size: 60px 60px;
+  }
+
+  .hero-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    width: 100%;
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+  }
+
+  .hero-text-content {
+    width: 100%;
+    text-align: left;
+  }
+
+  .hero-text-content {
+    flex: 1;
+    text-align: left;
+  }
+
+  .hero-eyebrow {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: #60a5fa;
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  @media (max-width: 1024px) {
+    .hero-inner {
+      gap: 3rem;
+      text-align: center;
+      align-items: center;
+    }
+
+    .hero-text-content {
+      text-align: center;
+    }
+
+    .hero-eyebrow {
+      justify-content: center;
+    }
+  }
+
+  .hero-eyebrow::before {
+    content: '';
+    display: block;
+    width: 40px;
+    height: 1px;
+    background: #60a5fa;
+  }
+
+  .hero h1 {
+    font-family: var(--font-display);
+    font-size: clamp(2.4rem, 6vw, 5rem);
+    font-weight: 900;
+    line-height: 1.08;
+    color: var(--white);
+    margin-bottom: 1rem;
+    letter-spacing: -0.02em;
+  }
+
+  .hero h1 em {
+    font-style: italic;
+    color: #93c5fd;
+  }
+
+  .hero-subtitle {
+    font-size: clamp(1rem, 2.5vw, 1.25rem);
+    color: #94a3b8;
+    max-width: 620px;
+    margin-bottom: 2.5rem;
+    font-weight: 400;
+  }
+
+  .hero-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-bottom: 3rem;
+  }
+
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.3rem 0.8rem;
+    border-radius: 999px;
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 0.03em;
+    border: 1px solid;
+  }
+
+  .badge-blue {
+    background: rgba(37, 99, 235, 0.15);
+    border-color: rgba(37, 99, 235, 0.4);
+    color: #93c5fd;
+  }
+
+  .badge-green {
+    background: rgba(22, 163, 74, 0.15);
+    border-color: rgba(22, 163, 74, 0.4);
+    color: #86efac;
+  }
+
+  .badge-red {
+    background: rgba(220, 38, 38, 0.15);
+    border-color: rgba(220, 38, 38, 0.4);
+    color: #fca5a5;
+  }
+
+  .badge-amber {
+    background: rgba(217, 119, 6, 0.15);
+    border-color: rgba(217, 119, 6, 0.4);
+    color: #fcd34d;
+  }
+
+  .badge-purple {
+    background: rgba(124, 58, 237, 0.15);
+    border-color: rgba(124, 58, 237, 0.4);
+    color: #c4b5fd;
+  }
+
+  .hero-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    max-width: 640px;
+  }
+
+  .hero-stat {
+    background: var(--navy-light);
+    padding: 1.25rem 1.5rem;
+    text-align: center;
+  }
+
+  .hero-stat-val {
+    font-family: var(--font-display);
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--white);
+    line-height: 1;
+    margin-bottom: 0.3rem;
+  }
+
+  .hero-stat-val.green {
+    color: #4ade80;
+  }
+
+  .hero-stat-val.blue {
+    color: #60a5fa;
+  }
+
+  .hero-stat-val.red {
+    color: #f87171;
+  }
+
+  .hero-stat-label {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: #64748b;
+    font-family: var(--font-mono);
+  }
+
+  .hero-scroll {
+    position: absolute;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    color: #475569;
+    font-size: 0.7rem;
+    font-family: var(--font-mono);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    animation: bounce 2s infinite;
+  }
+
+  @keyframes bounce {
+
+    0%,
+    100% {
+      transform: translateX(-50%) translateY(0)
+    }
+
+    50% {
+      transform: translateX(-50%) translateY(8px)
+    }
+  }
+
+  .scroll-arrow {
+    width: 20px;
+    height: 20px;
+    border-right: 2px solid #475569;
+    border-bottom: 2px solid #475569;
+    transform: rotate(45deg);
+  }
+
+  /* ── SECTIONS ── */
+  section {
+    padding: 5rem 2rem;
+  }
+
+  .section-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  .section-label {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--blue);
+    margin-bottom: 0.75rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .section-label::after {
+    content: '';
+    flex: 0 0 32px;
+    height: 1px;
+    background: var(--blue);
+  }
+
+  h2.section-title {
+    font-family: var(--font-display);
+    font-size: clamp(1.8rem, 4vw, 3rem);
+    font-weight: 700;
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+    margin-bottom: 1rem;
+  }
+
+  h2.section-title em {
+    font-style: italic;
+    color: var(--blue);
+  }
+
+  .section-lead {
+    font-size: 1.05rem;
+    color: var(--slate);
+    max-width: 680px;
+    margin-bottom: 3rem;
+    line-height: 1.75;
+  }
+
+  /* ── DARK SECTION ── */
+  .section-dark {
+    background: var(--navy);
+    color: var(--white);
+  }
+
+  .section-dark h2.section-title {
+    color: var(--white);
+  }
+
+  .section-dark .section-lead {
+    color: #94a3b8;
+  }
+
+  .section-dark .section-label {
+    color: #60a5fa;
+  }
+
+  .section-dark .section-label::after {
+    background: #60a5fa;
+  }
+
+  /* ── EXECUTIVE SUMMARY ── */
+  .exec-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    align-items: start;
+  }
+
+  @media (max-width: 768px) {
+    .exec-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .exec-text p {
+    color: var(--slate);
+    margin-bottom: 1rem;
+    line-height: 1.8;
+  }
+
+  .system-glance {
+    background: var(--navy);
+    border-radius: 16px;
+    padding: 2rem;
+    border: 1px solid var(--border);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .system-glance::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--blue), var(--purple), var(--red));
+  }
+
+  .glance-title {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #60a5fa;
+    margin-bottom: 1.5rem;
+  }
+
+  .glance-pipeline {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .pipeline-row {
+    display: grid;
+    grid-template-columns: 90px 1fr;
+    gap: 1rem;
+    align-items: start;
+    padding: 0.75rem 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+  }
+
+  .pipeline-row:last-child {
+    border-bottom: none;
+  }
+
+  .pipeline-key {
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    color: #475569;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    padding-top: 0.1rem;
+  }
+
+  .pipeline-val {
+    font-size: 0.88rem;
+    color: #e2e8f0;
+    font-weight: 500;
+  }
+
+  .pipeline-val .tag {
+    display: inline-block;
+    background: rgba(37, 99, 235, 0.2);
+    color: #93c5fd;
+    border-radius: 4px;
+    padding: 0.1rem 0.4rem;
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    margin-left: 0.4rem;
+  }
+
+  /* ── PROBLEM SECTION ── */
+  .problem-tension {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    gap: 1.5rem;
+    align-items: center;
+    margin-bottom: 3rem;
+  }
+
+  @media (max-width: 600px) {
+    .problem-tension {
+      grid-template-columns: 1fr;
+      text-align: center;
+    }
+
+    .tension-vs {
+      display: none;
+    }
+  }
+
+  .tension-card {
+    border-radius: 12px;
+    padding: 1.75rem;
+    border: 1px solid;
+  }
+
+  .tension-card.fn {
+    background: var(--red-light);
+    border-color: #fecaca;
+  }
+
+  .tension-card.fp {
+    background: var(--amber-light);
+    border-color: #fde68a;
+  }
+
+  .tension-icon {
+    font-size: 2rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .tension-title {
+    font-family: var(--font-display);
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+  }
+
+  .tension-card.fn .tension-title {
+    color: var(--red);
+  }
+
+  .tension-card.fp .tension-title {
+    color: var(--amber);
+  }
+
+  .tension-desc {
+    font-size: 0.88rem;
+    color: var(--slate);
+    line-height: 1.6;
+  }
+
+  .tension-vs {
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    font-weight: 900;
+    color: #94a3b8;
+    font-style: italic;
+  }
+
+  .comparison-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9rem;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+  }
+
+  .comparison-table thead {
+    background: var(--navy);
+    color: var(--white);
+  }
+
+  .comparison-table th {
+    padding: 1rem 1.25rem;
+    text-align: left;
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    font-weight: 500;
+  }
+
+  .comparison-table td {
+    padding: 0.9rem 1.25rem;
+    border-bottom: 1px solid var(--border-light);
+    vertical-align: middle;
+  }
+
+  .comparison-table tbody tr:nth-child(even) {
+    background: #f8fafc;
+  }
+
+  .comparison-table tbody tr:last-child td {
+    border-bottom: none;
+  }
+
+  .comparison-table .td-pain {
+    font-weight: 600;
+    color: var(--ink);
+  }
+
+  .comparison-table .td-legacy {
+    color: var(--red);
+    font-size: 0.85rem;
+  }
+
+  .comparison-table .td-new {
+    color: var(--green);
+    font-size: 0.85rem;
+    font-weight: 500;
+  }
+
+  .check {
+    color: var(--green);
+    font-size: 1.1rem;
+    margin-right: 0.3rem;
+  }
+
+  .cross {
+    color: var(--red);
+    font-size: 1.1rem;
+    margin-right: 0.3rem;
+  }
+
+  /* ── DATASET ── */
+  .dataset-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 3rem;
+  }
+
+  .ds-card {
+    border-radius: 12px;
+    padding: 1.5rem;
+    border: 1px solid var(--border-light);
+    background: var(--white);
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+
+  .ds-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+  }
+
+  .ds-icon {
+    font-size: 1.75rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .ds-label {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 0.25rem;
+  }
+
+  .ds-value {
+    font-family: var(--font-display);
+    font-size: 1.9rem;
+    font-weight: 700;
+    color: var(--ink);
+    line-height: 1;
+    margin-bottom: 0.3rem;
+  }
+
+  .ds-desc {
+    font-size: 0.85rem;
+    color: var(--slate);
+  }
+
+  /* Donut chart */
+  .donut-wrap {
+    background: var(--white);
+    border: 1px solid var(--border-light);
+    border-radius: 16px;
+    padding: 2rem;
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    flex-wrap: wrap;
+    margin-bottom: 3rem;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
+  }
+
+  .donut-svg {
+    flex: 0 0 160px;
+  }
+
+  .donut-legend {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .legend-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  .legend-info .legend-name {
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: var(--ink);
+  }
+
+  .legend-info .legend-count {
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    color: var(--muted);
+  }
+
+  /* Feature groups */
+  .feature-groups {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+  }
+
+  @media (max-width: 768px) {
+    .feature-groups {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .fg-card {
+    border-radius: 12px;
+    padding: 1.5rem;
+    border-top: 3px solid;
+  }
+
+  .fg-card.mean {
+    border-color: var(--blue);
+    background: var(--blue-light);
+  }
+
+  .fg-card.se {
+    border-color: var(--amber);
+    background: var(--amber-light);
+  }
+
+  .fg-card.worst {
+    border-color: var(--red);
+    background: var(--red-light);
+  }
+
+  .fg-title {
+    font-weight: 700;
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+    color: var(--ink);
+  }
+
+  .fg-badge {
+    display: inline-block;
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    padding: 0.2rem 0.5rem;
+    border-radius: 4px;
+    margin-bottom: 0.75rem;
+  }
+
+  .fg-card.mean .fg-badge {
+    background: rgba(37, 99, 235, 0.15);
+    color: var(--blue);
+  }
+
+  .fg-card.se .fg-badge {
+    background: rgba(217, 119, 6, 0.15);
+    color: var(--amber);
+  }
+
+  .fg-card.worst .fg-badge {
+    background: rgba(220, 38, 38, 0.15);
+    color: var(--red);
+  }
+
+  .fg-features {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+  }
+
+  .fg-features li {
+    font-size: 0.78rem;
+    color: var(--slate);
+    background: rgba(255, 255, 255, 0.7);
+    border: 1px solid rgba(0, 0, 0, 0.06);
+    border-radius: 4px;
+    padding: 0.15rem 0.5rem;
+  }
+
+  /* ── ARCHITECTURE PIPELINE ── */
+  .pipeline-visual {
+    display: flex;
+    align-items: stretch;
+    gap: 0;
+    overflow-x: auto;
+    padding-bottom: 1rem;
+    margin-bottom: 3rem;
+  }
+
+  .pipe-step {
+    flex: 1 1 140px;
+    min-width: 130px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 1.5rem 1rem;
+    background: var(--navy-light);
+    border: 1px solid var(--border);
+    position: relative;
+  }
+
+  .pipe-step:first-child {
+    border-radius: 12px 0 0 12px;
+  }
+
+  .pipe-step:last-child {
+    border-radius: 0 12px 12px 0;
+  }
+
+  .pipe-step+.pipe-step {
+    border-left: none;
+  }
+
+  .pipe-step::after {
+    content: '→';
+    position: absolute;
+    right: -14px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #60a5fa;
+    font-size: 1.1rem;
+    z-index: 2;
+    background: var(--navy);
+    padding: 0 2px;
+  }
+
+  .pipe-step:last-child::after {
+    display: none;
+  }
+
+  .pipe-icon {
+    font-size: 1.75rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .pipe-name {
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #60a5fa;
+    margin-bottom: 0.4rem;
+  }
+
+  .pipe-desc {
+    font-size: 0.78rem;
+    color: #94a3b8;
+    line-height: 1.4;
+  }
+
+  /* Tabs architecture */
+  .tabs-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 1rem;
+    margin-bottom: 2rem;
+  }
+
+  .tab-card {
+    border-radius: 10px;
+    padding: 1.25rem 1rem;
+    border: 1px solid var(--border);
+    background: var(--navy-light);
+    transition: border-color 0.2s, background 0.2s;
+  }
+
+  .tab-card:hover {
+    border-color: #3b82f6;
+    background: rgba(37, 99, 235, 0.08);
+  }
+
+  .tab-num {
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    color: #475569;
+    margin-bottom: 0.4rem;
+  }
+
+  .tab-name {
+    font-weight: 600;
+    color: #e2e8f0;
+    font-size: 0.88rem;
+    margin-bottom: 0.4rem;
+  }
+
+  .tab-desc {
+    font-size: 0.78rem;
+    color: #64748b;
+    line-height: 1.5;
+  }
+
+  /* ── RESULTS ── */
+  .results-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 3rem;
+  }
+
+  .result-card {
+    border-radius: 12px;
+    padding: 1.75rem 1.5rem;
+    text-align: center;
+    border: 1px solid var(--border);
+    background: var(--navy-light);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .result-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+  }
+
+  .result-card.rc-green::before {
+    background: linear-gradient(90deg, #16a34a, #4ade80);
+  }
+
+  .result-card.rc-blue::before {
+    background: linear-gradient(90deg, #2563eb, #60a5fa);
+  }
+
+  .result-card.rc-red::before {
+    background: linear-gradient(90deg, #dc2626, #f87171);
+  }
+
+  .result-card.rc-purple::before {
+    background: linear-gradient(90deg, #7c3aed, #a78bfa);
+  }
+
+  .result-card.rc-amber::before {
+    background: linear-gradient(90deg, #d97706, #fcd34d);
+  }
+
+  .result-val {
+    font-family: var(--font-display);
+    font-size: 2.5rem;
+    font-weight: 900;
+    line-height: 1;
+    margin-bottom: 0.4rem;
+  }
+
+  .rc-green .result-val {
+    color: #4ade80;
+  }
+
+  .rc-blue .result-val {
+    color: #60a5fa;
+  }
+
+  .rc-red .result-val {
+    color: #f87171;
+  }
+
+  .rc-purple .result-val {
+    color: #a78bfa;
+  }
+
+  .rc-amber .result-val {
+    color: #fcd34d;
+  }
+
+  .result-label {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #64748b;
+  }
+
+  .result-context {
+    font-size: 0.78rem;
+    color: #475569;
+    margin-top: 0.3rem;
+  }
+
+  /* SHAP bars */
+  .shap-chart {
+    background: var(--navy-light);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 2rem;
+    margin-bottom: 3rem;
+  }
+
+  .shap-title {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #60a5fa;
+    margin-bottom: 1.5rem;
+  }
+
+  .shap-row {
+    display: grid;
+    grid-template-columns: 180px 1fr 60px;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 0.75rem;
+  }
+
+  @media (max-width: 520px) {
+    .shap-row {
+      grid-template-columns: 1fr;
+      gap: 0.3rem;
+    }
+  }
+
+  .shap-feature {
+    font-size: 0.82rem;
+    color: #cbd5e1;
+    text-align: right;
+  }
+
+  @media (max-width: 520px) {
+    .shap-feature {
+      text-align: left;
+    }
+  }
+
+  .shap-bar-wrap {
+    height: 22px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+
+  .shap-bar {
+    height: 100%;
+    border-radius: 4px;
+    background: linear-gradient(90deg, #dc2626, #f97316);
+    width: 0%;
+    transition: width 1.2s cubic-bezier(0.22, 0.61, 0.36, 1);
+  }
+
+  .shap-val {
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    color: #fca5a5;
+    text-align: right;
+  }
+
+  /* ── IMPACT ── */
+  .impact-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 3rem;
+  }
+
+  .impact-card {
+    border-radius: 12px;
+    padding: 1.5rem;
+    background: var(--white);
+    border: 1px solid var(--border-light);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+
+  .impact-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.08);
+  }
+
+  .impact-icon {
+    font-size: 2rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .impact-title {
+    font-weight: 700;
+    font-size: 0.95rem;
+    color: var(--ink);
+    margin-bottom: 0.4rem;
+  }
+
+  .impact-desc {
+    font-size: 0.85rem;
+    color: var(--slate);
+    line-height: 1.6;
+  }
+
+  .stakeholder-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1rem;
+    margin-top: 2rem;
+  }
+
+  .stake-card {
+    border-radius: 10px;
+    padding: 1.25rem;
+    border-left: 3px solid;
+  }
+
+  .stake-card.pathologist {
+    border-color: var(--blue);
+    background: var(--blue-light);
+  }
+
+  .stake-card.institution {
+    border-color: var(--green);
+    background: var(--green-light);
+  }
+
+  .stake-card.researcher {
+    border-color: var(--purple);
+    background: #fdf4ff;
+  }
+
+  .stake-card.practitioner {
+    border-color: var(--amber);
+    background: var(--amber-light);
+  }
+
+  .stake-name {
+    font-weight: 700;
+    font-size: 0.88rem;
+    margin-bottom: 0.5rem;
+    color: var(--ink);
+  }
+
+  .stake-items {
+    list-style: none;
+  }
+
+  .stake-items li {
+    font-size: 0.82rem;
+    color: var(--slate);
+    padding: 0.2rem 0;
+    display: flex;
+    align-items: flex-start;
+    gap: 0.4rem;
+  }
+
+  .stake-items li::before {
+    content: '→';
+    flex-shrink: 0;
+  }
+
+  /* ── ETHICS ── */
+  .ethics-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 1rem;
+    margin-bottom: 3rem;
+  }
+
+  .ethics-card {
+    border-radius: 12px;
+    padding: 1.5rem;
+    background: var(--navy-light);
+    border: 1px solid var(--border);
+  }
+
+  .ethics-icon {
+    font-size: 1.5rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .ethics-title {
+    font-weight: 700;
+    font-size: 0.88rem;
+    color: #e2e8f0;
+    margin-bottom: 0.5rem;
+  }
+
+  .ethics-desc {
+    font-size: 0.82rem;
+    color: #94a3b8;
+    line-height: 1.6;
+  }
+
+  /* ── LESSONS ── */
+  .lessons-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .lesson-item {
+    display: grid;
+    grid-template-columns: 60px 1fr;
+    gap: 1.5rem;
+    align-items: start;
+    padding: 1.5rem;
+    background: var(--white);
+    border: 1px solid var(--border-light);
+    border-radius: 12px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+    transition: transform 0.2s;
+  }
+
+  .lesson-item:hover {
+    transform: translateX(4px);
+  }
+
+  .lesson-num {
+    font-family: var(--font-display);
+    font-size: 3rem;
+    font-weight: 900;
+    color: var(--border-light);
+    line-height: 1;
+    text-align: center;
+    padding-top: 0.25rem;
+  }
+
+  .lesson-title {
+    font-weight: 700;
+    font-size: 1rem;
+    color: var(--ink);
+    margin-bottom: 0.4rem;
+  }
+
+  .lesson-desc {
+    font-size: 0.88rem;
+    color: var(--slate);
+    line-height: 1.7;
+  }
+
+  /* ── FUTURE ── */
+  .future-table {
+    width: 100%;
+    border-collapse: collapse;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+  }
+
+  .future-table thead {
+    background: var(--navy);
+    color: var(--white);
+  }
+
+  .future-table th {
+    padding: 1rem 1.25rem;
+    text-align: left;
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .future-table td {
+    padding: 0.9rem 1.25rem;
+    border-bottom: 1px solid var(--border-light);
+    font-size: 0.88rem;
+  }
+
+  .future-table td:first-child {
+    font-weight: 600;
+    color: var(--ink);
+  }
+
+  .future-table td:last-child {
+    color: var(--slate);
+  }
+
+  .future-table tbody tr:nth-child(even) {
+    background: #f8fafc;
+  }
+
+  .future-table tbody tr:last-child td {
+    border-bottom: none;
+  }
+
+  /* ── TECH STACK ── */
+  .tech-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-top: 2rem;
+  }
+
+  .tech-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    background: var(--navy-light);
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    color: #e2e8f0;
+    font-weight: 500;
+    transition: border-color 0.2s;
+  }
+
+  .tech-badge:hover {
+    border-color: #60a5fa;
+  }
+
+  .tech-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #60a5fa;
+    flex-shrink: 0;
+  }
+
+  .tech-dot.green {
+    background: #4ade80;
+  }
+
+  .tech-dot.amber {
+    background: #fcd34d;
+  }
+
+  .tech-dot.red {
+    background: #f87171;
+  }
+
+  .tech-dot.purple {
+    background: #a78bfa;
+  }
+
+
+  /* ── SCROLL REVEAL ── */
+  .reveal {
+    opacity: 0;
+    transform: translateY(28px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .reveal-delay-1 {
+    transition-delay: 0.1s;
+  }
+
+  .reveal-delay-2 {
+    transition-delay: 0.2s;
+  }
+
+  .reveal-delay-3 {
+    transition-delay: 0.3s;
+  }
+
+  .reveal-delay-4 {
+    transition-delay: 0.4s;
+  }
+
+  /* ── DIVIDER ── */
+  .divider {
+    height: 1px;
+    background: var(--border-light);
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  .divider-dark {
+    background: var(--border);
+  }
+
+  /* ── CALLOUT ── */
+  .callout {
+    border-left: 3px solid var(--blue);
+    background: var(--blue-light);
+    border-radius: 0 10px 10px 0;
+    padding: 1.25rem 1.5rem;
+    margin: 2rem 0;
+  }
+
+  .callout p {
+    font-style: italic;
+    color: var(--slate);
+    font-size: 0.95rem;
+    line-height: 1.7;
+  }
+
+  .callout p strong {
+    color: var(--ink);
+    font-style: normal;
+  }
+
+  /* ── SECTION DIVIDER SHAPE ── */
+  .shape-divider {
+    width: 100%;
+    overflow: hidden;
+    line-height: 0;
+    background: var(--off-white);
+  }
+
+  .shape-divider svg {
+    display: block;
+  }
+
+  /* Impact comparison table */
+  .impact-table {
+    width: 100%;
+    border-collapse: collapse;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+    margin-bottom: 2rem;
+  }
+
+  .impact-table thead {
+    background: var(--navy);
+    color: var(--white);
+  }
+
+  .impact-table th {
+    padding: 1rem 1.25rem;
+    text-align: left;
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .impact-table td {
+    padding: 0.9rem 1.25rem;
+    border-bottom: 1px solid var(--border-light);
+    font-size: 0.88rem;
+    vertical-align: middle;
+  }
+
+  .impact-table td:first-child {
+    font-weight: 600;
+    color: var(--ink);
+  }
+
+  .impact-table .td-baseline {
+    color: var(--red);
+  }
+
+  .impact-table .td-system {
+    color: var(--green);
+    font-weight: 500;
+  }
+
+  .impact-table tbody tr:nth-child(even) {
+    background: #f8fafc;
+  }
+
+  .impact-table tbody tr:last-child td {
+    border-bottom: none;
+  }
+
+  /* ── FOOTER OVERRIDES FOR DARK BG ── */
+  .site-footer .social-link11 {
+    color: #e2e8f0;
+    border-color: rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.05);
+  }
+
+  .site-footer .social-link11:hover {
+    color: var(--blue);
+    border-color: var(--blue);
+    background: rgba(37, 99, 235, 0.1);
+  }
+
+  .site-footer .back-to-top {
+    color: #e2e8f0;
+    border-color: rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.05);
+  }
+
+  .site-footer .copyright,
+  .site-footer .made-with {
+    color: #94a3b8;
+  }
+
+  /* ── STICKY GITHUB BUTTON ── */
+  .sticky-repo-btn {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    z-index: 999;
+    background: linear-gradient(135deg, #2563eb, #7c3aed);
+    color: white;
+    text-decoration: none;
+    padding: 12px 24px;
+    border-radius: 50px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-family: var(--font-body);
+    font-weight: 600;
+    font-size: 0.9rem;
+    box-shadow: 0 10px 25px rgba(124, 58, 237, 0.3);
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .sticky-repo-btn:hover {
+    transform: translateY(-5px) scale(1.02);
+    box-shadow: 0 15px 35px rgba(124, 58, 237, 0.4);
+    filter: brightness(1.1);
+  }
+
+  .sticky-repo-btn i {
+    font-size: 1.2rem;
+  }
+
+  @media (max-width: 768px) {
+    .sticky-repo-btn {
+      bottom: 20px;
+      right: 20px;
+      padding: 10px 20px;
+      font-size: 0.85rem;
+    }
+  }
+</style>
+</head>
+
+<body>
+
+  <div id="progress-bar"></div>
+
+  <!-- Navigation -->
+  <div class="top-bar">
+    <div class="logo">
+      <img src="../img/plogo.png" alt="Personal Logo" class="logo-icon">
+      <span class="logo-text">SHAHID<span class="logo-accent">||</span>Portfolio</span>
+    </div>
+    <nav class="nav-container">
+      <ul class="nav-links">
+        <li><a href="../index.html" class="nav-link"><span>.</span> Home</a></li>
+        <li><a href="../about.html" class="nav-link"><span>.</span> About</a></li>
+        <li><a href="../skills.html" class="nav-link"><span>.</span> Skills</a></li>
+        <li><a href="../projects.html" class="nav-link"><span>.</span> Projects</a></li>
+        <li><a href="../contact.html" class="nav-link"><span>.</span> Contact</a></li>
+        <li><a href="../articles.html" class="nav-link"><span>.</span> Articles</a></li>
+      </ul>
+      <div class="menu-toggle">
+        <div class="hamburger"></div>
+      </div>
+    </nav>
+  </div>
+
+  <!-- ── HERO ── -->
+  <section class="hero">
+    <div class="hero-grid"></div>
+    <div class="hero-inner">
+      <div class="hero-text-content">
+        <div class="hero-eyebrow">Case Study · Dec 2024</div>
+        <h1>Breast Cancer<br /><em>Diagnostic Support</em><br />System</h1>
+        <p class="hero-subtitle">Transforming FNA cytology data into clinically accountable, explainable AI decisions —
+          98.2% accuracy with full SHAP transparency.</p>
+      </div>
+      <div class="hero-meta">
+        <span class="badge badge-blue">Python 3.10+</span>
+        <span class="badge badge-amber">Random Forest</span>
+        <span class="badge badge-green">SHAP XAI</span>
+        <span class="badge badge-red">Streamlit</span>
+        <span class="badge badge-purple">WDBC Dataset</span>
+      </div>
+      <div class="hero-stats">
+        <div class="hero-stat">
+          <div class="hero-stat-val green">98.2<span style="font-size:1.2rem">%</span></div>
+          <div class="hero-stat-label">Accuracy</div>
+        </div>
+        <div class="hero-stat">
+          <div class="hero-stat-val blue">0.999</div>
+          <div class="hero-stat-label">AUC-ROC</div>
+        </div>
+        <div class="hero-stat">
+          <div class="hero-stat-val">569</div>
+          <div class="hero-stat-label">Samples</div>
+        </div>
+        <div class="hero-stat">
+          <div class="hero-stat-val red">2</div>
+          <div class="hero-stat-label">False Neg.</div>
+        </div>
+      </div>
+    </div>
+    <div class="hero-scroll">
+      <div class="scroll-arrow"></div>
+      Scroll
+    </div>
+  </section>
+
+  <!-- ── EXECUTIVE SUMMARY ── -->
+  <section id="summary" style="background: var(--off-white);">
+    <div class="section-inner">
+      <div class="section-label">01 — Overview</div>
+      <h2 class="section-title">Executive <em>Summary</em></h2>
+      <div class="exec-grid">
+        <div class="exec-text reveal">
+          <p>Breast cancer is the most commonly diagnosed cancer in women globally. Early, accurate classification of a
+            tumor as <strong>benign or malignant</strong> is the pivotal moment in a patient's care pathway — catching
+            malignancy early dramatically improves survival outcomes while avoiding unnecessary surgical interventions
+            for benign cases.</p>
+          <p>This project delivers a <strong>production-grade clinical decision support system</strong> that classifies
+            breast tumors in real-time from 30 nuclear morphology measurements derived from Fine Needle Aspiration (FNA)
+            cytology.</p>
+          <p>The system wraps its prediction inside a fully <strong>transparent, explainable, and auditable
+              platform</strong> — making it suitable for medical researchers and clinical informaticians who need to
+            trust and interpret every decision.</p>
+          <div class="callout">
+            <p><strong>Design philosophy:</strong> A prediction is only clinically useful if the clinician can
+              understand, challenge, and reproduce the reasoning behind it. Accuracy alone is insufficient —
+              transparency is mandatory.</p>
+          </div>
+        </div>
+        <div class="system-glance reveal reveal-delay-2">
+          <div class="glance-title">// SYSTEM AT A GLANCE</div>
+          <div class="glance-pipeline">
+            <div class="pipeline-row">
+              <div class="pipeline-key">Input</div>
+              <div class="pipeline-val">30 FNA cytology features <span class="tag">numeric</span></div>
+            </div>
+            <div class="pipeline-row">
+              <div class="pipeline-key">Dataset</div>
+              <div class="pipeline-val">WDBC — 569 clinical samples</div>
+            </div>
+            <div class="pipeline-row">
+              <div class="pipeline-key">Engine</div>
+              <div class="pipeline-val">Random Forest Ensemble v2 <span class="tag">sklearn</span></div>
+            </div>
+            <div class="pipeline-row">
+              <div class="pipeline-key">Accuracy</div>
+              <div class="pipeline-val" style="color:#4ade80;font-weight:700">98.2% · AUC 0.9990</div>
+            </div>
+            <div class="pipeline-row">
+              <div class="pipeline-key">XAI</div>
+              <div class="pipeline-val">SHAP + Rule-based clinical engine</div>
+            </div>
+            <div class="pipeline-row">
+              <div class="pipeline-key">Output</div>
+              <div class="pipeline-val">Benign / Malignant + confidence + PDF report</div>
+            </div>
+            <div class="pipeline-row">
+              <div class="pipeline-key">Ops</div>
+              <div class="pipeline-val">Z-score drift detection · Audit log</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ── PROBLEM ── -->
+  <section id="problem" style="background: var(--white);">
+    <div class="section-inner">
+      <div class="section-label">02 — Problem</div>
+      <h2 class="section-title">The Clinical &amp; <em>Engineering Gap</em></h2>
+      <p class="section-lead">Pathologists face a recurring challenge: manual interpretation of FNA cytology is
+        subjective, time-costly, and prone to inter-observer variability. Existing AI tools compound this with black-box
+        outputs and zero operational transparency.</p>
+
+      <div class="problem-tension reveal">
+        <div class="tension-card fn">
+          <div class="tension-icon"></div>
+          <div class="tension-title">False Negative</div>
+          <div class="tension-desc">Missing a malignancy delays life-saving treatment and leads to poorer prognosis.
+            Every missed case is a catastrophic failure in the care pathway.</div>
+        </div>
+        <div class="tension-vs">vs.</div>
+        <div class="tension-card fp">
+          <div class="tension-icon"></div>
+          <div class="tension-title">False Positive</div>
+          <div class="tension-desc">Flagging a benign tumor as malignant causes unnecessary surgery, patient anxiety,
+            and significant financial burden — with no clinical benefit.</div>
+        </div>
+      </div>
+
+      <div class="callout reveal">
+        <p><strong>Problem Statement:</strong> How can we build an AI system that not only classifies breast tumors with
+          near-perfect accuracy, but is also transparent, operationally monitored, clinically actionable, and ethically
+          documented — such that a clinician can trust and use it with confidence?</p>
+      </div>
+
+      <h3
+        style="font-family: var(--font-display); font-size: 1.3rem; font-weight: 700; margin-bottom: 1rem; margin-top: 2rem;"
+        class="reveal">Engineering Gap Analysis</h3>
+      <div class="reveal reveal-delay-1"
+        style="overflow-x: auto; border-radius: 12px; box-shadow: 0 1px 4px rgba(0,0,0,0.06);">
+        <table class="comparison-table">
+          <thead>
+            <tr>
+              <th>Pain Point</th>
+              <th>Legacy Tools</th>
+              <th>This System</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="td-pain">Black-box predictions</td>
+              <td class="td-legacy"><span class="cross">✗</span> No explanation for the decision</td>
+              <td class="td-new"><span class="check">✓</span> SHAP feature attribution per prediction</td>
+            </tr>
+            <tr>
+              <td class="td-pain">Fixed threshold</td>
+              <td class="td-legacy"><span class="cross">✗</span> 0.50 default, ignores clinical stakes</td>
+              <td class="td-new"><span class="check">✓</span> Adjustable live threshold slider</td>
+            </tr>
+            <tr>
+              <td class="td-pain">No drift monitoring</td>
+              <td class="td-legacy"><span class="cross">✗</span> Silent model degradation</td>
+              <td class="td-new"><span class="check">✓</span> Z-score drift detection per feature</td>
+            </tr>
+            <tr>
+              <td class="td-pain">No audit trail</td>
+              <td class="td-legacy"><span class="cross">✗</span> No persistent prediction log</td>
+              <td class="td-new"><span class="check">✓</span> Timestamped CSV audit log</td>
+            </tr>
+            <tr>
+              <td class="td-pain">No PDF report</td>
+              <td class="td-legacy"><span class="cross">✗</span> Manual copy-paste documentation</td>
+              <td class="td-new"><span class="check">✓</span> Auto-generated structured PDF</td>
+            </tr>
+            <tr>
+              <td class="td-pain">No robustness check</td>
+              <td class="td-legacy"><span class="cross">✗</span> Single-point probability estimate</td>
+              <td class="td-new"><span class="check">✓</span> Tree-level variance + 95% CI</td>
+            </tr>
+            <tr>
+              <td class="td-pain">No research utility</td>
+              <td class="td-legacy"><span class="cross">✗</span> Static production tool only</td>
+              <td class="td-new"><span class="check">✓</span> Synthetic data + PCA research lab</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ── DATASET ── -->
+  <section id="dataset" style="background: var(--off-white);">
+    <div class="section-inner">
+      <div class="section-label">03 — Data</div>
+      <h2 class="section-title">Dataset &amp; <em>Domain Context</em></h2>
+      <p class="section-lead">The Wisconsin Diagnostic Breast Cancer (WDBC) dataset represents digitized nuclear
+        morphology measurements from Fine Needle Aspiration imaging, sourced from the UCI Machine Learning Repository.
+      </p>
+
+      <div class="dataset-grid">
+        <div class="ds-card reveal">
+          <div class="ds-icon"></div>
+          <div class="ds-label">Total Samples</div>
+          <div class="ds-value">569</div>
+          <div class="ds-desc">Digitized FNA cytology measurements from breast mass aspirates.</div>
+        </div>
+        <div class="ds-card reveal reveal-delay-1">
+          <div class="ds-icon"></div>
+          <div class="ds-label">Features</div>
+          <div class="ds-value">30</div>
+          <div class="ds-desc">Numeric, continuous. No missing values. No imputation required.</div>
+        </div>
+        <div class="ds-card reveal reveal-delay-2">
+          <div class="ds-icon"></div>
+          <div class="ds-label">Class Ratio</div>
+          <div class="ds-value">1.68:1</div>
+          <div class="ds-desc">Manageable imbalance. No SMOTE or oversampling was necessary.</div>
+        </div>
+        <div class="ds-card reveal reveal-delay-3">
+          <div class="ds-icon"></div>
+          <div class="ds-label">Provenance</div>
+          <div class="ds-value">1995</div>
+          <div class="ds-desc">Wolberg, Street &amp; Mangasarian — UCI ML Repository benchmark dataset.</div>
+        </div>
+      </div>
+
+      <!-- Donut -->
+      <div class="donut-wrap reveal">
+        <svg class="donut-svg" viewBox="0 0 160 160">
+          <circle cx="80" cy="80" r="60" fill="none" stroke="#e5e7eb" stroke-width="22" />
+          <!-- Benign: 357/569 = 62.7% → circumference = 2πr = 376.99; benign = 236.4 -->
+          <circle cx="80" cy="80" r="60" fill="none" stroke="#16a34a" stroke-width="22" stroke-dasharray="236.4 376.99"
+            stroke-dashoffset="94.25" stroke-linecap="round" style="transition: stroke-dasharray 1.5s ease;" />
+          <!-- Malignant: 212/569 = 37.3% → 140.59 -->
+          <circle cx="80" cy="80" r="60" fill="none" stroke="#dc2626" stroke-width="22" stroke-dasharray="140.59 376.99"
+            stroke-dashoffset="-142.15" stroke-linecap="round" />
+          <text x="80" y="75" text-anchor="middle" font-family="'Playfair Display', serif" font-size="22"
+            font-weight="700" fill="#0f172a">569</text>
+          <text x="80" y="93" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="9"
+            fill="#64748b" letter-spacing="1">SAMPLES</text>
+        </svg>
+        <div class="donut-legend">
+          <div class="legend-item">
+            <div class="legend-dot" style="background:#16a34a"></div>
+            <div class="legend-info">
+              <div class="legend-name">Benign</div>
+              <div class="legend-count">357 samples · 62.7%</div>
+            </div>
+          </div>
+          <div class="legend-item">
+            <div class="legend-dot" style="background:#dc2626"></div>
+            <div class="legend-info">
+              <div class="legend-name">Malignant</div>
+              <div class="legend-count">212 samples · 37.3%</div>
+            </div>
+          </div>
+          <div class="legend-item">
+            <div class="legend-dot" style="background:#e5e7eb"></div>
+            <div class="legend-info">
+              <div class="legend-name">Split</div>
+              <div class="legend-count">80% train · 20% test (stratified)</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <h3 style="font-family: var(--font-display); font-size: 1.3rem; font-weight: 700; margin-bottom: 1.25rem;"
+        class="reveal">Feature Architecture</h3>
+      <div class="feature-groups reveal">
+        <div class="fg-card mean">
+          <div class="fg-badge">10 features</div>
+          <div class="fg-title">Mean Measurements</div>
+          <ul class="fg-features">
+            <li>Radius</li>
+            <li>Texture</li>
+            <li>Perimeter</li>
+            <li>Area</li>
+            <li>Smoothness</li>
+            <li>Compactness</li>
+            <li>Concavity</li>
+            <li>Concave Points</li>
+            <li>Symmetry</li>
+            <li>Fractal Dim.</li>
+          </ul>
+        </div>
+        <div class="fg-card se">
+          <div class="fg-badge">10 features</div>
+          <div class="fg-title">Standard Error</div>
+          <ul class="fg-features">
+            <li>Radius SE</li>
+            <li>Texture SE</li>
+            <li>Perimeter SE</li>
+            <li>Area SE</li>
+            <li>Smoothness SE</li>
+            <li>Compactness SE</li>
+            <li>Concavity SE</li>
+            <li>Concave Pts SE</li>
+            <li>Symmetry SE</li>
+            <li>Fractal Dim. SE</li>
+          </ul>
+        </div>
+        <div class="fg-card worst">
+          <div class="fg-badge">10 features · highest predictive power</div>
+          <div class="fg-title">Worst-Case Values</div>
+          <ul class="fg-features">
+            <li>Radius Worst</li>
+            <li>Texture Worst</li>
+            <li>Perimeter Worst</li>
+            <li>Area Worst</li>
+            <li>Smoothness W.</li>
+            <li>Compactness W.</li>
+            <li>Concavity W.</li>
+            <li>Concave Pts W.</li>
+            <li>Symmetry W.</li>
+            <li>Fractal Dim. W.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ── ARCHITECTURE ── -->
+  <section id="architecture" style="background: var(--navy);" class="section-dark">
+    <div class="section-inner">
+      <div class="section-label">04 — System Design</div>
+      <h2 class="section-title">Solution <em>Architecture</em></h2>
+      <p class="section-lead">A modular, 11-module utility layer feeds a Streamlit multi-tab frontend. Each component is
+        independently testable and swappable — enabling seamless model upgrades, feature additions, and compliance
+        audits.</p>
+
+      <!-- Pipeline -->
+      <div class="reveal" style="margin-bottom: 2rem;">
+        <div class="glance-title" style="margin-bottom: 1rem;">// PREDICTION PIPELINE</div>
+        <div class="pipeline-visual">
+          <div class="pipe-step">
+            <div class="pipe-icon"></div>
+            <div class="pipe-name">Input</div>
+            <div class="pipe-desc">30 FNA measurements via sidebar sliders</div>
+          </div>
+          <div class="pipe-step">
+            <div class="pipe-icon"></div>
+            <div class="pipe-name">Validate</div>
+            <div class="pipe-desc">Feature alignment &amp; range validation</div>
+          </div>
+          <div class="pipe-step">
+            <div class="pipe-icon"></div>
+            <div class="pipe-name">Scale</div>
+            <div class="pipe-desc">StandardScaler normalization</div>
+          </div>
+          <div class="pipe-step">
+            <div class="pipe-icon"></div>
+            <div class="pipe-name">Predict</div>
+            <div class="pipe-desc">Random Forest Ensemble v2</div>
+          </div>
+          <div class="pipe-step">
+            <div class="pipe-icon"></div>
+            <div class="pipe-name">Explain</div>
+            <div class="pipe-desc">SHAP + tree variance + CI</div>
+          </div>
+          <div class="pipe-step" style="border-radius: 0 12px 12px 0;">
+            <div class="pipe-icon"></div>
+            <div class="pipe-name">Report</div>
+            <div class="pipe-desc">PDF export + audit log</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tabs -->
+      <div class="glance-title reveal" style="margin-bottom: 1rem;">// APPLICATION TABS</div>
+      <div class="tabs-grid reveal">
+        <div class="tab-card">
+          <div class="tab-num">TAB 01</div>
+          <div class="tab-name">AI Analysis</div>
+          <div class="tab-desc">Classification result, SHAP waterfall, radar chart, PCA projection</div>
+        </div>
+        <div class="tab-card">
+          <div class="tab-num">TAB 02</div>
+          <div class="tab-name">Model Monitoring</div>
+          <div class="tab-desc">Z-score drift per feature, system health gauge, prediction log</div>
+        </div>
+        <div class="tab-card">
+          <div class="tab-num">TAB 03</div>
+          <div class="tab-name">Model Card &amp; Ethics</div>
+          <div class="tab-desc">Intended use, limitations, fairness disclosures, accountability</div>
+        </div>
+        <div class="tab-card">
+          <div class="tab-num">TAB 04</div>
+          <div class="tab-name">Error Analysis</div>
+          <div class="tab-desc">Interactive ROC, AUC=0.999, confusion matrix, FN/FP log</div>
+        </div>
+        <div class="tab-card">
+          <div class="tab-num">TAB 05</div>
+          <div class="tab-name">Research Lab</div>
+          <div class="tab-desc">Gaussian synthetic generation, PCA manifold overlay</div>
+        </div>
+        <div class="tab-card">
+          <div class="tab-num">TAB 06</div>
+          <div class="tab-name">Dataset Explorer</div>
+          <div class="tab-desc">Filterable scatter plots, marginal histograms, raw data</div>
+        </div>
+      </div>
+
+      <div class="tech-row reveal">
+        <div class="tech-badge">
+          <div class="tech-dot blue"></div> Python 3.10+
+        </div>
+        <div class="tech-badge">
+          <div class="tech-dot amber"></div> scikit-learn
+        </div>
+        <div class="tech-badge">
+          <div class="tech-dot green"></div> SHAP
+        </div>
+        <div class="tech-badge">
+          <div class="tech-dot red"></div> Streamlit
+        </div>
+        <div class="tech-badge">
+          <div class="tech-dot purple"></div> Plotly
+        </div>
+        <div class="tech-badge">
+          <div class="tech-dot blue"></div> ReportLab PDF
+        </div>
+        <div class="tech-badge">
+          <div class="tech-dot amber"></div> Pandas
+        </div>
+        <div class="tech-badge">
+          <div class="tech-dot green"></div> NumPy
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── RESULTS ── -->
+  <section id="results" style="background: var(--navy); padding-top: 2rem; padding-bottom: 5rem;" class="section-dark">
+    <div class="section-inner">
+      <div class="divider divider-dark" style="margin-bottom: 3rem;"></div>
+      <div class="section-label">05 — Performance</div>
+      <h2 class="section-title">Model <em>Results</em></h2>
+      <p class="section-lead">The Random Forest ensemble achieves near-perfect discrimination, validated across all
+        standard clinical AI metrics on a held-out stratified 20% test set.</p>
+
+      <div class="results-grid">
+        <div class="result-card rc-green reveal">
+          <div class="result-val" data-count="98.2" data-suffix="%">0%</div>
+          <div class="result-label">Accuracy</div>
+          <div class="result-context">Test set · stratified split</div>
+        </div>
+        <div class="result-card rc-blue reveal reveal-delay-1">
+          <div class="result-val" data-count="0.999" data-suffix="">0.000</div>
+          <div class="result-label">AUC-ROC</div>
+          <div class="result-context">Near-perfect discrimination</div>
+        </div>
+        <div class="result-card rc-purple reveal reveal-delay-2">
+          <div class="result-val" data-count="97" data-suffix="%">0%</div>
+          <div class="result-label">Sensitivity</div>
+          <div class="result-context">At threshold T = 0.50</div>
+        </div>
+        <div class="result-card rc-amber reveal reveal-delay-3">
+          <div class="result-val" data-count="99" data-suffix="%">0%</div>
+          <div class="result-label">Specificity</div>
+          <div class="result-context">At threshold T = 0.50</div>
+        </div>
+        <div class="result-card rc-red reveal reveal-delay-4">
+          <div class="result-val">2</div>
+          <div class="result-label">False Negatives</div>
+          <div class="result-context">At T=0.50 on test set</div>
+        </div>
+      </div>
+
+      <!-- SHAP chart -->
+      <div class="shap-chart reveal">
+        <div class="shap-title">// TOP SHAP CONTRIBUTORS → MALIGNANT DIRECTION</div>
+        <div class="shap-row">
+          <div class="shap-feature">Concave Points Worst</div>
+          <div class="shap-bar-wrap">
+            <div class="shap-bar" data-width="100"></div>
+          </div>
+          <div class="shap-val">+0.82</div>
+        </div>
+        <div class="shap-row">
+          <div class="shap-feature">Radius Worst</div>
+          <div class="shap-bar-wrap">
+            <div class="shap-bar" data-width="95"></div>
+          </div>
+          <div class="shap-val">+0.78</div>
+        </div>
+        <div class="shap-row">
+          <div class="shap-feature">Perimeter Worst</div>
+          <div class="shap-bar-wrap">
+            <div class="shap-bar" data-width="91"></div>
+          </div>
+          <div class="shap-val">+0.75</div>
+        </div>
+        <div class="shap-row">
+          <div class="shap-feature">Area Worst</div>
+          <div class="shap-bar-wrap">
+            <div class="shap-bar" data-width="76"></div>
+          </div>
+          <div class="shap-val">+0.62</div>
+        </div>
+        <div class="shap-row">
+          <div class="shap-feature">Concavity Mean</div>
+          <div class="shap-bar-wrap">
+            <div class="shap-bar" data-width="67"></div>
+          </div>
+          <div class="shap-val">+0.55</div>
+        </div>
+        <div class="shap-row">
+          <div class="shap-feature">Compactness Worst</div>
+          <div class="shap-bar-wrap">
+            <div class="shap-bar" data-width="57" style="background: linear-gradient(90deg, #d97706, #fcd34d);"></div>
+          </div>
+          <div class="shap-val" style="color:#fcd34d;">+0.47</div>
+        </div>
+        <div class="shap-row">
+          <div class="shap-feature">Concave Points Mean</div>
+          <div class="shap-bar-wrap">
+            <div class="shap-bar" data-width="54" style="background: linear-gradient(90deg, #d97706, #fcd34d);"></div>
+          </div>
+          <div class="shap-val" style="color:#fcd34d;">+0.44</div>
+        </div>
+        <div class="shap-row">
+          <div class="shap-feature">Radius Mean</div>
+          <div class="shap-bar-wrap">
+            <div class="shap-bar" data-width="50" style="background: linear-gradient(90deg, #7c3aed, #a78bfa);"></div>
+          </div>
+          <div class="shap-val" style="color:#a78bfa;">+0.41</div>
+        </div>
+        <div class="shap-row">
+          <div class="shap-feature">Texture Worst</div>
+          <div class="shap-bar-wrap">
+            <div class="shap-bar" data-width="44" style="background: linear-gradient(90deg, #7c3aed, #a78bfa);"></div>
+          </div>
+          <div class="shap-val" style="color:#a78bfa;">+0.36</div>
+        </div>
+        <div class="shap-row">
+          <div class="shap-feature">Area Mean</div>
+          <div class="shap-bar-wrap">
+            <div class="shap-bar" data-width="38" style="background: linear-gradient(90deg, #7c3aed, #a78bfa);"></div>
+          </div>
+          <div class="shap-val" style="color:#a78bfa;">+0.31</div>
+        </div>
+        <p style="font-size: 0.72rem; color: #475569; margin-top: 1rem; font-family: var(--font-mono);">Note: SHAP
+          values are approximate illustrative representations from ensemble analysis.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── IMPACT ── -->
+  <section id="impact" style="background: var(--off-white);">
+    <div class="section-inner">
+      <div class="section-label">06 — Clinical Value</div>
+      <h2 class="section-title">Clinical <em>Impact</em></h2>
+      <p class="section-lead">The system redefines the clinical workflow from manual, subjective, and time-intensive to
+        real-time, explainable, and audit-ready — across every dimension that matters to clinicians and institutions.
+      </p>
+
+      <div class="impact-grid">
+        <div class="impact-card reveal">
+          <div class="impact-icon"></div>
+          <div class="impact-title">Faster Diagnosis</div>
+          <div class="impact-desc">From hours or days of manual cytology review to <strong>real-time
+              classification</strong>. Immediate structured second opinion available at any point in the workflow.</div>
+        </div>
+        <div class="impact-card reveal reveal-delay-1">
+          <div class="impact-icon"></div>
+          <div class="impact-title">Reduced Missed Malignancies</div>
+          <div class="impact-desc">Only <strong>2 false negatives</strong> at T=0.50 on the test set. The adjustable
+            threshold allows clinicians to tune sensitivity even lower when clinical stakes demand it.</div>
+        </div>
+        <div class="impact-card reveal reveal-delay-2">
+          <div class="impact-icon"></div>
+          <div class="impact-title">Explainable Decisions</div>
+          <div class="impact-desc">SHAP attribution + rule engine makes the AI's reasoning <strong>visible, quantified,
+              and challengeable</strong> — not a black-box probability score.</div>
+        </div>
+        <div class="impact-card reveal reveal-delay-3">
+          <div class="impact-icon"></div>
+          <div class="impact-title">Audit-Ready Documentation</div>
+          <div class="impact-desc">Auto-generated PDF report + CSV prediction log with timestamps supports
+            <strong>regulatory adherence</strong> and institutional review without extra documentation work.
+          </div>
+        </div>
+        <div class="impact-card reveal">
+          <div class="impact-icon"></div>
+          <div class="impact-title">Research Acceleration</div>
+          <div class="impact-desc">Synthetic data generation + PCA manifold lab enables <strong>safe hypothesis
+              testing</strong> without requiring access to new patient data or ethics approvals.</div>
+        </div>
+        <div class="impact-card reveal reveal-delay-1">
+          <div class="impact-icon"></div>
+          <div class="impact-title">Operational Reliability</div>
+          <div class="impact-desc">Z-score drift detection monitors every feature against training distribution,
+            <strong>protecting against silent model degradation</strong> in production environments.
+          </div>
+        </div>
+      </div>
+
+      <h3 style="font-family: var(--font-display); font-size: 1.3rem; font-weight: 700; margin-bottom: 1.25rem;"
+        class="reveal">Baseline vs. System Comparison</h3>
+      <div class="reveal" style="overflow-x: auto; border-radius: 12px; box-shadow: 0 1px 4px rgba(0,0,0,0.06);">
+        <table class="impact-table">
+          <thead>
+            <tr>
+              <th>Impact Dimension</th>
+              <th>Without AI</th>
+              <th>With This System</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Time to classification</td>
+              <td class="td-baseline">Hours to days (manual)</td>
+              <td class="td-system">Seconds (real-time)</td>
+            </tr>
+            <tr>
+              <td>Sensitivity at default threshold</td>
+              <td class="td-baseline">~85–90% (manual cytology)</td>
+              <td class="td-system">~97% at T=0.50</td>
+            </tr>
+            <tr>
+              <td>Explainability</td>
+              <td class="td-baseline">Subjective operator judgment</td>
+              <td class="td-system">SHAP-backed, quantified attribution</td>
+            </tr>
+            <tr>
+              <td>Documentation time</td>
+              <td class="td-baseline">Manual write-up</td>
+              <td class="td-system">Auto-generated PDF in one click</td>
+            </tr>
+            <tr>
+              <td>Model degradation visibility</td>
+              <td class="td-baseline">None — silent failure</td>
+              <td class="td-system">Z-score drift alerts per feature</td>
+            </tr>
+            <tr>
+              <td>Second opinion access</td>
+              <td class="td-baseline">Requires specialist availability</td>
+              <td class="td-system">Instant AI second opinion</td>
+            </tr>
+            <tr>
+              <td>Research feasibility</td>
+              <td class="td-baseline">Requires new patient data</td>
+              <td class="td-system">Gaussian synthetic generation</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3
+        style="font-family: var(--font-display); font-size: 1.3rem; font-weight: 700; margin-bottom: 1.25rem; margin-top: 2.5rem;"
+        class="reveal">Stakeholder Impact Map</h3>
+      <div class="stakeholder-grid reveal">
+        <div class="stake-card pathologist">
+          <div class="stake-name">Pathologist / Cytologist</div>
+          <ul class="stake-items">
+            <li>Faster structured second opinion</li>
+            <li>SHAP explanations validate intuition</li>
+            <li>PDF report reduces documentation effort</li>
+          </ul>
+        </div>
+        <div class="stake-card institution">
+          <div class="stake-name">Clinical Institution</div>
+          <ul class="stake-items">
+            <li>Audit trail supports regulatory compliance</li>
+            <li>Drift monitoring catches model degradation</li>
+            <li>Reproducible, explainable decisions</li>
+          </ul>
+        </div>
+        <div class="stake-card researcher">
+          <div class="stake-name">Medical Researcher</div>
+          <ul class="stake-items">
+            <li>Synthetic data lab for safe hypothesis testing</li>
+            <li>Dataset Explorer for population insights</li>
+            <li>Sensitivity curves for feature-level analysis</li>
+          </ul>
+        </div>
+        <div class="stake-card practitioner">
+          <div class="stake-name">AI / ML Practitioner</div>
+          <ul class="stake-items">
+            <li>Reference XAI-in-healthcare implementation</li>
+            <li>End-to-end MLOps pattern: train → serve → monitor</li>
+            <li>Ethical AI documentation via Model Card</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ── ETHICS ── -->
+  <section id="ethics" style="background: var(--navy);" class="section-dark">
+    <div class="section-inner">
+      <div class="section-label">07 — Responsibility</div>
+      <h2 class="section-title">Ethical <em>Considerations</em></h2>
+      <p class="section-lead">Clinical AI demands more than accuracy. This system ships with a structured Model Card
+        covering intended use, known limitations, fairness disclosures, and explicit accountability documentation.</p>
+
+      <div class="ethics-grid reveal">
+        <div class="ethics-card">
+          <div class="ethics-icon"></div>
+          <div class="ethics-title">Intended Use</div>
+          <div class="ethics-desc">Educational and research decision support tool only. Explicitly <strong
+              style="color:#f87171">NOT</strong> a replacement for physician diagnosis or clinical judgment.</div>
+        </div>
+        <div class="ethics-card">
+          <div class="ethics-icon"></div>
+          <div class="ethics-title">Known Limitations</div>
+          <div class="ethics-desc">WDBC dataset (1995) may not represent all contemporary populations or imaging
+            protocols. Temporal generalizability is not guaranteed.</div>
+        </div>
+        <div class="ethics-card">
+          <div class="ethics-icon"></div>
+          <div class="ethics-title">Fairness Disclosure</div>
+          <div class="ethics-desc">No demographic stratification is available in WDBC — bias analysis across age,
+            ethnicity, or institution is not possible. Explicitly disclosed in the Model Card.</div>
+        </div>
+        <div class="ethics-card">
+          <div class="ethics-icon"></div>
+          <div class="ethics-title">Explainability Mandate</div>
+          <div class="ethics-desc">Every prediction is accompanied by SHAP attribution. No silent black-box outputs. The
+            AI's reasoning is always visible and challengeable by the clinician.</div>
+        </div>
+        <div class="ethics-card">
+          <div class="ethics-icon"></div>
+          <div class="ethics-title">Audit Trail</div>
+          <div class="ethics-desc">All predictions are logged with timestamp, input features, and outcome to a
+            persistent CSV file. Full provenance for every clinical decision.</div>
+        </div>
+        <div class="ethics-card">
+          <div class="ethics-icon"></div>
+          <div class="ethics-title">Threshold Transparency</div>
+          <div class="ethics-desc">The clinician retains full control over the sensitivity/specificity trade-off. The
+            system never enforces a fixed 0.50 default for clinical decisions.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── LESSONS ── -->
+  <section id="lessons" style="background: var(--white);">
+    <div class="section-inner">
+      <div class="section-label">08 — Reflections</div>
+      <h2 class="section-title">Lessons <em>Learned</em></h2>
+      <p class="section-lead">Building a clinical AI tool surfaces priorities that pure ML benchmarking obscures. These
+        are the five most important architectural and design insights from this project.</p>
+
+      <div class="lessons-list">
+        <div class="lesson-item reveal">
+          <div class="lesson-num">01</div>
+          <div>
+            <div class="lesson-title">Explainability is not optional in clinical AI</div>
+            <div class="lesson-desc">SHAP transforms a prediction from a number into a clinically reasoned argument —
+              this is what separates a tool a clinician will trust from one they will ignore. Accuracy without
+              transparency is clinically worthless.</div>
+          </div>
+        </div>
+        <div class="lesson-item reveal reveal-delay-1">
+          <div class="lesson-num">02</div>
+          <div>
+            <div class="lesson-title">Threshold flexibility matters more than raw accuracy</div>
+            <div class="lesson-desc">A fixed 0.50 threshold optimizes for accuracy, not for clinical stakes. Giving
+              control to the clinician is both ethically correct and practically superior — the sensitivity/specificity
+              trade-off is a clinical decision, not a technical default.</div>
+          </div>
+        </div>
+        <div class="lesson-item reveal reveal-delay-2">
+          <div class="lesson-num">03</div>
+          <div>
+            <div class="lesson-title">Monitoring is as important as modeling</div>
+            <div class="lesson-desc">A model that degrades silently is clinically dangerous. Z-score drift detection is
+              a non-negotiable MLOps requirement for healthcare AI — not an optional operational nicety.</div>
+          </div>
+        </div>
+        <div class="lesson-item reveal reveal-delay-3">
+          <div class="lesson-num">04</div>
+          <div>
+            <div class="lesson-title">Modular architecture commands future-proofing</div>
+            <div class="lesson-desc">Each of the 11 utility modules is independently testable and swappable — this
+              design enables seamless model upgrades, feature additions, and compliance audits without touching
+              unrelated components.</div>
+          </div>
+        </div>
+        <div class="lesson-item reveal reveal-delay-4">
+          <div class="lesson-num">05</div>
+          <div>
+            <div class="lesson-title">Synthetic data unlocks safe research</div>
+            <div class="lesson-desc">The ability to generate controlled synthetic clinical profiles without accessing
+              real patient data opens research workflows that would otherwise be ethically or logistically blocked — a
+              significant accelerator for clinical AI development.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ── FUTURE ── -->
+  <section id="future" style="background: var(--off-white);">
+    <div class="section-inner">
+      <div class="section-label">09 — Roadmap</div>
+      <h2 class="section-title">Future <em>Directions</em></h2>
+      <p class="section-lead">The current system provides a robust, production-ready foundation. The following
+        enhancements would extend its clinical utility, fairness coverage, and institutional applicability.</p>
+
+      <div class="reveal" style="overflow-x: auto; border-radius: 12px; box-shadow: 0 1px 4px rgba(0,0,0,0.06);">
+        <table class="future-table">
+          <thead>
+            <tr>
+              <th>Enhancement</th>
+              <th>Rationale</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Multi-class support</td>
+              <td>Extension to BIRADS multi-category classification (Benign, Prob. Benign, Suspicious, Malignant) —
+                providing more granular clinical mapping.</td>
+            </tr>
+            <tr>
+              <td>EHR Integration (FHIR/HL7)</td>
+              <td>Direct integration with hospital electronic health records — enabling seamless clinical orders and
+                result ingestion.</td>
+            </tr>
+            <tr>
+              <td>Demographic Stratification</td>
+              <td>Benchmarking across larger, contemporary multi-ethnic datasets — improving the system's global
+                reliability and fairness validation.</td>
+            </tr>
+            <tr>
+              <td>Federated Learning</td>
+              <td>Multi-institution model training without data sharing — enabling broader datasets while preserving
+                patient privacy.</td>
+            </tr>
+            <tr>
+              <td>Model Versioning (MLflow)</td>
+              <td>Production-grade experiment tracking and automatic model retraining pipelines — ensuring the AI
+                remains state-of-the-art.</td>
+            </tr>
+            <tr>
+              <td>LIME Comparison</td>
+              <td>Adding LIME explanations alongside SHAP — providing clinicians with multiple cross-validated
+                perspectives on AI reasoning.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="site-footer" style="background: var(--navy); border-top: 1px solid var(--border);">
+    <div class="footer-content">
+      <div class="footer-main">
+        <div class="footer-left">
+          <p class="copyright">&copy; 2025 Shahid Ul Islam</p>
+          <p class="footer-meta">Data Scientist & AI Developer</p>
+        </div>
+        <div class="footer-right">
+          <div class="footer-links">
+            <a href="#top" class="back-to-top">
+              <i class="fas fa-arrow-up"></i>
+              <span>Back to Top</span>
+            </a>
+            <div class="social-links11">
+              <a href="https://github.com/Khanz9664" target="_blank" class="social-link11">
+                <i class="fab fa-github"></i>
+              </a>
+              <a href="https://linkedin.com/in/shahid-ul-islam-13650998" target="_blank" class="social-link11">
+                <i class="fab fa-linkedin"></i>
+              </a>
+              <a href="mailto:shahid9664@gmail.com" class="social-link11">
+                <i class="fas fa-envelope"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="made-with">
+        <p>Crafted with <span class="heart-icon">❤️</span> By Shahid</p>
+      </div>
+    </div>
+  </footer>
+
+  <a href="https://github.com/Khanz9664/Breast-Cancer-Prediction" target="_blank" class="sticky-repo-btn">
+    <i class="fab fa-github"></i>
+    <span>Visit Project Repo</span>
+  </a>
+
+  <script>
+    // Progress bar
+    window.addEventListener('scroll', () => {
+      const doc = document.documentElement;
+      const pct = (doc.scrollTop / (doc.scrollHeight - doc.clientHeight)) * 100;
+      document.getElementById('progress-bar').style.width = pct + '%';
+    });
+
+    // Scroll reveal
+    const reveals = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('visible');
+          observer.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.12 });
+    reveals.forEach(r => observer.observe(r));
+
+    // Animated counters
+    function animateCount(el) {
+      const target = parseFloat(el.dataset.count);
+      const suffix = el.dataset.suffix || '';
+      const isFloat = String(target).includes('.');
+      const duration = 1400;
+      const start = performance.now();
+      function step(now) {
+        const p = Math.min((now - start) / duration, 1);
+        const ease = 1 - Math.pow(1 - p, 3);
+        const val = target * ease;
+        el.textContent = (isFloat ? val.toFixed(3) : Math.round(val)) + suffix;
+        if (p < 1) requestAnimationFrame(step);
+      }
+      requestAnimationFrame(step);
+    }
+
+    const counterObs = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting && e.target.dataset.count) {
+          animateCount(e.target);
+          counterObs.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.5 });
+    document.querySelectorAll('[data-count]').forEach(el => counterObs.observe(el));
+
+    // SHAP bars
+    const shapObs = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          document.querySelectorAll('.shap-bar').forEach(bar => {
+            bar.style.width = bar.dataset.width + '%';
+          });
+          shapObs.disconnect();
+        }
+      });
+    }, { threshold: 0.3 });
+    const shapChart = document.querySelector('.shap-chart');
+    if (shapChart) shapObs.observe(shapChart);
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Shahid Ul Islam | ML Articles</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <link rel="stylesheet" href="css/variables.css" />
+  <link rel="stylesheet" href="css/animations.css" />
+  <link rel="stylesheet" href="css/base.css" />
+  <link rel="stylesheet" href="css/navigation.css" />
+  <link rel="stylesheet" href="css/projects.css" />
+  <link rel="stylesheet" href="css/articles.css" />
+  <link rel="stylesheet" href="css/footer.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <script defer src="js/generative-bg.js"></script>
+  <script defer src="js/common.js"></script>
+  <script defer src="js/articles.js"></script>
+</head>
+
+<body id="top">
+  <!-- Navigation -->
+  <div class="top-bar">
+    <div class="logo">
+      <img src="img/plogo.png" alt="Personal Logo" class="logo-icon">
+      <span class="logo-text">SHAHID<span class="logo-accent">||</span>Portfolio</span>
+    </div>
+    <nav class="nav-container">
+      <ul class="nav-links">
+        <li><a href="index.html" class="nav-link"><span>.</span> Home</a></li>
+        <li><a href="about.html" class="nav-link"><span>.</span> About</a></li>
+        <li><a href="skills.html" class="nav-link"><span>.</span> Skills</a></li>
+        <li><a href="projects.html" class="nav-link"><span>.</span> Projects</a></li>
+        <li><a href="contact.html" class="nav-link"><span>.</span> Contact</a></li>
+        <li><a href="articles.html" class="nav-link"><span>.</span> Articles</a></li>
+      </ul>
+      <div class="menu-toggle">
+        <div class="hamburger"></div>
+      </div>
+    </nav>
+  </div>
+
+  <!-- Animated Background -->
+  <div class="bg-animation"></div>
+
+  <main class="hub-content">
+    <!-- TOP BAR -->
+    <div class="hub-topbar">
+      <div class="breadcrumb">Home / <span class="highlight-text">ML Hub</span></div>
+      <div class="top-actions">
+        <div class="search-wrapper">
+          <i class="fas fa-search"></i>
+          <input type="text" id="article-search" placeholder="Search math, models..." />
+        </div>
+      </div>
+    </div>
+
+    <!-- HERO -->
+    <section class="hub-hero interactive-hero">
+      <div class="hero-content">
+        <div class="hero-badge"><i class="fas fa-infinity"></i> Mathematics First</div>
+        <h1>Inside Machine Learning: <span>A Mathematical Journey</span></h1>
+        <p>
+          Master the mathematics behind the magic. Explore visually intuitive and mathematically rigorous deep dives
+          into core ML concepts.
+        </p>
+        <div class="hero-stats">
+          <div class="hero-stat"><strong>∫</strong> Calculus</div>
+          <div class="hero-stat"><strong>Σ</strong> Linear Alg</div>
+          <div class="hero-stat"><strong>∇</strong> Optimization</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ARTICLES GRID -->
+    <section class="learning-section">
+      <div class="section-header-modern">
+        <h2 class="section-title">Published Articles</h2>
+        <div class="filter-pills">
+          <button class="pill active" data-filter="all">All</button>
+          <button class="pill" data-filter="optimization">Optimization</button>
+          <button class="pill" data-filter="models">Models</button>
+        </div>
+      </div>
+
+      <div class="articles-grid" id="articles-container">
+        <!-- Article 1 -->
+        <a href="articles/gradient-descent.html" class="article-card" data-category="optimization">
+          <div class="card-glow"></div>
+          <div class="card-inner">
+            <div class="card-top">
+              <span class="category-tag"><i class="fas fa-chart-line"></i> Optimization</span>
+              <span class="math-icon">∇</span>
+            </div>
+            <h3>Gradient Descent</h3>
+            <p>The workhorse of machine learning optimization. Understand the partial derivatives, learning rates, and
+              convergence behavior mathematically.</p>
+            <div class="card-bottom">
+              <span class="read-time"><i class="far fa-clock"></i> 10 min read</span>
+              <span class="read-more">Read Article &rarr;</span>
+            </div>
+          </div>
+        </a>
+
+        <!-- Article 2 -->
+        <a href="articles/lagrange-multipliers.html" class="article-card" data-category="optimization">
+          <div class="card-glow"></div>
+          <div class="card-inner">
+            <div class="card-top">
+              <span class="category-tag"><i class="fas fa-chart-line"></i> Optimization</span>
+              <span class="math-icon">λ</span>
+            </div>
+            <h3>Lagrange Multipliers</h3>
+            <p>Constrained optimization unlocked. Dive deep into the method of Lagrange multipliers, dual problems, and
+              their geometric intuition.</p>
+            <div class="card-bottom">
+              <span class="read-time"><i class="far fa-clock"></i> 15 min read</span>
+              <span class="read-more">Read Article &rarr;</span>
+            </div>
+          </div>
+        </a>
+
+        <!-- Article 3 -->
+        <a href="articles/linear-regression.html" class="article-card" data-category="models">
+          <div class="card-glow"></div>
+          <div class="card-inner">
+            <div class="card-top">
+              <span class="category-tag"><i class="fas fa-brain"></i> Models</span>
+              <span class="math-icon">β</span>
+            </div>
+            <h3>Linear Regression</h3>
+            <p>The foundation of predictive modeling. A complete mathematical derivation of Ordinary Least Squares,
+              normal equations, and assumptions.</p>
+            <div class="card-bottom">
+              <span class="read-time"><i class="far fa-clock"></i> 12 min read</span>
+              <span class="read-more">Read Article &rarr;</span>
+            </div>
+          </div>
+        </a>
+
+        <!-- Article 4 -->
+        <a href="articles/logistic-regression.html" class="article-card" data-category="models">
+          <div class="card-glow"></div>
+          <div class="card-inner">
+            <div class="card-top">
+              <span class="category-tag"><i class="fas fa-brain"></i> Models</span>
+              <span class="math-icon">σ</span>
+            </div>
+            <h3>Logistic Regression</h3>
+            <p>Moving from continuous to categorical. Explore the sigmoid function, maximum likelihood estimation, and
+              cross-entropy loss math.</p>
+            <div class="card-bottom">
+              <span class="read-time"><i class="far fa-clock"></i> 14 min read</span>
+              <span class="read-more">Read Article &rarr;</span>
+            </div>
+          </div>
+        </a>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="footer-content">
+      <div class="footer-main">
+        <div class="footer-left">
+          <p class="copyright">&copy; 2025 Shahid Ul Islam</p>
+          <p class="footer-meta">Data Scientist & AI Developer</p>
+        </div>
+        <div class="footer-right">
+          <div class="footer-links">
+            <a href="#top" class="back-to-top">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="12" y1="19" x2="12" y2="5"></line>
+                <polyline points="5 12 12 5 19 12"></polyline>
+              </svg>
+              <span>Back to Top</span>
+            </a>
+            <div class="social-links11">
+              <a href="https://github.com/Khanz9664" target="_blank" class="social-link11">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path
+                    d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22" />
+                </svg>
+              </a>
+              <a href="https://linkedin.com/in/shahid-ul-islam-13650998" target="_blank" class="social-link11">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" />
+                  <rect x="2" y="9" width="4" height="12" />
+                  <circle cx="4" cy="4" r="2" />
+                </svg>
+              </a>
+              <a href="mailto:shahid9664@gmail.com" class="social-link11">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
+                  <polyline points="22,6 12,13 2,6" />
+                </svg>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="made-with">
+        <p>Crafted with <span class="heart-icon">❤️</span> By Shahid</p>
+      </div>
+    </div>
+  </footer>
+</body>
+
+</html>

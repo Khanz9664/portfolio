@@ -1,0 +1,2468 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gradient Descent — Complete Masterclass</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.min.js"></script>
+  <link
+    href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=JetBrains+Mono:wght@300;400;600;700&family=Lora:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap"
+    rel="stylesheet">
+  <style>
+    :root {
+      --bg: #020c1b;
+      --surface: rgba(10, 25, 47, 0.6);
+      --surface2: rgba(17, 34, 64, 0.8);
+      --border: rgba(0, 200, 255, 0.15);
+      --border2: rgba(0, 255, 136, 0.2);
+      --text: #ccd6f6;
+      --muted: #8892b0;
+      --dim: #495670;
+      --accent: #00c8ff;
+      /* cyan */
+      --accent2: #ff6b6b;
+      /* coral */
+      --accent3: #00ff88;
+      /* green */
+      --accent4: #ffd43b;
+      /* gold */
+      --accent5: #cc5de8;
+      /* purple */
+      --grad-a: #00c8ff;
+      --grad-b: #00ff88;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Lora', Georgia, serif;
+      font-size: 17px;
+      line-height: 1.85;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    #bg-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: -1;
+      pointer-events: none;
+      opacity: 0.3;
+    }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 480px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      margin-top: 50px;
+      padding: 80px 56px 56px;
+      position: relative;
+      overflow: hidden;
+      background: linear-gradient(135deg, rgba(2, 12, 27, 0.8), rgba(10, 25, 47, 0.9));
+      border-bottom: 1px solid var(--border);
+      backdrop-filter: blur(10px);
+    }
+
+    .hero-grid {
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(0, 200, 255, 0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 200, 255, 0.05) 1px, transparent 1px);
+      background-size: 40px 40px;
+    }
+
+    .hero-glow {
+      position: absolute;
+      width: 600px;
+      height: 400px;
+      background: radial-gradient(circle, rgba(0, 200, 255, 0.15) 0%, transparent 60%);
+      top: -100px;
+      left: -100px;
+      pointer-events: none;
+    }
+
+    .hero-glow2 {
+      position: absolute;
+      width: 500px;
+      height: 400px;
+      background: radial-gradient(circle, rgba(0, 255, 136, 0.1) 0%, transparent 60%);
+      bottom: -50px;
+      right: -50px;
+      pointer-events: none;
+    }
+
+    .hero-inner {
+      max-width: 940px;
+      margin: 0 auto;
+      position: relative;
+      width: 100%;
+      z-index: 2;
+    }
+
+    .hero-tag {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--accent3);
+      margin-bottom: 20px;
+      font-weight: 600;
+    }
+
+    .hero h1 {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(3rem, 7vw, 5.5rem);
+      font-weight: 400;
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+      margin-bottom: 24px;
+      color: #fff;
+      text-shadow: 0 0 30px rgba(0, 200, 255, 0.3);
+    }
+
+    .hero h1 .grad {
+      background: linear-gradient(to right, var(--accent), var(--accent3));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero-sub {
+      font-size: 16px;
+      color: var(--muted);
+      max-width: 680px;
+      font-family: 'JetBrains Mono', monospace;
+      line-height: 1.8;
+    }
+
+    .hero-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 32px;
+    }
+
+    .pill {
+      background: rgba(0, 200, 255, 0.08);
+      border: 1px solid rgba(0, 200, 255, 0.3);
+      color: var(--accent);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      padding: 6px 14px;
+      border-radius: 20px;
+      letter-spacing: 0.08em;
+      box-shadow: 0 0 10px rgba(0, 200, 255, 0.1);
+    }
+
+    /* ── TOC ── */
+    .toc-outer {
+      max-width: 940px;
+      margin: 60px auto;
+      padding: 0 32px;
+    }
+
+    .toc-wrap {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-left: 4px solid var(--accent);
+      padding: 40px;
+      border-radius: 12px;
+      backdrop-filter: blur(12px);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    }
+
+    .toc-title {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 24px;
+    }
+
+    .toc-list {
+      list-style: none;
+      columns: 2;
+      column-gap: 40px;
+    }
+
+    .toc-list li {
+      margin: 8px 0;
+      break-inside: avoid;
+    }
+
+    .toc-list a {
+      color: var(--text);
+      text-decoration: none;
+      font-size: 14.5px;
+      display: flex;
+      align-items: baseline;
+      gap: 12px;
+      transition: all 0.2s;
+    }
+
+    .toc-list a:hover {
+      color: var(--accent);
+      transform: translateX(5px);
+    }
+
+    .toc-num {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      color: var(--accent3);
+      min-width: 28px;
+      font-weight: 600;
+    }
+
+    /* ── CONTENT ── */
+    .content {
+      max-width: 940px;
+      margin: 0 auto;
+      padding: 0 32px 100px;
+      position: relative;
+      z-index: 2;
+    }
+
+    /* ── SECTION ── */
+    .section {
+      margin-bottom: 100px;
+      opacity: 0;
+      transform: translateY(30px);
+    }
+
+    .section.visible {
+      opacity: 1;
+      transform: translateY(0);
+      transition: all 0.8s ease-out;
+    }
+
+    .section-header {
+      display: flex;
+      align-items: baseline;
+      gap: 20px;
+      margin-bottom: 40px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .section-num {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 14px;
+      color: var(--accent3);
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-shadow: 0 0 10px rgba(0, 255, 136, 0.3);
+    }
+
+    .section h2 {
+      font-family: 'DM Serif Display', serif;
+      font-size: 2.4rem;
+      font-weight: 400;
+      color: #e6f1ff;
+      letter-spacing: -0.01em;
+    }
+
+    .subsection {
+      margin: 44px 0;
+    }
+
+    .subsection h3 {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--accent);
+      margin-bottom: 20px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    .subsection h3.green {
+      color: var(--accent3);
+    }
+
+    .subsection h3.coral {
+      color: var(--accent2);
+    }
+
+    .subsection h3.gold {
+      color: var(--accent4);
+    }
+
+    .subsection h3.purple {
+      color: var(--accent5);
+    }
+
+    p {
+      margin-bottom: 20px;
+      color: #a8b2d1;
+    }
+
+    /* ── MATH BLOCKS ── */
+    .math-block {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-left: 4px solid var(--accent);
+      padding: 32px 40px;
+      margin: 36px 0;
+      border-radius: 12px;
+      overflow-x: auto;
+      position: relative;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+      transition: transform 0.3s;
+    }
+
+    .math-block:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+    }
+
+    .math-block.coral {
+      border-left-color: var(--accent2);
+    }
+
+    .math-block.green {
+      border-left-color: var(--accent3);
+    }
+
+    .math-block.gold {
+      border-left-color: var(--accent4);
+    }
+
+    .math-block.purple {
+      border-left-color: var(--accent5);
+    }
+
+    .math-block .label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--accent);
+      position: absolute;
+      top: 14px;
+      right: 20px;
+      opacity: 0.8;
+    }
+
+    /* ── DERIVATION ── */
+    .derivation {
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+      margin: 36px 0;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    }
+
+    .derivation-header {
+      background: var(--surface2);
+      padding: 16px 24px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--accent);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .derivation-step {
+      padding: 20px 28px;
+      border-bottom: 1px solid var(--border);
+      display: grid;
+      grid-template-columns: 32px 1fr;
+      gap: 20px;
+      align-items: start;
+      background: var(--surface);
+      backdrop-filter: blur(5px);
+    }
+
+    .derivation-step:last-child {
+      border-bottom: none;
+    }
+
+    .step-num {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+      color: var(--accent3);
+      font-weight: 700;
+      padding-top: 4px;
+    }
+
+    .step-note {
+      font-size: 13px;
+      color: var(--muted);
+      font-style: italic;
+      margin-top: 10px;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    /* ── CALLOUTS ── */
+    .callout {
+      padding: 24px 28px;
+      border-radius: 12px;
+      margin: 32px 0;
+      border: 1px solid;
+      border-left-width: 4px;
+      backdrop-filter: blur(8px);
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+    }
+
+    .callout-insight {
+      background: rgba(0, 200, 255, 0.05);
+      border-color: rgba(0, 200, 255, 0.2);
+      border-left-color: var(--accent);
+    }
+
+    .callout-warning {
+      background: rgba(255, 107, 107, 0.05);
+      border-color: rgba(255, 107, 107, 0.2);
+      border-left-color: var(--accent2);
+    }
+
+    .callout-key {
+      background: rgba(0, 255, 136, 0.05);
+      border-color: rgba(0, 255, 136, 0.2);
+      border-left-color: var(--accent3);
+    }
+
+    .callout-gold {
+      background: rgba(255, 212, 59, 0.05);
+      border-color: rgba(255, 212, 59, 0.2);
+      border-left-color: var(--accent4);
+    }
+
+    .callout-purple {
+      background: rgba(204, 93, 232, 0.05);
+      border-color: rgba(204, 93, 232, 0.2);
+      border-left-color: var(--accent5);
+    }
+
+    .callout-title {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+
+    .callout-insight .callout-title {
+      color: var(--accent);
+    }
+
+    .callout-warning .callout-title {
+      color: var(--accent2);
+    }
+
+    .callout-key .callout-title {
+      color: var(--accent3);
+    }
+
+    .callout-gold .callout-title {
+      color: var(--accent4);
+    }
+
+    .callout-purple .callout-title {
+      color: var(--accent5);
+    }
+
+    .callout p {
+      margin-bottom: 0;
+      font-size: 16px;
+      color: #ccd6f6;
+    }
+
+    /* ── TABLES ── */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 32px 0;
+      font-size: 15px;
+      background: var(--surface);
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+    }
+
+    thead {
+      background: var(--surface2);
+    }
+
+    thead th {
+      padding: 16px 20px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--accent);
+      text-align: left;
+      border-bottom: 1px solid var(--border);
+    }
+
+    tbody tr {
+      border-bottom: 1px solid var(--border);
+      transition: background 0.2s;
+    }
+
+    tbody tr:last-child {
+      border-bottom: none;
+    }
+
+    tbody tr:hover {
+      background: rgba(0, 200, 255, 0.05);
+    }
+
+    tbody td {
+      padding: 16px 20px;
+      color: #a8b2d1;
+    }
+
+    /* ── FIGURE / SVG ── */
+    .figure {
+      margin: 40px 0;
+      text-align: center;
+      background: var(--surface);
+      padding: 30px;
+      border-radius: 16px;
+      border: 1px solid var(--border);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    }
+
+    .figure svg {
+      max-width: 100%;
+      filter: drop-shadow(0 0 15px rgba(0, 200, 255, 0.1));
+    }
+
+    .figure-cap {
+      font-size: 13px;
+      color: var(--muted);
+      margin-top: 16px;
+      font-style: italic;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    /* ── ALGORITHM ── */
+    .algo {
+      background: #020c1b;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 32px 40px;
+      margin: 32px 0;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 14px;
+      line-height: 2.2;
+      overflow-x: auto;
+      box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.5);
+    }
+
+    .algo .kw {
+      color: var(--accent5);
+      font-weight: 700;
+    }
+
+    .algo .fn {
+      color: var(--accent);
+    }
+
+    .algo .cmt {
+      color: var(--muted);
+      font-style: italic;
+    }
+
+    .algo .num {
+      color: var(--accent4);
+    }
+
+    .algo .var {
+      color: var(--accent3);
+    }
+
+    .algo .op {
+      color: var(--accent2);
+    }
+
+    .algo .hdr {
+      color: var(--accent);
+      font-size: 11px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      display: block;
+      margin-bottom: 12px;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 12px;
+    }
+
+    /* ── PROPERTY LIST ── */
+    .prop-list {
+      list-style: none;
+      margin: 16px 0;
+    }
+
+    .prop-list li {
+      padding: 12px 0 12px 32px;
+      border-bottom: 1px solid var(--border);
+      position: relative;
+      font-size: 16px;
+      line-height: 1.8;
+      color: #a8b2d1;
+    }
+
+    .prop-list li:last-child {
+      border-bottom: none;
+    }
+
+    .prop-list li::before {
+      content: '→';
+      position: absolute;
+      left: 0;
+      color: var(--accent3);
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 700;
+    }
+
+    /* ── OPTIMIZER CARDS ── */
+    .opt-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      margin: 36px 0;
+    }
+
+    @media(max-width: 680px) {
+      .opt-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .opt-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 30px;
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+
+    .opt-card:hover {
+      border-color: var(--accent);
+      transform: translateY(-5px);
+      box-shadow: 0 10px 25px rgba(0, 200, 255, 0.15);
+    }
+
+    .opt-card-name {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      margin-bottom: 16px;
+      color: var(--accent);
+    }
+
+    .opt-card p {
+      font-size: 15px;
+      margin-bottom: 0;
+    }
+
+    /* ── INLINE ── */
+    code {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.9em;
+      background: rgba(0, 200, 255, 0.1);
+      border: 1px solid rgba(0, 200, 255, 0.2);
+      padding: 2px 8px;
+      border-radius: 4px;
+      color: var(--accent);
+    }
+
+    .hl {
+      color: var(--accent);
+      font-weight: 600;
+      text-shadow: 0 0 8px rgba(0, 200, 255, 0.4);
+    }
+
+    .hl2 {
+      color: var(--accent2);
+      font-weight: 600;
+    }
+
+    .hl3 {
+      color: var(--accent3);
+      font-weight: 600;
+    }
+
+    .hl4 {
+      color: var(--accent4);
+      font-weight: 600;
+    }
+
+    .hl5 {
+      color: var(--accent5);
+      font-weight: 600;
+    }
+
+    hr.divider {
+      border: none;
+      border-top: 1px dashed var(--border);
+      margin: 80px 0;
+    }
+
+    /* ── COMPARE BLOCK ── */
+    .compare {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+      margin: 32px 0;
+    }
+
+    @media(max-width:680px) {
+      .compare {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .compare-col {
+      background: var(--surface);
+      padding: 28px;
+    }
+
+    .compare-col-title {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      margin-bottom: 16px;
+      color: var(--accent);
+    }
+
+    .compare-col p {
+      font-size: 15px;
+      margin-bottom: 12px;
+    }
+
+    /* ── LR VISUAL ZONES ── */
+    .lr-zones {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 20px;
+      margin: 32px 0;
+    }
+
+    @media(max-width:640px) {
+      .lr-zones {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .lr-zone {
+      padding: 28px 20px;
+      border-radius: 12px;
+      border: 1px solid;
+      text-align: center;
+      background: var(--surface);
+      transition: transform 0.3s;
+    }
+
+    .lr-zone:hover {
+      transform: translateY(-5px);
+    }
+
+    .lr-zone:nth-child(1) {
+      border-color: rgba(255, 212, 59, 0.3);
+    }
+
+    .lr-zone:nth-child(2) {
+      border-color: rgba(0, 255, 136, 0.3);
+    }
+
+    .lr-zone:nth-child(3) {
+      border-color: rgba(255, 107, 107, 0.3);
+    }
+
+    .lr-zone .lr-val {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 26px;
+      font-weight: 700;
+      margin-bottom: 10px;
+      color: var(--text);
+    }
+
+    .lr-zone p {
+      font-size: 14px;
+      color: var(--muted);
+      margin: 0;
+    }
+
+    /* scrollbar */
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: var(--bg);
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: rgba(0, 200, 255, 0.3);
+      border-radius: 4px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: rgba(0, 200, 255, 0.6);
+    }
+  </style>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <link rel="stylesheet" href="../css/variables.css" />
+  <link rel="stylesheet" href="../css/navigation.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <script defer src="../js/common.js"></script>
+
+</head>
+
+<body>
+  <div class="top-bar">
+    <div class="logo">
+      <img src="../img/plogo.png" alt="Personal Logo" class="logo-icon">
+      <span class="logo-text">SHAHID<span class="logo-accent">||</span>Portfolio</span>
+    </div>
+    <nav class="nav-container">
+      <ul class="nav-links">
+        <li><a href="../index.html" class="nav-link"><span>.</span> Home</a></li>
+        <li><a href="../about.html" class="nav-link"><span>.</span> About</a></li>
+        <li><a href="../skills.html" class="nav-link"><span>.</span> Skills</a></li>
+        <li><a href="../projects.html" class="nav-link"><span>.</span> Projects</a></li>
+        <li><a href="../contact.html" class="nav-link"><span>.</span> Contact</a></li>
+        <li><a href="../articles.html" class="nav-link"><span>.</span> Articles</a></li>
+      </ul>
+      <div class="menu-toggle">
+        <div class="hamburger"></div>
+      </div>
+    </nav>
+  </div>
+  <!-- ══ HERO ══ -->
+  <div class="hero">
+    <div class="hero-grid"></div>
+    <div class="hero-glow"></div>
+    <div class="hero-glow2"></div>
+    <div class="hero-inner">
+      <div class="hero-tag">// Machine Learning — Optimization Theory</div>
+      <h1>Gradient<br><span class="grad">Descent</span></h1>
+      <p class="hero-sub">Every weight update in every neural network you'll ever train flows through this. Theory,
+        geometry, math, all variants, all optimizers — from first principles.</p>
+      <div class="hero-pills">
+        <span class="pill">Directional Derivative</span>
+        <span class="pill">Steepest Descent</span>
+        <span class="pill">Learning Rate</span>
+        <span class="pill">Momentum</span>
+        <span class="pill">AdaGrad</span>
+        <span class="pill">RMSProp</span>
+        <span class="pill">Adam</span>
+        <span class="pill">Convergence</span>
+        <span class="pill">Saddle Points</span>
+        <span class="pill">LR Schedules</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ TOC ══ -->
+  <div class="toc-outer">
+    <div class="toc-wrap">
+      <div class="toc-title">// Table of Contents</div>
+      <ol class="toc-list">
+        <li><a href="#s1"><span class="toc-num">01</span>What is Optimization? The Landscape</a></li>
+        <li><a href="#s2"><span class="toc-num">02</span>The Gradient — Mathematical Foundation</a></li>
+        <li><a href="#s3"><span class="toc-num">03</span>Directional Derivative & Steepest Descent</a></li>
+        <li><a href="#s4"><span class="toc-num">04</span>Gradient Descent — The Algorithm</a></li>
+        <li><a href="#s5"><span class="toc-num">05</span>The Learning Rate — Deep Dive</a></li>
+        <li><a href="#s6"><span class="toc-num">06</span>Batch, Stochastic & Mini-Batch GD</a></li>
+        <li><a href="#s7"><span class="toc-num">07</span>The Loss Landscape — Challenges</a></li>
+        <li><a href="#s8"><span class="toc-num">08</span>Momentum — Escaping Ravines</a></li>
+        <li><a href="#s9"><span class="toc-num">09</span>AdaGrad — Adaptive Learning Rates</a></li>
+        <li><a href="#s10"><span class="toc-num">10</span>RMSProp — Fixing AdaGrad</a></li>
+        <li><a href="#s11"><span class="toc-num">11</span>Adam — The Gold Standard</a></li>
+        <li><a href="#s12"><span class="toc-num">12</span>Learning Rate Schedules</a></li>
+        <li><a href="#s13"><span class="toc-num">13</span>Second-Order Methods & Newton's Method</a></li>
+        <li><a href="#s14"><span class="toc-num">14</span>Convergence Analysis</a></li>
+        <li><a href="#s15"><span class="toc-num">15</span>GD for Linear & Logistic Regression</a></li>
+        <li><a href="#s16"><span class="toc-num">16</span>The Full Mental Model</a></li>
+      </ol>
+    </div>
+  </div>
+
+  <div class="content">
+
+    <!-- ══════════════════════════════════════════════════════════ -->
+    <div class="section" id="s1">
+      <div class="section-header">
+        <span class="section-num">§01</span>
+        <h2>What is Optimization? The Landscape</h2>
+      </div>
+
+      <p>Every machine learning model has a <span class="hl">loss function</span> \( J(\boldsymbol{\theta}) \) — a
+        scalar that measures how wrong the model is. Training a model is entirely a problem of <em>minimizing</em> this
+        function over the parameter space \( \boldsymbol{\theta} \in \mathbb{R}^n \).</p>
+
+      <div class="math-block">
+        <span class="label">Optimization Objective</span>
+        \[ \boldsymbol{\theta}^* = \arg\min_{\boldsymbol{\theta}} \; J(\boldsymbol{\theta}) \]
+      </div>
+
+      <p>Think of \( J(\boldsymbol{\theta}) \) as defining a <strong>surface</strong> in \( (n+1) \)-dimensional space —
+        a "loss landscape." Each point in \( \mathbb{R}^n \) is a configuration of weights; the height at each point is
+        the loss. Training = finding the lowest point on this landscape.</p>
+
+      <div class="subsection">
+        <h3>Why Can't We Just Solve It Directly?</h3>
+
+        <p>For some models (linear regression), there's a closed-form solution: set the gradient to zero and solve
+          algebraically. But for almost everything else:</p>
+
+        <ul class="prop-list">
+          <li><strong>Neural networks:</strong> \(n\) can be billions of parameters. The normal equation
+            \(\boldsymbol{\theta} = (\mathbf{X}^T\mathbf{X})^{-1}\mathbf{X}^T\mathbf{y}\) requires inverting an \(n
+            \times n\) matrix — \(O(n^3)\) cost, completely infeasible.</li>
+          <li><strong>Non-convex losses:</strong> Setting \(\nabla J = 0\) gives a system of nonlinear equations with no
+            closed form — think sigmoid, ReLU composed many times.</li>
+          <li><strong>Online/streaming data:</strong> We may not have all data at once, so analytical solutions are
+            structurally impossible.</li>
+        </ul>
+
+        <div class="callout callout-key">
+          <div class="callout-title">✓ The Solution: Iterative Optimization</div>
+          <p>Instead of jumping to the answer, we <em>walk toward it</em> — taking small steps in the direction that
+            decreases the loss fastest. That direction is the negative gradient. This is gradient descent.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════════════════════ -->
+    <div class="section" id="s2">
+      <div class="section-header">
+        <span class="section-num">§02</span>
+        <h2>The Gradient — Mathematical Foundation</h2>
+      </div>
+
+      <div class="subsection">
+        <h3>From Derivative to Gradient</h3>
+        <p>For a scalar function of one variable \(f(x)\), the derivative \(f'(x)\) tells us the slope — the rate of
+          change. When the function takes a vector input \( \boldsymbol{\theta} \in \mathbb{R}^n \), we generalize to
+          <em>partial derivatives</em>.
+        </p>
+
+        <p>The <span class="hl">gradient</span> \(\nabla J(\boldsymbol{\theta})\) is the vector of all partial
+          derivatives:</p>
+
+        <div class="math-block">
+          <span class="label">Gradient Definition</span>
+          \[
+          \nabla J(\boldsymbol{\theta}) = \begin{bmatrix} \dfrac{\partial J}{\partial \theta_1} \\ \dfrac{\partial
+          J}{\partial \theta_2} \\ \vdots \\ \dfrac{\partial J}{\partial \theta_n} \end{bmatrix} \in \mathbb{R}^n
+          \]
+        </div>
+
+        <p>Each component \(\frac{\partial J}{\partial \theta_j}\) tells you: "how much does the loss change if I nudge
+          \(\theta_j\) slightly, holding all other parameters fixed?"</p>
+      </div>
+
+      <div class="subsection">
+        <h3>What the Gradient Tells You — Geometrically</h3>
+
+        <ul class="prop-list">
+          <li><strong>Direction:</strong> \(\nabla J(\boldsymbol{\theta})\) points in the direction of <em>steepest
+              increase</em> of \(J\) at \(\boldsymbol{\theta}\). Therefore, \(-\nabla J\) points toward steepest
+            decrease.</li>
+          <li><strong>Magnitude:</strong> \(\|\nabla J(\boldsymbol{\theta})\|\) tells you how steep the slope is. A
+            large gradient means the surface is steep; near a minimum it approaches zero.</li>
+          <li><strong>Orthogonality:</strong> The gradient is always perpendicular (orthogonal) to the level curves
+            (contours) of the function — just as a mountain's steepest path is always perpendicular to elevation
+            contours.</li>
+          <li><strong>Local information:</strong> The gradient is a local property — it only describes the surface at a
+            single point. This is why gradient descent must iterate.</li>
+        </ul>
+      </div>
+
+      <div class="subsection">
+        <h3>Gradient of Common Loss Functions</h3>
+
+        <div class="math-block green">
+          <span class="label">MSE Loss (Linear Regression)</span>
+          \[
+          J(\mathbf{w}) = \frac{1}{2m}\|\mathbf{X}\mathbf{w} - \mathbf{y}\|^2
+          \quad\Rightarrow\quad
+          \nabla_{\mathbf{w}} J = \frac{1}{m}\mathbf{X}^T(\mathbf{X}\mathbf{w} - \mathbf{y})
+          \]
+        </div>
+
+        <div class="math-block coral">
+          <span class="label">Cross-Entropy Loss (Logistic Regression)</span>
+          \[
+          J(\mathbf{w}) = -\frac{1}{m}\sum_i\left[y_i\log\hat{y}_i + (1-y_i)\log(1-\hat{y}_i)\right]
+          \quad\Rightarrow\quad
+          \nabla_{\mathbf{w}} J = \frac{1}{m}\mathbf{X}^T(\hat{\mathbf{y}} - \mathbf{y})
+          \]
+        </div>
+
+        <div class="callout callout-insight">
+          <div class="callout-title">💡 Notice</div>
+          <p>Both gradients have the form \(\mathbf{X}^T(\hat{\mathbf{y}} - \mathbf{y})\) — the features matrix
+            transposed, times the residual. This is the "error signal" propagated back through the linear layer. The
+            difference is only in how \(\hat{\mathbf{y}}\) is computed.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════════════════════ -->
+    <div class="section" id="s3">
+      <div class="section-header">
+        <span class="section-num">§03</span>
+        <h2>Directional Derivative & Why Negative Gradient is Optimal</h2>
+      </div>
+
+      <p>This section gives the <em>mathematical proof</em> that the gradient direction is optimal — not just an
+        intuition.</p>
+
+      <div class="subsection">
+        <h3>The Directional Derivative</h3>
+        <p>The rate of change of \(J\) in an arbitrary direction \(\mathbf{u}\) (a unit vector, \(\|\mathbf{u}\| = 1\))
+          is the <span class="hl">directional derivative</span>:</p>
+
+        <div class="math-block">
+          <span class="label">Directional Derivative</span>
+          \[
+          D_{\mathbf{u}} J(\boldsymbol{\theta}) = \nabla J(\boldsymbol{\theta}) \cdot \mathbf{u} = \|\nabla J\|
+          \|\mathbf{u}\| \cos\phi = \|\nabla J\| \cos\phi
+          \]
+          <p style="color:var(--muted);font-size:0.88em;margin-top:12px;font-family:'JetBrains Mono',monospace;">where φ
+            is the angle between ∇J and u, and ‖u‖ = 1</p>
+        </div>
+
+        <p>This is the dot product formula — the component of the gradient in the direction \(\mathbf{u}\).</p>
+      </div>
+
+      <div class="subsection">
+        <h3>Proof: The Negative Gradient is Steepest Descent</h3>
+
+        <div class="derivation">
+          <div class="derivation-header">// Why −∇J is the unique direction of maximum decrease</div>
+          <div class="derivation-step">
+            <span class="step-num">1</span>
+            <div>We want to find the unit vector \(\mathbf{u}\) that <em>minimizes</em> \(D_{\mathbf{u}} J = \|\nabla
+              J\|\cos\phi\).</div>
+          </div>
+          <div class="derivation-step">
+            <span class="step-num">2</span>
+            <div>\(\|\nabla J\|\) is fixed at the current point. So we minimize over the angle \(\phi\) between
+              \(\mathbf{u}\) and \(\nabla J\).</div>
+          </div>
+          <div class="derivation-step">
+            <span class="step-num">3</span>
+            <div>\(\cos\phi\) is minimized when \(\phi = 180°\), i.e., when \(\mathbf{u}\) points <em>exactly
+                opposite</em> to \(\nabla J\).
+              <div class="step-note">At φ = 180°: cos(φ) = −1, giving D_u J = −‖∇J‖ — the most negative possible rate of
+                change.</div>
+            </div>
+          </div>
+          <div class="derivation-step">
+            <span class="step-num">4</span>
+            <div>Therefore: \(\mathbf{u}^* = -\dfrac{\nabla J(\boldsymbol{\theta})}{\|\nabla J(\boldsymbol{\theta})\|}\)
+              <div class="step-note">The unit vector in the direction of steepest descent is the normalized negative
+                gradient. ∎</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="callout callout-key">
+          <div class="callout-title">✓ The Fundamental Theorem of Gradient Descent</div>
+          <p>The negative gradient \(-\nabla J(\boldsymbol{\theta})\) is the <strong>unique direction</strong> of
+            locally steepest descent. Moving in any other direction decreases the loss more slowly (or increases it).
+            This is not heuristic — it follows directly from the Cauchy-Schwarz inequality applied to the dot product.
+          </p>
+        </div>
+      </div>
+
+      <div class="figure">
+        <svg viewBox="0 0 580 280" xmlns="http://www.w3.org/2000/svg" style="max-width:580px;">
+          <rect width="580" height="280" fill="#0c0f14" />
+          <!-- Contour ellipses -->
+          <ellipse cx="290" cy="140" rx="240" ry="110" fill="none" stroke="#1f3a4a" stroke-width="1.5" />
+          <ellipse cx="290" cy="140" rx="180" ry="80" fill="none" stroke="#1f4060" stroke-width="1.5" />
+          <ellipse cx="290" cy="140" rx="120" ry="52" fill="none" stroke="#1f5080" stroke-width="1.5" />
+          <ellipse cx="290" cy="140" rx="60" ry="26" fill="none" stroke="#1f60a0" stroke-width="1.5" />
+          <ellipse cx="290" cy="140" rx="20" ry="9" fill="none" stroke="#4fc3f7" stroke-width="2" />
+          <!-- Minimum -->
+          <circle cx="290" cy="140" r="5" fill="#4fc3f7" />
+          <text x="298" y="134" font-family="JetBrains Mono" font-size="11" fill="#4fc3f7">minimum</text>
+
+          <!-- A point on outer contour -->
+          <circle cx="130" cy="108" r="6" fill="#ffd43b" />
+          <text x="80" y="100" font-family="JetBrains Mono" font-size="11" fill="#ffd43b">θ</text>
+
+          <!-- Gradient arrow (points up-right, perpendicular to ellipse, outward) -->
+          <defs>
+            <marker id="cyan-arrow" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+              <path d="M0,0 L0,6 L8,3 z" fill="#4fc3f7" />
+            </marker>
+            <marker id="coral-arrow" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+              <path d="M0,0 L0,6 L8,3 z" fill="#ff6b6b" />
+            </marker>
+            <marker id="green-arrow" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+              <path d="M0,0 L0,6 L8,3 z" fill="#69db7c" />
+            </marker>
+          </defs>
+
+          <!-- Gradient direction (away from center) -->
+          <line x1="130" y1="108" x2="80" y2="72" stroke="#ff6b6b" stroke-width="2.2" marker-end="url(#coral-arrow)" />
+          <text x="52" y="68" font-family="JetBrains Mono" font-size="11" fill="#ff6b6b">∇J</text>
+
+          <!-- Negative gradient (toward center) -->
+          <line x1="130" y1="108" x2="200" y2="134" stroke="#4fc3f7" stroke-width="2.2" marker-end="url(#cyan-arrow)" />
+          <text x="208" y="130" font-family="JetBrains Mono" font-size="11" fill="#4fc3f7">−∇J</text>
+
+          <!-- Tangent to contour -->
+          <line x1="80" y1="130" x2="178" y2="86" stroke="#5a6a85" stroke-width="1.5" stroke-dasharray="5,3" />
+          <text x="64" y="148" font-family="JetBrains Mono" font-size="10" fill="#5a6a85">contour line</text>
+
+          <!-- Right angle marker -->
+          <path d="M130,108 L118,96 L130,84 L142,96 Z" fill="none" stroke="#5a6a85" stroke-width="1" opacity="0.6" />
+
+          <!-- Labels -->
+          <text x="290" y="258" text-anchor="middle" font-family="JetBrains Mono" font-size="11" fill="#5a6a85">−∇J is
+            always perpendicular to contour lines, pointing toward the minimum</text>
+        </svg>
+        <div class="figure-cap">Fig 1. Contour plot of loss function. ∇J points outward (steepest ascent), perpendicular
+          to contours. −∇J points inward (steepest descent) toward the minimum.</div>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════════════════════ -->
+    <div class="section" id="s4">
+      <div class="section-header">
+        <span class="section-num">§04</span>
+        <h2>Gradient Descent — The Algorithm</h2>
+      </div>
+
+      <div class="subsection">
+        <h3>The Core Update Rule</h3>
+        <p>Starting from an initial parameter vector \(\boldsymbol{\theta}^{(0)}\), we repeatedly move in the direction
+          of steepest descent by a small step controlled by the <span class="hl">learning rate</span> \(\alpha\):</p>
+
+        <div class="math-block">
+          <span class="label">Gradient Descent Update</span>
+          \[
+          \boldsymbol{\theta}^{(t+1)} = \boldsymbol{\theta}^{(t)} - \alpha \nabla J(\boldsymbol{\theta}^{(t)})
+          \]
+        </div>
+
+        <p>For each individual parameter \(\theta_j\):</p>
+
+        <div class="math-block">
+          <span class="label">Component-wise Update</span>
+          \[
+          \theta_j \leftarrow \theta_j - \alpha \frac{\partial J}{\partial \theta_j}, \quad \forall j = 1, \ldots, n
+          \]
+        </div>
+
+        <div class="callout callout-warning">
+          <div class="callout-title">⚠ Simultaneous Update Rule</div>
+          <p>All parameters must be updated <em>simultaneously</em> using the gradients computed at the <em>current</em>
+            parameter values. You compute all gradients first, then update all parameters. If you update \(\theta_1\)
+            first and use the new \(\theta_1\) to compute the gradient for \(\theta_2\), you're doing something
+            different — a form of coordinate descent, not true gradient descent.</p>
+        </div>
+      </div>
+
+      <div class="subsection">
+        <h3>Derivation from Taylor Expansion</h3>
+        <p>Why does this update make sense? The first-order Taylor expansion of \(J\) at \(\boldsymbol{\theta}\) is:</p>
+
+        <div class="derivation">
+          <div class="derivation-header">// Motivating the update rule via Taylor series</div>
+          <div class="derivation-step">
+            <span class="step-num">1</span>
+            <div>
+              Taylor expansion: \(\displaystyle J(\boldsymbol{\theta} + \boldsymbol{\delta}) \approx
+              J(\boldsymbol{\theta}) + \nabla J(\boldsymbol{\theta})^T \boldsymbol{\delta}\)
+              <div class="step-note">For small perturbation δ, the change in loss is approximately ∇J · δ</div>
+            </div>
+          </div>
+          <div class="derivation-step">
+            <span class="step-num">2</span>
+            <div>
+              We want \(\boldsymbol{\delta}\) that most decreases \(J\). Choose \(\boldsymbol{\delta} = -\alpha \nabla
+              J(\boldsymbol{\theta})\).
+            </div>
+          </div>
+          <div class="derivation-step">
+            <span class="step-num">3</span>
+            <div>
+              Then: \(\displaystyle J(\boldsymbol{\theta} - \alpha\nabla J) \approx J(\boldsymbol{\theta}) -
+              \alpha\|\nabla J\|^2\)
+              <div class="step-note">Since ∇Jᵀ(−α∇J) = −α‖∇J‖² &lt; 0 — the loss is guaranteed to decrease (for small
+                  enough α).</div>
+              </div>
+            </div>
+            <div class="derivation-step">
+              <span class="step-num">4</span>
+              <div>
+                \(\Rightarrow \boldsymbol{\theta}^{(t+1)} = \boldsymbol{\theta}^{(t)} - \alpha\nabla
+                J(\boldsymbol{\theta}^{(t)}) \qquad \blacksquare\)
+                <div class="step-note">The update is valid as long as α is small enough for the linear approximation to
+                  hold.</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="callout callout-insight">
+            <div class="callout-title">💡 The decrease guarantee</div>
+            <p>The Taylor expansion shows that each step decreases \(J\) by approximately \(\alpha\|\nabla J\|^2\). This
+              is always non-negative — so gradient descent is a <em>descent method</em>, meaning the loss never
+              increases (for sufficiently small \(\alpha\) and smooth \(J\)). Near a minimum \(\|\nabla J\| \to 0\) and
+              updates become tiny.</p>
+          </div>
+        </div>
+
+        <div class="algo">
+          <span class="hdr">// Batch Gradient Descent — General Form</span>
+          <span class="kw">Initialize</span>: <span class="var">θ</span> ∈ ℝⁿ (e.g., zeros or small random), choose
+          α<br>
+          <span class="kw">for</span> t = <span class="num">1, 2, 3, ...</span> <span class="kw">until</span>
+          convergence:<br>
+          &nbsp;&nbsp;<span class="cmt"># Compute gradient over entire dataset</span><br>
+          &nbsp;&nbsp;<span class="var">g</span> = <span class="fn">∇J</span>(<span class="var">θ</span>; X_train,
+          y_train)<br><br>
+          &nbsp;&nbsp;<span class="cmt"># Update parameters</span><br>
+          &nbsp;&nbsp;<span class="var">θ</span> = <span class="var">θ</span> <span class="op">−</span> α · <span
+            class="var">g</span><br><br>
+          &nbsp;&nbsp;<span class="cmt"># Convergence check</span><br>
+          &nbsp;&nbsp;<span class="kw">if</span> ‖<span class="var">g</span>‖ &lt; ε: <span class="kw">break</span>
+            &nbsp;&nbsp;<span class="cmt"># gradient near zero → at minimum</span>
+        </div>
+      </div>
+
+      <!-- ══════════════════════════════════════════════════════════ -->
+      <div class="section" id="s5">
+        <div class="section-header">
+          <span class="section-num">§05</span>
+          <h2>The Learning Rate — Deep Dive</h2>
+        </div>
+
+        <p>The learning rate \(\alpha\) is the single most important hyperparameter in gradient descent. It controls
+          <em>how far</em> we step in the negative gradient direction each iteration.
+        </p>
+
+        <div class="lr-zones">
+          <div class="lr-zone" style="background:rgba(255,107,107,0.06);border-color:rgba(255,107,107,0.3);">
+            <div class="lr-val" style="color:var(--accent2);">α too large</div>
+            <p>Overshoots the minimum. Oscillates or diverges. Loss increases instead of decreasing. Can jump across
+              valleys entirely.</p>
+          </div>
+          <div class="lr-zone" style="background:rgba(105,219,124,0.06);border-color:rgba(105,219,124,0.3);">
+            <div class="lr-val" style="color:var(--accent3);">α just right</div>
+            <p>Converges smoothly and efficiently. Each step meaningfully reduces loss. Reaches neighborhood of minimum
+              in reasonable time.</p>
+          </div>
+          <div class="lr-zone" style="background:rgba(255,212,59,0.06);border-color:rgba(255,212,59,0.3);">
+            <div class="lr-val" style="color:var(--accent4);">α too small</div>
+            <p>Takes infinitely small steps. Converges too slowly — may take millions of iterations. Wastes compute, may
+              appear stuck.</p>
+          </div>
+        </div>
+
+        <div class="subsection">
+          <h3>Mathematical Condition for Convergence</h3>
+          <p>For a convex function with <span class="hl">Lipschitz-continuous gradient</span> (the gradient doesn't
+            change too fast — characterized by a constant \(L\)), gradient descent is guaranteed to converge if:</p>
+
+          <div class="math-block">
+            <span class="label">Convergence Condition (Lipschitz)</span>
+            \[
+            0 &lt; \alpha \leq \frac{1}{L} \] <p
+              style="color:var(--muted);font-size:0.85em;margin-top:12px;font-family:'JetBrains Mono',monospace;">where
+              L = max eigenvalue of the Hessian ∇²J (the curvature)</p>
+          </div>
+
+          <p>Intuitively: \(\frac{1}{L}\) is the step size that exactly "fits" the curvature of the loss landscape. The
+            Hessian's largest eigenvalue tells you how curved the function is — high curvature demands a smaller step.
+          </p>
+        </div>
+
+        <div class="subsection">
+          <h3>The Quadratic Bowl — Understanding LR Geometrically</h3>
+          <p>For a simple quadratic \(J(\theta) = \frac{1}{2}a\theta^2\) (a bowl with curvature \(a\)):</p>
+
+          <div class="math-block">
+            \[
+            \theta^{(t+1)} = \theta^{(t)} - \alpha \cdot a\theta^{(t)} = \theta^{(t)}(1 - \alpha a)
+            \]
+          </div>
+
+          <p>This is a geometric sequence multiplied by \((1-\alpha a)\) each step:</p>
+          <ul class="prop-list">
+            <li>If \(|1-\alpha a| &lt; 1\) (i.e., \(\alpha &lt; 2/a\)): sequence converges to 0 → minimum ✓</li>
+            <li>If \(|1-\alpha a| = 1\) (i.e., \(\alpha = 2/a\)): stuck oscillating between \(+\theta_0\) and
+              \(-\theta_0\)</li>
+            <li>If \(|1-\alpha a| &gt; 1\) (i.e., \(\alpha &gt; 2/a\)): sequence diverges → ✗</li>
+          </ul>
+
+          <div class="callout callout-gold">
+            <div class="callout-title">⚡ Practical Rule</div>
+            <p>Start with \(\alpha = 0.001\) or \(\alpha = 0.01\). Monitor training loss: if it decreases smoothly →
+              fine. If it oscillates or spikes → halve \(\alpha\). If it barely moves → try 10× larger. Modern practice:
+              use Adam (§11) which adapts \(\alpha\) per-parameter automatically.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- ══════════════════════════════════════════════════════════ -->
+      <div class="section" id="s6">
+        <div class="section-header">
+          <span class="section-num">§06</span>
+          <h2>Batch, Stochastic & Mini-Batch GD</h2>
+        </div>
+
+        <p>The three variants differ only in <em>how many samples</em> are used to compute the gradient per update. This
+          creates a fundamental speed-vs-accuracy tradeoff.</p>
+
+        <div class="subsection">
+          <h3 class="green">Batch Gradient Descent (BGD)</h3>
+          <p>Use all \(m\) training samples to compute one gradient, then do one update.</p>
+
+          <div class="math-block green">
+            <span class="label">Batch GD Gradient</span>
+            \[
+            \nabla J(\boldsymbol{\theta}) = \frac{1}{m} \sum_{i=1}^{m} \nabla_{\boldsymbol{\theta}}
+            \mathcal{L}(\hat{y}^{(i)}, y^{(i)})
+            \]
+          </div>
+
+          <ul class="prop-list">
+            <li><strong>Pros:</strong> Exact gradient — smooth convergence, guaranteed descent on convex functions,
+              stable loss curve.</li>
+            <li><strong>Cons:</strong> Expensive per update when \(m\) is large. Cannot be used for online learning.
+              Slow for big datasets.</li>
+          </ul>
+        </div>
+
+        <div class="subsection">
+          <h3 class="coral">Stochastic Gradient Descent (SGD)</h3>
+          <p>Use <em>one randomly selected sample</em> to compute an approximate gradient, then update immediately.</p>
+
+          <div class="math-block coral">
+            <span class="label">SGD Gradient (one sample)</span>
+            \[
+            \nabla J(\boldsymbol{\theta}) \approx \nabla_{\boldsymbol{\theta}} \mathcal{L}(\hat{y}^{(i)}, y^{(i)}) \quad
+            \text{for random } i
+            \]
+          </div>
+
+          <ul class="prop-list">
+            <li><strong>Pros:</strong> \(m\) updates per epoch instead of 1. Fast to start learning. Noise can help
+              escape shallow local minima. Works for online/streaming data.</li>
+            <li><strong>Cons:</strong> High variance — loss curve is noisy. May never fully converge — oscillates around
+              minimum. Needs careful learning rate tuning.</li>
+          </ul>
+        </div>
+
+        <div class="subsection">
+          <h3 class="gold">Mini-Batch Gradient Descent (the Standard)</h3>
+          <p>Use a small batch of \(B\) samples (typically 32, 64, 128, 256) to compute each gradient estimate.</p>
+
+          <div class="math-block gold">
+            <span class="label">Mini-Batch Gradient</span>
+            \[
+            \nabla J(\boldsymbol{\theta}) \approx \frac{1}{B} \sum_{i \in \mathcal{B}} \nabla_{\boldsymbol{\theta}}
+            \mathcal{L}(\hat{y}^{(i)}, y^{(i)})
+            \]
+            <p style="color:var(--muted);font-size:0.85em;margin-top:12px;font-family:'JetBrains Mono',monospace;">where
+              𝓑 is a randomly sampled mini-batch of size B</p>
+          </div>
+
+          <ul class="prop-list">
+            <li><strong>Why it works:</strong> Gradient estimate is a sample mean — by the law of large numbers, it's a
+              good approximation of the true gradient even for small \(B\).</li>
+            <li><strong>GPU efficiency:</strong> Matrix operations on a batch of size 64 are barely slower than on a
+              single sample — parallelism is exploited optimally.</li>
+            <li><strong>Noise benefits:</strong> Some stochasticity helps escape local minima; far less noisy than pure
+              SGD.</li>
+          </ul>
+        </div>
+
+        <table>
+          <thead>
+            <tr>
+              <th>Variant</th>
+              <th>Batch Size</th>
+              <th>Updates/Epoch</th>
+              <th>Gradient Accuracy</th>
+              <th>Noise Level</th>
+              <th>Memory</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Batch GD</td>
+              <td>\(m\) (all)</td>
+              <td>1</td>
+              <td>Exact</td>
+              <td>Zero</td>
+              <td>High</td>
+            </tr>
+            <tr>
+              <td>SGD</td>
+              <td>1</td>
+              <td>\(m\)</td>
+              <td>Very noisy</td>
+              <td>Very high</td>
+              <td>Minimal</td>
+            </tr>
+            <tr>
+              <td>Mini-Batch GD</td>
+              <td>32–512</td>
+              <td>\(m/B\)</td>
+              <td>Good approximation</td>
+              <td>Moderate</td>
+              <td>Low–Med</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="callout callout-insight">
+          <div class="callout-title">💡 One Epoch</div>
+          <p>One <strong>epoch</strong> = one complete pass through the entire training dataset. With mini-batch GD and
+            batch size \(B\), one epoch consists of \(\lceil m/B \rceil\) gradient updates. Training typically runs for
+            tens to hundreds of epochs.</p>
+        </div>
+      </div>
+
+      <!-- ══════════════════════════════════════════════════════════ -->
+      <div class="section" id="s7">
+        <div class="section-header">
+          <span class="section-num">§07</span>
+          <h2>The Loss Landscape — Challenges</h2>
+        </div>
+
+        <p>Real loss functions (especially for deep networks) are high-dimensional non-convex surfaces full of
+          pathological structures that naive gradient descent struggles with.</p>
+
+        <div class="subsection">
+          <h3 class="coral">Problem 1 — Local Minima</h3>
+          <p>A <strong>local minimum</strong> is a point where \(\nabla J = 0\) and all directions lead upward — but
+            it's not the global minimum. Gradient descent can get trapped here.</p>
+
+          <div class="math-block coral">
+            <span class="label">Local vs Global Minimum</span>
+            \[
+            \text{Local minimum: } \nabla J(\boldsymbol{\theta}^*) = 0, \; \nabla^2 J(\boldsymbol{\theta}^*) \succ 0 \;
+            (\text{positive definite Hessian})
+            \]
+            \[
+            \text{Global minimum: } J(\boldsymbol{\theta}^*) \leq J(\boldsymbol{\theta}) \; \forall \boldsymbol{\theta}
+            \]
+          </div>
+
+          <div class="callout callout-key">
+            <div class="callout-title">✓ The Good News for Deep Learning</div>
+            <p>Empirical research suggests that in high-dimensional networks, <em>true local minima are rare</em>. Most
+              critical points are saddle points. Furthermore, many local minima have similar loss values to the global
+              minimum — escaping them is less important than it seems. Batch noise in SGD also helps escape shallow
+              minima.</p>
+          </div>
+        </div>
+
+        <div class="subsection">
+          <h3 class="gold">Problem 2 — Saddle Points</h3>
+          <p>A <strong>saddle point</strong> is where \(\nabla J = 0\) but it's neither a local min nor max — the
+            Hessian has both positive and negative eigenvalues. The function curves up in some directions, down in
+            others.</p>
+
+          <div class="math-block gold">
+            <span class="label">Saddle Point Condition</span>
+            \[
+            \nabla J(\boldsymbol{\theta}^*) = 0, \quad \nabla^2 J(\boldsymbol{\theta}^*) \text{ is indefinite}
+            \quad (\text{has both } + \text{ and } - \text{ eigenvalues})
+            \]
+          </div>
+
+          <p>Gradient descent slows to a crawl near saddle points because the gradient is near zero in all directions —
+            even though you're not at a minimum. In very high dimensions, saddle points are <em>far more common</em>
+            than local minima (a critical point is a local min only if <em>all</em> eigenvalues are positive —
+            exponentially unlikely in high dimensions).</p>
+
+          <p>Saddle points are the <em>primary obstacle</em> in deep learning optimization. Momentum (§08) and noise
+            from mini-batching help escape them.</p>
+        </div>
+
+        <div class="subsection">
+          <h3 class="purple">Problem 3 — Ravines (Ill-Conditioned Curvature)</h3>
+          <p>A <strong>ravine</strong> is a region where the loss surface is much more curved in one direction than
+            another — like a long valley. The condition number \(\kappa = \lambda_{\max}/\lambda_{\min}\) of the Hessian
+            measures this.</p>
+
+          <p>In a ravine, gradient descent oscillates wildly across the narrow dimension while making slow progress
+            along the valley floor. The gradient direction points across the valley (high curvature direction) rather
+            than along it (toward the minimum).</p>
+
+          <div class="figure">
+            <svg viewBox="0 0 560 200" xmlns="http://www.w3.org/2000/svg" style="max-width:560px;">
+              <rect width="560" height="200" fill="#0c0f14" />
+              <!-- Ravine contours (elongated ellipses) -->
+              <ellipse cx="280" cy="100" rx="240" ry="40" fill="none" stroke="#1f3060" stroke-width="1.2" />
+              <ellipse cx="280" cy="100" rx="180" ry="28" fill="none" stroke="#1f3880" stroke-width="1.2" />
+              <ellipse cx="280" cy="100" rx="110" ry="17" fill="none" stroke="#1f48a0" stroke-width="1.2" />
+              <ellipse cx="280" cy="100" rx="50" ry="8" fill="none" stroke="#3060c0" stroke-width="1.5" />
+              <!-- Minimum -->
+              <circle cx="280" cy="100" r="4" fill="#4fc3f7" />
+              <!-- Oscillating path (zigzag) -->
+              <polyline points="60,62 130,138 200,70 255,128 275,94" fill="none" stroke="#ff6b6b" stroke-width="2"
+                stroke-dasharray="5,3" />
+              <!-- Momentum path (smooth) -->
+              <path d="M60,62 C100,80 160,90 200,95 C230,98 255,99 275,100" fill="none" stroke="#69db7c"
+                stroke-width="2" />
+              <!-- Labels -->
+              <text x="52" y="54" font-family="JetBrains Mono" font-size="11" fill="#ffd43b">start</text>
+              <text x="40" y="178" font-family="JetBrains Mono" font-size="11" fill="#ff6b6b">vanilla GD:
+                oscillates</text>
+              <text x="40" y="196" font-family="JetBrains Mono" font-size="11" fill="#69db7c">with momentum:
+                smooth</text>
+              <circle cx="28" cy="172" r="4" fill="#ff6b6b" />
+              <circle cx="28" cy="190" r="4" fill="#69db7c" />
+            </svg>
+            <div class="figure-cap">Fig 2. Ravine (ill-conditioned landscape). Vanilla GD zigzags across the valley.
+              Momentum smooths the path and travels along the valley floor.</div>
+          </div>
+        </div>
+
+        <div class="subsection">
+          <h3>Problem 4 — Plateaus and Vanishing Gradients</h3>
+          <p>A <strong>plateau</strong> is a region where \(J\) is nearly flat — gradient is tiny everywhere. The
+            optimizer makes negligible progress. This is also the mechanism of the <em>vanishing gradient problem</em>
+            in deep networks: when gradients are multiplied through many layers via the chain rule, they can become
+            exponentially small, stalling learning in early layers.</p>
+        </div>
+      </div>
+
+      <!-- ══════════════════════════════════════════════════════════ -->
+      <div class="section" id="s8">
+        <div class="section-header">
+          <span class="section-num">§08</span>
+          <h2>Momentum — Escaping Ravines</h2>
+        </div>
+
+        <p>Momentum is inspired by physics: a ball rolling downhill accumulates velocity in the direction it's been
+          traveling. Rather than making each step purely from the current gradient, momentum <em>accumulates a velocity
+            vector</em> from past gradients.</p>
+
+        <div class="subsection">
+          <h3>Classical Momentum (Heavy Ball Method)</h3>
+
+          <div class="math-block">
+            <span class="label">Momentum Update</span>
+            \[
+            \mathbf{v}^{(t)} = \beta \mathbf{v}^{(t-1)} - \alpha \nabla J(\boldsymbol{\theta}^{(t)})
+            \]
+            \[
+            \boldsymbol{\theta}^{(t+1)} = \boldsymbol{\theta}^{(t)} + \mathbf{v}^{(t)}
+            \]
+            <p style="color:var(--muted);font-size:0.85em;margin-top:12px;font-family:'JetBrains Mono',monospace;">β ∈
+              [0,1) — momentum coefficient (typically 0.9). v⁽⁰⁾ = 0</p>
+          </div>
+
+          <p>The velocity \(\mathbf{v}^{(t)}\) is an <em>exponentially weighted average</em> of past gradients.
+            Expanding recursively:</p>
+
+          <div class="derivation">
+            <div class="derivation-header">// Expanding v to see what it really computes</div>
+            <div class="derivation-step">
+              <span class="step-num">1</span>
+              <div>\(\mathbf{v}^{(t)} = -\alpha\nabla J^{(t)} + \beta(-\alpha\nabla J^{(t-1)} + \beta(\ldots))\)</div>
+            </div>
+            <div class="derivation-step">
+              <span class="step-num">2</span>
+              <div>
+                \(\mathbf{v}^{(t)} = -\alpha\sum_{k=0}^{t} \beta^{t-k} \nabla J^{(k)}\)
+                <div class="step-note">v is a weighted sum of all past gradients, with exponentially decaying weights
+                  β^(t-k).</div>
+              </div>
+            </div>
+          </div>
+
+          <p>In a ravine: gradients in the <em>across-valley</em> direction alternate signs each step → they cancel in
+            the average. Gradients along the <em>valley floor</em> are consistently in the same direction → they
+            accumulate. The ball rolls along the valley rather than zigzagging across it.</p>
+
+          <div class="callout callout-insight">
+            <div class="callout-title">💡 Effective Step Size</div>
+            <p>In steady state, if the gradient is constant \(\mathbf{g}\), the velocity converges to \(\mathbf{v}^* =
+              \frac{-\alpha}{1-\beta}\mathbf{g}\). With \(\beta = 0.9\), the effective learning rate is
+              \(\frac{\alpha}{1-0.9} = 10\alpha\). Momentum amplifies the step size in consistent gradient directions by
+              \(\frac{1}{1-\beta}\).</p>
+          </div>
+        </div>
+
+        <div class="subsection">
+          <h3 class="purple">Nesterov Accelerated Gradient (NAG)</h3>
+          <p>A smarter variant: instead of computing the gradient at the current position, compute it at the
+            <em>lookahead position</em> (where momentum would take you):
+          </p>
+
+          <div class="math-block purple">
+            <span class="label">Nesterov Momentum</span>
+            \[
+            \tilde{\boldsymbol{\theta}} = \boldsymbol{\theta}^{(t)} + \beta \mathbf{v}^{(t-1)} \quad \text{(lookahead
+            position)}
+            \]
+            \[
+            \mathbf{v}^{(t)} = \beta\mathbf{v}^{(t-1)} - \alpha \nabla J(\tilde{\boldsymbol{\theta}})
+            \]
+            \[
+            \boldsymbol{\theta}^{(t+1)} = \boldsymbol{\theta}^{(t)} + \mathbf{v}^{(t)}
+            \]
+          </div>
+
+          <p>NAG has a provably faster convergence rate: for convex functions, momentum achieves \(O(1/T)\) convergence
+            while NAG achieves the optimal \(O(1/T^2)\) rate. Intuition: by computing the gradient at the lookahead
+            point, NAG "corrects" for overshooting before it happens.</p>
+        </div>
+      </div>
+
+      <!-- ══════════════════════════════════════════════════════════ -->
+      <div class="section" id="s9">
+        <div class="section-header">
+          <span class="section-num">§09</span>
+          <h2>AdaGrad — Adaptive Learning Rates</h2>
+        </div>
+
+        <p>A fundamental problem with a single global \(\alpha\): some parameters may need large updates (rarely seen
+          features), others need small updates (frequently updated parameters). AdaGrad adapts the learning rate <em>per
+            parameter</em> based on its history of gradients.</p>
+
+        <div class="math-block">
+          <span class="label">AdaGrad Update</span>
+          \[
+          G_j^{(t)} = G_j^{(t-1)} + \left(\frac{\partial J}{\partial \theta_j}\right)^2 \quad \text{(accumulated squared
+          gradients)}
+          \]
+          \[
+          \theta_j^{(t+1)} = \theta_j^{(t)} - \frac{\alpha}{\sqrt{G_j^{(t)} + \epsilon}} \cdot \frac{\partial
+          J}{\partial \theta_j}
+          \]
+          <p style="color:var(--muted);font-size:0.85em;margin-top:12px;font-family:'JetBrains Mono',monospace;">ε ≈
+            1e-8 prevents division by zero. G_j⁽⁰⁾ = 0</p>
+        </div>
+
+        <p>In matrix/vector form:</p>
+
+        <div class="math-block">
+          \[
+          \mathbf{G}^{(t)} = \mathbf{G}^{(t-1)} + \mathbf{g}^{(t)} \odot \mathbf{g}^{(t)}
+          \]
+          \[
+          \boldsymbol{\theta}^{(t+1)} = \boldsymbol{\theta}^{(t)} - \frac{\alpha}{\sqrt{\mathbf{G}^{(t)}} + \epsilon}
+          \odot \mathbf{g}^{(t)}
+          \]
+          <p style="color:var(--muted);font-size:0.85em;margin-top:12px;font-family:'JetBrains Mono',monospace;">⊙ =
+            element-wise product. Division and sqrt are element-wise.</p>
+        </div>
+
+        <div class="subsection">
+          <h3>Why It Works — and Where It Fails</h3>
+          <ul class="prop-list">
+            <li><strong>Large gradient history</strong> → large \(G_j\) → small effective step. Prevents overshooting
+              frequently updated parameters.</li>
+            <li><strong>Small gradient history</strong> → small \(G_j\) → large effective step. Gives more learning to
+              sparse/rarely updated parameters.</li>
+            <li><strong>NLP use:</strong> Great for sparse features (word embeddings) — rare words get larger updates.
+            </li>
+          </ul>
+
+          <div class="callout callout-warning">
+            <div class="callout-title">⚠ The Fatal Flaw of AdaGrad</div>
+            <p>\(G_j\) is a sum — it <em>only ever increases</em>. Over time, the effective learning rate
+              \(\frac{\alpha}{\sqrt{G_j}}\) shrinks monotonically toward zero. In deep networks with long training,
+              AdaGrad can grind to a halt — the learning rate becomes vanishingly small before convergence. This is what
+              RMSProp fixes.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- ══════════════════════════════════════════════════════════ -->
+      <div class="section" id="s10">
+        <div class="section-header">
+          <span class="section-num">§10</span>
+          <h2>RMSProp — Fixing AdaGrad</h2>
+        </div>
+
+        <p>RMSProp (Root Mean Square Propagation, Hinton 2012) replaces the cumulative sum with an <span
+            class="hl">exponentially weighted moving average</span> of squared gradients. The "memory" decays — old
+          gradients are forgotten, preventing the monotonic learning rate decay.</p>
+
+        <div class="math-block green">
+          <span class="label">RMSProp Update</span>
+          \[
+          \mathbf{s}^{(t)} = \rho \mathbf{s}^{(t-1)} + (1-\rho)\, \mathbf{g}^{(t)} \odot \mathbf{g}^{(t)}
+          \]
+          \[
+          \boldsymbol{\theta}^{(t+1)} = \boldsymbol{\theta}^{(t)} - \frac{\alpha}{\sqrt{\mathbf{s}^{(t)}} + \epsilon}
+          \odot \mathbf{g}^{(t)}
+          \]
+          <p style="color:var(--muted);font-size:0.85em;margin-top:12px;font-family:'JetBrains Mono',monospace;">ρ ∈
+            (0,1) — decay rate (typically 0.9 or 0.99). s⁽⁰⁾ = 0</p>
+        </div>
+
+        <p>\(\mathbf{s}^{(t)}\) is the exponentially weighted moving average of \(\mathbf{g}^2\) — effectively a
+          <em>recent</em> estimate of the RMS (root mean square) of the gradient. Unlike AdaGrad's ever-growing sum,
+          \(\mathbf{s}\) stabilizes to a recent average.
+        </p>
+
+        <table>
+          <thead>
+            <tr>
+              <th>Property</th>
+              <th>AdaGrad</th>
+              <th>RMSProp</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Gradient history</td>
+              <td>Cumulative sum (full history)</td>
+              <td>Exponential moving average (recent)</td>
+            </tr>
+            <tr>
+              <td>Effective LR over time</td>
+              <td>Monotonically decreasing → 0</td>
+              <td>Stabilizes (adapts to recent gradients)</td>
+            </tr>
+            <tr>
+              <td>Works for deep networks?</td>
+              <td>No — LR vanishes</td>
+              <td>Yes</td>
+            </tr>
+            <tr>
+              <td>Sparse gradients</td>
+              <td>Excellent</td>
+              <td>Good</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- ══════════════════════════════════════════════════════════ -->
+      <div class="section" id="s11">
+        <div class="section-header">
+          <span class="section-num">§11</span>
+          <h2>Adam — The Gold Standard</h2>
+        </div>
+
+        <p>Adam (Adaptive Moment Estimation, Kingma & Ba 2015) combines the ideas of momentum (first moment) and RMSProp
+          (second moment) into a single algorithm. It is the most widely used optimizer in deep learning.</p>
+
+        <div class="subsection">
+          <h3>The Algorithm — Full Specification</h3>
+
+          <div class="math-block purple">
+            <span class="label">Adam — Complete Update Rules</span>
+            \[
+            \mathbf{m}^{(t)} = \beta_1 \mathbf{m}^{(t-1)} + (1-\beta_1)\mathbf{g}^{(t)} \quad \text{[1st moment — mean
+            of gradients]}
+            \]
+            \[
+            \mathbf{v}^{(t)} = \beta_2 \mathbf{v}^{(t-1)} + (1-\beta_2)\mathbf{g}^{(t)} \odot \mathbf{g}^{(t)} \quad
+            \text{[2nd moment — variance of gradients]}
+            \]
+            \[
+            \hat{\mathbf{m}}^{(t)} = \frac{\mathbf{m}^{(t)}}{1 - \beta_1^t} \qquad \hat{\mathbf{v}}^{(t)} =
+            \frac{\mathbf{v}^{(t)}}{1 - \beta_2^t} \quad \text{[bias correction]}
+            \]
+            \[
+            \boldsymbol{\theta}^{(t+1)} = \boldsymbol{\theta}^{(t)} - \frac{\alpha}{\sqrt{\hat{\mathbf{v}}^{(t)}} +
+            \epsilon} \odot \hat{\mathbf{m}}^{(t)}
+            \]
+          </div>
+
+          <div class="callout callout-purple">
+            <div class="callout-title">★ Default Hyperparameters</div>
+            <p>Paper recommendations: \(\alpha = 0.001\), \(\beta_1 = 0.9\), \(\beta_2 = 0.999\), \(\epsilon =
+              10^{-8}\). These defaults work surprisingly well across a wide variety of problems without tuning.</p>
+          </div>
+        </div>
+
+        <div class="subsection">
+          <h3>The Bias Correction — Why It's Necessary</h3>
+          <p>Both \(\mathbf{m}\) and \(\mathbf{v}\) are initialized to zero. In the first few iterations, they're
+            heavily biased toward zero — the exponential average hasn't "warmed up" yet. The bias correction factors
+            \((1-\beta_1^t)\) and \((1-\beta_2^t)\) counteract this.</p>
+
+          <div class="derivation">
+            <div class="derivation-header">// Why m̂ = m/(1−β₁ᵗ) is unbiased</div>
+            <div class="derivation-step">
+              <span class="step-num">1</span>
+              <div>
+                Expanding the recursion: \(\mathbf{m}^{(t)} = (1-\beta_1)\sum_{k=1}^{t}\beta_1^{t-k}\mathbf{g}^{(k)}\)
+              </div>
+            </div>
+            <div class="derivation-step">
+              <span class="step-num">2</span>
+              <div>
+                Taking expectation: \(\mathbb{E}[\mathbf{m}^{(t)}] = \mathbb{E}[\mathbf{g}](1-\beta_1^t) \cdot
+                \text{(assuming stationary g)}\)
+                <div class="step-note">The (1−β₁ᵗ) factor shows the estimate is biased downward by exactly this factor.
+                </div>
+              </div>
+            </div>
+            <div class="derivation-step">
+              <span class="step-num">3</span>
+              <div>
+                Dividing by \((1-\beta_1^t)\): \(\mathbb{E}[\hat{\mathbf{m}}^{(t)}] = \mathbb{E}[\mathbf{g}]\) — now
+                unbiased. \(\blacksquare\)
+              </div>
+            </div>
+          </div>
+
+          <p>Note: as \(t \to \infty\), \(\beta_1^t \to 0\) and \(\beta_2^t \to 0\), so the correction factors approach
+            1 — bias correction only matters in early training.</p>
+        </div>
+
+        <div class="subsection">
+          <h3>Understanding Adam's Effective Step Size</h3>
+          <p>Ignoring bias correction, the effective update for parameter \(j\) is:</p>
+
+          <div class="math-block">
+            \[
+            \Delta\theta_j = -\alpha \cdot \frac{\hat{m}_j}{\sqrt{\hat{v}_j} + \epsilon}
+            \]
+          </div>
+
+          <p>If gradient is consistent (always same sign, similar magnitude): \(\hat{m}_j \approx g_j\) and \(\hat{v}_j
+            \approx g_j^2\), so \(\frac{\hat{m}_j}{\sqrt{\hat{v}_j}} \approx \frac{g_j}{|g_j|} = \text{sign}(g_j)\). The
+            effective step is roughly \(\pm\alpha\) — Adam takes <em>normalized steps</em> with magnitude roughly equal
+            to \(\alpha\).</p>
+
+          <p>If gradient is noisy (alternates sign): \(\hat{m}_j \approx 0\) (signals cancel) while \(\hat{v}_j\)
+            remains nonzero → very small update. Adam naturally adapts to gradient uncertainty.</p>
+        </div>
+
+        <div class="subsection">
+          <h3>Adam Variants Worth Knowing</h3>
+          <div class="opt-grid">
+            <div class="opt-card">
+              <div class="opt-card-name" style="color:var(--accent);">AdamW</div>
+              <p>Adam with <strong>decoupled weight decay</strong>. Standard Adam applies L2 regularization to the
+                gradient before adaptive scaling — this inadvertently reduces the effective regularization. AdamW
+                applies weight decay directly to the parameters, restoring proper regularization. Default in
+                Transformers.</p>
+            </div>
+            <div class="opt-card">
+              <div class="opt-card-name" style="color:var(--accent3);">Nadam</div>
+              <p>Adam with <strong>Nesterov momentum</strong> (NAG) replacing classical momentum. Uses the lookahead
+                gradient for the first moment. Slightly better convergence on some tasks due to NAG's superior
+                theoretical properties.</p>
+            </div>
+            <div class="opt-card">
+              <div class="opt-card-name" style="color:var(--accent2);">AMSGrad</div>
+              <p>Fixes a convergence issue in Adam for non-convex settings. Maintains the maximum of past second moments
+                instead of the moving average — \(\hat{v}_j = \max(\hat{v}_j^{(t-1)}, \hat{v}_j^{(t)})\). Ensures the
+                learning rate is monotonically non-increasing per parameter.</p>
+            </div>
+            <div class="opt-card">
+              <div class="opt-card-name" style="color:var(--accent4);">Lion</div>
+              <p>A 2023 optimizer (Google Brain) discovered by program search. Uses only the <strong>sign</strong> of
+                the momentum update, not its magnitude. More memory efficient (no second moment) and claims better
+                generalization on vision/language tasks.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ══════════════════════════════════════════════════════════ -->
+      <div class="section" id="s12">
+        <div class="section-header">
+          <span class="section-num">§12</span>
+          <h2>Learning Rate Schedules</h2>
+        </div>
+
+        <p>A fixed learning rate is rarely optimal: a large \(\alpha\) is good early (fast progress), but can cause
+          oscillation near the minimum. A small \(\alpha\) is precise but slow early. Learning rate <em>schedules</em>
+          vary \(\alpha\) over time.</p>
+
+        <div class="subsection">
+          <h3>Step Decay</h3>
+          <div class="math-block">
+            <span class="label">Step Decay</span>
+            \[ \alpha^{(t)} = \alpha_0 \cdot \gamma^{\lfloor t / k \rfloor} \]
+            <p style="color:var(--muted);font-size:0.85em;margin-top:10px;font-family:'JetBrains Mono',monospace;">γ ∈
+              (0,1), k = step interval (e.g., drop by 0.5 every 10 epochs)</p>
+          </div>
+        </div>
+
+        <div class="subsection">
+          <h3>Exponential Decay</h3>
+          <div class="math-block">
+            <span class="label">Exponential Decay</span>
+            \[ \alpha^{(t)} = \alpha_0 \cdot e^{-\lambda t} \]
+          </div>
+        </div>
+
+        <div class="subsection">
+          <h3>Cosine Annealing (Very Common)</h3>
+          <div class="math-block green">
+            <span class="label">Cosine Annealing</span>
+            \[ \alpha^{(t)} = \alpha_{\min} + \frac{1}{2}(\alpha_{\max} - \alpha_{\min})\left(1 + \cos\frac{\pi
+            t}{T}\right) \]
+            <p style="color:var(--muted);font-size:0.85em;margin-top:10px;font-family:'JetBrains Mono',monospace;">T =
+              total steps. Starts at α_max, smoothly decays to α_min.</p>
+          </div>
+          <p>With <strong>warm restarts</strong> (SGDR), the LR is periodically reset to \(\alpha_{\max}\) — allowing
+            the optimizer to explore different loss landscape regions and find better minima. Standard in modern
+            training.</p>
+        </div>
+
+        <div class="subsection">
+          <h3>Linear Warmup (Critical for Transformers)</h3>
+          <div class="math-block gold">
+            <span class="label">Warmup + Decay</span>
+            \[
+            \alpha^{(t)} = \begin{cases} \dfrac{t}{T_{\text{warm}}} \cdot \alpha_{\max} & t \leq T_{\text{warm}} \\
+            \text{decay schedule} & t &gt; T_{\text{warm}} \end{cases}
+            \]
+          </div>
+          <p>In early training, Adam's second moment estimate is unreliable (few samples). A large initial LR causes
+            catastrophically large updates. Warmup gives the second moment estimate time to stabilize before the full LR
+            is used. Ubiquitous in BERT, GPT, ViT training.</p>
+        </div>
+
+        <div class="subsection">
+          <h3>Cyclical Learning Rates (CLR)</h3>
+          <p>Instead of monotonically decreasing, cycle \(\alpha\) between bounds \([\alpha_{\min}, \alpha_{\max}]\).
+            Large LR phases help escape local minima and saddle points; small LR phases allow fine convergence.
+            Empirically competitive with complex schedules for much less tuning.</p>
+        </div>
+      </div>
+
+      <!-- ══════════════════════════════════════════════════════════ -->
+      <div class="section" id="s13">
+        <div class="section-header">
+          <span class="section-num">§13</span>
+          <h2>Second-Order Methods & Newton's Method</h2>
+        </div>
+
+        <p>Gradient descent uses only first-order information (the gradient). Second-order methods additionally use the
+          <span class="hl">Hessian</span> \(\mathbf{H} = \nabla^2 J\) — the matrix of second derivatives — which encodes
+          curvature information.
+        </p>
+
+        <div class="subsection">
+          <h3>Newton's Method</h3>
+          <p>Fit a <em>quadratic approximation</em> to \(J\) at the current point (second-order Taylor expansion) and
+            jump directly to its minimum:</p>
+
+          <div class="derivation">
+            <div class="derivation-header">// Deriving the Newton step</div>
+            <div class="derivation-step">
+              <span class="step-num">1</span>
+              <div>
+                Second-order Taylor: \(\displaystyle J(\boldsymbol{\theta} + \boldsymbol{\delta}) \approx
+                J(\boldsymbol{\theta}) + \nabla J^T\boldsymbol{\delta} + \frac{1}{2}\boldsymbol{\delta}^T \mathbf{H}
+                \boldsymbol{\delta}\)
+              </div>
+            </div>
+            <div class="derivation-step">
+              <span class="step-num">2</span>
+              <div>
+                Minimize over \(\boldsymbol{\delta}\): take gradient w.r.t. \(\boldsymbol{\delta}\) and set to zero:
+                \(\nabla J + \mathbf{H}\boldsymbol{\delta} = 0\)
+              </div>
+            </div>
+            <div class="derivation-step">
+              <span class="step-num">3</span>
+              <div>
+                \(\boldsymbol{\delta}^* = -\mathbf{H}^{-1}\nabla J\)
+              </div>
+            </div>
+            <div class="derivation-step">
+              <span class="step-num">4</span>
+              <div>
+                \(\boxed{\boldsymbol{\theta}^{(t+1)} = \boldsymbol{\theta}^{(t)} -
+                \mathbf{H}(\boldsymbol{\theta}^{(t)})^{-1} \nabla J(\boldsymbol{\theta}^{(t)})}\)
+                <div class="step-note">The Hessian inverse rescales the gradient by the curvature — large curvature →
+                  small step; small curvature → large step.</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="callout callout-key">
+            <div class="callout-title">✓ Newton vs Gradient Descent</div>
+            <p>Newton's method has <strong>quadratic convergence</strong> near the minimum — the number of correct
+              digits roughly doubles each iteration. Gradient descent has only <strong>linear convergence</strong>. But
+              Newton requires computing and inverting an \(n \times n\) Hessian — \(O(n^2)\) storage and \(O(n^3)\)
+              inversion cost. For neural networks with millions of parameters, this is completely infeasible.</p>
+          </div>
+
+          <table>
+            <thead>
+              <tr>
+                <th>Method</th>
+                <th>Information Used</th>
+                <th>Convergence</th>
+                <th>Cost per Step</th>
+                <th>Practical?</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Gradient Descent</td>
+                <td>1st order (∇J)</td>
+                <td>Linear \(O(1/T)\)</td>
+                <td>\(O(n)\)</td>
+                <td>Yes</td>
+              </tr>
+              <tr>
+                <td>Newton's Method</td>
+                <td>2nd order (∇²J)</td>
+                <td>Quadratic</td>
+                <td>\(O(n^3)\)</td>
+                <td>No (large n)</td>
+              </tr>
+              <tr>
+                <td>Quasi-Newton (L-BFGS)</td>
+                <td>Approx 2nd order</td>
+                <td>Superlinear</td>
+                <td>\(O(n)\) mem</td>
+                <td>Yes (small n)</td>
+              </tr>
+              <tr>
+                <td>Adam</td>
+                <td>1st order + diagonal 2nd</td>
+                <td>Adaptive</td>
+                <td>\(O(n)\)</td>
+                <td>Yes</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="subsection">
+          <h3>Why Adam Approximates Newton</h3>
+          <p>Adam's second moment \(\mathbf{v}\) approximates the <em>diagonal of the Hessian</em> — the curvature along
+            each parameter axis independently (ignoring cross terms). Dividing by \(\sqrt{\mathbf{v}}\) approximates the
+            Hessian scaling without ever forming the full matrix. This is why Adam often converges much faster than
+            plain SGD despite being purely first-order.</p>
+        </div>
+      </div>
+
+      <!-- ══════════════════════════════════════════════════════════ -->
+      <div class="section" id="s14">
+        <div class="section-header">
+          <span class="section-num">§14</span>
+          <h2>Convergence Analysis</h2>
+        </div>
+
+        <div class="subsection">
+          <h3>Convex Case — Guaranteed Convergence</h3>
+          <p>For a convex, \(L\)-smooth function with minimum \(J^*\), with step size \(\alpha \leq \frac{1}{L}\):</p>
+
+          <div class="math-block">
+            <span class="label">Convergence Rate — Convex Case</span>
+            \[
+            J(\boldsymbol{\theta}^{(T)}) - J^* \leq \frac{\|\boldsymbol{\theta}^{(0)} -
+            \boldsymbol{\theta}^*\|^2}{2\alpha T}
+            \]
+          </div>
+
+          <p>This is \(O(1/T)\) convergence — to get \(\epsilon\)-accuracy requires \(O(1/\epsilon)\) iterations.</p>
+        </div>
+
+        <div class="subsection">
+          <h3>Strongly Convex Case — Exponential Convergence</h3>
+          <p>If \(J\) is additionally <span class="hl">\(\mu\)-strongly convex</span> (the Hessian's minimum eigenvalue
+            \(\geq \mu &gt; 0\)), gradient descent converges linearly (geometrically fast):</p>
+
+          <div class="math-block green">
+            <span class="label">Linear Convergence — Strongly Convex</span>
+            \[
+            \|\boldsymbol{\theta}^{(T)} - \boldsymbol{\theta}^*\|^2 \leq \left(1 - \frac{\mu}{L}\right)^T
+            \|\boldsymbol{\theta}^{(0)} - \boldsymbol{\theta}^*\|^2
+            \]
+          </div>
+
+          <p>The factor \(\kappa = L/\mu\) is the <strong>condition number</strong>. When \(\kappa\) is large
+            (ill-conditioned — ravine), the contraction factor \((1-1/\kappa)\) is close to 1 → slow convergence. This
+            is the formal reason ravines are problematic.</p>
+        </div>
+
+        <div class="subsection">
+          <h3>Convergence Criteria in Practice</h3>
+          <ul class="prop-list">
+            <li><strong>Gradient norm:</strong> \(\|\nabla J(\boldsymbol{\theta}^{(t)})\|_2 &lt; \epsilon\) — the gradient
+                is near zero. Standard and mathematically principled.</li>
+            <li><strong>Parameter change:</strong> \(\|\boldsymbol{\theta}^{(t+1)} - \boldsymbol{\theta}^{(t)}\|_2 &lt;
+                \epsilon\) — parameters stopped moving significantly.</li>
+            <li><strong>Loss change:</strong> \(|J^{(t+1)} - J^{(t)}| &lt; \epsilon\) — loss has plateaued.</li>
+            <li><strong>Validation loss:</strong> Monitor held-out loss — stop when it starts increasing (early
+              stopping). Most common in practice.</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- ══════════════════════════════════════════════════════════ -->
+      <div class="section" id="s15">
+        <div class="section-header">
+          <span class="section-num">§15</span>
+          <h2>GD for Linear & Logistic Regression — Concrete Examples</h2>
+        </div>
+
+        <div class="subsection">
+          <h3>Linear Regression — Full GD Update</h3>
+          <p>Model: \(\hat{\mathbf{y}} = \mathbf{X}\mathbf{w} + b\). Loss: MSE = \(\frac{1}{2m}\|\mathbf{X}\mathbf{w} -
+            \mathbf{y}\|^2\).</p>
+
+          <div class="math-block">
+            <span class="label">Linear Regression GD</span>
+            \[
+            \nabla_{\mathbf{w}} J = \frac{1}{m}\mathbf{X}^T(\mathbf{X}\mathbf{w} - \mathbf{y}) =
+            \frac{1}{m}\mathbf{X}^T(\hat{\mathbf{y}} - \mathbf{y})
+            \]
+            \[
+            \nabla_{b} J = \frac{1}{m}\mathbf{1}^T(\hat{\mathbf{y}} - \mathbf{y}) = \frac{1}{m}\sum_i(\hat{y}^{(i)} -
+            y^{(i)})
+            \]
+            \[
+            \mathbf{w} \leftarrow \mathbf{w} - \frac{\alpha}{m}\mathbf{X}^T(\hat{\mathbf{y}} - \mathbf{y}), \qquad b
+            \leftarrow b - \frac{\alpha}{m}\sum_i(\hat{y}^{(i)} - y^{(i)})
+            \]
+          </div>
+        </div>
+
+        <div class="subsection">
+          <h3>Logistic Regression — Full GD Update</h3>
+          <p>Model: \(\hat{\mathbf{y}} = \sigma(\mathbf{X}\mathbf{w} + b)\). Loss: Cross-entropy. As derived in the
+            logistic regression masterclass:</p>
+
+          <div class="math-block coral">
+            <span class="label">Logistic Regression GD</span>
+            \[
+            \nabla_{\mathbf{w}} J = \frac{1}{m}\mathbf{X}^T(\hat{\mathbf{y}} - \mathbf{y})
+            \]
+            \[
+            \nabla_{b} J = \frac{1}{m}\sum_i(\hat{y}^{(i)} - y^{(i)})
+            \]
+            \[
+            \mathbf{w} \leftarrow \mathbf{w} - \frac{\alpha}{m}\mathbf{X}^T(\hat{\mathbf{y}} - \mathbf{y}), \qquad b
+            \leftarrow b - \frac{\alpha}{m}\sum_i(\hat{y}^{(i)} - y^{(i)})
+            \]
+          </div>
+
+          <div class="callout callout-key">
+            <div class="callout-title">✓ Identical Update Forms</div>
+            <p>The gradient update rule for logistic and linear regression has <em>the exact same vectorized form</em> —
+              \(\frac{1}{m}\mathbf{X}^T(\hat{\mathbf{y}} - \mathbf{y})\). The only difference is in how
+              \(\hat{\mathbf{y}}\) is computed (identity vs sigmoid). This is why gradient descent code for both models
+              looks nearly identical — and why the pattern generalizes to neural networks.</p>
+          </div>
+        </div>
+
+        <div class="subsection">
+          <h3>Why GD Instead of the Normal Equation?</h3>
+          <table>
+            <thead>
+              <tr>
+                <th></th>
+                <th>Normal Equation</th>
+                <th>Gradient Descent</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Solution quality</td>
+                <td>Exact global optimum</td>
+                <td>Approximate (converges to optimum)</td>
+              </tr>
+              <tr>
+                <td>Cost (n = #features)</td>
+                <td>\(O(n^3)\) matrix inversion</td>
+                <td>\(O(kn)\) per iteration</td>
+              </tr>
+              <tr>
+                <td>Works when n is large?</td>
+                <td>No — \(n &gt; 10^4\) becomes infeasible</td>
+                <td>Yes — scales to billions of params</td>
+              </tr>
+              <tr>
+                <td>Works for non-convex loss?</td>
+                <td>No</td>
+                <td>Yes (no guarantee of global min)</td>
+              </tr>
+              <tr>
+                <td>Hyperparameter tuning</td>
+                <td>None</td>
+                <td>Learning rate must be chosen</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- ══════════════════════════════════════════════════════════ -->
+      <div class="section" id="s16">
+        <div class="section-header">
+          <span class="section-num">§16</span>
+          <h2>The Full Mental Model — Everything Together</h2>
+        </div>
+
+        <div class="figure">
+          <svg viewBox="0 0 640 520" xmlns="http://www.w3.org/2000/svg" style="max-width:640px;">
+            <rect width="640" height="520" fill="#080b10" />
+
+            <!-- Title -->
+            <text x="320" y="28" text-anchor="middle" font-family="JetBrains Mono" font-size="10" fill="#3a4a62"
+              letter-spacing="0.2em">GRADIENT DESCENT — COMPLETE TAXONOMY</text>
+
+            <!-- CORE GD box -->
+            <rect x="220" y="50" width="200" height="56" rx="3" fill="#0f1825" stroke="#4fc3f7" stroke-width="2" />
+            <text x="320" y="74" text-anchor="middle" font-family="JetBrains Mono" font-size="11" fill="#4fc3f7"
+              font-weight="700">GRADIENT DESCENT</text>
+            <text x="320" y="92" text-anchor="middle" font-family="JetBrains Mono" font-size="10" fill="#5a7090">θ ← θ −
+              α∇J(θ)</text>
+
+            <!-- Problem / Justification -->
+            <text x="320" y="135" text-anchor="middle" font-family="JetBrains Mono" font-size="9" fill="#2a3850">↓
+              challenges</text>
+
+            <!-- Challenge boxes -->
+            <rect x="20" y="148" width="130" height="44" rx="3" fill="#0f1825" stroke="#ff6b6b" stroke-width="1.5" />
+            <text x="85" y="167" text-anchor="middle" font-family="JetBrains Mono" font-size="10" fill="#ff6b6b">Saddle
+              Points</text>
+            <text x="85" y="182" text-anchor="middle" font-family="JetBrains Mono" font-size="9" fill="#3a4a62">& Local
+              Minima</text>
+
+            <rect x="170" y="148" width="100" height="44" rx="3" fill="#0f1825" stroke="#ff6b6b" stroke-width="1.5" />
+            <text x="220" y="167" text-anchor="middle" font-family="JetBrains Mono" font-size="10"
+              fill="#ff6b6b">Ravines</text>
+            <text x="220" y="182" text-anchor="middle" font-family="JetBrains Mono" font-size="9"
+              fill="#3a4a62">ill-conditioned</text>
+
+            <rect x="288" y="148" width="100" height="44" rx="3" fill="#0f1825" stroke="#ff6b6b" stroke-width="1.5" />
+            <text x="338" y="167" text-anchor="middle" font-family="JetBrains Mono" font-size="10"
+              fill="#ff6b6b">Learning Rate</text>
+            <text x="338" y="182" text-anchor="middle" font-family="JetBrains Mono" font-size="9" fill="#3a4a62">too
+              large / small</text>
+
+            <rect x="406" y="148" width="120" height="44" rx="3" fill="#0f1825" stroke="#ff6b6b" stroke-width="1.5" />
+            <text x="466" y="167" text-anchor="middle" font-family="JetBrains Mono" font-size="10"
+              fill="#ff6b6b">Gradient Noise</text>
+            <text x="466" y="182" text-anchor="middle" font-family="JetBrains Mono" font-size="9"
+              fill="#3a4a62">mini-batch variance</text>
+
+            <!-- Solutions label -->
+            <text x="320" y="220" text-anchor="middle" font-family="JetBrains Mono" font-size="9" fill="#2a3850">↓
+              solutions</text>
+
+            <!-- BATCH STRATEGY -->
+            <rect x="20" y="232" width="170" height="56" rx="3" fill="#0f1825" stroke="#ffd43b" stroke-width="1.5" />
+            <text x="105" y="252" text-anchor="middle" font-family="JetBrains Mono" font-size="11" fill="#ffd43b"
+              font-weight="700">Batch Strategy</text>
+            <text x="105" y="268" text-anchor="middle" font-family="JetBrains Mono" font-size="9" fill="#5a7090">BGD ·
+              SGD · Mini-Batch</text>
+            <text x="105" y="280" text-anchor="middle" font-family="JetBrains Mono" font-size="9"
+              fill="#5a7090">controls noise ↔ speed</text>
+
+            <!-- MOMENTUM -->
+            <rect x="206" y="232" width="150" height="56" rx="3" fill="#0f1825" stroke="#cc5de8" stroke-width="1.5" />
+            <text x="281" y="252" text-anchor="middle" font-family="JetBrains Mono" font-size="11" fill="#cc5de8"
+              font-weight="700">Momentum</text>
+            <text x="281" y="268" text-anchor="middle" font-family="JetBrains Mono" font-size="9" fill="#5a7090">v = βv
+              − α∇J</text>
+            <text x="281" y="280" text-anchor="middle" font-family="JetBrains Mono" font-size="9" fill="#5a7090">escapes
+              ravines</text>
+
+            <!-- ADAPTIVE LR -->
+            <rect x="372" y="232" width="155" height="56" rx="3" fill="#0f1825" stroke="#69db7c" stroke-width="1.5" />
+            <text x="449" y="252" text-anchor="middle" font-family="JetBrains Mono" font-size="11" fill="#69db7c"
+              font-weight="700">Adaptive LR</text>
+            <text x="449" y="268" text-anchor="middle" font-family="JetBrains Mono" font-size="9" fill="#5a7090">AdaGrad
+              · RMSProp</text>
+            <text x="449" y="280" text-anchor="middle" font-family="JetBrains Mono" font-size="9"
+              fill="#5a7090">per-param step size</text>
+
+            <!-- Combined → ADAM -->
+            <line x1="281" y1="288" x2="281" y2="315" stroke="#cc5de8" stroke-width="1" stroke-dasharray="3,2" />
+            <line x1="449" y1="288" x2="449" y2="315" stroke="#69db7c" stroke-width="1" stroke-dasharray="3,2" />
+            <line x1="281" y1="315" x2="449" y2="315" stroke="#5a7090" stroke-width="1" />
+            <line x1="365" y1="315" x2="365" y2="328" stroke="#5a7090" stroke-width="1" />
+            <text x="365" y="312" text-anchor="middle" font-family="JetBrains Mono" font-size="9"
+              fill="#5a7090">combined</text>
+
+            <rect x="270" y="328" width="190" height="56" rx="3" fill="#0f1825" stroke="#4fc3f7" stroke-width="2.5" />
+            <text x="365" y="350" text-anchor="middle" font-family="JetBrains Mono" font-size="13" fill="#4fc3f7"
+              font-weight="700">Adam</text>
+            <text x="365" y="366" text-anchor="middle" font-family="JetBrains Mono" font-size="9" fill="#5a7090">m = β₁m
+              + (1−β₁)g</text>
+            <text x="365" y="377" text-anchor="middle" font-family="JetBrains Mono" font-size="9" fill="#5a7090">v = β₂v
+              + (1−β₂)g²</text>
+
+            <!-- LR SCHEDULE -->
+            <rect x="20" y="328" width="170" height="56" rx="3" fill="#0f1825" stroke="#4fc3f7" stroke-width="1.5" />
+            <text x="105" y="348" text-anchor="middle" font-family="JetBrains Mono" font-size="11" fill="#4fc3f7"
+              font-weight="700">LR Schedule</text>
+            <text x="105" y="364" text-anchor="middle" font-family="JetBrains Mono" font-size="9" fill="#5a7090">step ·
+              cosine · warmup</text>
+            <text x="105" y="376" text-anchor="middle" font-family="JetBrains Mono" font-size="9" fill="#5a7090">α =
+              f(t)</text>
+
+            <!-- Convergence block -->
+            <rect x="100" y="416" width="440" height="80" rx="3" fill="#0f1825" stroke="#2a3850" stroke-width="1" />
+            <text x="320" y="437" text-anchor="middle" font-family="JetBrains Mono" font-size="10" fill="#3a4a62"
+              letter-spacing="0.15em">CONVERGENCE GUARANTEES</text>
+            <text x="150" y="458" font-family="JetBrains Mono" font-size="10" fill="#5a7090">Convex:</text>
+            <text x="200" y="458" font-family="JetBrains Mono" font-size="10" fill="#69db7c">O(1/T) rate</text>
+            <text x="150" y="474" font-family="JetBrains Mono" font-size="10" fill="#5a7090">Strongly convex:</text>
+            <text x="260" y="474" font-family="JetBrains Mono" font-size="10" fill="#69db7c">O((1−μ/L)ᵀ)
+              exponential</text>
+            <text x="150" y="490" font-family="JetBrains Mono" font-size="10" fill="#5a7090">Non-convex:</text>
+            <text x="224" y="490" font-family="JetBrains Mono" font-size="10" fill="#ffd43b">no global guarantee — use
+              momentum + noise</text>
+          </svg>
+          <div class="figure-cap">Fig 3. Complete taxonomy of gradient descent — challenges, solutions, and how Adam
+            synthesizes momentum and adaptive learning rates.</div>
+        </div>
+
+        <p style="margin-top: 36px;">The complete unified narrative:</p>
+
+        <ol style="padding-left:24px; line-height: 2.4; font-size: 16px;">
+          <li>The negative gradient \(-\nabla J\) is the <strong>unique direction of steepest descent</strong> — proven
+            by the Cauchy-Schwarz inequality applied to the directional derivative.</li>
+          <li>Gradient descent iterates \(\boldsymbol{\theta} \leftarrow \boldsymbol{\theta} - \alpha\nabla J\) — valid
+            because the Taylor expansion guarantees a decrease of \(\alpha\|\nabla J\|^2\) per step.</li>
+          <li>The learning rate \(\alpha\) controls step size — bounded above by \(1/L\) for convergence in the convex
+            case.</li>
+          <li><strong>Mini-batch GD</strong> trades gradient accuracy for speed — GPU parallelism makes this the
+            default.</li>
+          <li>Real loss surfaces have <strong>saddle points, ravines, and plateaus</strong> — naive GD struggles with
+            all three.</li>
+          <li><strong>Momentum</strong> accumulates past gradients, suppressing oscillation across ravines and
+            accelerating along consistent directions.</li>
+          <li><strong>AdaGrad</strong> adapts per-parameter learning rates using accumulated squared gradients.
+            <strong>RMSProp</strong> fixes AdaGrad's vanishing LR with an exponential moving average.
+          </li>
+          <li><strong>Adam</strong> = Momentum + RMSProp + bias correction. The effective step is roughly \(\alpha \cdot
+            \text{sign}(\text{mean gradient})\) — normalized, adaptive, momentum-smoothed. Default for deep learning.
+          </li>
+          <li><strong>LR schedules</strong> (especially warmup + cosine decay) significantly improve final performance —
+            the optimizer and schedule interact critically.</li>
+          <li>Adam approximates <strong>Newton's method</strong> diagonally — second moments estimate the curvature per
+            parameter, scaling steps by inverse curvature without forming the full Hessian.</li>
+        </ol>
+
+        <div class="callout callout-purple" style="margin-top:36px;">
+          <div class="callout-title">★ The Single Most Important Fact</div>
+          <p>Every weight update in every model you've ever trained — was computed by some variant of this algorithm.
+            Gradient descent is not a detail of ML training: it <em>is</em> ML training. Backpropagation simply computes
+            \(\nabla J\); gradient descent decides what to do with it.</p>
+        </div>
+      </div>
+
+    </div><!-- /content -->
+
+    <!-- FOOTER -->
+    <div
+      style="background:#080b10;border-top:1px solid #1f2a3c;padding:28px 48px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.1em;color:#3a4a62;">
+      <div style="max-width:940px;margin:0 auto;display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;">
+        <span>GRADIENT DESCENT — MATHEMATICAL FOUNDATIONS</span>
+        <span>GD · SGD · MOMENTUM · ADAGRAD · RMSPROP · ADAM · LR SCHEDULES · CONVERGENCE</span>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js"></script>
+    <canvas id="bg-canvas"></canvas>
+    <script>
+      // Canvas math particle animation
+      const canvas = document.getElementById('bg-canvas');
+      if (canvas) {
+        const ctx = canvas.getContext('2d');
+        let width, height;
+        function resize() {
+          width = canvas.width = window.innerWidth;
+          height = canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resize);
+        resize();
+
+        const mathSymbols = ['∫', 'Σ', '∇', '∂', '∞', '∆', 'θ', 'λ', 'β', 'σ', 'π', 'μ', '≈'];
+        const particles = [];
+
+        for (let i = 0; i < 40; i++) {
+          particles.push({
+            x: Math.random() * width,
+            y: Math.random() * height,
+            symbol: mathSymbols[Math.floor(Math.random() * mathSymbols.length)],
+            size: Math.random() * 24 + 12,
+            speedX: (Math.random() - 0.5) * 0.4,
+            speedY: (Math.random() - 0.5) * 0.4,
+            opacity: Math.random() * 0.25 + 0.05,
+            rotation: Math.random() * Math.PI * 2,
+            rotSpeed: (Math.random() - 0.5) * 0.01
+          });
+        }
+
+        function animate() {
+          ctx.clearRect(0, 0, width, height);
+          particles.forEach(p => {
+            p.x += p.speedX; p.y += p.speedY; p.rotation += p.rotSpeed;
+            if (p.x > width + 50) p.x = -50; if (p.x < -50) p.x = width + 50;
+            if (p.y > height + 50) p.y = -50; if (p.y < -50) p.y = height + 50;
+
+            ctx.save();
+            ctx.translate(p.x, p.y); ctx.rotate(p.rotation);
+            ctx.fillStyle = `rgba(0, 200, 255, ${p.opacity})`;
+            ctx.font = `italic ${p.size}px "Times New Roman", serif`;
+            ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+            ctx.fillText(p.symbol, 0, 0);
+            ctx.restore();
+          });
+          requestAnimationFrame(animate);
+        }
+        animate();
+      }
+
+      // Scroll Animations using Intersection Observer
+      document.addEventListener('DOMContentLoaded', () => {
+        const sections = document.querySelectorAll('.section');
+        const observer = new IntersectionObserver((entries, obs) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('visible');
+              obs.unobserve(entry.target);
+            }
+          });
+        }, { threshold: 0.05, rootMargin: "0px 0px -50px 0px" });
+
+        sections.forEach(sec => observer.observe(sec));
+      });
+    </script>
+</body>
+
+</html>

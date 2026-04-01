@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Apple Sales Analysis Case Study | Shahid Ul Islam</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Instrument+Sans:ital,wght@0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@400;500&display=swap"
+    rel="stylesheet" />
+<link rel="stylesheet" href="../css/variables.css" />
+<link rel="stylesheet" href="../css/navigation.css" />
+<link rel="stylesheet" href="../css/footer.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+<script defer src="../js/common.js"></script>
+<style>
+  :root {
+    --navy: #070e1a;
+    --navy-mid: #0d1f38;
+    --navy-light: #132844;
+    --ink: #0f172a;
+    --slate: #334155;
+    --muted: #64748b;
+    --border: #1e3a5f;
+    --border-light: #e2e8f0;
+    --off-white: #f7f4ef;
+    --white: #ffffff;
+    --red: #dc2626;
+    --red-light: #fef2f2;
+    --red-mid: #fee2e2;
+    --green: #16a34a;
+    --green-light: #f0fdf4;
+    --blue: #2563eb;
+    --blue-light: #eff6ff;
+    --amber: #d97706;
+    --amber-light: #fffbeb;
+    --purple: #7c3aed;
+    --accent-glow: rgba(37, 99, 235, 0.15);
+    --font-display: 'Playfair Display', Georgia, serif;
+    --font-body: 'Instrument Sans', system-ui, sans-serif;
+    --font-mono: 'JetBrains Mono', monospace;
+  }
+
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    font-size: 16px;
+  }
+
+  body {
+    font-family: var(--font-body);
+    background: var(--off-white);
+    color: var(--ink);
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+
+  /* ── PROGRESS BAR ── */
+  #progress-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 3px;
+    width: 0%;
+    background: linear-gradient(90deg, var(--blue), var(--purple));
+    z-index: 1000;
+    transition: width 0.1s linear;
+  }
+
+  .nav-links a:hover {
+    color: #e2e8f0;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    background: var(--navy);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 100px 2rem 80px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 80% 60% at 20% 50%, rgba(37, 99, 235, 0.12) 0%, transparent 60%),
+      radial-gradient(ellipse 60% 80% at 80% 20%, rgba(220, 38, 38, 0.08) 0%, transparent 50%);
+    pointer-events: none;
+  }
+
+  .hero-grid {
+    position: absolute;
+    inset: 0;
+    opacity: 0.04;
+    background-image: linear-gradient(rgba(255, 255, 255, 0.5) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 255, 255, 0.5) 1px, transparent 1px);
+    background-size: 60px 60px;
+  }
+
+  .hero-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    width: 100%;
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+  }
+
+  .hero-text-content {
+    width: 100%;
+    text-align: left;
+  }
+
+  .hero-text-content {
+    flex: 1;
+    text-align: left;
+  }
+
+  .hero-eyebrow {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: #60a5fa;
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  @media (max-width: 1024px) {
+    .hero-inner {
+      gap: 3rem;
+      text-align: center;
+      align-items: center;
+    }
+
+    .hero-text-content {
+      text-align: center;
+    }
+
+    .hero-eyebrow {
+      justify-content: center;
+    }
+  }
+
+  .hero-eyebrow::before {
+    content: '';
+    display: block;
+    width: 40px;
+    height: 1px;
+    background: #60a5fa;
+  }
+
+  .hero h1 {
+    font-family: var(--font-display);
+    font-size: clamp(2.4rem, 6vw, 5rem);
+    font-weight: 900;
+    line-height: 1.08;
+    color: var(--white);
+    margin-bottom: 1rem;
+    letter-spacing: -0.02em;
+  }
+
+  .hero h1 em {
+    font-style: italic;
+    color: #93c5fd;
+  }
+
+  .hero-subtitle {
+    font-size: clamp(1rem, 2.5vw, 1.25rem);
+    color: #94a3b8;
+    max-width: 620px;
+    margin-bottom: 2.5rem;
+    font-weight: 400;
+  }
+
+  .hero-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-bottom: 3rem;
+  }
+
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.3rem 0.8rem;
+    border-radius: 999px;
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 0.03em;
+    border: 1px solid;
+  }
+
+  .badge-blue {
+    background: rgba(37, 99, 235, 0.15);
+    border-color: rgba(37, 99, 235, 0.4);
+    color: #93c5fd;
+  }
+
+  .badge-green {
+    background: rgba(22, 163, 74, 0.15);
+    border-color: rgba(22, 163, 74, 0.4);
+    color: #86efac;
+  }
+
+  .badge-red {
+    background: rgba(220, 38, 38, 0.15);
+    border-color: rgba(220, 38, 38, 0.4);
+    color: #fca5a5;
+  }
+
+  .badge-amber {
+    background: rgba(217, 119, 6, 0.15);
+    border-color: rgba(217, 119, 6, 0.4);
+    color: #fcd34d;
+  }
+
+  .badge-purple {
+    background: rgba(124, 58, 237, 0.15);
+    border-color: rgba(124, 58, 237, 0.4);
+    color: #c4b5fd;
+  }
+
+  .hero-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    max-width: 640px;
+  }
+
+  .hero-stat {
+    background: var(--navy-light);
+    padding: 1.25rem 1.5rem;
+    text-align: center;
+  }
+
+  .hero-stat-val {
+    font-family: var(--font-display);
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--white);
+    line-height: 1;
+    margin-bottom: 0.3rem;
+  }
+
+  .hero-stat-val.green {
+    color: #4ade80;
+  }
+
+  .hero-stat-val.blue {
+    color: #60a5fa;
+  }
+
+  .hero-stat-val.red {
+    color: #f87171;
+  }
+
+  .hero-stat-label {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: #64748b;
+    font-family: var(--font-mono);
+  }
+
+  .hero-scroll {
+    position: absolute;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    color: #475569;
+    font-size: 0.7rem;
+    font-family: var(--font-mono);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    animation: bounce 2s infinite;
+  }
+
+  @keyframes bounce {
+
+    0%,
+    100% {
+      transform: translateX(-50%) translateY(0)
+    }
+
+    50% {
+      transform: translateX(-50%) translateY(8px)
+    }
+  }
+
+  .scroll-arrow {
+    width: 20px;
+    height: 20px;
+    border-right: 2px solid #475569;
+    border-bottom: 2px solid #475569;
+    transform: rotate(45deg);
+  }
+</style>
+</head>
+
+<body>
+
+  <div id="progress-bar"></div>
+
+  <!-- Navigation -->
+  <div class="top-bar">
+    <div class="logo">
+      <img src="../img/plogo.png" alt="Personal Logo" class="logo-icon">
+      <span class="logo-text">SHAHID<span class="logo-accent">||</span>Portfolio</span>
+    </div>
+    <nav class="nav-container">
+      <ul class="nav-links">
+        <li><a href="../index.html" class="nav-link"><span>.</span> Home</a></li>
+        <li><a href="../about.html" class="nav-link"><span>.</span> About</a></li>
+        <li><a href="../skills.html" class="nav-link"><span>.</span> Skills</a></li>
+        <li><a href="../projects.html" class="nav-link"><span>.</span> Projects</a></li>
+        <li><a href="../contact.html" class="nav-link"><span>.</span> Contact</a></li>
+        <li><a href="../articles.html" class="nav-link"><span>.</span> Articles</a></li>
+      </ul>
+      <div class="menu-toggle">
+        <div class="hamburger"></div>
+      </div>
+    </nav>
+  </div>
+
+  <!-- ── HERO ── -->
+  <section class="hero">
+    <div class="hero-grid"></div>
+    <div class="hero-inner">
+      <div class="hero-text-content">
+        <div class="hero-eyebrow">Case Study · Apr 2024</div>
+        <h1>Comprehensive Data Analysis & Visualization — <br /><em>Apple Product Sales</em><br />2024</h1>
+        <p class="hero-subtitle">A Streamlit dashboard for exploring regional Apple-style sales data: hardware units
+          (iPhone, iPad, Mac, Wearables) and Services revenue, with statistics, clustering, regression, constrained
+          optimization, and exportable artifacts. </p>
+      </div>
+      <div class="hero-meta">
+        <span class="badge badge-blue">Python 3.10+</span>
+        <span class="badge badge-amber">Random Forest</span>
+        <span class="badge badge-green">Clustering</span>
+        <span class="badge badge-red">Streamlit</span>
+        <span class="badge badge-purple">Apple Sales DataSet 2024</span>
+      </div>
+      <div class="hero-stats">
+        <div class="hero-stat">
+          <div class="hero-stat-val green">K-Means, DBScan</div>
+          <div class="hero-stat-label">Clustering</div>
+        </div>
+        <div class="hero-stat">
+          <div class="hero-stat-val blue">Random Forest, Linear Regression</div>
+          <div class="hero-stat-label">Models</div>
+        </div>
+        <div class="hero-stat">
+          <div class="hero-stat-val">5-fold</div>
+          <div class="hero-stat-label">Validation</div>
+        </div>
+        <div class="hero-stat">
+          <div class="hero-stat-val red">Streamlit</div>
+          <div class="hero-stat-label">UI/UX</div>
+        </div>
+      </div>
+    </div>
+    <div class="hero-scroll">
+      <div class="scroll-arrow"></div>
+      Scroll
+    </div>
+  </section>
+
+  <section>
+    <div class="hero-stat">
+      <div class="hero-stat-val">Comming Soon</div>
+    </div>
+  </section>
+
+
+  <!-- Footer -->
+  <footer class="site-footer" style="background: var(--navy); border-top: 1px solid var(--border);">
+    <div class="footer-content">
+      <div class="footer-main">
+        <div class="footer-left">
+          <p class="copyright">&copy; 2025 Shahid Ul Islam</p>
+          <p class="footer-meta">Data Scientist & AI Developer</p>
+        </div>
+        <div class="footer-right">
+          <div class="footer-links">
+            <a href="#top" class="back-to-top">
+              <i class="fas fa-arrow-up"></i>
+              <span>Back to Top</span>
+            </a>
+            <div class="social-links11">
+              <a href="https://github.com/Khanz9664" target="_blank" class="social-link11">
+                <i class="fab fa-github"></i>
+              </a>
+              <a href="https://linkedin.com/in/shahid-ul-islam-13650998" target="_blank" class="social-link11">
+                <i class="fab fa-linkedin"></i>
+              </a>
+              <a href="mailto:shahid9664@gmail.com" class="social-link11">
+                <i class="fas fa-envelope"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="made-with">
+        <p>Crafted with <span class="heart-icon">❤️</span> By Shahid</p>
+      </div>
+    </div>
+  </footer>
+
+  <a href="https://github.com/Khanz9664/Breast-Cancer-Prediction" target="_blank" class="sticky-repo-btn">
+    <i class="fab fa-github"></i>
+    <span>Visit Project Repo</span>
+  </a>
+
+  <script>
+    // Progress bar
+    window.addEventListener('scroll', () => {
+      const doc = document.documentElement;
+      const pct = (doc.scrollTop / (doc.scrollHeight - doc.clientHeight)) * 100;
+      document.getElementById('progress-bar').style.width = pct + '%';
+    });
+
+    // Scroll reveal
+    const reveals = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('visible');
+          observer.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.12 });
+    reveals.forEach(r => observer.observe(r));
+
+    // Animated counters
+    function animateCount(el) {
+      const target = parseFloat(el.dataset.count);
+      const suffix = el.dataset.suffix || '';
+      const isFloat = String(target).includes('.');
+      const duration = 1400;
+      const start = performance.now();
+      function step(now) {
+        const p = Math.min((now - start) / duration, 1);
+        const ease = 1 - Math.pow(1 - p, 3);
+        const val = target * ease;
+        el.textContent = (isFloat ? val.toFixed(3) : Math.round(val)) + suffix;
+        if (p < 1) requestAnimationFrame(step);
+      }
+      requestAnimationFrame(step);
+    }
+
+    const counterObs = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting && e.target.dataset.count) {
+          animateCount(e.target);
+          counterObs.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.5 });
+    document.querySelectorAll('[data-count]').forEach(el => counterObs.observe(el));
+
+    // SHAP bars
+    const shapObs = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          document.querySelectorAll('.shap-bar').forEach(bar => {
+            bar.style.width = bar.dataset.width + '%';
+          });
+          shapObs.disconnect();
+        }
+      });
+    }, { threshold: 0.3 });
+    const shapChart = document.querySelector('.shap-chart');
+    if (shapChart) shapObs.observe(shapChart);
+  </script>
+</body>
+
+</html>

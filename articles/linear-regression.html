@@ -1,0 +1,2565 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Linear Regression — Complete Masterclass</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.min.js"></script>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400;1,600&family=Fira+Code:wght@300;400;500;600&family=Outfit:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet">
+  <style>
+    :root {
+      --bg: #020c1b;
+      --surface: rgba(10, 25, 47, 0.6);
+      --surface2: rgba(17, 34, 64, 0.8);
+      --border: rgba(0, 200, 255, 0.15);
+      --border2: rgba(0, 255, 136, 0.2);
+      --text: #ccd6f6;
+      --muted: #8892b0;
+      --dim: #495670;
+      --accent: #00c8ff;
+      /* cyan */
+      --accent2: #ff6b6b;
+      /* coral */
+      --accent3: #00ff88;
+      /* green */
+      --accent4: #ffd43b;
+      /* gold */
+      --accent5: #cc5de8;
+      /* purple */
+      --grad-a: #00c8ff;
+      --grad-b: #00ff88;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Lora', Georgia, serif;
+      font-size: 17px;
+      line-height: 1.85;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    #bg-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: -1;
+      pointer-events: none;
+      opacity: 0.3;
+    }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 480px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      margin-top: 50px;
+      padding: 80px 56px 56px;
+      position: relative;
+      overflow: hidden;
+      background: linear-gradient(135deg, rgba(2, 12, 27, 0.8), rgba(10, 25, 47, 0.9));
+      border-bottom: 1px solid var(--border);
+      backdrop-filter: blur(10px);
+    }
+
+    .hero-grid {
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(0, 200, 255, 0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 200, 255, 0.05) 1px, transparent 1px);
+      background-size: 40px 40px;
+    }
+
+    .hero-glow {
+      position: absolute;
+      width: 600px;
+      height: 400px;
+      background: radial-gradient(circle, rgba(0, 200, 255, 0.15) 0%, transparent 60%);
+      top: -100px;
+      left: -100px;
+      pointer-events: none;
+    }
+
+    .hero-glow2 {
+      position: absolute;
+      width: 500px;
+      height: 400px;
+      background: radial-gradient(circle, rgba(0, 255, 136, 0.1) 0%, transparent 60%);
+      bottom: -50px;
+      right: -50px;
+      pointer-events: none;
+    }
+
+    .hero-inner {
+      max-width: 940px;
+      margin: 0 auto;
+      position: relative;
+      width: 100%;
+      z-index: 2;
+    }
+
+    .hero-tag {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--accent3);
+      margin-bottom: 20px;
+      font-weight: 600;
+    }
+
+    .hero h1 {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(3rem, 7vw, 5.5rem);
+      font-weight: 400;
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+      margin-bottom: 24px;
+      color: #fff;
+      text-shadow: 0 0 30px rgba(0, 200, 255, 0.3);
+    }
+
+    .hero h1 .grad {
+      background: linear-gradient(to right, var(--accent), var(--accent3));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero-sub {
+      font-size: 16px;
+      color: var(--muted);
+      max-width: 680px;
+      font-family: 'JetBrains Mono', monospace;
+      line-height: 1.8;
+    }
+
+    .hero-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 32px;
+    }
+
+    .pill {
+      background: rgba(0, 200, 255, 0.08);
+      border: 1px solid rgba(0, 200, 255, 0.3);
+      color: var(--accent);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      padding: 6px 14px;
+      border-radius: 20px;
+      letter-spacing: 0.08em;
+      box-shadow: 0 0 10px rgba(0, 200, 255, 0.1);
+    }
+
+    /* ── TOC ── */
+    .toc-outer {
+      max-width: 940px;
+      margin: 60px auto;
+      padding: 0 32px;
+    }
+
+    .toc-wrap {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-left: 4px solid var(--accent);
+      padding: 40px;
+      border-radius: 12px;
+      backdrop-filter: blur(12px);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    }
+
+    .toc-title {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 24px;
+    }
+
+    .toc-list {
+      list-style: none;
+      columns: 2;
+      column-gap: 40px;
+    }
+
+    .toc-list li {
+      margin: 8px 0;
+      break-inside: avoid;
+    }
+
+    .toc-list a {
+      color: var(--text);
+      text-decoration: none;
+      font-size: 14.5px;
+      display: flex;
+      align-items: baseline;
+      gap: 12px;
+      transition: all 0.2s;
+    }
+
+    .toc-list a:hover {
+      color: var(--accent);
+      transform: translateX(5px);
+    }
+
+    .toc-num {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      color: var(--accent3);
+      min-width: 28px;
+      font-weight: 600;
+    }
+
+    /* ── CONTENT ── */
+    .content {
+      max-width: 940px;
+      margin: 0 auto;
+      padding: 0 32px 100px;
+      position: relative;
+      z-index: 2;
+    }
+
+    /* ── SECTION ── */
+    .section {
+      margin-bottom: 100px;
+      opacity: 0;
+      transform: translateY(30px);
+    }
+
+    .section.visible {
+      opacity: 1;
+      transform: translateY(0);
+      transition: all 0.8s ease-out;
+    }
+
+    .section-header {
+      display: flex;
+      align-items: baseline;
+      gap: 20px;
+      margin-bottom: 40px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .section-num {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 14px;
+      color: var(--accent3);
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-shadow: 0 0 10px rgba(0, 255, 136, 0.3);
+    }
+
+    .section h2 {
+      font-family: 'DM Serif Display', serif;
+      font-size: 2.4rem;
+      font-weight: 400;
+      color: #e6f1ff;
+      letter-spacing: -0.01em;
+    }
+
+    .subsection {
+      margin: 44px 0;
+    }
+
+    .subsection h3 {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--accent);
+      margin-bottom: 20px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    .subsection h3.green {
+      color: var(--accent3);
+    }
+
+    .subsection h3.coral {
+      color: var(--accent2);
+    }
+
+    .subsection h3.gold {
+      color: var(--accent4);
+    }
+
+    .subsection h3.purple {
+      color: var(--accent5);
+    }
+
+    p {
+      margin-bottom: 20px;
+      color: #a8b2d1;
+    }
+
+    /* ── MATH BLOCKS ── */
+    .math-block {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-left: 4px solid var(--accent);
+      padding: 32px 40px;
+      margin: 36px 0;
+      border-radius: 12px;
+      overflow-x: auto;
+      position: relative;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+      transition: transform 0.3s;
+    }
+
+    .math-block:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+    }
+
+    .math-block.coral {
+      border-left-color: var(--accent2);
+    }
+
+    .math-block.green {
+      border-left-color: var(--accent3);
+    }
+
+    .math-block.gold {
+      border-left-color: var(--accent4);
+    }
+
+    .math-block.purple {
+      border-left-color: var(--accent5);
+    }
+
+    .math-block .label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--accent);
+      position: absolute;
+      top: 14px;
+      right: 20px;
+      opacity: 0.8;
+    }
+
+    /* ── DERIVATION ── */
+    .derivation {
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+      margin: 36px 0;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    }
+
+    .derivation-header {
+      background: var(--surface2);
+      padding: 16px 24px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--accent);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .derivation-step {
+      padding: 20px 28px;
+      border-bottom: 1px solid var(--border);
+      display: grid;
+      grid-template-columns: 32px 1fr;
+      gap: 20px;
+      align-items: start;
+      background: var(--surface);
+      backdrop-filter: blur(5px);
+    }
+
+    .derivation-step:last-child {
+      border-bottom: none;
+    }
+
+    .step-num {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+      color: var(--accent3);
+      font-weight: 700;
+      padding-top: 4px;
+    }
+
+    .step-note {
+      font-size: 13px;
+      color: var(--muted);
+      font-style: italic;
+      margin-top: 10px;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    /* ── CALLOUTS ── */
+    .callout {
+      padding: 24px 28px;
+      border-radius: 12px;
+      margin: 32px 0;
+      border: 1px solid;
+      border-left-width: 4px;
+      backdrop-filter: blur(8px);
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+    }
+
+    .callout-insight {
+      background: rgba(0, 200, 255, 0.05);
+      border-color: rgba(0, 200, 255, 0.2);
+      border-left-color: var(--accent);
+    }
+
+    .callout-warning {
+      background: rgba(255, 107, 107, 0.05);
+      border-color: rgba(255, 107, 107, 0.2);
+      border-left-color: var(--accent2);
+    }
+
+    .callout-key {
+      background: rgba(0, 255, 136, 0.05);
+      border-color: rgba(0, 255, 136, 0.2);
+      border-left-color: var(--accent3);
+    }
+
+    .callout-gold {
+      background: rgba(255, 212, 59, 0.05);
+      border-color: rgba(255, 212, 59, 0.2);
+      border-left-color: var(--accent4);
+    }
+
+    .callout-purple {
+      background: rgba(204, 93, 232, 0.05);
+      border-color: rgba(204, 93, 232, 0.2);
+      border-left-color: var(--accent5);
+    }
+
+    .callout-title {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+
+    .callout-insight .callout-title {
+      color: var(--accent);
+    }
+
+    .callout-warning .callout-title {
+      color: var(--accent2);
+    }
+
+    .callout-key .callout-title {
+      color: var(--accent3);
+    }
+
+    .callout-gold .callout-title {
+      color: var(--accent4);
+    }
+
+    .callout-purple .callout-title {
+      color: var(--accent5);
+    }
+
+    .callout p {
+      margin-bottom: 0;
+      font-size: 16px;
+      color: #ccd6f6;
+    }
+
+    /* ── TABLES ── */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 32px 0;
+      font-size: 15px;
+      background: var(--surface);
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+    }
+
+    thead {
+      background: var(--surface2);
+    }
+
+    thead th {
+      padding: 16px 20px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--accent);
+      text-align: left;
+      border-bottom: 1px solid var(--border);
+    }
+
+    tbody tr {
+      border-bottom: 1px solid var(--border);
+      transition: background 0.2s;
+    }
+
+    tbody tr:last-child {
+      border-bottom: none;
+    }
+
+    tbody tr:hover {
+      background: rgba(0, 200, 255, 0.05);
+    }
+
+    tbody td {
+      padding: 16px 20px;
+      color: #a8b2d1;
+    }
+
+    /* ── FIGURE / SVG ── */
+    .figure {
+      margin: 40px 0;
+      text-align: center;
+      background: var(--surface);
+      padding: 30px;
+      border-radius: 16px;
+      border: 1px solid var(--border);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    }
+
+    .figure svg {
+      max-width: 100%;
+      filter: drop-shadow(0 0 15px rgba(0, 200, 255, 0.1));
+    }
+
+    .figure-cap {
+      font-size: 13px;
+      color: var(--muted);
+      margin-top: 16px;
+      font-style: italic;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    /* ── ALGORITHM ── */
+    .algo {
+      background: #020c1b;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 32px 40px;
+      margin: 32px 0;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 14px;
+      line-height: 2.2;
+      overflow-x: auto;
+      box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.5);
+    }
+
+    .algo .kw {
+      color: var(--accent5);
+      font-weight: 700;
+    }
+
+    .algo .fn {
+      color: var(--accent);
+    }
+
+    .algo .cmt {
+      color: var(--muted);
+      font-style: italic;
+    }
+
+    .algo .num {
+      color: var(--accent4);
+    }
+
+    .algo .var {
+      color: var(--accent3);
+    }
+
+    .algo .op {
+      color: var(--accent2);
+    }
+
+    .algo .hdr {
+      color: var(--accent);
+      font-size: 11px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      display: block;
+      margin-bottom: 12px;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 12px;
+    }
+
+    /* ── PROPERTY LIST ── */
+    .prop-list {
+      list-style: none;
+      margin: 16px 0;
+    }
+
+    .prop-list li {
+      padding: 12px 0 12px 32px;
+      border-bottom: 1px solid var(--border);
+      position: relative;
+      font-size: 16px;
+      line-height: 1.8;
+      color: #a8b2d1;
+    }
+
+    .prop-list li:last-child {
+      border-bottom: none;
+    }
+
+    .prop-list li::before {
+      content: '→';
+      position: absolute;
+      left: 0;
+      color: var(--accent3);
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 700;
+    }
+
+    /* ── OPTIMIZER CARDS ── */
+    .opt-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      margin: 36px 0;
+    }
+
+    @media(max-width: 680px) {
+      .opt-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .opt-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 30px;
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+
+    .opt-card:hover {
+      border-color: var(--accent);
+      transform: translateY(-5px);
+      box-shadow: 0 10px 25px rgba(0, 200, 255, 0.15);
+    }
+
+    .opt-card-name {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      margin-bottom: 16px;
+      color: var(--accent);
+    }
+
+    .opt-card p {
+      font-size: 15px;
+      margin-bottom: 0;
+    }
+
+    /* ── INLINE ── */
+    code {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.9em;
+      background: rgba(0, 200, 255, 0.1);
+      border: 1px solid rgba(0, 200, 255, 0.2);
+      padding: 2px 8px;
+      border-radius: 4px;
+      color: var(--accent);
+    }
+
+    .hl {
+      color: var(--accent);
+      font-weight: 600;
+      text-shadow: 0 0 8px rgba(0, 200, 255, 0.4);
+    }
+
+    .hl2 {
+      color: var(--accent2);
+      font-weight: 600;
+    }
+
+    .hl3 {
+      color: var(--accent3);
+      font-weight: 600;
+    }
+
+    .hl4 {
+      color: var(--accent4);
+      font-weight: 600;
+    }
+
+    .hl5 {
+      color: var(--accent5);
+      font-weight: 600;
+    }
+
+    hr.divider {
+      border: none;
+      border-top: 1px dashed var(--border);
+      margin: 80px 0;
+    }
+
+    /* ── COMPARE BLOCK ── */
+    .compare {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+      margin: 32px 0;
+    }
+
+    @media(max-width:680px) {
+      .compare {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .compare-col {
+      background: var(--surface);
+      padding: 28px;
+    }
+
+    .compare-col-title {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      margin-bottom: 16px;
+      color: var(--accent);
+    }
+
+    .compare-col p {
+      font-size: 15px;
+      margin-bottom: 12px;
+    }
+
+    /* ── LR VISUAL ZONES ── */
+    .lr-zones {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 20px;
+      margin: 32px 0;
+    }
+
+    @media(max-width:640px) {
+      .lr-zones {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .lr-zone {
+      padding: 28px 20px;
+      border-radius: 12px;
+      border: 1px solid;
+      text-align: center;
+      background: var(--surface);
+      transition: transform 0.3s;
+    }
+
+    .lr-zone:hover {
+      transform: translateY(-5px);
+    }
+
+    .lr-zone:nth-child(1) {
+      border-color: rgba(255, 212, 59, 0.3);
+    }
+
+    .lr-zone:nth-child(2) {
+      border-color: rgba(0, 255, 136, 0.3);
+    }
+
+    .lr-zone:nth-child(3) {
+      border-color: rgba(255, 107, 107, 0.3);
+    }
+
+    .lr-zone .lr-val {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 26px;
+      font-weight: 700;
+      margin-bottom: 10px;
+      color: var(--text);
+    }
+
+    .lr-zone p {
+      font-size: 14px;
+      color: var(--muted);
+      margin: 0;
+    }
+
+    /* scrollbar */
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: var(--bg);
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: rgba(0, 200, 255, 0.3);
+      border-radius: 4px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: rgba(0, 200, 255, 0.6);
+    }
+  </style>
+
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <link rel="stylesheet" href="../css/variables.css" />
+  <link rel="stylesheet" href="../css/navigation.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <script defer src="../js/common.js"></script>
+
+</head>
+
+<body>
+
+  <div class="top-bar">
+    <div class="logo">
+      <img src="../img/plogo.png" alt="Personal Logo" class="logo-icon">
+      <span class="logo-text">SHAHID<span class="logo-accent">||</span>Portfolio</span>
+    </div>
+    <nav class="nav-container">
+      <ul class="nav-links">
+        <li><a href="../index.html" class="nav-link"><span>.</span> Home</a></li>
+        <li><a href="../about.html" class="nav-link"><span>.</span> About</a></li>
+        <li><a href="../skills.html" class="nav-link"><span>.</span> Skills</a></li>
+        <li><a href="../projects.html" class="nav-link"><span>.</span> Projects</a></li>
+        <li><a href="../contact.html" class="nav-link"><span>.</span> Contact</a></li>
+        <li><a href="../articles.html" class="nav-link"><span>.</span> Articles</a></li>
+      </ul>
+      <div class="menu-toggle">
+        <div class="hamburger"></div>
+      </div>
+    </nav>
+  </div>
+
+  <!-- ══ HERO ══ -->
+  <div class="hero">
+    <div class="hero-texture"></div>
+    <div class="hero-stripe"></div>
+    <div class="hero-inner">
+      <div class="hero-eyebrow">// Machine Learning — Statistical Foundations</div>
+      <h1>Linear<br><strong>Regression</strong></h1>
+      <p class="hero-sub">The bedrock of supervised learning — from first principles through the Normal Equation, MLE
+        derivation, Gauss-Markov theorem, regularization, and the full geometric picture. Everything, once and for all.
+      </p>
+      <div class="hero-pills">
+        <span class="pill">Least Squares</span>
+        <span class="pill">Normal Equation</span>
+        <span class="pill">MLE / Gaussian Noise</span>
+        <span class="pill">Gauss-Markov</span>
+        <span class="pill">Gradient Descent</span>
+        <span class="pill">Bias-Variance</span>
+        <span class="pill">Ridge / Lasso</span>
+        <span class="pill">Polynomial Regression</span>
+        <span class="pill">R² and Metrics</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ TOC ══ -->
+  <div class="toc-outer">
+    <div class="toc-box">
+      <div class="toc-label">// Table of Contents</div>
+      <ol class="toc-list">
+        <li><a href="#s1"><span class="toc-num">01</span>What is Regression? The Problem Setup</a></li>
+        <li><a href="#s2"><span class="toc-num">02</span>The Linear Model and Hypothesis</a></li>
+        <li><a href="#s3"><span class="toc-num">03</span>The Loss Function — MSE and Why</a></li>
+        <li><a href="#s4"><span class="toc-num">04</span>The Normal Equation — Closed-Form Solution</a></li>
+        <li><a href="#s5"><span class="toc-num">05</span>Geometric Interpretation — Projection</a></li>
+        <li><a href="#s6"><span class="toc-num">06</span>Statistical Foundation — MLE Derivation</a></li>
+        <li><a href="#s7"><span class="toc-num">07</span>Gradient Descent for Linear Regression</a></li>
+        <li><a href="#s8"><span class="toc-num">08</span>Properties of OLS — Gauss-Markov Theorem</a></li>
+        <li><a href="#s9"><span class="toc-num">09</span>Bias-Variance Tradeoff</a></li>
+        <li><a href="#s10"><span class="toc-num">10</span>Feature Scaling and Normalization</a></li>
+        <li><a href="#s11"><span class="toc-num">11</span>Polynomial Regression — Extending the Model</a></li>
+        <li><a href="#s12"><span class="toc-num">12</span>Regularization — Ridge, Lasso, Elastic Net</a></li>
+        <li><a href="#s13"><span class="toc-num">13</span>Assumptions and Diagnostics</a></li>
+        <li><a href="#s14"><span class="toc-num">14</span>Evaluation Metrics</a></li>
+        <li><a href="#s15"><span class="toc-num">15</span>Normal Equation vs Gradient Descent</a></li>
+        <li><a href="#s16"><span class="toc-num">16</span>The Full Mental Model</a></li>
+      </ol>
+    </div>
+  </div>
+
+  <div class="content">
+
+    <!-- ══════════════════════════════════════════════════════ -->
+    <div class="section" id="s1">
+      <div class="section-header">
+        <span class="section-num">§01</span>
+        <h2>What is Regression? The Problem Setup</h2>
+      </div>
+
+      <p>Regression is the task of learning a mapping from inputs to a <span class="hl">continuous output</span>. Given
+        a training set of \(m\) examples \(\{(\mathbf{x}^{(i)}, y^{(i)})\}_{i=1}^{m}\) where \(\mathbf{x}^{(i)} \in
+        \mathbb{R}^n\) and \(y^{(i)} \in \mathbb{R}\), we want to find a function \(h: \mathbb{R}^n \to \mathbb{R}\)
+        that predicts \(y\) well for new, unseen \(\mathbf{x}\).</p>
+
+      <p>The word "regression" (Francis Galton, 1886) originally described a statistical phenomenon — the heights of
+        children "regress toward the mean" compared to their parents. The mathematical machinery he developed became the
+        foundation of modern supervised learning.</p>
+
+      <div class="subsection">
+        <h3 class="amber">The Three Questions Regression Must Answer</h3>
+        <ul class="prop-list">
+          <li><strong>What form</strong> should \(h\) take? — We choose a <em>hypothesis class</em> (linear functions,
+            polynomials, etc.).</li>
+          <li><strong>What does "predict well" mean?</strong> — We choose a <em>loss function</em> to measure prediction
+            error.</li>
+          <li><strong>How do we find the best \(h\)?</strong> — We choose an <em>optimization algorithm</em> to minimize
+            the loss.</li>
+        </ul>
+      </div>
+
+      <p>Linear regression gives specific, mathematically justified answers to all three. Crucially, the answers are not
+        arbitrary choices — they fall out of a deep probabilistic assumption about how data is generated. We'll derive
+        this in §06.</p>
+
+      <div class="callout forest">
+        <div class="callout-title">✓ Supervised Learning Framing</div>
+        <p>In supervised learning, we assume data is drawn i.i.d. from some unknown joint distribution \(P(\mathbf{x},
+          y)\). We want our hypothesis \(h_{\boldsymbol{\theta}}\) to minimize the <em>expected</em> loss — the
+          population risk. We can only optimize empirical risk (over training data) and hope it generalizes. This
+          tension is the bias-variance tradeoff (§09).</p>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════════════════ -->
+    <div class="section" id="s2">
+      <div class="section-header">
+        <span class="section-num">§02</span>
+        <h2>The Linear Model and Hypothesis</h2>
+      </div>
+
+      <div class="subsection">
+        <h3 class="amber">Simple Linear Regression (1 Feature)</h3>
+        <p>With a single input feature \(x\), the model is a line:</p>
+
+        <div class="math-block amber">
+          <span class="label">Simple Linear Hypothesis</span>
+          \[ h_{\theta_0, \theta_1}(x) = \theta_0 + \theta_1 x \]
+        </div>
+
+        <p>Here \(\theta_0\) is the <strong>intercept</strong> (the value of \(y\) when \(x = 0\)) and \(\theta_1\) is
+          the <strong>slope</strong> (the change in \(y\) per unit change in \(x\)). Together they define a line in the
+          2D plane — we adjust them to fit the data.</p>
+      </div>
+
+      <div class="subsection">
+        <h3 class="amber">Multiple Linear Regression (n Features)</h3>
+        <p>With \(n\) features \(x_1, x_2, \ldots, x_n\):</p>
+
+        <div class="math-block amber">
+          <span class="label">Multiple Linear Hypothesis</span>
+          \[
+          h_{\boldsymbol{\theta}}(\mathbf{x}) = \theta_0 + \theta_1 x_1 + \theta_2 x_2 + \cdots + \theta_n x_n =
+          \theta_0 + \sum_{j=1}^{n}\theta_j x_j
+          \]
+        </div>
+
+        <p>To simplify notation, we augment the feature vector with a 1: \(\mathbf{x} = [1, x_1, x_2, \ldots, x_n]^T \in
+          \mathbb{R}^{n+1}\) and \(\boldsymbol{\theta} = [\theta_0, \theta_1, \ldots, \theta_n]^T \in
+          \mathbb{R}^{n+1}\). Then:</p>
+
+        <div class="math-block amber">
+          <span class="label">Compact Vector Form</span>
+          \[ h_{\boldsymbol{\theta}}(\mathbf{x}) = \boldsymbol{\theta}^T \mathbf{x} \]
+        </div>
+      </div>
+
+      <div class="subsection">
+        <h3 class="amber">Matrix Form — Full Dataset</h3>
+        <p>For all \(m\) training examples simultaneously, stack feature vectors row-by-row into the <span
+            class="hl">design matrix</span> \(\mathbf{X} \in \mathbb{R}^{m \times (n+1)}\):</p>
+
+        <div class="math-block dark">
+          <span class="label">Design Matrix</span>
+          \[
+          \mathbf{X} = \begin{bmatrix}
+          1 & x_1^{(1)} & x_2^{(1)} & \cdots & x_n^{(1)} \\
+          1 & x_1^{(2)} & x_2^{(2)} & \cdots & x_n^{(2)} \\
+          \vdots & \vdots & & & \vdots \\
+          1 & x_1^{(m)} & x_2^{(m)} & \cdots & x_n^{(m)}
+          \end{bmatrix}, \quad
+          \mathbf{y} = \begin{bmatrix} y^{(1)} \\ y^{(2)} \\ \vdots \\ y^{(m)} \end{bmatrix}
+          \]
+          <br>
+          \[ \hat{\mathbf{y}} = \mathbf{X}\boldsymbol{\theta} \in \mathbb{R}^m \]
+        </div>
+
+        <div class="callout amber">
+          <div class="callout-title">💡 The Linear Assumption</div>
+          <p>The model assumes \(y\) is <em>linear in the parameters</em> \(\boldsymbol{\theta}\) — not necessarily
+            linear in the raw features. We can include \(x^2, x^3, \log x\) etc. as columns of \(\mathbf{X}\), and the
+            model is still "linear" in the sense that matters for optimization. This is exactly polynomial regression
+            (§11).</p>
+        </div>
+      </div>
+      <div style="text-align: center;">
+        <img src="img/LinearReg.png" alt="Linear Regression" width="700" height="400">
+      </div>
+
+    </div>
+
+    <!-- ══════════════════════════════════════════════════════ -->
+    <div class="section" id="s3">
+      <div class="section-header">
+        <span class="section-num">§03</span>
+        <h2>The Loss Function — MSE and Why</h2>
+      </div>
+
+      <p>We need a number that measures how wrong our predictions are. The most natural choice: measure the
+        <em>difference</em> (residual) between the prediction \(\hat{y}^{(i)}\) and the truth \(y^{(i)}\).
+      </p>
+
+      <div class="subsection">
+        <h3 class="amber">Residuals</h3>
+        <p>The <strong>residual</strong> for example \(i\) is:</p>
+        <div class="math-block amber">
+          \[ e^{(i)} = y^{(i)} - \hat{y}^{(i)} = y^{(i)} - \boldsymbol{\theta}^T\mathbf{x}^{(i)} \]
+        </div>
+        <p>Why not just sum the residuals? Positive and negative residuals cancel. Why not sum absolute values? \(|e|\)
+          is not differentiable at zero — inconvenient for calculus. The standard choice: sum of <em>squared</em>
+          residuals.</p>
+      </div>
+
+      <div class="subsection">
+        <h3 class="amber">The Mean Squared Error (MSE) Loss</h3>
+
+        <div class="math-block amber">
+          <span class="label">MSE Loss</span>
+          \[
+          J(\boldsymbol{\theta}) = \frac{1}{2m}\sum_{i=1}^{m}\left(h_{\boldsymbol{\theta}}(\mathbf{x}^{(i)}) -
+          y^{(i)}\right)^2 = \frac{1}{2m}\|\mathbf{X}\boldsymbol{\theta} - \mathbf{y}\|_2^2
+          \]
+        </div>
+
+        <p>The \(\frac{1}{2}\) factor is a <em>computational convenience</em> — when we differentiate, the 2 from the
+          power rule and the \(\frac{1}{2}\) cancel neatly, leaving cleaner gradients. It doesn't affect the location of
+          the minimum.</p>
+      </div>
+
+      <div class="subsection">
+        <h3 class="terra">Why Squared Error Specifically?</h3>
+        <p>Three justifications, each from a different perspective:</p>
+
+        <ul class="prop-list">
+          <li><strong>Statistical:</strong> If noise is Gaussian (\(\epsilon \sim \mathcal{N}(0, \sigma^2)\)),
+            minimizing MSE is equivalent to Maximum Likelihood Estimation. We prove this rigorously in §06 — MSE isn't
+            arbitrary, it falls out of the assumption \(y = \boldsymbol{\theta}^T\mathbf{x} + \epsilon\).</li>
+          <li><strong>Mathematical:</strong> The square makes \(J\) a smooth, strictly convex quadratic function of
+            \(\boldsymbol{\theta}\). It has a unique global minimum that can be found analytically or reliably by
+            gradient descent. No other common loss shares all three of these properties.</li>
+          <li><strong>Geometric:</strong> Minimizing \(\sum e_i^2\) is equivalent to finding the orthogonal projection
+            of \(\mathbf{y}\) onto the column space of \(\mathbf{X}\). This gives the solution its elegant geometric
+            interpretation (§05).</li>
+        </ul>
+
+        <div class="callout terra">
+          <div class="callout-title">⚠ When MSE Fails</div>
+          <p>MSE penalizes large errors <em>quadratically</em> — a residual of 10 contributes 100× as much as a residual
+            of 1. This means outliers dominate the loss and can severely distort the fitted line. In that case, consider
+            <strong>Mean Absolute Error (MAE)</strong> — more robust but non-differentiable at 0 — or <strong>Huber
+              loss</strong>, which is quadratic for small residuals and linear for large ones.
+          </p>
+        </div>
+      </div>
+
+      <div class="subsection">
+        <h3>Alternative Loss Functions</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>Loss</th>
+              <th>Formula</th>
+              <th>Properties</th>
+              <th>Use When</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>MSE</td>
+              <td>\(\frac{1}{m}\sum e_i^2\)</td>
+              <td>Smooth, convex, differentiable</td>
+              <td>Gaussian noise assumed; no outliers</td>
+            </tr>
+            <tr>
+              <td>MAE</td>
+              <td>\(\frac{1}{m}\sum |e_i|\)</td>
+              <td>Robust, but not differentiable at 0</td>
+              <td>Outliers present; want median regression</td>
+            </tr>
+            <tr>
+              <td>Huber</td>
+              <td>MSE if \(|e|&lt;\delta\), else MAE</td>
+              <td>Best of both worlds</td>
+              <td>Moderate outliers; need differentiability</td>
+            </tr>
+            <tr>
+              <td>Log-Cosh</td>
+              <td>\(\frac{1}{m}\sum\log\cosh(e_i)\)</td>
+              <td>Smooth approximation to MAE</td>
+              <td>Outlier-resistant with smooth gradients</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════════════════ -->
+    <div class="section" id="s4">
+      <div class="section-header">
+        <span class="section-num">§04</span>
+        <h2>The Normal Equation — Closed-Form Solution</h2>
+      </div>
+
+      <p>Because MSE is a convex quadratic in \(\boldsymbol{\theta}\), we can find the exact minimum analytically by
+        setting the gradient to zero. This gives the <span class="hl">Normal Equation</span> — one of the most important
+        results in all of statistics.</p>
+
+      <div class="subsection">
+        <h3 class="forest">Full Derivation</h3>
+
+        <div class="derivation">
+          <div class="derivation-hdr">// Deriving the Normal Equation — setting ∇J = 0 and solving</div>
+
+          <div class="derivation-step">
+            <span class="step-n">1</span>
+            <div>
+              Expand the loss: \(\displaystyle J(\boldsymbol{\theta}) = \frac{1}{2m}\|\mathbf{X}\boldsymbol{\theta} -
+              \mathbf{y}\|^2 =
+              \frac{1}{2m}(\mathbf{X}\boldsymbol{\theta}-\mathbf{y})^T(\mathbf{X}\boldsymbol{\theta}-\mathbf{y})\)
+            </div>
+          </div>
+
+          <div class="derivation-step">
+            <span class="step-n">2</span>
+            <div>
+              Expand the product:
+              \(\displaystyle = \frac{1}{2m}\left(\boldsymbol{\theta}^T\mathbf{X}^T\mathbf{X}\boldsymbol{\theta} -
+              \boldsymbol{\theta}^T\mathbf{X}^T\mathbf{y} - \mathbf{y}^T\mathbf{X}\boldsymbol{\theta} +
+              \mathbf{y}^T\mathbf{y}\right)\)
+              <div class="step-note">Note: y^T Xθ = θ^T X^T y (both are scalars, so equal to their own transpose)</div>
+            </div>
+          </div>
+
+          <div class="derivation-step">
+            <span class="step-n">3</span>
+            <div>
+              Simplify:
+              \(\displaystyle J(\boldsymbol{\theta}) =
+              \frac{1}{2m}\left(\boldsymbol{\theta}^T\mathbf{X}^T\mathbf{X}\boldsymbol{\theta} -
+              2\boldsymbol{\theta}^T\mathbf{X}^T\mathbf{y} + \mathbf{y}^T\mathbf{y}\right)\)
+            </div>
+          </div>
+
+          <div class="derivation-step">
+            <span class="step-n">4</span>
+            <div>
+              Take the gradient with respect to \(\boldsymbol{\theta}\) using matrix calculus identities:
+              \[\frac{\partial}{\partial\boldsymbol{\theta}}\left(\boldsymbol{\theta}^T\mathbf{A}\boldsymbol{\theta}\right)
+              = 2\mathbf{A}\boldsymbol{\theta} \quad (\text{for symmetric } \mathbf{A})\]
+              \[\frac{\partial}{\partial\boldsymbol{\theta}}\left(\boldsymbol{\theta}^T\mathbf{b}\right) = \mathbf{b}\]
+              <div class="step-note">Here A = X^T X (which is symmetric since (X^T X)^T = X^T X) and b = X^T y</div>
+            </div>
+          </div>
+
+          <div class="derivation-step">
+            <span class="step-n">5</span>
+            <div>
+              Therefore:
+              \[\nabla_{\boldsymbol{\theta}} J = \frac{1}{2m}\left(2\mathbf{X}^T\mathbf{X}\boldsymbol{\theta} -
+              2\mathbf{X}^T\mathbf{y}\right) = \frac{1}{m}\left(\mathbf{X}^T\mathbf{X}\boldsymbol{\theta} -
+              \mathbf{X}^T\mathbf{y}\right)\]
+            </div>
+          </div>
+
+          <div class="derivation-step">
+            <span class="step-n">6</span>
+            <div>
+              Set \(\nabla_{\boldsymbol{\theta}} J = \mathbf{0}\):
+              \[\mathbf{X}^T\mathbf{X}\boldsymbol{\theta} = \mathbf{X}^T\mathbf{y}\]
+              <div class="step-note">These are the "normal equations" — one equation per parameter. The name comes from
+                the geometric fact that the residual vector is normal (perpendicular) to the column space of X.</div>
+            </div>
+          </div>
+
+          <div class="derivation-step">
+            <span class="step-n">7</span>
+            <div>
+              If \(\mathbf{X}^T\mathbf{X}\) is invertible, solve:
+              \[\boxed{\hat{\boldsymbol{\theta}} = (\mathbf{X}^T\mathbf{X})^{-1}\mathbf{X}^T\mathbf{y}}\]
+              <div class="step-note">The matrix (X^T X)^{-1} X^T is called the Moore-Penrose pseudoinverse of X, written
+                X^†. So θ̂ = X^† y.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="math-block forest">
+          <span class="label">The Normal Equation</span>
+          \[
+          \hat{\boldsymbol{\theta}} = (\mathbf{X}^T\mathbf{X})^{-1}\mathbf{X}^T\mathbf{y}
+          \]
+        </div>
+      </div>
+
+      <div class="subsection">
+        <h3 class="terra">When is \(\mathbf{X}^T\mathbf{X}\) Invertible?</h3>
+        <p>\(\mathbf{X}^T\mathbf{X}\) is invertible if and only if \(\mathbf{X}\) has full column rank, i.e., the
+          columns of \(\mathbf{X}\) are linearly independent. It fails when:</p>
+        <ul class="prop-list">
+          <li><strong>Multicollinearity:</strong> Two or more features are perfectly correlated (one is a linear
+            combination of others). E.g., including both "temperature in °C" and "temperature in °F" — they're identical
+            up to scaling.</li>
+          <li><strong>Too many features:</strong> If \(n+1 &gt; m\) (more parameters than samples),
+            \(\mathbf{X}^T\mathbf{X}\) is singular — infinitely many solutions minimize the loss exactly to zero.</li>
+          <li><strong>Duplicate features:</strong> Same feature column repeated twice.</li>
+        </ul>
+
+        <div class="callout indigo">
+          <div class="callout-title">💡 The Fix — Pseudoinverse and Regularization</div>
+          <p>When \(\mathbf{X}^T\mathbf{X}\) is singular or near-singular, two remedies exist. The <strong>Moore-Penrose
+              pseudoinverse</strong> \(\mathbf{X}^{\dagger}\) gives the minimum-norm solution analytically. More
+            practically, <strong>Ridge regularization</strong> adds \(\lambda\mathbf{I}\) to the matrix:
+            \(\hat{\boldsymbol{\theta}}_{\text{ridge}} = (\mathbf{X}^T\mathbf{X} +
+            \lambda\mathbf{I})^{-1}\mathbf{X}^T\mathbf{y}\), which is always invertible for \(\lambda &gt; 0\). This is not
+            just a numerical trick — it has deep statistical meaning (§12).</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════════════════ -->
+    <div class="section" id="s5">
+      <div class="section-header">
+        <span class="section-num">§05</span>
+        <h2>Geometric Interpretation — Projection</h2>
+      </div>
+
+      <p>The Normal Equation has a stunning geometric interpretation that reveals <em>why</em> it has to take exactly
+        this form. This is one of the most beautiful results in linear algebra.</p>
+
+      <div class="subsection">
+        <h3 class="forest">The Column Space Perspective</h3>
+        <p>Think of the \(m\) rows of \(\mathbf{X}\) as giving coordinates. The columns of \(\mathbf{X}\) are
+          \(m\)-dimensional vectors. The set of all possible predictions \(\hat{\mathbf{y}} =
+          \mathbf{X}\boldsymbol{\theta}\) as \(\boldsymbol{\theta}\) varies is the <span class="hl">column space</span>
+          of \(\mathbf{X}\): a subspace \(\mathcal{C}(\mathbf{X}) \subseteq \mathbb{R}^m\).</p>
+
+        <p>Unless \(\mathbf{y}\) happens to lie exactly in \(\mathcal{C}(\mathbf{X})\) (perfect fit), we cannot achieve
+          zero residual. The best we can do: find the point in \(\mathcal{C}(\mathbf{X})\) <em>closest</em> to
+          \(\mathbf{y}\) in Euclidean distance — minimizing \(\|\mathbf{X}\boldsymbol{\theta} - \mathbf{y}\|^2\). This
+          is exactly the <strong>orthogonal projection</strong> of \(\mathbf{y}\) onto \(\mathcal{C}(\mathbf{X})\).</p>
+      </div>
+
+      <div class="figure">
+        <svg viewBox="0 0 560 280" xmlns="http://www.w3.org/2000/svg" style="max-width:560px;">
+          <rect width="560" height="280" fill="#faf7f2" />
+          <defs>
+            <marker id="arr-a" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+              <path d="M0,0 L0,6 L8,3 z" fill="#1c1610" />
+            </marker>
+            <marker id="arr-f" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+              <path d="M0,0 L0,6 L8,3 z" fill="#2d6a4f" />
+            </marker>
+            <marker id="arr-t" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+              <path d="M0,0 L0,6 L8,3 z" fill="#b54a2a" />
+            </marker>
+            <marker id="arr-i" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+              <path d="M0,0 L0,6 L8,3 z" fill="#3b4fa8" />
+            </marker>
+          </defs>
+          <!-- Column space plane (parallelogram) -->
+          <polygon points="60,240 260,200 400,110 200,150" fill="#eaf4ee" stroke="#7ab898" stroke-width="1.5"
+            opacity="0.8" />
+          <!-- Plane label -->
+          <text x="90" y="230" font-family="Fira Code" font-size="11" fill="#2d6a4f" font-style="italic">Col(X) — column
+            space</text>
+          <!-- Origin -->
+          <circle cx="200" cy="150" r="4" fill="#1c1610" />
+          <text x="185" y="170" font-family="Fira Code" font-size="11" fill="#1c1610">O</text>
+          <!-- y vector (not in column space) -->
+          <line x1="200" y1="150" x2="310" y2="50" stroke="#b54a2a" stroke-width="2" marker-end="url(#arr-t)" />
+          <text x="316" y="46" font-family="Fira Code" font-size="12" fill="#b54a2a" font-weight="600">y</text>
+          <!-- Projection ŷ = Xθ -->
+          <line x1="200" y1="150" x2="330" y2="130" stroke="#2d6a4f" stroke-width="2.2" marker-end="url(#arr-f)" />
+          <text x="338" y="127" font-family="Fira Code" font-size="12" fill="#2d6a4f" font-weight="600">ŷ = Xθ̂</text>
+          <!-- Residual e = y - ŷ -->
+          <line x1="330" y1="130" x2="310" y2="52" stroke="#3b4fa8" stroke-width="1.8" stroke-dasharray="5,3"
+            marker-end="url(#arr-i)" />
+          <text x="340" y="95" font-family="Fira Code" font-size="11" fill="#3b4fa8">e = y − ŷ</text>
+          <!-- Right angle marker -->
+          <path d="M330,130 L322,120 L332,112 L340,122 Z" fill="none" stroke="#3b4fa8" stroke-width="1.2" />
+          <!-- Labels -->
+          <text x="280" y="270" text-anchor="middle" font-family="Outfit" font-size="12" fill="#8a7a65"
+            font-style="italic">The residual e is perpendicular to the entire column space — this is why it's called the
+            Normal Equation</text>
+        </svg>
+        <div class="figure-cap">Fig 1. OLS as orthogonal projection. ŷ = Xθ̂ is the closest point in Col(X) to y. The
+          residual e = y − ŷ is perpendicular (normal) to Col(X).</div>
+      </div>
+
+      <div class="subsection">
+        <h3 class="forest">Why the Residual Must Be Orthogonal to Col(X)</h3>
+        <div class="derivation">
+          <div class="derivation-hdr">// Geometric proof: the optimality condition is orthogonality</div>
+          <div class="derivation-step">
+            <span class="step-n">1</span>
+            <div>
+              For any other point \(\mathbf{X}\boldsymbol{\theta}\) in \(\mathcal{C}(\mathbf{X})\), write the squared
+              distance to \(\mathbf{y}\):
+              \[\|\mathbf{y} - \mathbf{X}\boldsymbol{\theta}\|^2 = \|\mathbf{y} - \hat{\mathbf{y}} + \hat{\mathbf{y}} -
+              \mathbf{X}\boldsymbol{\theta}\|^2\]
+            </div>
+          </div>
+          <div class="derivation-step">
+            <span class="step-n">2</span>
+            <div>
+              \(= \|\mathbf{e} + (\hat{\mathbf{y}} - \mathbf{X}\boldsymbol{\theta})\|^2 = \|\mathbf{e}\|^2 +
+              2\mathbf{e}^T(\hat{\mathbf{y}} - \mathbf{X}\boldsymbol{\theta}) + \|\hat{\mathbf{y}} -
+              \mathbf{X}\boldsymbol{\theta}\|^2\)
+              <div class="step-note">Using the Pythagorean identity for norms</div>
+            </div>
+          </div>
+          <div class="derivation-step">
+            <span class="step-n">3</span>
+            <div>
+              If \(\mathbf{e} \perp \mathcal{C}(\mathbf{X})\), then the cross term vanishes:
+              \(\mathbf{e}^T(\hat{\mathbf{y}} - \mathbf{X}\boldsymbol{\theta}) = 0\).
+            </div>
+          </div>
+          <div class="derivation-step">
+            <span class="step-n">4</span>
+            <div>
+              We get: \(\|\mathbf{y} - \mathbf{X}\boldsymbol{\theta}\|^2 = \|\mathbf{e}\|^2 + \|\hat{\mathbf{y}} -
+              \mathbf{X}\boldsymbol{\theta}\|^2 \geq \|\mathbf{e}\|^2\)
+              <div class="step-note">The distance from y to any other point in Col(X) is at least ‖e‖² — so ŷ is the
+                unique minimizer. ∎</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="callout forest">
+          <div class="callout-title">✓ The Orthogonality Condition</div>
+          <p>Optimality requires the residual to be orthogonal to every column of
+            \(\mathbf{X}\):<br>\(\mathbf{X}^T(\mathbf{y} - \mathbf{X}\hat{\boldsymbol{\theta}}) = \mathbf{0}\).
+            Expanding this gives \(\mathbf{X}^T\mathbf{X}\hat{\boldsymbol{\theta}} = \mathbf{X}^T\mathbf{y}\) —
+            precisely the Normal Equations. The geometry and the algebra are the same thing.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════════════════ -->
+    <div class="section" id="s6">
+      <div class="section-header">
+        <span class="section-num">§06</span>
+        <h2>Statistical Foundation — MLE Derivation</h2>
+      </div>
+
+      <p>Why does everyone use squared error? The most rigorous answer comes from probability theory. If we make a
+        specific assumption about how the data is generated, squared error is the <em>only</em> natural choice.</p>
+
+      <div class="subsection">
+        <h3 class="plum">The Probabilistic Data-Generating Model</h3>
+        <p>Assume the true relationship between inputs and outputs is linear, plus independent Gaussian noise:</p>
+
+        <div class="math-block plum">
+          <span class="label">Generative Model</span>
+          \[
+          y^{(i)} = \boldsymbol{\theta}^T \mathbf{x}^{(i)} + \epsilon^{(i)}, \quad \epsilon^{(i)}
+          \overset{\text{i.i.d.}}{\sim} \mathcal{N}(0, \sigma^2)
+          \]
+        </div>
+
+        <p>This means: the output \(y\) is the linear prediction plus a small random measurement/model error, and these
+          errors are independent, zero-mean, and Gaussian. Under this model:</p>
+
+        <div class="math-block plum">
+          \[
+          P(y^{(i)} \mid \mathbf{x}^{(i)}; \boldsymbol{\theta}) = \frac{1}{\sqrt{2\pi}\sigma}\exp\!\left(-\frac{(y^{(i)}
+          - \boldsymbol{\theta}^T\mathbf{x}^{(i)})^2}{2\sigma^2}\right)
+          \]
+        </div>
+      </div>
+
+      <div class="subsection">
+        <h3 class="plum">Maximum Likelihood Estimation</h3>
+        <p>MLE: find \(\boldsymbol{\theta}\) that maximizes the probability of observing the training data. The
+          likelihood is:</p>
+
+        <div class="derivation">
+          <div class="derivation-hdr">// MLE → MSE: the full derivation</div>
+          <div class="derivation-step">
+            <span class="step-n">1</span>
+            <div>
+              Likelihood (i.i.d. assumption — product over all samples):
+              \[\mathcal{L}(\boldsymbol{\theta}) = \prod_{i=1}^{m} P(y^{(i)} \mid \mathbf{x}^{(i)}; \boldsymbol{\theta})
+              = \prod_{i=1}^{m}
+              \frac{1}{\sqrt{2\pi}\sigma}\exp\!\left(-\frac{(y^{(i)}-\boldsymbol{\theta}^T\mathbf{x}^{(i)})^2}{2\sigma^2}\right)\]
+            </div>
+          </div>
+          <div class="derivation-step">
+            <span class="step-n">2</span>
+            <div>
+              Log-likelihood (log turns products into sums):
+              \[\ell(\boldsymbol{\theta}) = \log\mathcal{L} = \sum_{i=1}^{m}\left[-\log(\sqrt{2\pi}\sigma) -
+              \frac{(y^{(i)}-\boldsymbol{\theta}^T\mathbf{x}^{(i)})^2}{2\sigma^2}\right]\]
+            </div>
+          </div>
+          <div class="derivation-step">
+            <span class="step-n">3</span>
+            <div>
+              Maximizing \(\ell\) over \(\boldsymbol{\theta}\): the term \(-\log(\sqrt{2\pi}\sigma)\) is constant in
+              \(\boldsymbol{\theta}\). So maximizing \(\ell\) is equivalent to minimizing:
+              \[\sum_{i=1}^{m} \frac{(y^{(i)}-\boldsymbol{\theta}^T\mathbf{x}^{(i)})^2}{2\sigma^2}\]
+            </div>
+          </div>
+          <div class="derivation-step">
+            <span class="step-n">4</span>
+            <div>
+              Since \(\sigma^2 &gt; 0\) is constant, this is equivalent to minimizing:
+              \[\sum_{i=1}^{m}(y^{(i)}-\boldsymbol{\theta}^T\mathbf{x}^{(i)})^2 =
+              \frac{1}{2m}\|\mathbf{X}\boldsymbol{\theta}-\mathbf{y}\|^2 = J(\boldsymbol{\theta}) \qquad \blacksquare\]
+              <div class="step-note">MLE under Gaussian noise ≡ minimizing MSE. The MSE loss is not a heuristic — it's
+                the statistically principled choice.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="callout plum">
+          <div class="callout-title">★ The Profound Connection</div>
+          <p>This derivation reveals a deep truth: <strong>choosing a loss function = choosing a noise model</strong>.
+            MSE assumes Gaussian noise. MAE assumes Laplace noise. Huber loss assumes a mixture. Every loss function
+            implicitly encodes a statistical assumption about how residuals are distributed. When you use MSE, you're
+            betting the noise is Gaussian.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════════════════ -->
+    <div class="section" id="s7">
+      <div class="section-header">
+        <span class="section-num">§07</span>
+        <h2>Gradient Descent for Linear Regression</h2>
+      </div>
+
+      <p>While the Normal Equation gives an exact answer, gradient descent is essential when \(n\) is large (matrix
+        inversion becomes too costly). From §02's gradient master class, we have:</p>
+
+      <div class="math-block forest">
+        <span class="label">Gradient of MSE</span>
+        \[
+        \nabla_{\boldsymbol{\theta}} J = \frac{1}{m}\mathbf{X}^T(\mathbf{X}\boldsymbol{\theta} - \mathbf{y}) =
+        \frac{1}{m}\mathbf{X}^T(\hat{\mathbf{y}} - \mathbf{y})
+        \]
+      </div>
+
+      <div class="subsection">
+        <h3 class="forest">Component-Wise Derivation</h3>
+        <p>Let's derive the gradient for a single weight \(\theta_j\) from scratch, to make sure every piece is
+          understood:</p>
+
+        <div class="derivation">
+          <div class="derivation-hdr">// ∂J/∂θⱼ — partial derivative of MSE w.r.t. single weight</div>
+          <div class="derivation-step">
+            <span class="step-n">1</span>
+            <div>
+              \(\displaystyle \frac{\partial J}{\partial \theta_j} =
+              \frac{\partial}{\partial\theta_j}\frac{1}{2m}\sum_{i=1}^m\left(\sum_{k=0}^n \theta_k x_k^{(i)} -
+              y^{(i)}\right)^2\)
+            </div>
+          </div>
+          <div class="derivation-step">
+            <span class="step-n">2</span>
+            <div>
+              Apply chain rule: \(\frac{\partial}{\partial\theta_j}(f)^2 = 2f \cdot \frac{\partial
+              f}{\partial\theta_j}\)
+              \[\displaystyle = \frac{1}{m}\sum_{i=1}^m\left(\hat{y}^{(i)} - y^{(i)}\right)\cdot
+              \frac{\partial}{\partial\theta_j}\hat{y}^{(i)}\]
+            </div>
+          </div>
+          <div class="derivation-step">
+            <span class="step-n">3</span>
+            <div>
+              Since \(\hat{y}^{(i)} = \boldsymbol{\theta}^T\mathbf{x}^{(i)}\), we have \(\frac{\partial
+              \hat{y}^{(i)}}{\partial\theta_j} = x_j^{(i)}\)
+            </div>
+          </div>
+          <div class="derivation-step">
+            <span class="step-n">4</span>
+            <div>
+              \[\boxed{\frac{\partial J}{\partial\theta_j} = \frac{1}{m}\sum_{i=1}^m\left(\hat{y}^{(i)} -
+              y^{(i)}\right)x_j^{(i)}}\]
+              <div class="step-note">In vector form: ∇J = (1/m) X^T(ŷ − y). This is the dot product of the j-th feature
+                column with the residual vector.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="subsection">
+        <h3 class="forest">The Update Rule</h3>
+
+        <div class="math-block forest">
+          <span class="label">GD Update — Vectorized</span>
+          \[
+          \boldsymbol{\theta} \leftarrow \boldsymbol{\theta} - \frac{\alpha}{m}\mathbf{X}^T(\hat{\mathbf{y}} -
+          \mathbf{y})
+          \]
+        </div>
+
+        <div class="algo">
+          <span class="hdr">// Gradient Descent for Linear Regression</span>
+          <span class="kw">Initialize</span>: <span class="var">θ</span> = zeros(n+1) &nbsp;&nbsp;<span class="cmt"># or
+            small random values</span><br><br>
+          <span class="kw">for</span> epoch = <span class="num">1</span> <span class="kw">to</span> num_epochs:<br>
+          &nbsp;&nbsp;<span class="cmt"># Forward pass</span><br>
+          &nbsp;&nbsp;<span class="var">y_hat</span> = X @ <span class="var">θ</span>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span
+            class="cmt"># (m,) predictions</span><br>
+          &nbsp;&nbsp;<span class="var">residuals</span> = <span class="var">y_hat</span> <span class="op">−</span> y
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="cmt"># (m,) errors</span><br><br>
+          &nbsp;&nbsp;<span class="cmt"># Compute loss (optional, for monitoring)</span><br>
+          &nbsp;&nbsp;<span class="var">J</span> = <span class="fn">mean</span>(<span
+            class="var">residuals</span>**<span class="num">2</span>) / <span class="num">2</span><br><br>
+          &nbsp;&nbsp;<span class="cmt"># Compute gradient</span><br>
+          &nbsp;&nbsp;<span class="var">grad</span> = X.T @ <span class="var">residuals</span> / m
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="cmt"># (n+1,)</span><br><br>
+          &nbsp;&nbsp;<span class="cmt"># Update parameters</span><br>
+          &nbsp;&nbsp;<span class="var">θ</span> = <span class="var">θ</span> <span class="op">−</span> α * <span
+            class="var">grad</span><br><br>
+          &nbsp;&nbsp;<span class="kw">if</span> ‖<span class="var">grad</span>‖ &lt; ε: <span class="kw">break</span>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="cmt"># convergence check</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════════════════ -->
+    <div class="section" id="s8">
+      <div class="section-header">
+        <span class="section-num">§08</span>
+        <h2>Properties of OLS — The Gauss-Markov Theorem</h2>
+      </div>
+
+      <p>The OLS estimator \(\hat{\boldsymbol{\theta}} = (\mathbf{X}^T\mathbf{X})^{-1}\mathbf{X}^T\mathbf{y}\) has
+        remarkable statistical properties. The Gauss-Markov theorem tells us it's the best we can possibly do within a
+        class of estimators.</p>
+
+      <div class="subsection">
+        <h3 class="amber">Unbiasedness</h3>
+        <p>The OLS estimator is <span class="hl">unbiased</span> — in expectation it equals the true
+          \(\boldsymbol{\theta}^*\).</p>
+
+        <div class="derivation">
+          <div class="derivation-hdr">// Proof that E[θ̂] = θ*</div>
+          <div class="derivation-step">
+            <span class="step-n">1</span>
+            <div>
+              Substitute \(\mathbf{y} = \mathbf{X}\boldsymbol{\theta}^* + \boldsymbol{\epsilon}\) into the OLS formula:
+              \[\hat{\boldsymbol{\theta}} = (\mathbf{X}^T\mathbf{X})^{-1}\mathbf{X}^T(\mathbf{X}\boldsymbol{\theta}^* +
+              \boldsymbol{\epsilon})\]
+            </div>
+          </div>
+          <div class="derivation-step">
+            <span class="step-n">2</span>
+            <div>
+              \(= (\mathbf{X}^T\mathbf{X})^{-1}\mathbf{X}^T\mathbf{X}\boldsymbol{\theta}^* +
+              (\mathbf{X}^T\mathbf{X})^{-1}\mathbf{X}^T\boldsymbol{\epsilon} = \boldsymbol{\theta}^* +
+              (\mathbf{X}^T\mathbf{X})^{-1}\mathbf{X}^T\boldsymbol{\epsilon}\)
+            </div>
+          </div>
+          <div class="derivation-step">
+            <span class="step-n">3</span>
+            <div>
+              \(\mathbb{E}[\hat{\boldsymbol{\theta}}] = \boldsymbol{\theta}^* +
+              (\mathbf{X}^T\mathbf{X})^{-1}\mathbf{X}^T\underbrace{\mathbb{E}[\boldsymbol{\epsilon}]}_{=\,\mathbf{0}} =
+              \boldsymbol{\theta}^* \qquad \blacksquare\)
+              <div class="step-note">Uses the assumption E[ε] = 0 (zero-mean noise).</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="subsection">
+        <h3 class="amber">Variance of the OLS Estimator</h3>
+
+        <div class="math-block amber">
+          <span class="label">Covariance Matrix of θ̂</span>
+          \[
+          \text{Var}(\hat{\boldsymbol{\theta}}) = \sigma^2 (\mathbf{X}^T\mathbf{X})^{-1}
+          \]
+        </div>
+
+        <p>The diagonal entries are the variances of individual estimates: \(\text{Var}(\hat{\theta}_j) = \sigma^2
+          [(\mathbf{X}^T\mathbf{X})^{-1}]_{jj}\). Large variance in \(\hat{\theta}_j\) means the estimate of the
+          \(j\)-th coefficient is unreliable — it would change significantly with a different training set.</p>
+
+        <p>This formula reveals exactly when estimates are unreliable: when \((\mathbf{X}^T\mathbf{X})^{-1}\) has large
+          entries — i.e., when the matrix is nearly singular due to multicollinearity.</p>
+      </div>
+
+      <div class="subsection">
+        <h3 class="forest">The Gauss-Markov Theorem</h3>
+
+        <div class="callout forest">
+          <div class="callout-title">★ Gauss-Markov Theorem (BLUE)</div>
+          <p>Under the OLS assumptions (linearity, exogeneity
+            \(\mathbb{E}[\boldsymbol{\epsilon}|\mathbf{X}]=\mathbf{0}\), homoscedasticity
+            \(\text{Var}(\boldsymbol{\epsilon})=\sigma^2\mathbf{I}\), no multicollinearity), the OLS estimator is the
+            <strong>Best Linear Unbiased Estimator (BLUE)</strong>: among all linear unbiased estimators, it has the
+            minimum variance.
+          </p>
+        </div>
+
+        <p>Formally: for any linear unbiased estimator \(\tilde{\boldsymbol{\theta}} = \mathbf{C}\mathbf{y}\) with
+          \(\mathbb{E}[\tilde{\boldsymbol{\theta}}] = \boldsymbol{\theta}^*\), we have:</p>
+
+        <div class="math-block forest">
+          \[ \text{Var}(\tilde{\boldsymbol{\theta}}) - \text{Var}(\hat{\boldsymbol{\theta}}) =
+          \text{Var}(\tilde{\boldsymbol{\theta}}) - \sigma^2(\mathbf{X}^T\mathbf{X})^{-1} \succeq 0 \]
+        </div>
+
+        <p>(positive semidefinite — every diagonal entry of the difference is ≥ 0). OLS is the tightest possible
+          unbiased linear estimate.</p>
+
+        <div class="callout amber">
+          <div class="callout-title">💡 "Best" vs "Optimal"</div>
+          <p>Gauss-Markov says OLS is best among <em>linear unbiased</em> estimators. But a biased estimator with much
+            lower variance can have <em>lower total error</em> (lower MSE = bias² + variance). Ridge regression
+            introduces bias deliberately to reduce variance — often beating OLS in test error. This is the bias-variance
+            tradeoff (§09) in action, and explains why regularization can improve upon the "theoretically optimal" OLS.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════════════════ -->
+    <div class="section" id="s9">
+      <div class="section-header">
+        <span class="section-num">§09</span>
+        <h2>Bias-Variance Tradeoff</h2>
+      </div>
+
+      <p>The expected test error of any estimator decomposes into three fundamental components. Understanding this
+        decomposition is central to all of machine learning.</p>
+
+      <div class="subsection">
+        <h3 class="indigo">The Bias-Variance Decomposition</h3>
+        <p>For a test point \(\mathbf{x}_0\) with true value \(y_0 = f(\mathbf{x}_0) + \epsilon\):</p>
+
+        <div class="math-block indigo">
+          <span class="label">Bias-Variance Decomposition</span>
+          \[
+          \mathbb{E}\left[(y_0 - \hat{y}_0)^2\right] = \underbrace{\left(\mathbb{E}[\hat{y}_0] -
+          f(\mathbf{x}_0)\right)^2}_{\text{Bias}^2} + \underbrace{\text{Var}(\hat{y}_0)}_{\text{Variance}} +
+          \underbrace{\sigma^2}_{\text{Irreducible noise}}
+          \]
+        </div>
+      </div>
+
+      <div class="subsection">
+        <h3 class="indigo">Derivation</h3>
+        <div class="derivation">
+          <div class="derivation-hdr">// Full proof of the decomposition</div>
+          <div class="derivation-step">
+            <span class="step-n">1</span>
+            <div>Let \(\bar{y} = \mathbb{E}[\hat{y}_0]\) (expected prediction) and \(f_0 = f(\mathbf{x}_0)\) (true
+              signal).
+              \[\mathbb{E}[(y_0-\hat{y}_0)^2] = \mathbb{E}[(f_0 + \epsilon - \hat{y}_0)^2]\]
+            </div>
+          </div>
+          <div class="derivation-step">
+            <span class="step-n">2</span>
+            <div>
+              Add and subtract \(\bar{y}\):
+              \[= \mathbb{E}[(f_0 - \bar{y})^2 + 2(f_0-\bar{y})(\bar{y}-\hat{y}_0) + (\bar{y}-\hat{y}_0)^2 +
+              2\epsilon(\ldots) + \epsilon^2]\]
+            </div>
+          </div>
+          <div class="derivation-step">
+            <span class="step-n">3</span>
+            <div>
+              Taking expectations and using \(\mathbb{E}[\epsilon]=0\), \(\mathbb{E}[\epsilon \cdot \hat{y}_0]=0\)
+              (independence):
+              \[= (f_0-\bar{y})^2 + \mathbb{E}[(\hat{y}_0 - \bar{y})^2] + \sigma^2\]
+            </div>
+          </div>
+          <div class="derivation-step">
+            <span class="step-n">4</span>
+            <div>
+              \(= \text{Bias}^2[\hat{y}_0] + \text{Var}[\hat{y}_0] + \sigma^2 \qquad \blacksquare\)
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="subsection">
+        <h3 class="indigo">What Each Term Means</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>Term</th>
+              <th>Meaning</th>
+              <th>Controlled By</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Bias²</strong></td>
+              <td>How far off the average prediction is from the truth. High bias = underfitting — the model is too
+                simple to capture the true pattern.</td>
+              <td>Model complexity, hypothesis class. Linear model fitting a cubic truth has high bias.</td>
+            </tr>
+            <tr>
+              <td><strong>Variance</strong></td>
+              <td>How much the prediction changes across different training sets. High variance = overfitting — the
+                model learned training noise.</td>
+              <td>Model complexity, regularization, training size. More parameters → higher variance.</td>
+            </tr>
+            <tr>
+              <td><strong>Irreducible</strong></td>
+              <td>Inherent noise in the data — the best any model can achieve. Cannot be reduced by any algorithm.</td>
+              <td>Data generation process. \(\sigma^2\) of the true noise.</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="figure">
+          <svg viewBox="0 0 560 220" xmlns="http://www.w3.org/2000/svg" style="max-width:560px;">
+            <rect width="560" height="220" fill="#faf7f2" />
+            <!-- Axes -->
+            <line x1="60" y1="180" x2="520" y2="180" stroke="#1c1610" stroke-width="1.5" marker-end="url(#arr-a)" />
+            <line x1="60" y1="180" x2="60" y2="20" stroke="#1c1610" stroke-width="1.5" marker-end="url(#arr-a)" />
+            <text x="530" y="184" font-family="Fira Code" font-size="12" fill="#1c1610">complexity</text>
+            <text x="10" y="18" font-family="Fira Code" font-size="11" fill="#1c1610">Error</text>
+            <!-- Bias curve (decreasing) -->
+            <path d="M80,40 C140,50 200,80 260,110 C320,140 380,158 460,168" fill="none" stroke="#3b4fa8"
+              stroke-width="2.5" />
+            <text x="468" y="164" font-family="Fira Code" font-size="11" fill="#3b4fa8">Bias²</text>
+            <!-- Variance curve (increasing) -->
+            <path d="M80,165 C140,160 200,148 260,130 C320,108 380,80 460,45" fill="none" stroke="#b54a2a"
+              stroke-width="2.5" />
+            <text x="463" y="42" font-family="Fira Code" font-size="11" fill="#b54a2a">Variance</text>
+            <!-- Total error (U-shaped) -->
+            <path d="M80,108 C120,100 180,98 240,100 C300,104 360,115 420,140 C440,150 460,160 480,172" fill="none"
+              stroke="#1c1610" stroke-width="2" stroke-dasharray="7,3" />
+            <text x="460" y="176" font-family="Fira Code" font-size="11" fill="#1c1610">Total</text>
+            <!-- Irreducible noise line -->
+            <line x1="60" y1="172" x2="520" y2="172" stroke="#2d6a4f" stroke-width="1.5" stroke-dasharray="4,4"
+              opacity="0.7" />
+            <text x="80" y="192" font-family="Fira Code" font-size="10" fill="#2d6a4f">σ² (irreducible)</text>
+            <!-- Optimal point -->
+            <circle cx="245" cy="100" r="5" fill="#c47a1e" />
+            <line x1="245" y1="100" x2="245" y2="180" stroke="#c47a1e" stroke-width="1" stroke-dasharray="4,3" />
+            <text x="225" y="195" font-family="Fira Code" font-size="10" fill="#c47a1e">optimal</text>
+            <!-- Underfit / Overfit labels -->
+            <text x="80" y="210" font-family="Outfit" font-size="12" fill="#3b4fa8" font-style="italic">←
+              underfitting</text>
+            <text x="350" y="210" font-family="Outfit" font-size="12" fill="#b54a2a" font-style="italic">overfitting
+              →</text>
+          </svg>
+          <div class="figure-cap">Fig 2. Bias-variance tradeoff. As model complexity increases, bias decreases but
+            variance increases. The optimal complexity minimizes total test error.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════════════════ -->
+    <div class="section" id="s10">
+      <div class="section-header">
+        <span class="section-num">§10</span>
+        <h2>Feature Scaling and Normalization</h2>
+      </div>
+
+      <p>Feature scaling is not optional — it directly affects the geometry of the loss landscape and the convergence
+        behavior of gradient descent.</p>
+
+      <div class="subsection">
+        <h3 class="terra">Why Scaling Matters for Gradient Descent</h3>
+        <p>If feature \(x_1 \in [0, 1]\) and feature \(x_2 \in [0, 10000]\), the loss surface is a <em>highly elongated
+            ellipsoid</em> — the loss changes much faster in the \(\theta_2\) direction. Gradient descent in this
+          landscape:</p>
+        <ul class="prop-list">
+          <li>Takes tiny, inefficient zigzag steps (ravine problem from gradient descent masterclass)</li>
+          <li>Requires very different "ideal" learning rates per parameter</li>
+          <li>Converges extremely slowly</li>
+        </ul>
+        <p>After scaling all features to similar ranges, the loss surface becomes nearly circular — gradient descent
+          takes direct paths toward the minimum.</p>
+      </div>
+
+      <div class="subsection">
+        <h3 class="terra">Method 1 — Min-Max Scaling (Normalization)</h3>
+        <div class="math-block terra">
+          <span class="label">Min-Max Normalization</span>
+          \[ x_j' = \frac{x_j - \min(x_j)}{\max(x_j) - \min(x_j)} \implies x_j' \in [0, 1] \]
+        </div>
+        <p>Use when: you know the bounded range and want values in [0, 1]. Sensitive to outliers (the min/max are pulled
+          by extreme values).</p>
+      </div>
+
+      <div class="subsection">
+        <h3 class="terra">Method 2 — Standardization (Z-Score Normalization)</h3>
+        <div class="math-block terra">
+          <span class="label">Standardization</span>
+          \[ x_j' = \frac{x_j - \mu_j}{\sigma_j} \implies \mathbb{E}[x_j'] = 0, \; \text{Std}(x_j') = 1 \]
+        </div>
+        <p>Use when: features may have outliers or unknown bounds. More robust than min-max. The standard choice for
+          most ML workflows.</p>
+
+        <div class="callout terra">
+          <div class="callout-title">⚠ Critical Rule</div>
+          <p>Always compute \(\mu_j\) and \(\sigma_j\) on the <strong>training set only</strong>, then apply the same
+            transformation to the validation and test sets. Computing statistics on the full dataset (including test) is
+            <em>data leakage</em> — your model has indirectly seen test data during training.
+          </p>
+        </div>
+      </div>
+
+      <div class="subsection">
+        <h3 class="terra">Does Scaling Affect the Normal Equation?</h3>
+        <p>No — the Normal Equation always produces the exact minimizer regardless of scaling. But in practice,
+          numerically inverting a poorly-conditioned \(\mathbf{X}^T\mathbf{X}\) (due to very different feature scales)
+          introduces floating-point errors. Scaling improves numerical stability. For gradient descent, scaling is
+          essential. For the Normal Equation, it's good practice.</p>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════════════════ -->
+    <div class="section" id="s11">
+      <div class="section-header">
+        <span class="section-num">§11</span>
+        <h2>Polynomial Regression — Extending the Model</h2>
+      </div>
+
+      <p>Linear regression assumes \(y\) is linear in \(\mathbf{x}\). What if the true relationship is curved?
+        Polynomial regression solves this while remaining within the linear regression framework.</p>
+
+      <div class="subsection">
+        <h3 class="amber">Feature Expansion</h3>
+        <p>For a single feature \(x\), add polynomial features up to degree \(d\):</p>
+
+        <div class="math-block amber">
+          <span class="label">Polynomial Feature Map</span>
+          \[
+          \phi(x) = [1, x, x^2, x^3, \ldots, x^d]^T \in \mathbb{R}^{d+1}
+          \]
+          \[
+          h(\mathbf{x}) = \boldsymbol{\theta}^T\phi(x) = \theta_0 + \theta_1 x + \theta_2 x^2 + \cdots + \theta_d x^d
+          \]
+        </div>
+
+        <p>This is still <em>linear regression</em> — linear in the parameters \(\boldsymbol{\theta}\). Every theorem,
+          gradient formula, and the Normal Equation applies unchanged. The only thing that changed is the design matrix
+          \(\mathbf{X}\) now contains polynomial columns:</p>
+
+        <div class="math-block dark">
+          <span class="label">Polynomial Design Matrix</span>
+          \[
+          \mathbf{X}_{\text{poly}} = \begin{bmatrix}
+          1 & x^{(1)} & (x^{(1)})^2 & \cdots & (x^{(1)})^d \\
+          1 & x^{(2)} & (x^{(2)})^2 & \cdots & (x^{(2)})^d \\
+          \vdots & & & & \vdots \\
+          1 & x^{(m)} & (x^{(m)})^2 & \cdots & (x^{(m)})^d
+          \end{bmatrix}
+          \]
+        </div>
+      </div>
+
+      <div class="subsection">
+        <h3 class="terra">Overfitting with Polynomial Regression</h3>
+        <p>A degree-\(d\) polynomial has \(d+1\) parameters. With \(d = m-1\), the model can pass through every training
+          point perfectly — but will wildly oscillate between them (Runge's phenomenon). This is extreme overfitting:
+          zero training error, catastrophic test error.</p>
+
+        <div class="callout terra">
+          <div class="callout-title">⚠ The Degree Selection Problem</div>
+          <p>Low degree → underfitting (high bias). High degree → overfitting (high variance). The optimal degree is
+            selected via <strong>cross-validation</strong> — training on a subset, evaluating on the held-out portion.
+            Alternatively, regularization (§12) allows using high-degree polynomials while penalizing large
+            coefficients, preventing wild oscillation.</p>
+        </div>
+      </div>
+
+      <div class="subsection">
+        <h3 class="amber">Interaction Terms and General Feature Maps</h3>
+        <p>With multiple features, the polynomial expansion includes cross-terms: \(x_1 x_2, x_1^2 x_2, x_1 x_2^2\),
+          etc. For \(n\) features of degree \(d\), the number of features grows as \(\binom{n+d}{d} = O(n^d)\) —
+          exponential in degree. This is the <em>curse of dimensionality</em>. Kernel methods (like SVR with RBF kernel)
+          handle this implicitly via the kernel trick, computing the dot product in high-dimensional feature space
+          without explicitly constructing it.</p>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════════════════ -->
+    <div class="section" id="s12">
+      <div class="section-header">
+        <span class="section-num">§12</span>
+        <h2>Regularization — Ridge, Lasso, Elastic Net</h2>
+      </div>
+
+      <p>Regularization adds a penalty to the loss that discourages large weights — deliberately introducing bias to
+        reduce variance, improving generalization.</p>
+
+      <div class="subsection">
+        <h3 class="forest">Ridge Regression (L2)</h3>
+
+        <div class="math-block forest">
+          <span class="label">Ridge Loss</span>
+          \[
+          J_{\text{Ridge}}(\boldsymbol{\theta}) = \frac{1}{2m}\|\mathbf{X}\boldsymbol{\theta} - \mathbf{y}\|^2 +
+          \frac{\lambda}{2}\|\boldsymbol{\theta}\|_2^2 = \frac{1}{2m}\|\mathbf{X}\boldsymbol{\theta}-\mathbf{y}\|^2 +
+          \frac{\lambda}{2}\sum_{j=1}^{n}\theta_j^2
+          \]
+        </div>
+
+        <div class="callout forest">
+          <div class="callout-title">✓ Ridge has a Closed-Form Solution</div>
+          <p>Setting \(\nabla J_{\text{Ridge}} = 0\): \(\mathbf{X}^T\mathbf{X}\hat{\boldsymbol{\theta}} +
+            \lambda\hat{\boldsymbol{\theta}} = \mathbf{X}^T\mathbf{y}\), giving
+            \(\hat{\boldsymbol{\theta}}_{\text{ridge}} = (\mathbf{X}^T\mathbf{X} +
+            \lambda\mathbf{I})^{-1}\mathbf{X}^T\mathbf{y}\). The added \(\lambda\mathbf{I}\) ensures the matrix is
+            always invertible — Ridge simultaneously solves multicollinearity and regularizes.</p>
+        </div>
+
+        <p>The gradient descent update with Ridge regularization:</p>
+        <div class="math-block forest">
+          <span class="label">Ridge GD Update</span>
+          \[
+          \boldsymbol{\theta} \leftarrow \boldsymbol{\theta}\!\left(1 - \frac{\alpha\lambda}{m}\right) -
+          \frac{\alpha}{m}\mathbf{X}^T(\hat{\mathbf{y}}-\mathbf{y})
+          \]
+        </div>
+        <p>The factor \((1-\frac{\alpha\lambda}{m}) &lt; 1\) is "weight decay" — it shrinks \(\boldsymbol{\theta}\) each
+            step before applying the gradient update. Ridge never drives weights exactly to zero.</p>
+
+            <p><strong>Bayesian interpretation:</strong> Ridge is MAP estimation with a Gaussian prior \(\theta_j \sim
+              \mathcal{N}(0, 1/\lambda)\). The regularization penalty is the negative log of this prior.</p>
+      </div>
+
+      <div class="subsection">
+        <h3 class="terra">Lasso Regression (L1)</h3>
+
+        <div class="math-block terra">
+          <span class="label">Lasso Loss</span>
+          \[
+          J_{\text{Lasso}}(\boldsymbol{\theta}) = \frac{1}{2m}\|\mathbf{X}\boldsymbol{\theta}-\mathbf{y}\|^2 +
+          \lambda\sum_{j=1}^{n}|\theta_j|
+          \]
+        </div>
+
+        <p>Lasso's \(|\theta_j|\) is <em>not differentiable at zero</em>. The gradient uses the
+          <strong>subgradient</strong>:
+        </p>
+        <div class="math-block terra">
+          \[
+          \frac{\partial J_{\text{Lasso}}}{\partial\theta_j} = \frac{1}{m}[\mathbf{X}^T(\hat{\mathbf{y}}-\mathbf{y})]_j
+          + \lambda \cdot \text{sign}(\theta_j)
+          \]
+        </div>
+
+        <p>Lasso's key property: it drives many weights <em>exactly to zero</em>, performing implicit feature selection.
+          Geometrically, the L1 ball has corners at the coordinate axes — gradient descent paths tend to land exactly at
+          corners, where some \(\theta_j = 0\).</p>
+
+        <p><strong>Bayesian interpretation:</strong> MAP estimation with a Laplace prior \(\theta_j \sim
+          \text{Laplace}(0, 1/\lambda)\).</p>
+      </div>
+
+      <div class="subsection">
+        <h3 class="plum">Elastic Net (Ridge + Lasso)</h3>
+
+        <div class="math-block plum">
+          <span class="label">Elastic Net Loss</span>
+          \[
+          J_{\text{EN}}(\boldsymbol{\theta}) = \frac{1}{2m}\|\mathbf{X}\boldsymbol{\theta}-\mathbf{y}\|^2 +
+          \lambda_1\sum_j|\theta_j| + \frac{\lambda_2}{2}\sum_j\theta_j^2
+          \]
+        </div>
+
+        <p>Combines L1 sparsity with L2 stability. When features are correlated, Lasso arbitrarily picks one; Elastic
+          Net tends to group correlated features together.</p>
+      </div>
+
+      <div class="figure">
+        <svg viewBox="0 0 520 240" xmlns="http://www.w3.org/2000/svg" style="max-width:520px;">
+          <rect width="520" height="240" fill="#faf7f2" />
+
+          <!-- Ridge: L2 ball (circle) -->
+          <text x="130" y="22" text-anchor="middle" font-family="Fira Code" font-size="11" fill="#2d6a4f"
+            letter-spacing="0.1em">RIDGE (L2)</text>
+          <ellipse cx="130" cy="130" rx="80" ry="80" fill="rgba(45,106,79,0.07)" stroke="#2d6a4f" stroke-width="1.8" />
+          <!-- Ellipse contours -->
+          <ellipse cx="180" cy="90" rx="110" ry="70" fill="none" stroke="#3b4fa8" stroke-width="1"
+            stroke-dasharray="4,3" opacity="0.5" />
+          <ellipse cx="180" cy="90" rx="80" ry="50" fill="none" stroke="#3b4fa8" stroke-width="1" stroke-dasharray="4,3"
+            opacity="0.5" />
+          <ellipse cx="180" cy="90" rx="50" ry="30" fill="none" stroke="#3b4fa8" stroke-width="1" stroke-dasharray="4,3"
+            opacity="0.5" />
+          <!-- Touch point Ridge -->
+          <circle cx="162" cy="113" r="5" fill="#c47a1e" />
+          <text x="168" y="108" font-family="Fira Code" font-size="10" fill="#c47a1e">θ̂</text>
+          <text x="50" y="228" font-family="Outfit" font-size="12" fill="#2d6a4f" font-style="italic"
+            text-anchor="middle">small, non-zero weights</text>
+
+          <!-- Lasso: L1 ball (diamond) -->
+          <text x="390" y="22" text-anchor="middle" font-family="Fira Code" font-size="11" fill="#b54a2a"
+            letter-spacing="0.1em">LASSO (L1)</text>
+          <polygon points="390,50 470,130 390,210 310,130" fill="rgba(181,74,42,0.07)" stroke="#b54a2a"
+            stroke-width="1.8" />
+          <!-- Ellipse contours -->
+          <ellipse cx="440" cy="90" rx="110" ry="70" fill="none" stroke="#3b4fa8" stroke-width="1"
+            stroke-dasharray="4,3" opacity="0.5" />
+          <ellipse cx="440" cy="90" rx="80" ry="50" fill="none" stroke="#3b4fa8" stroke-width="1" stroke-dasharray="4,3"
+            opacity="0.5" />
+          <ellipse cx="440" cy="90" rx="50" ry="30" fill="none" stroke="#3b4fa8" stroke-width="1" stroke-dasharray="4,3"
+            opacity="0.5" />
+          <!-- Touch point Lasso — at a corner, so one weight = 0 -->
+          <circle cx="390" cy="50" r="5" fill="#c47a1e" />
+          <text x="396" y="46" font-family="Fira Code" font-size="10" fill="#c47a1e">θ̂</text>
+          <text x="390" y="228" font-family="Outfit" font-size="12" fill="#b54a2a" font-style="italic"
+            text-anchor="middle">sparse: some θⱼ = 0 exactly</text>
+
+          <!-- Axis labels -->
+          <text x="210" y="132" font-family="Fira Code" font-size="10" fill="#1c1610">θ₁</text>
+          <text x="130" y="52" font-family="Fira Code" font-size="10" fill="#1c1610">θ₂</text>
+          <text x="470" y="132" font-family="Fira Code" font-size="10" fill="#1c1610">θ₁</text>
+          <text x="390" y="52" font-family="Fira Code" font-size="10" fill="#1c1610">θ₂</text>
+        </svg>
+        <div class="figure-cap">Fig 3. L2 (circle) vs L1 (diamond) constraint regions. The contours of the MSE loss
+          first touch the constraint region at the optimal θ̂. L1 corners lie on coordinate axes — Lasso naturally
+          produces sparse solutions.</div>
+      </div>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Method</th>
+            <th>Penalty</th>
+            <th>Effect on Weights</th>
+            <th>Feature Selection</th>
+            <th>Closed Form?</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>OLS</td>
+            <td>None</td>
+            <td>Unconstrained</td>
+            <td>No</td>
+            <td>Yes</td>
+          </tr>
+          <tr>
+            <td>Ridge</td>
+            <td>\(\lambda\|\boldsymbol{\theta}\|_2^2\)</td>
+            <td>Shrinks, never zero</td>
+            <td>No</td>
+            <td>Yes</td>
+          </tr>
+          <tr>
+            <td>Lasso</td>
+            <td>\(\lambda\|\boldsymbol{\theta}\|_1\)</td>
+            <td>Drives to exactly zero</td>
+            <td>Yes</td>
+            <td>No (subgradient)</td>
+          </tr>
+          <tr>
+            <td>Elastic Net</td>
+            <td>\(\lambda_1\|\boldsymbol{\theta}\|_1 + \lambda_2\|\boldsymbol{\theta}\|_2^2\)</td>
+            <td>Sparse + stable</td>
+            <td>Yes (grouped)</td>
+            <td>No</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- ══════════════════════════════════════════════════════ -->
+    <div class="section" id="s13">
+      <div class="section-header">
+        <span class="section-num">§13</span>
+        <h2>Assumptions and Diagnostics</h2>
+      </div>
+
+      <p>OLS is only "best" (Gauss-Markov) when its assumptions hold. Violating them doesn't mean the estimates are
+        wrong — but their statistical properties change.</p>
+
+      <div class="assump-grid">
+        <div class="assump-card">
+          <div class="assump-name" style="color:var(--forest);">1. Linearity</div>
+          <p>The true relationship is \(y = \boldsymbol{\theta}^T\mathbf{x} + \epsilon\).</p>
+          <p class="violation">Violation: Residual vs fitted plot shows systematic curve. Fix: add polynomial features.
+          </p>
+        </div>
+        <div class="assump-card">
+          <div class="assump-name" style="color:var(--forest);">2. Zero-Mean Noise</div>
+          <p>\(\mathbb{E}[\epsilon | \mathbf{X}] = 0\). Noise doesn't systematically push in one direction.</p>
+          <p class="violation">Violation: Biased predictions. Caused by omitting a relevant variable (omitted variable
+            bias).</p>
+        </div>
+        <div class="assump-card">
+          <div class="assump-name" style="color:var(--forest);">3. Homoscedasticity</div>
+          <p>Constant variance: \(\text{Var}(\epsilon_i) = \sigma^2\) for all \(i\).</p>
+          <p class="violation">Violation (heteroscedasticity): OLS still unbiased but no longer BLUE. Use WLS or robust
+            SE.</p>
+        </div>
+        <div class="assump-card">
+          <div class="assump-name" style="color:var(--forest);">4. Independence</div>
+          <p>Errors \(\epsilon_i\) and \(\epsilon_j\) are uncorrelated for \(i \neq j\).</p>
+          <p class="violation">Violation (autocorrelation): Common in time series. Use GLS or include lagged features.
+          </p>
+        </div>
+        <div class="assump-card">
+          <div class="assump-name" style="color:var(--forest);">5. No Perfect Multicollinearity</div>
+          <p>\(\mathbf{X}^T\mathbf{X}\) is invertible — no feature is a linear combo of others.</p>
+          <p class="violation">Violation: Coefficients blow up, are unstable. Use Ridge regularization or VIF analysis.
+          </p>
+        </div>
+        <div class="assump-card">
+          <div class="assump-name" style="color:var(--forest);">6. Normality of Errors</div>
+          <p>\(\epsilon \sim \mathcal{N}(0,\sigma^2)\). Required for hypothesis tests and confidence intervals.</p>
+          <p class="violation">Violation: OLS still consistent. But t-tests and F-tests are invalid. Use robust
+            inference.</p>
+        </div>
+      </div>
+
+      <div class="callout amber">
+        <div class="callout-title">💡 Residual Plots — Your Primary Diagnostic</div>
+        <p>Plot residuals \(e_i\) vs fitted values \(\hat{y}_i\). In a well-specified model: residuals should be
+          randomly scattered around zero with no pattern. A U-shape → nonlinearity (add polynomial features). Funnel
+          shape → heteroscedasticity. Systematic structure → omitted variable. QQ-plot of residuals tests normality.</p>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════════════════ -->
+    <div class="section" id="s14">
+      <div class="section-header">
+        <span class="section-num">§14</span>
+        <h2>Evaluation Metrics</h2>
+      </div>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Metric</th>
+            <th>Formula</th>
+            <th>Range</th>
+            <th>Interpretation</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>MSE</strong></td>
+            <td>\(\frac{1}{m}\sum(y_i - \hat{y}_i)^2\)</td>
+            <td>\([0, \infty)\)</td>
+            <td>Mean squared error. Same units as \(y^2\). Penalizes outliers heavily.</td>
+          </tr>
+          <tr>
+            <td><strong>RMSE</strong></td>
+            <td>\(\sqrt{\text{MSE}}\)</td>
+            <td>\([0, \infty)\)</td>
+            <td>Same units as \(y\) — interpretable as "average error magnitude".</td>
+          </tr>
+          <tr>
+            <td><strong>MAE</strong></td>
+            <td>\(\frac{1}{m}\sum|y_i - \hat{y}_i|\)</td>
+            <td>\([0, \infty)\)</td>
+            <td>More robust to outliers. Always \(\leq\) RMSE.</td>
+          </tr>
+          <tr>
+            <td><strong>R²</strong></td>
+            <td>\(1 - \frac{\text{SS}_{\text{res}}}{\text{SS}_{\text{tot}}}\)</td>
+            <td>\((-\infty, 1]\)</td>
+            <td>Fraction of variance explained. R² = 1: perfect. R² = 0: as good as predicting the mean. Negative: worse
+              than the mean.</td>
+          </tr>
+          <tr>
+            <td><strong>Adjusted R²</strong></td>
+            <td>\(1 - (1-R^2)\frac{m-1}{m-n-1}\)</td>
+            <td>\((-\infty, 1]\)</td>
+            <td>Penalizes adding useless features. R² always increases with more features; adjusted R² can decrease.
+            </td>
+          </tr>
+          <tr>
+            <td><strong>MAPE</strong></td>
+            <td>\(\frac{100}{m}\sum\frac{|y_i-\hat{y}_i|}{|y_i|}\)</td>
+            <td>\([0, \infty)\%\)</td>
+            <td>Relative error in %. Useful when scale varies across data.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="subsection">
+        <h3 class="indigo">R² — Deep Dive</h3>
+
+        <div class="math-block indigo">
+          <span class="label">R² Decomposition</span>
+          \[
+          \text{SS}_{\text{tot}} = \sum_i(y_i - \bar{y})^2, \quad
+          \text{SS}_{\text{res}} = \sum_i(y_i - \hat{y}_i)^2, \quad
+          R^2 = 1 - \frac{\text{SS}_{\text{res}}}{\text{SS}_{\text{tot}}}
+          \]
+        </div>
+
+        <p>For OLS: \(\text{SS}_{\text{tot}} = \text{SS}_{\text{reg}} + \text{SS}_{\text{res}}\) (total variance =
+          explained + unexplained). So \(R^2 = \frac{\text{SS}_{\text{reg}}}{\text{SS}_{\text{tot}}}\) — the fraction of
+          total variance that the model explains.</p>
+
+        <div class="callout terra">
+          <div class="callout-title">⚠ R² Caveats</div>
+          <p>R² increases monotonically as you add features, even useless ones — never use it to compare models with
+            different numbers of features. Use adjusted R² or information criteria (AIC/BIC) instead. Also, a high R²
+            does not mean the model is well-specified — it can be high even when assumptions are violated.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════════════════ -->
+    <div class="section" id="s15">
+      <div class="section-header">
+        <span class="section-num">§15</span>
+        <h2>Normal Equation vs Gradient Descent</h2>
+      </div>
+
+      <table>
+        <thead>
+          <tr>
+            <th></th>
+            <th>Normal Equation</th>
+            <th>Gradient Descent</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Formula</strong></td>
+            <td>\((\mathbf{X}^T\mathbf{X})^{-1}\mathbf{X}^T\mathbf{y}\)</td>
+            <td>\(\boldsymbol{\theta} \leftarrow \boldsymbol{\theta} -
+              \frac{\alpha}{m}\mathbf{X}^T(\hat{\mathbf{y}}-\mathbf{y})\)</td>
+          </tr>
+          <tr>
+            <td><strong>Solution quality</strong></td>
+            <td>Exact global optimum</td>
+            <td>Approximate — converges to optimum</td>
+          </tr>
+          <tr>
+            <td><strong>Computational cost</strong></td>
+            <td>\(O(n^3)\) for matrix inversion</td>
+            <td>\(O(kn)\) total, \(k\) = iterations</td>
+          </tr>
+          <tr>
+            <td><strong>Works for large \(n\)?</strong></td>
+            <td>No: \(n &gt; 10^4\) becomes slow/infeasible</td>
+            <td>Yes: scales to billions of parameters</td>
+          </tr>
+          <tr>
+            <td><strong>Learning rate?</strong></td>
+            <td>None needed</td>
+            <td>Must be chosen carefully</td>
+          </tr>
+          <tr>
+            <td><strong>Feature scaling?</strong></td>
+            <td>Not needed for correctness</td>
+            <td>Essential for fast convergence</td>
+          </tr>
+          <tr>
+            <td><strong>Non-linear models?</strong></td>
+            <td>No — only for linear regression</td>
+            <td>Yes — works for any differentiable loss</td>
+          </tr>
+          <tr>
+            <td><strong>Multicollinearity?</strong></td>
+            <td>Fails (singular matrix)</td>
+            <td>Converges slowly, but still works</td>
+          </tr>
+          <tr>
+            <td><strong>Regularization</strong></td>
+            <td>Ridge has closed form: \((\mathbf{X}^T\mathbf{X}+\lambda\mathbf{I})^{-1}\mathbf{X}^T\mathbf{y}\)</td>
+            <td>Add \(\frac{\lambda}{m}\boldsymbol{\theta}\) to gradient</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="callout indigo">
+        <div class="callout-title">💡 Practical Rule</div>
+        <p>Use the Normal Equation when: \(n \leq 10^4\) features and you have a GPU or fast linear algebra library. Use
+          Gradient Descent when: large \(n\), online/streaming data, or for any model beyond linear regression
+          (logistic, neural networks). For your house price prediction project — small \(n\) — the Normal Equation gives
+          the exact answer instantly. For training your ViT chest X-ray classifier — billions of parameters — gradient
+          descent (Adam) is the only option.</p>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════════════════ -->
+    <div class="section" id="s16">
+      <div class="section-header">
+        <span class="section-num">§16</span>
+        <h2>The Full Mental Model — Everything Together</h2>
+      </div>
+
+      <div class="figure">
+        <svg viewBox="0 0 660 540" xmlns="http://www.w3.org/2000/svg" style="max-width:660px;">
+          <rect width="660" height="540" fill="#1c1610" />
+          <text x="330" y="28" text-anchor="middle" font-family="Fira Code" font-size="10" fill="#4a3a28"
+            letter-spacing="0.22em">LINEAR REGRESSION — COMPLETE MAP</text>
+
+          <!-- The Model box -->
+          <rect x="220" y="44" width="220" height="58" rx="3" fill="#1f1a12" stroke="#c47a1e" stroke-width="2" />
+          <text x="330" y="66" text-anchor="middle" font-family="Fira Code" font-size="11" fill="#c47a1e"
+            font-weight="700">THE MODEL</text>
+          <text x="330" y="84" text-anchor="middle" font-family="Fira Code" font-size="10" fill="#7a6a54">ŷ = Xθ
+            &nbsp;&nbsp; h(x) = θᵀx</text>
+
+          <!-- Justify via MLE -->
+          <rect x="20" y="140" width="175" height="54" rx="3" fill="#1f1a12" stroke="#7b3f6e" stroke-width="1.5" />
+          <text x="107" y="160" text-anchor="middle" font-family="Fira Code" font-size="10" fill="#7b3f6e"
+            font-weight="700">MLE Justification</text>
+          <text x="107" y="176" text-anchor="middle" font-family="Fira Code" font-size="9" fill="#4a3a5a">ε~N(0,σ²) →
+            use MSE</text>
+          <text x="107" y="189" text-anchor="middle" font-family="Fira Code" font-size="9" fill="#4a3a5a">Gaussian noise
+            = MSE loss</text>
+
+          <!-- MSE Loss -->
+          <rect x="220" y="140" width="220" height="54" rx="3" fill="#1f1a12" stroke="#c47a1e" stroke-width="1.5" />
+          <text x="330" y="160" text-anchor="middle" font-family="Fira Code" font-size="10" fill="#c47a1e"
+            font-weight="700">MSE LOSS</text>
+          <text x="330" y="176" text-anchor="middle" font-family="Fira Code" font-size="10" fill="#7a6a54">J = (1/2m)‖Xθ
+            − y‖²</text>
+          <text x="330" y="190" text-anchor="middle" font-family="Fira Code" font-size="9" fill="#4a3a28">Convex
+            quadratic in θ</text>
+
+          <!-- Geometric insight -->
+          <rect x="460" y="140" width="180" height="54" rx="3" fill="#1f1a12" stroke="#2d6a4f" stroke-width="1.5" />
+          <text x="550" y="160" text-anchor="middle" font-family="Fira Code" font-size="10" fill="#2d6a4f"
+            font-weight="700">GEOMETRY</text>
+          <text x="550" y="176" text-anchor="middle" font-family="Fira Code" font-size="9" fill="#3a5a48">ŷ = proj of y
+            onto Col(X)</text>
+          <text x="550" y="190" text-anchor="middle" font-family="Fira Code" font-size="9" fill="#3a5a48">e ⊥
+            Col(X)</text>
+
+          <!-- Arrows to loss -->
+          <line x1="330" y1="102" x2="330" y2="138" stroke="#c47a1e" stroke-width="1.5" marker-end="url(#arr-t)" />
+          <defs>
+            <marker id="arr-top" markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto">
+              <path d="M0,0 L0,5 L7,2.5 z" fill="#c47a1e" />
+            </marker>
+            <marker id="arr-f2" markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto">
+              <path d="M0,0 L0,5 L7,2.5 z" fill="#2d6a4f" />
+            </marker>
+            <marker id="arr-p" markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto">
+              <path d="M0,0 L0,5 L7,2.5 z" fill="#7b3f6e" />
+            </marker>
+            <marker id="arr-i2" markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto">
+              <path d="M0,0 L0,5 L7,2.5 z" fill="#3b4fa8" />
+            </marker>
+          </defs>
+
+          <!-- SOLUTION BOX with two paths -->
+          <rect x="200" y="238" width="260" height="58" rx="3" fill="#1f1a12" stroke="#c47a1e" stroke-width="2" />
+          <text x="330" y="262" text-anchor="middle" font-family="Fira Code" font-size="11" fill="#e8c870"
+            font-weight="700">MINIMIZATION</text>
+          <text x="250" y="282" font-family="Fira Code" font-size="9" fill="#2d6a4f">Normal Eq.</text>
+          <text x="370" y="282" font-family="Fira Code" font-size="9" fill="#3b4fa8">Gradient Desc.</text>
+
+          <line x1="330" y1="194" x2="330" y2="236" stroke="#c47a1e" stroke-width="1.5" marker-end="url(#arr-t)" />
+
+          <!-- Normal Equation -->
+          <rect x="40" y="340" width="200" height="58" rx="3" fill="#1f1a12" stroke="#2d6a4f" stroke-width="1.5" />
+          <text x="140" y="362" text-anchor="middle" font-family="Fira Code" font-size="10" fill="#2d6a4f"
+            font-weight="700">NORMAL EQUATION</text>
+          <text x="140" y="380" text-anchor="middle" font-family="Fira Code" font-size="10" fill="#4a7a60">θ̂ = (XᵀX)⁻¹
+            Xᵀy</text>
+          <text x="140" y="392" text-anchor="middle" font-family="Fira Code" font-size="9" fill="#2d4a38">exact · O(n³)
+            · small n</text>
+
+          <!-- GD -->
+          <rect x="420" y="340" width="200" height="58" rx="3" fill="#1f1a12" stroke="#3b4fa8" stroke-width="1.5" />
+          <text x="520" y="362" text-anchor="middle" font-family="Fira Code" font-size="10" fill="#3b4fa8"
+            font-weight="700">GRADIENT DESCENT</text>
+          <text x="520" y="380" text-anchor="middle" font-family="Fira Code" font-size="10" fill="#6070a8">θ ← θ −
+            (α/m)Xᵀ(ŷ−y)</text>
+          <text x="520" y="392" text-anchor="middle" font-family="Fira Code" font-size="9" fill="#2a3460">iterative ·
+            scales · all models</text>
+
+          <line x1="280" y1="296" x2="175" y2="338" stroke="#2d6a4f" stroke-width="1.2" stroke-dasharray="4,3"
+            marker-end="url(#arr-f2)" />
+          <line x1="380" y1="296" x2="486" y2="338" stroke="#3b4fa8" stroke-width="1.2" stroke-dasharray="4,3"
+            marker-end="url(#arr-i2)" />
+
+          <!-- Properties / Extensions -->
+          <rect x="20" y="440" width="180" height="80" rx="3" fill="#1f1a12" stroke="#c47a1e" stroke-width="1" />
+          <text x="110" y="458" text-anchor="middle" font-family="Fira Code" font-size="10"
+            fill="#c47a1e">PROPERTIES</text>
+          <text x="30" y="476" font-family="Fira Code" font-size="9" fill="#5a5040">BLUE (Gauss-Markov)</text>
+          <text x="30" y="492" font-family="Fira Code" font-size="9" fill="#5a5040">E[θ̂] = θ* (unbiased)</text>
+          <text x="30" y="508" font-family="Fira Code" font-size="9" fill="#5a5040">Var = σ²(XᵀX)⁻¹</text>
+
+          <rect x="220" y="440" width="220" height="80" rx="3" fill="#1f1a12" stroke="#b54a2a" stroke-width="1" />
+          <text x="330" y="458" text-anchor="middle" font-family="Fira Code" font-size="10"
+            fill="#b54a2a">REGULARIZATION</text>
+          <text x="230" y="476" font-family="Fira Code" font-size="9" fill="#5a5040">Ridge: (XᵀX + λI)⁻¹Xᵀy</text>
+          <text x="230" y="492" font-family="Fira Code" font-size="9" fill="#5a5040">Lasso: sparse weights</text>
+          <text x="230" y="508" font-family="Fira Code" font-size="9" fill="#5a5040">Elastic Net: L1 + L2</text>
+
+          <rect x="460" y="440" width="180" height="80" rx="3" fill="#1f1a12" stroke="#7b3f6e" stroke-width="1" />
+          <text x="550" y="458" text-anchor="middle" font-family="Fira Code" font-size="10"
+            fill="#7b3f6e">EXTENSIONS</text>
+          <text x="470" y="476" font-family="Fira Code" font-size="9" fill="#5a5040">Polynomial features φ(x)</text>
+          <text x="470" y="492" font-family="Fira Code" font-size="9" fill="#5a5040">Bias–Variance tradeoff</text>
+          <text x="470" y="508" font-family="Fira Code" font-size="9" fill="#5a5040">Foundation of logistic reg.</text>
+        </svg>
+        <div class="figure-cap" style="color:#8a7a65;">Fig 4. Complete map of linear regression — from model through MLE
+          justification, geometric interpretation, both solution methods, statistical properties, and extensions.</div>
+      </div>
+
+      <p style="margin-top:36px;">The unified story, told once more in plain language:</p>
+
+      <ol style="padding-left: 24px; line-height: 2.4; font-size: 16px;">
+        <li><strong>Model:</strong> Assume \(y = \boldsymbol{\theta}^T\mathbf{x} + \epsilon\) — the world is
+          approximately linear in the features. Represent all \(m\) examples at once with the design matrix
+          \(\mathbf{X}\).</li>
+        <li><strong>Loss — MLE tells us:</strong> If \(\epsilon \sim \mathcal{N}(0,\sigma^2)\), Maximum Likelihood
+          Estimation is exactly equivalent to minimizing MSE. The loss function is not a heuristic — it encodes a
+          probabilistic assumption about the noise.</li>
+        <li><strong>Geometry:</strong> Minimizing MSE = finding the orthogonal projection of \(\mathbf{y}\) onto the
+          column space of \(\mathbf{X}\). The residual is orthogonal to every predictor — this is the Normal Equation.
+        </li>
+        <li><strong>Closed-form solution:</strong> \(\hat{\boldsymbol{\theta}} =
+          (\mathbf{X}^T\mathbf{X})^{-1}\mathbf{X}^T\mathbf{y}\) — exact, in one shot. Costs \(O(n^3)\).</li>
+        <li><strong>Iterative solution:</strong> \(\boldsymbol{\theta} \leftarrow \boldsymbol{\theta} -
+          \frac{\alpha}{m}\mathbf{X}^T(\hat{\mathbf{y}}-\mathbf{y})\) — scales to any \(n\), required for all nonlinear
+          models.</li>
+        <li><strong>Statistical properties:</strong> OLS is BLUE (Gauss-Markov). Unbiased with variance
+          \(\sigma^2(\mathbf{X}^T\mathbf{X})^{-1}\). Multicollinearity inflates this variance.</li>
+        <li><strong>Regularization:</strong> Ridge (L2) shrinks weights, improves conditioning, has closed form. Lasso
+          (L1) drives weights to zero — implicit feature selection. Both trade bias for variance — often improving test
+          error over unregularized OLS.</li>
+        <li><strong>Extensions:</strong> Polynomial features make the model nonlinear in \(\mathbf{x}\) while keeping it
+          linear in \(\boldsymbol{\theta}\) — the entire framework applies unchanged. Everything in logistic regression
+          (sigmoid, cross-entropy) builds directly on this linear foundation.</li>
+      </ol>
+
+      <div class="callout forest" style="margin-top:36px;">
+        <div class="callout-title">★ The Unifying Thread Across Your ML Journey</div>
+        <p>Linear regression is not a standalone algorithm — it is the <em>atom</em> from which the rest of ML is built.
+          Logistic regression replaces the identity output with a sigmoid; neural networks stack many linear layers with
+          nonlinear activations; SVMs find the linear separator with maximum margin; PCA finds the linear subspace of
+          maximum variance. Every model you ever trained — contains linear regression at its core. The design matrix,
+          the gradient \(\mathbf{X}^T(\hat{\mathbf{y}}-\mathbf{y})\), the bias-variance tradeoff: these recur
+          everywhere.</p>
+      </div>
+    </div>
+
+  </div><!-- /content -->
+
+  <!-- FOOTER -->
+  <div
+    style="background:var(--ink);color:#3d3126;padding:28px 48px;font-family:'Fira Code',monospace;font-size:10px;letter-spacing:0.1em;">
+    <div style="max-width:960px;margin:0 auto;display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;">
+      <span>LINEAR REGRESSION — MATHEMATICAL FOUNDATIONS</span>
+      <span>MSE · NORMAL EQ · MLE · GAUSS-MARKOV · GRADIENT DESCENT · RIDGE · LASSO · R²</span>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js"></script>
+  <canvas id="bg-canvas"></canvas>
+  <script>
+    // Canvas math particle animation
+    const canvas = document.getElementById('bg-canvas');
+    if (canvas) {
+      const ctx = canvas.getContext('2d');
+      let width, height;
+      function resize() {
+        width = canvas.width = window.innerWidth;
+        height = canvas.height = window.innerHeight;
+      }
+      window.addEventListener('resize', resize);
+      resize();
+
+      const mathSymbols = ['∫', 'Σ', '∇', '∂', '∞', '∆', 'θ', 'λ', 'β', 'σ', 'π', 'μ', '≈'];
+      const particles = [];
+
+      for (let i = 0; i < 40; i++) {
+        particles.push({
+          x: Math.random() * width,
+          y: Math.random() * height,
+          symbol: mathSymbols[Math.floor(Math.random() * mathSymbols.length)],
+          size: Math.random() * 24 + 12,
+          speedX: (Math.random() - 0.5) * 0.4,
+          speedY: (Math.random() - 0.5) * 0.4,
+          opacity: Math.random() * 0.25 + 0.05,
+          rotation: Math.random() * Math.PI * 2,
+          rotSpeed: (Math.random() - 0.5) * 0.01
+        });
+      }
+
+      function animate() {
+        ctx.clearRect(0, 0, width, height);
+        particles.forEach(p => {
+          p.x += p.speedX; p.y += p.speedY; p.rotation += p.rotSpeed;
+          if (p.x > width + 50) p.x = -50; if (p.x < -50) p.x = width + 50;
+          if (p.y > height + 50) p.y = -50; if (p.y < -50) p.y = height + 50;
+
+          ctx.save();
+          ctx.translate(p.x, p.y); ctx.rotate(p.rotation);
+          ctx.fillStyle = `rgba(0, 200, 255, ${p.opacity})`;
+          ctx.font = `italic ${p.size}px "Times New Roman", serif`;
+          ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+          ctx.fillText(p.symbol, 0, 0);
+          ctx.restore();
+        });
+        requestAnimationFrame(animate);
+      }
+      animate();
+    }
+
+    // Scroll Animations using Intersection Observer
+    document.addEventListener('DOMContentLoaded', () => {
+      const sections = document.querySelectorAll('.section');
+      const observer = new IntersectionObserver((entries, obs) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            obs.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.03, rootMargin: "0px 0px -50px 0px" });
+
+      sections.forEach(sec => observer.observe(sec));
+    });
+  </script>
+</body>
+
+</html>

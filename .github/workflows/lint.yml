@@ -19,11 +19,11 @@ jobs:
         with:
           node-with-npm: true
 
-      - name: Install Linters
-        run: npm install -g htmlhint stylelint stylelint-config-standard
+      - name: Install Dependencies
+        run: npm install
 
       - name: Lint HTML
-        run: htmlhint "**/*.html"
+        run: npx htmlhint "**/*.html"
 
       - name: Lint CSS
-        run: stylelint "**/*.css" --config stylelint-config-standard
+        run: npx stylelint "**/*.css"

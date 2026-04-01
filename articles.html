@@ -4,16 +4,22 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Shahid Ul Islam | ML Articles</title>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet" />
+  <title>Deep Dives - Shahid Ul Islam</title>
+
+  <!-- Fonts & Icons -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+
+  <!-- Styling -->
   <link rel="stylesheet" href="css/variables.css" />
   <link rel="stylesheet" href="css/animations.css" />
   <link rel="stylesheet" href="css/base.css" />
   <link rel="stylesheet" href="css/navigation.css" />
-  <link rel="stylesheet" href="css/projects.css" />
   <link rel="stylesheet" href="css/articles.css" />
   <link rel="stylesheet" href="css/footer.css" />
+
+  <!-- Scripts -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
   <script defer src="js/generative-bg.js"></script>
@@ -22,6 +28,7 @@
 </head>
 
 <body id="top">
+
   <!-- Navigation -->
   <div class="top-bar">
     <div class="logo">
@@ -30,12 +37,12 @@
     </div>
     <nav class="nav-container">
       <ul class="nav-links">
-        <li><a href="index.html" class="nav-link"><span>.</span> Home</a></li>
-        <li><a href="about.html" class="nav-link"><span>.</span> About</a></li>
-        <li><a href="skills.html" class="nav-link"><span>.</span> Skills</a></li>
-        <li><a href="projects.html" class="nav-link"><span>.</span> Projects</a></li>
-        <li><a href="contact.html" class="nav-link"><span>.</span> Contact</a></li>
-        <li><a href="articles.html" class="nav-link"><span>.</span> Articles</a></li>
+        <li><a href="index.html" class="nav-link">Home</a></li>
+        <li><a href="about.html" class="nav-link">About</a></li>
+        <li><a href="skills.html" class="nav-link">Skills</a></li>
+        <li><a href="projects.html" class="nav-link">Projects</a></li>
+        <li><a href="contact.html" class="nav-link">Contact</a></li>
+        <li><a href="articles.html" class="nav-link active">Articles</a></li>
       </ul>
       <div class="menu-toggle">
         <div class="hamburger"></div>
@@ -46,119 +53,104 @@
   <!-- Animated Background -->
   <div class="bg-animation"></div>
 
+  <!-- Main Content -->
   <main class="hub-content">
-    <!-- TOP BAR -->
-    <div class="hub-topbar">
-      <div class="breadcrumb">Home / <span class="highlight-text">ML Hub</span></div>
-      <div class="top-actions">
-        <div class="search-wrapper">
-          <i class="fas fa-search"></i>
-          <input type="text" id="article-search" placeholder="Search math, models..." />
-        </div>
+
+    <!-- Cinematic Header -->
+    <header class="hub-header section-header-premium">
+      <div class="header-watermark">RESEARCH</div>
+      <h1 class="hub-title-main">
+        <span class="title-part-1">Mathematical</span>
+        <span class="title-part-2">Foundations</span>
+      </h1>
+      <div class="header-separator-line"></div>
+      <p class="hub-tagline">Deep Dives into Machine Learning & Optimization</p>
+    </header>
+
+    <!-- Search & Filters -->
+    <div class="hub-actions-bar">
+      <div class="search-container">
+        <i class="fas fa-search"></i>
+        <input type="text" id="article-search" placeholder="Search calculus, models, etc..." />
+      </div>
+      <div class="filter-pills">
+        <button class="pill active" data-filter="all">All Disciplines</button>
+        <button class="pill" data-filter="optimization">Optimization</button>
+        <button class="pill" data-filter="models">Models</button>
       </div>
     </div>
 
-    <!-- HERO -->
-    <section class="hub-hero interactive-hero">
-      <div class="hero-content">
-        <div class="hero-badge"><i class="fas fa-infinity"></i> Mathematics First</div>
-        <h1>Inside Machine Learning: <span>A Mathematical Journey</span></h1>
-        <p>
-          Master the mathematics behind the magic. Explore visually intuitive and mathematically rigorous deep dives
-          into core ML concepts.
-        </p>
-        <div class="hero-stats">
-          <div class="hero-stat"><strong>∫</strong> Calculus</div>
-          <div class="hero-stat"><strong>Σ</strong> Linear Alg</div>
-          <div class="hero-stat"><strong>∇</strong> Optimization</div>
+    <!-- Article Grid -->
+    <section class="articles-grid" id="articles-container">
+      
+      <!-- Article 1 -->
+      <a href="articles/gradient-descent.html" class="article-card" data-category="optimization">
+        <div class="card-glass-glow"></div>
+        <div class="card-top">
+          <span class="category-tag">Optimization</span>
+          <span class="math-icon">∇</span>
         </div>
-      </div>
-    </section>
-
-    <!-- ARTICLES GRID -->
-    <section class="learning-section">
-      <div class="section-header-modern">
-        <h2 class="section-title">Published Articles</h2>
-        <div class="filter-pills">
-          <button class="pill active" data-filter="all">All</button>
-          <button class="pill" data-filter="optimization">Optimization</button>
-          <button class="pill" data-filter="models">Models</button>
+        <div class="card-body">
+          <h3>Gradient Descent</h3>
+          <p>The workhorse of machine learning optimization. Understand partial derivatives, learning rates, and convergence behavior from first principles.</p>
         </div>
-      </div>
+        <div class="card-bottom">
+          <span class="read-time"><i class="far fa-clock"></i> 10 min read</span>
+          <span class="read-more">Analyze <i class="fas fa-chevron-right"></i></span>
+        </div>
+      </a>
 
-      <div class="articles-grid" id="articles-container">
-        <!-- Article 1 -->
-        <a href="articles/gradient-descent.html" class="article-card" data-category="optimization">
-          <div class="card-glow"></div>
-          <div class="card-inner">
-            <div class="card-top">
-              <span class="category-tag"><i class="fas fa-chart-line"></i> Optimization</span>
-              <span class="math-icon">∇</span>
-            </div>
-            <h3>Gradient Descent</h3>
-            <p>The workhorse of machine learning optimization. Understand the partial derivatives, learning rates, and
-              convergence behavior mathematically.</p>
-            <div class="card-bottom">
-              <span class="read-time"><i class="far fa-clock"></i> 10 min read</span>
-              <span class="read-more">Read Article &rarr;</span>
-            </div>
-          </div>
-        </a>
+      <!-- Article 2 -->
+      <a href="articles/lagrange-multipliers.html" class="article-card" data-category="optimization">
+        <div class="card-glass-glow"></div>
+        <div class="card-top">
+          <span class="category-tag">Optimization</span>
+          <span class="math-icon">λ</span>
+        </div>
+        <div class="card-body">
+          <h3>Lagrange Multipliers</h3>
+          <p>Constrained optimization unlocked. A deep dive into the method of Lagrange multipliers, dual problems, and their geometric intuition.</p>
+        </div>
+        <div class="card-bottom">
+          <span class="read-time"><i class="far fa-clock"></i> 15 min read</span>
+          <span class="read-more">Analyze <i class="fas fa-chevron-right"></i></span>
+        </div>
+      </a>
 
-        <!-- Article 2 -->
-        <a href="articles/lagrange-multipliers.html" class="article-card" data-category="optimization">
-          <div class="card-glow"></div>
-          <div class="card-inner">
-            <div class="card-top">
-              <span class="category-tag"><i class="fas fa-chart-line"></i> Optimization</span>
-              <span class="math-icon">λ</span>
-            </div>
-            <h3>Lagrange Multipliers</h3>
-            <p>Constrained optimization unlocked. Dive deep into the method of Lagrange multipliers, dual problems, and
-              their geometric intuition.</p>
-            <div class="card-bottom">
-              <span class="read-time"><i class="far fa-clock"></i> 15 min read</span>
-              <span class="read-more">Read Article &rarr;</span>
-            </div>
-          </div>
-        </a>
+      <!-- Article 3 -->
+      <a href="articles/linear-regression.html" class="article-card" data-category="models">
+        <div class="card-glass-glow"></div>
+        <div class="card-top">
+          <span class="category-tag">Supervised Learning</span>
+          <span class="math-icon">β</span>
+        </div>
+        <div class="card-body">
+          <h3>Linear Regression</h3>
+          <p>The foundation of predictive modeling. Complete mathematical derivation of Ordinary Least Squares, normal equations, and assumptions.</p>
+        </div>
+        <div class="card-bottom">
+          <span class="read-time"><i class="far fa-clock"></i> 12 min read</span>
+          <span class="read-more">Analyze <i class="fas fa-chevron-right"></i></span>
+        </div>
+      </a>
 
-        <!-- Article 3 -->
-        <a href="articles/linear-regression.html" class="article-card" data-category="models">
-          <div class="card-glow"></div>
-          <div class="card-inner">
-            <div class="card-top">
-              <span class="category-tag"><i class="fas fa-brain"></i> Models</span>
-              <span class="math-icon">β</span>
-            </div>
-            <h3>Linear Regression</h3>
-            <p>The foundation of predictive modeling. A complete mathematical derivation of Ordinary Least Squares,
-              normal equations, and assumptions.</p>
-            <div class="card-bottom">
-              <span class="read-time"><i class="far fa-clock"></i> 12 min read</span>
-              <span class="read-more">Read Article &rarr;</span>
-            </div>
-          </div>
-        </a>
+      <!-- Article 4 -->
+      <a href="articles/logistic-regression.html" class="article-card" data-category="models">
+        <div class="card-glass-glow"></div>
+        <div class="card-top">
+          <span class="category-tag">Classification</span>
+          <span class="math-icon">σ</span>
+        </div>
+        <div class="card-body">
+          <h3>Logistic Regression</h3>
+          <p>Moving from continuous to categorical. Explore sigmoid functions, maximum likelihood estimation, and cross-entropy loss gradients.</p>
+        </div>
+        <div class="card-bottom">
+          <span class="read-time"><i class="far fa-clock"></i> 14 min read</span>
+          <span class="read-more">Analyze <i class="fas fa-chevron-right"></i></span>
+        </div>
+      </a>
 
-        <!-- Article 4 -->
-        <a href="articles/logistic-regression.html" class="article-card" data-category="models">
-          <div class="card-glow"></div>
-          <div class="card-inner">
-            <div class="card-top">
-              <span class="category-tag"><i class="fas fa-brain"></i> Models</span>
-              <span class="math-icon">σ</span>
-            </div>
-            <h3>Logistic Regression</h3>
-            <p>Moving from continuous to categorical. Explore the sigmoid function, maximum likelihood estimation, and
-              cross-entropy loss math.</p>
-            <div class="card-bottom">
-              <span class="read-time"><i class="far fa-clock"></i> 14 min read</span>
-              <span class="read-more">Read Article &rarr;</span>
-            </div>
-          </div>
-        </a>
-      </div>
     </section>
 
   </main>
@@ -213,6 +205,7 @@
       </div>
     </div>
   </footer>
+
 </body>
 
 </html>

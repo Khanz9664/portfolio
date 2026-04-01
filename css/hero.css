@@ -663,14 +663,12 @@
   background: linear-gradient(135deg, #00f2ff 0%, #0078a0 100%);
   background-clip: text;
   -webkit-text-fill-color: transparent;
-  background-clip: text;
 }
 
 .articles-header h2 {
   background: linear-gradient(135deg, #bd00ff 0%, #c288d7 100%);
   background-clip: text;
   -webkit-text-fill-color: transparent;
-  background-clip: text;
 }
 
 .overview-title {
@@ -683,7 +681,6 @@
   background: linear-gradient(135deg, #00f2ff 0%, #bd00ff 100%);
   background-clip: text;
   -webkit-text-fill-color: transparent;
-  background-clip: text;
 }
 
 /* Grid Layout */

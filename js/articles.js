@@ -1,4 +1,10 @@
 document.addEventListener('DOMContentLoaded', () => {
+    // 0. Register GSAP ScrollTrigger & Initialize Header Animations
+    if (typeof gsap !== 'undefined') {
+        gsap.registerPlugin(ScrollTrigger);
+        initArticlesAnimations();
+    }
+
     // 1. Math Background Canvas Animation
     const canvas = document.createElement('canvas');
     canvas.id = 'math-canvas';
@@ -126,3 +132,46 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 });
+
+/**
+ * Cinematic Reveal Animation for Articles Header
+ */
+function initArticlesAnimations() {
+    const headerTimeline = gsap.timeline({
+        scrollTrigger: {
+            trigger: '.hub-header',
+            start: 'top 85%',
+        }
+    });
+
+    headerTimeline
+        .from('.header-watermark', {
+            scale: 0.8,
+            opacity: 0,
+            duration: 2,
+            ease: 'expo.out'
+        })
+        .from('.title-part-1', {
+            x: -50,
+            opacity: 0,
+            duration: 1.2,
+            ease: 'power4.out'
+        }, '-=1.5')
+        .from('.title-part-2', {
+            x: 50,
+            opacity: 0,
+            duration: 1.2,
+            ease: 'power4.out'
+        }, '-=1.0')
+        .from('.header-separator-line', {
+            width: 0,
+            duration: 1,
+            ease: 'expo.out'
+        }, '-=0.8')
+        .from('.hub-tagline', {
+            y: 20,
+            opacity: 0,
+            duration: 1,
+            ease: 'power3.out'
+        }, '-=0.6');
+}

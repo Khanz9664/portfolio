@@ -1,0 +1,424 @@
+/* 
+  Redesigned Double Slider Styles 
+  Full-background images with project details as overlays
+*/
+
+/* Enforce border-box for the entire component */
+.double-slider-wrapper,
+.double-slider-wrapper *,
+.double-slider-wrapper *::before,
+.double-slider-wrapper *::after {
+  box-sizing: border-box;
+}
+
+.projects-section {
+  padding: 40px 0;
+
+  /* Reduced from 80px to fix large gaps */
+  background: transparent;
+  overflow: hidden;
+}
+
+.double-slider-wrapper {
+  position: relative;
+  width: 100%;
+  max-width: 1450px;
+  height: 500px;
+
+  /* Decreased from 750px for better viewport fit */
+  margin: 0 auto;
+  border-radius: 32px;
+  overflow: hidden;
+  box-shadow: 0 40px 100px rgb(0 0 0 / 0.6);
+  border: none;
+}
+
+@media (width <= 992px) {
+  .double-slider-wrapper {
+    height: 500px;
+
+    /* Reduced from 650px for better mobile fit */
+    border-radius: 20px;
+
+    /* Restored radius as requested */
+    width: calc(100% - 30px);
+
+    /* Leave 15px gap on each side */
+    margin: 40px 15px;
+
+    /* Added margins to prevent touching edges */
+    box-shadow: 0 20px 50px rgb(0 0 0 / 0.4);
+  }
+}
+
+/* --- Background Image Layer --- */
+.slider-background-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  overflow: hidden;
+
+  /* Added to clip the track */
+}
+
+.slider-bg-track {
+  display: flex;
+  gap: 0;
+  width: 100%;
+  height: 100%;
+  transition: transform 1s cubic-bezier(0.7, 0, 0.3, 1);
+  will-change: transform;
+}
+
+.bg-slide-item {
+  min-width: 100%;
+  width: 100%;
+  flex: 0 0 100%;
+
+  /* Strict flex basis */
+  height: 100%;
+  position: relative;
+  overflow: hidden;
+  margin: 0;
+  padding: 0;
+}
+
+.bg-image-inner {
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center;
+  filter: blur(1.5px);
+
+  /* Minimal subtle softening */
+  transform: scale(1.02);
+
+  /* Minimal scale */
+  transition: transform 1.5s ease;
+}
+
+.bg-slide-item::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to top, rgb(5 5 15 / 0.9) 0%, rgb(5 5 15 / 0.2) 50%, rgb(5 5 15 / 0.6) 100%);
+}
+
+/* --- Content Overlay Layer --- */
+.slider-overlay-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 5;
+  pointer-events: none;
+
+  /* Allow clicking through to controls */
+  display: flex;
+  align-items: center;
+  padding: 0;
+
+  /* Removed horizontal padding to fix bleeding */
+  overflow: hidden;
+
+  /* Added to clip the details track */
+  box-sizing: border-box;
+}
+
+@media (width <= 768px) {
+  .slider-overlay-container {
+    padding: 0;
+    align-items: flex-end;
+    padding-bottom: 40px;
+
+    /* Slightly less padding for shorter slider */
+  }
+}
+
+.slider-details-track {
+  display: flex;
+  gap: 0;
+  width: 100%;
+  height: 100%;
+  transition: transform 1s cubic-bezier(0.7, 0, 0.3, 1);
+  will-change: transform;
+}
+
+.slide-detail-item {
+  min-width: 100%;
+  width: 100%;
+  flex: 0 0 100%;
+
+  /* Strict flex basis */
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  color: #fff;
+  pointer-events: auto;
+  overflow: hidden;
+  padding: 0 80px;
+
+  /* Moved padding here from container */
+  margin: 0;
+
+  /* Prevent blurring during transition */
+  backface-visibility: hidden;
+  -webkit-font-smoothing: antialiased;
+  transform: translateZ(0);
+}
+
+@media (width <= 768px) {
+  .slide-detail-item {
+    padding: 0 30px;
+  }
+}
+
+.slide-detail-item h3 {
+  font-family: Outfit, sans-serif;
+  font-size: 4.5rem;
+  font-weight: 900;
+  margin-bottom: 15px;
+  letter-spacing: -2px;
+  background: linear-gradient(135deg, #fff 30%, rgb(255 255 255 / 0.4) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  line-height: 0.9;
+  text-transform: uppercase;
+
+  /* Sharpness fixes */
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizelegibility;
+}
+
+@media (width <= 768px) {
+  .slide-detail-item h3 {
+    font-size: 2.2rem;
+
+    /* Further reduced from 2.8rem for smaller height */
+    letter-spacing: -1px;
+  }
+}
+
+.slide-detail-item p {
+  font-size: 1.2rem;
+  max-width: 600px;
+  color: rgb(255 255 255 / 0.8);
+  line-height: 1.6;
+  margin-bottom: 40px;
+  backdrop-filter: blur(5px);
+  padding: 10px 0;
+}
+
+@media (width <= 768px) {
+  .slide-detail-item p {
+    font-size: 0.95rem;
+    margin-bottom: 25px;
+    max-width: 100%;
+  }
+}
+
+.project-tags-slider {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 40px;
+}
+
+.project-tags-slider span {
+  padding: 8px 18px;
+  background: rgb(255 255 255 / 0.08);
+  border: 1px solid rgb(255 255 255 / 0.15);
+  border-radius: 4px;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  font-weight: 700;
+  color: var(--accent-cyan);
+
+  /* Prevent blurring */
+  backface-visibility: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+.project-links-slider {
+  display: flex;
+  gap: 20px;
+}
+
+.slider-btn {
+  padding: 16px 36px;
+  border-radius: 4px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  /* Prevent blurring on hover/transition */
+  backface-visibility: hidden;
+  -webkit-font-smoothing: antialiased;
+  transform: translateZ(0);
+}
+
+.slider-btn.github {
+  background: transparent;
+  color: #fff;
+  border: 2px solid rgb(255 255 255 / 0.3);
+}
+
+.slider-btn.github:hover {
+  background: #fff;
+  color: #000;
+  border-color: #fff;
+}
+
+.slider-btn.case-study {
+  background: var(--accent-cyan);
+  color: #000;
+  border: 2px solid var(--accent-cyan);
+}
+
+.slider-btn.case-study:hover {
+  background: transparent;
+  color: #fff;
+  box-shadow: 0 0 30px rgb(0 255 242 / 0.4);
+}
+
+/* --- Preview Window --- */
+.slider-preview-window {
+  position: absolute;
+  bottom: 40px;
+
+  /* Adjusted for smaller slider height */
+  right: 60px;
+  width: 280px;
+
+  /* Slightly smaller for 600px height */
+  height: 150px;
+  z-index: 10;
+  border-radius: 16px;
+  overflow: hidden;
+  border: 1px solid rgb(255 255 255 / 0.2);
+  box-shadow: 0 20px 40px rgb(0 0 0 / 0.5);
+  cursor: pointer;
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.slider-preview-window:hover {
+  transform: scale(1.05);
+  border-color: var(--accent-cyan);
+}
+
+.preview-track {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  transition: transform 1s cubic-bezier(0.7, 0, 0.3, 1);
+}
+
+.preview-slide-item {
+  min-width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center;
+  position: relative;
+}
+
+.preview-label {
+  position: absolute;
+  top: 15px;
+  left: 15px;
+  background: rgb(0 0 0 / 0.6);
+  backdrop-filter: blur(4px);
+  padding: 4px 12px;
+  border-radius: 4px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  color: #fff;
+  z-index: 2;
+}
+
+@media (width <= 1200px) {
+  .slider-preview-window {
+    display: none;
+  }
+}
+
+/* --- Navigation Controls --- */
+.slider-main-navigation {
+  position: absolute;
+  bottom: 40px;
+  right: 360px;
+
+  /* Moved to the left of the preview window to avoid overlap */
+  display: flex;
+  gap: 15px;
+  z-index: 20;
+}
+
+@media (width <= 768px) {
+  .slider-main-navigation {
+    bottom: 20px;
+    left: 20px;
+    gap: 10px;
+  }
+
+  .nav-trigger {
+    width: 55px;
+
+    /* Increased from 45px to prevent "shrunken" look */
+    height: 55px;
+  }
+}
+
+.nav-trigger {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: rgb(255 255 255 / 0.05);
+  border: 1px solid rgb(255 255 255 / 0.15);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+  flex-shrink: 0;
+
+  /* Prevent buttons from shrinking */
+}
+
+.nav-trigger:hover {
+  background: var(--accent-cyan);
+  color: #000;
+  border-color: var(--accent-cyan);
+}
+
+/* Hidden triggers for the synchronized click logic */
+.hidden-triggers {
+  display: none !important;
+}
+
+/* --- Progress Bar (Visual indicator for auto-slide) --- */
+.slider-progress-bar {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 4px;
+  background: var(--accent-cyan);
+  width: 0%;
+  z-index: 30;
+  transition: width 0.1s linear;
+}

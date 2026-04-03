@@ -2,334 +2,26 @@
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Apple Sales Analysis Case Study | Shahid Ul Islam</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Case Study — Apple Sales Analytics · Shahid Ul Islam</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="css/AppleSales.css">
+  <link rel="stylesheet" href="../css/variables.css">
+  <link rel="stylesheet" href="../css/animations.css">
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/navigation.css">
+  <link rel="stylesheet" href="../css/footer.css">
   <link
-    href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Instrument+Sans:ital,wght@0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@400;500&display=swap"
+    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400;1,600;1,700&family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=IBM+Plex+Mono:wght@400;500;600&display=swap"
     rel="stylesheet" />
-<link rel="stylesheet" href="../css/variables.css" />
-<link rel="stylesheet" href="../css/navigation.css" />
-<link rel="stylesheet" href="../css/footer.css" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
-<script defer src="../js/common.js"></script>
-<style>
-  :root {
-    --navy: #070e1a;
-    --navy-mid: #0d1f38;
-    --navy-light: #132844;
-    --ink: #0f172a;
-    --slate: #334155;
-    --muted: #64748b;
-    --border: #1e3a5f;
-    --border-light: #e2e8f0;
-    --off-white: #f7f4ef;
-    --white: #ffffff;
-    --red: #dc2626;
-    --red-light: #fef2f2;
-    --red-mid: #fee2e2;
-    --green: #16a34a;
-    --green-light: #f0fdf4;
-    --blue: #2563eb;
-    --blue-light: #eff6ff;
-    --amber: #d97706;
-    --amber-light: #fffbeb;
-    --purple: #7c3aed;
-    --accent-glow: rgba(37, 99, 235, 0.15);
-    --font-display: 'Playfair Display', Georgia, serif;
-    --font-body: 'Instrument Sans', system-ui, sans-serif;
-    --font-mono: 'JetBrains Mono', monospace;
-  }
-
-  *,
-  *::before,
-  *::after {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-  }
-
-  html {
-    scroll-behavior: smooth;
-    font-size: 16px;
-  }
-
-  body {
-    font-family: var(--font-body);
-    background: var(--off-white);
-    color: var(--ink);
-    line-height: 1.7;
-    overflow-x: hidden;
-  }
-
-  /* ── PROGRESS BAR ── */
-  #progress-bar {
-    position: fixed;
-    top: 0;
-    left: 0;
-    height: 3px;
-    width: 0%;
-    background: linear-gradient(90deg, var(--blue), var(--purple));
-    z-index: 1000;
-    transition: width 0.1s linear;
-  }
-
-  .nav-links a:hover {
-    color: #e2e8f0;
-  }
-
-  /* ── HERO ── */
-  .hero {
-    background: var(--navy);
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    padding: 100px 2rem 80px;
-    position: relative;
-    overflow: hidden;
-  }
-
-  .hero::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background:
-      radial-gradient(ellipse 80% 60% at 20% 50%, rgba(37, 99, 235, 0.12) 0%, transparent 60%),
-      radial-gradient(ellipse 60% 80% at 80% 20%, rgba(220, 38, 38, 0.08) 0%, transparent 50%);
-    pointer-events: none;
-  }
-
-  .hero-grid {
-    position: absolute;
-    inset: 0;
-    opacity: 0.04;
-    background-image: linear-gradient(rgba(255, 255, 255, 0.5) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(255, 255, 255, 0.5) 1px, transparent 1px);
-    background-size: 60px 60px;
-  }
-
-  .hero-inner {
-    max-width: 1100px;
-    margin: 0 auto;
-    width: 100%;
-    position: relative;
-    z-index: 1;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: flex-start;
-  }
-
-  .hero-text-content {
-    width: 100%;
-    text-align: left;
-  }
-
-  .hero-text-content {
-    flex: 1;
-    text-align: left;
-  }
-
-  .hero-eyebrow {
-    font-family: var(--font-mono);
-    font-size: 0.75rem;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    color: #60a5fa;
-    margin-bottom: 1.5rem;
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-  }
-
-  @media (max-width: 1024px) {
-    .hero-inner {
-      gap: 3rem;
-      text-align: center;
-      align-items: center;
-    }
-
-    .hero-text-content {
-      text-align: center;
-    }
-
-    .hero-eyebrow {
-      justify-content: center;
-    }
-  }
-
-  .hero-eyebrow::before {
-    content: '';
-    display: block;
-    width: 40px;
-    height: 1px;
-    background: #60a5fa;
-  }
-
-  .hero h1 {
-    font-family: var(--font-display);
-    font-size: clamp(2.4rem, 6vw, 5rem);
-    font-weight: 900;
-    line-height: 1.08;
-    color: var(--white);
-    margin-bottom: 1rem;
-    letter-spacing: -0.02em;
-  }
-
-  .hero h1 em {
-    font-style: italic;
-    color: #93c5fd;
-  }
-
-  .hero-subtitle {
-    font-size: clamp(1rem, 2.5vw, 1.25rem);
-    color: #94a3b8;
-    max-width: 620px;
-    margin-bottom: 2.5rem;
-    font-weight: 400;
-  }
-
-  .hero-meta {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.75rem;
-    margin-bottom: 3rem;
-  }
-
-  .badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.4rem;
-    padding: 0.3rem 0.8rem;
-    border-radius: 999px;
-    font-family: var(--font-mono);
-    font-size: 0.72rem;
-    font-weight: 500;
-    letter-spacing: 0.03em;
-    border: 1px solid;
-  }
-
-  .badge-blue {
-    background: rgba(37, 99, 235, 0.15);
-    border-color: rgba(37, 99, 235, 0.4);
-    color: #93c5fd;
-  }
-
-  .badge-green {
-    background: rgba(22, 163, 74, 0.15);
-    border-color: rgba(22, 163, 74, 0.4);
-    color: #86efac;
-  }
-
-  .badge-red {
-    background: rgba(220, 38, 38, 0.15);
-    border-color: rgba(220, 38, 38, 0.4);
-    color: #fca5a5;
-  }
-
-  .badge-amber {
-    background: rgba(217, 119, 6, 0.15);
-    border-color: rgba(217, 119, 6, 0.4);
-    color: #fcd34d;
-  }
-
-  .badge-purple {
-    background: rgba(124, 58, 237, 0.15);
-    border-color: rgba(124, 58, 237, 0.4);
-    color: #c4b5fd;
-  }
-
-  .hero-stats {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-    gap: 1px;
-    background: var(--border);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    overflow: hidden;
-    max-width: 640px;
-  }
-
-  .hero-stat {
-    background: var(--navy-light);
-    padding: 1.25rem 1.5rem;
-    text-align: center;
-  }
-
-  .hero-stat-val {
-    font-family: var(--font-display);
-    font-size: 2rem;
-    font-weight: 700;
-    color: var(--white);
-    line-height: 1;
-    margin-bottom: 0.3rem;
-  }
-
-  .hero-stat-val.green {
-    color: #4ade80;
-  }
-
-  .hero-stat-val.blue {
-    color: #60a5fa;
-  }
-
-  .hero-stat-val.red {
-    color: #f87171;
-  }
-
-  .hero-stat-label {
-    font-size: 0.7rem;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    color: #64748b;
-    font-family: var(--font-mono);
-  }
-
-  .hero-scroll {
-    position: absolute;
-    bottom: 2rem;
-    left: 50%;
-    transform: translateX(-50%);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 0.5rem;
-    color: #475569;
-    font-size: 0.7rem;
-    font-family: var(--font-mono);
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    animation: bounce 2s infinite;
-  }
-
-  @keyframes bounce {
-
-    0%,
-    100% {
-      transform: translateX(-50%) translateY(0)
-    }
-
-    50% {
-      transform: translateX(-50%) translateY(8px)
-    }
-  }
-
-  .scroll-arrow {
-    width: 20px;
-    height: 20px;
-    border-right: 2px solid #475569;
-    border-bottom: 2px solid #475569;
-    transform: rotate(45deg);
-  }
-</style>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="../js/common.js" defer></script>
 </head>
 
 <body>
 
-  <div id="progress-bar"></div>
-
-  <!-- Navigation -->
   <div class="top-bar">
     <div class="logo">
       <img src="../img/plogo.png" alt="Personal Logo" class="logo-icon">
@@ -337,12 +29,12 @@
     </div>
     <nav class="nav-container">
       <ul class="nav-links">
-        <li><a href="../index.html" class="nav-link"><span>.</span> Home</a></li>
-        <li><a href="../about.html" class="nav-link"><span>.</span> About</a></li>
-        <li><a href="../skills.html" class="nav-link"><span>.</span> Skills</a></li>
-        <li><a href="../projects.html" class="nav-link"><span>.</span> Projects</a></li>
-        <li><a href="../contact.html" class="nav-link"><span>.</span> Contact</a></li>
-        <li><a href="../articles.html" class="nav-link"><span>.</span> Articles</a></li>
+        <li><a href="../index.html" class="nav-link">.Home</a></li>
+        <li><a href="../about.html" class="nav-link">.About</a></li>
+        <li><a href="../skills.html" class="nav-link">.Skills</a></li>
+        <li><a href="../projects.html" class="nav-link">.Projects</a></li>
+        <li><a href="../contact.html" class="nav-link">.Contact</a></li>
+        <li><a href="../articles.html" class="nav-link">.Articles</a></li>
       </ul>
       <div class="menu-toggle">
         <div class="hamburger"></div>
@@ -350,156 +42,1290 @@
     </nav>
   </div>
 
-  <!-- ── HERO ── -->
+  <!-- ═══ HERO ═══ -->
   <section class="hero">
-    <div class="hero-grid"></div>
+    <div class="hero-pattern"></div>
+    <div class="hero-blob"></div>
+    <div class="hero-blob-2"></div>
     <div class="hero-inner">
-      <div class="hero-text-content">
-        <div class="hero-eyebrow">Case Study · Apr 2024</div>
-        <h1>Comprehensive Data Analysis & Visualization — <br /><em>Apple Product Sales</em><br />2024</h1>
-        <p class="hero-subtitle">A Streamlit dashboard for exploring regional Apple-style sales data: hardware units
-          (iPhone, iPad, Mac, Wearables) and Services revenue, with statistics, clustering, regression, constrained
-          optimization, and exportable artifacts. </p>
+      <div class="hero-eyebrow">Case Study · Data Analytics · Portfolio Project</div>
+      <h1><strong>Apple Sales</strong><br /><em>Analytics</em><br />Workspace</h1>
+      <div class="hero-deck">Comprehensive data analysis, machine learning &amp; decision-support dashboard</div>
+      <p class="hero-lede">From static spreadsheets to an interactive end-to-end analytics workflow — statistics,
+        clustering, regression, constrained optimisation, and reproducible exports in one cohesive Streamlit
+        application.</p>
+      <div class="product-row">
+        <div class="prod-badge pb-iphone">
+          <div class="pb-dot"></div>
+          <div>
+            <div class="pb-name">iPhone</div>
+            <div class="pb-desc">Unit sales</div>
+          </div>
+        </div>
+        <div class="prod-badge pb-ipad">
+          <div class="pb-dot"></div>
+          <div>
+            <div class="pb-name">iPad</div>
+            <div class="pb-desc">Unit sales</div>
+          </div>
+        </div>
+        <div class="prod-badge pb-mac">
+          <div class="pb-dot"></div>
+          <div>
+            <div class="pb-name">Mac</div>
+            <div class="pb-desc">Unit sales</div>
+          </div>
+        </div>
+        <div class="prod-badge pb-wear">
+          <div class="pb-dot"></div>
+          <div>
+            <div class="pb-name">Wearables</div>
+            <div class="pb-desc">Unit sales</div>
+          </div>
+        </div>
+        <div class="prod-badge pb-svc">
+          <div class="pb-dot"></div>
+          <div>
+            <div class="pb-name">Services</div>
+            <div class="pb-desc">Revenue</div>
+          </div>
+        </div>
       </div>
-      <div class="hero-meta">
-        <span class="badge badge-blue">Python 3.10+</span>
-        <span class="badge badge-amber">Random Forest</span>
-        <span class="badge badge-green">Clustering</span>
-        <span class="badge badge-red">Streamlit</span>
-        <span class="badge badge-purple">Apple Sales DataSet 2024</span>
-      </div>
-      <div class="hero-stats">
-        <div class="hero-stat">
-          <div class="hero-stat-val green">K-Means, DBScan</div>
-          <div class="hero-stat-label">Clustering</div>
+      <div class="hero-kpis">
+        <div class="hk-cell">
+          <div class="hk-val" style="color:var(--iphone);">11</div>
+          <div class="hk-lbl">App Modules</div>
         </div>
-        <div class="hero-stat">
-          <div class="hero-stat-val blue">Random Forest, Linear Regression</div>
-          <div class="hero-stat-label">Models</div>
+        <div class="hk-cell">
+          <div class="hk-val" style="color:var(--mac);">5</div>
+          <div class="hk-lbl">ML Models</div>
         </div>
-        <div class="hero-stat">
-          <div class="hero-stat-val">5-fold</div>
-          <div class="hero-stat-label">Validation</div>
+        <div class="hk-cell">
+          <div class="hk-val" style="color:var(--ipad);">3</div>
+          <div class="hk-lbl">Clustering Algos</div>
         </div>
-        <div class="hero-stat">
-          <div class="hero-stat-val red">Streamlit</div>
-          <div class="hero-stat-label">UI/UX</div>
+        <div class="hk-cell">
+          <div class="hk-val" style="color:var(--svc);">1</div>
+          <div class="hk-lbl">Source of Truth</div>
         </div>
       </div>
     </div>
     <div class="hero-scroll">
-      <div class="scroll-arrow"></div>
-      Scroll
+      <div class="hs-line"></div>
+      <div class="hs-lbl">Scroll</div>
     </div>
   </section>
 
-  <section>
-    <div class="hero-stat">
-      <div class="hero-stat-val">Comming Soon</div>
+  <!-- ═══ PROBLEM STATEMENT ═══ -->
+  <section class="sec-bg-ivory" id="problem">
+    <div class="si">
+      <div class="sec-label">01 — Problem Statement</div>
+      <h2 class="sec-title">From Static Spreadsheets<br />to <em>Interactive Intelligence</em></h2>
+      <p class="sec-lead">Regional sales data for hardware categories and Services revenue is typically locked in static
+        spreadsheets. Stakeholders needed comparative statistics, segmentation, predictive models, and repeatable
+        exports — without standing up a full BI stack.</p>
+
+      <div class="rv" style="overflow-x:auto;border-radius:12px;box-shadow:var(--shadow-sm);">
+        <table class="goals-table">
+          <thead>
+            <tr>
+              <th>Objective</th>
+              <th>How It's Addressed</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="gt-goal">Single source of truth</td>
+              <td class="gt-impl">One file: <code>apple_sales_2024.csv</code>, loaded and column-normalised in
+                <code>src/data/loader.py</code>
+              </td>
+            </tr>
+            <tr>
+              <td class="gt-goal">Reusable analytics</td>
+              <td class="gt-impl">Logic lives in <code>src/</code> (statistics, models, charts, insights) — not embedded
+                in button callbacks</td>
+            </tr>
+            <tr>
+              <td class="gt-goal">Interactive exploration</td>
+              <td class="gt-impl">Streamlit sidebar filters (regions, min iPhone volume) across 11 focused tab views
+              </td>
+            </tr>
+            <tr>
+              <td class="gt-goal">Trust &amp; reproducibility</td>
+              <td class="gt-impl">Validation tab with cross-validation; Export tab writes <code>joblib</code> + JSON +
+                CSV under <code>src/models/saved/</code></td>
+            </tr>
+            <tr>
+              <td class="gt-goal">Guided presentation</td>
+              <td class="gt-impl">"Launch Guided Demo" in <code>app/components/demo.py</code> locks navigation and walks
+                through the workflow</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
   </section>
 
+  <div class="divider"></div>
 
-  <!-- Footer -->
-  <footer class="site-footer" style="background: var(--navy); border-top: 1px solid var(--border);">
-    <div class="footer-content">
-      <div class="footer-main">
-        <div class="footer-left">
-          <p class="copyright">&copy; 2025 Shahid Ul Islam</p>
-          <p class="footer-meta">Data Scientist & AI Developer</p>
-        </div>
-        <div class="footer-right">
-          <div class="footer-links">
-            <a href="#top" class="back-to-top">
-              <i class="fas fa-arrow-up"></i>
-              <span>Back to Top</span>
-            </a>
-            <div class="social-links11">
-              <a href="https://github.com/Khanz9664" target="_blank" class="social-link11">
-                <i class="fab fa-github"></i>
-              </a>
-              <a href="https://linkedin.com/in/shahid-ul-islam-13650998" target="_blank" class="social-link11">
-                <i class="fab fa-linkedin"></i>
-              </a>
-              <a href="mailto:shahid9664@gmail.com" class="social-link11">
-                <i class="fas fa-envelope"></i>
-              </a>
-            </div>
+  <!-- ═══ DATA PIPELINE ═══ -->
+  <section id="pipeline">
+    <div class="si">
+      <div class="sec-label">02 — Data Pipeline</div>
+      <h2 class="sec-title">Ingest · Engineer · <em>Filter</em></h2>
+      <p class="sec-lead">A deterministic, reproducible pipeline from raw CSV to enriched dataframe — cached at every
+        layer to avoid redundant I/O across Streamlit reruns.</p>
+
+      <div class="rv" style="overflow-x:auto;margin-bottom:2.5rem;">
+        <div class="pipeline-h">
+          <div class="pipe-node">
+            <div class="pn-icon"></div>
+            <div class="pn-name">CSV</div>
+            <div class="pn-desc">apple_sales_2024.csv · raw data</div>
+          </div>
+          <div class="pipe-node">
+            <div class="pn-icon"></div>
+            <div class="pn-name">loader.py</div>
+            <div class="pn-desc">Strip headers · normalise columns · @st.cache_data</div>
+          </div>
+          <div class="pipe-node">
+            <div class="pn-icon"></div>
+            <div class="pn-name">builder.py</div>
+            <div class="pn-desc">Feature engineering · derived ratios</div>
+          </div>
+          <div class="pipe-node">
+            <div class="pn-icon"></div>
+            <div class="pn-name">Sidebar</div>
+            <div class="pn-desc">Region filter · iPhone threshold</div>
+          </div>
+          <div class="pipe-node" style="border-radius:0 10px 10px 0;">
+            <div class="pn-icon"></div>
+            <div class="pn-name">Tab Renderers</div>
+            <div class="pn-desc">Shared filtered dataframe across all pages</div>
           </div>
         </div>
       </div>
-      <div class="made-with">
-        <p>Crafted with <span class="heart-icon">❤️</span> By Shahid</p>
+
+      <!-- Revenue bars -->
+      <div class="rev-chart rv">
+        <div class="rev-title">// Engineered Feature Overview — Derived from builder.py</div>
+        <div class="rev-bars">
+          <div class="rb-row">
+            <div class="rb-label">Total Hardware</div>
+            <div class="rb-track">
+              <div class="rb-fill" data-w="95" style="background:var(--iphone);"><span class="rb-fill-lbl">iPhone + iPad
+                  + Mac + Wearables</span></div>
+            </div>
+            <div class="rb-val">Sum col.</div>
+          </div>
+          <div class="rb-row">
+            <div class="rb-label">Rev / Unit</div>
+            <div class="rb-track">
+              <div class="rb-fill" data-w="72" style="background:var(--svc);"><span class="rb-fill-lbl">Services ÷ Total
+                  Hardware</span></div>
+            </div>
+            <div class="rb-val">Ratio</div>
+          </div>
+          <div class="rb-row">
+            <div class="rb-label">iPhone Share</div>
+            <div class="rb-track">
+              <div class="rb-fill" data-w="58" style="background:var(--mac);"><span class="rb-fill-lbl">iPhone ÷ Total
+                  Hardware</span></div>
+            </div>
+            <div class="rb-val">Market %</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Data Quality cards -->
+      <h3 class="rv"
+        style="font-family:var(--font-disp);font-size:1.3rem;font-weight:600;color:var(--ink);margin-bottom:1.25rem;">
+        Data Quality Layer</h3>
+      <div class="quality-grid">
+        <div class="qc rv">
+          <div class="qc-icon"></div>
+          <div class="qc-title">Reliability Index</div>
+          <div class="qc-desc">Heuristic score from completeness, z-score outliers (&gt;3σ), negative values, and
+            zero-variance columns. Drives the weighted quality gauge.</div>
+          <span class="qc-tag real">Real computation</span>
+        </div>
+        <div class="qc rv d1">
+          <div class="qc-icon"></div>
+          <div class="qc-title">IQR Outlier Detection</div>
+          <div class="qc-desc">Box plots and 1.5×IQR bounds with suggested mitigation narratives — prune, winsorize, or
+            median impute — shown as UI guidance strings.</div>
+          <span class="qc-tag real">Real computation</span>
+        </div>
+        <div class="qc rv d2">
+          <div class="qc-icon"></div>
+          <div class="qc-title">Drift Simulation</div>
+          <div class="qc-desc">Resampled, jittered Services_Revenue slice against the mean — demonstrates how a drift
+            alarm would behave. Labeled as synthetic in the implementation.</div>
+          <span class="qc-tag sim">Pedagogical demo</span>
+        </div>
+        <div class="qc rv d3">
+          <div class="qc-icon"></div>
+          <div class="qc-title">Schema Audit</div>
+          <div class="qc-desc">Record count, missing values, duplicate rows, dtypes, and memory usage — returned by
+            get_data_quality() alongside the main load.</div>
+          <span class="qc-tag real">Real computation</span>
+        </div>
       </div>
     </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ═══ 11 MODULES ═══ -->
+  <section class="sec-bg-ivory" id="modules">
+    <div class="si">
+      <div class="sec-label">03 — Application Modules</div>
+      <h2 class="sec-title">11 Focused <em>Views</em></h2>
+      <p class="sec-lead">Each module shares the same filtered dataframe. Switching filters in the sidebar propagates
+        consistently across every tab — no stale state, no divergent views.</p>
+
+      <div class="module-tabs rv">
+        <div class="tab-nav" id="tabNav">
+          <button class="tab-btn active" data-tab="t1">01 · Mission Control</button>
+          <button class="tab-btn" data-tab="t2">02 · Executive Summary</button>
+          <button class="tab-btn" data-tab="t3">03 · Overview</button>
+          <button class="tab-btn" data-tab="t4">04 · Data Quality</button>
+          <button class="tab-btn" data-tab="t5">05 · Geospatial</button>
+          <button class="tab-btn" data-tab="t6">06 · Analytics</button>
+          <button class="tab-btn" data-tab="t7">07 · Segmentation</button>
+          <button class="tab-btn" data-tab="t8">08 · Predictions</button>
+          <button class="tab-btn" data-tab="t9">09 · Validation</button>
+          <button class="tab-btn" data-tab="t10">10 · Export</button>
+          <button class="tab-btn" data-tab="t11">11 · AI Copilot</button>
+        </div>
+        <div class="tab-panes">
+
+          <div class="tab-pane active" id="t1">
+            <div class="module-card">
+              <div class="mc-left">
+                <div class="mc-num">01</div>
+                <div class="mc-title">Live Mission Control</div>
+                <div class="mc-desc">The command centre for real-time monitoring and high-level system status. Provides
+                  an immediate pulse on global sales performance integrating KPI tiles, synthetic sparklines
+                  (deterministic RNG, fixed seed), and anomaly-style callouts. Not a live telemetry backend — values are
+                  deterministic and reproducible.</div>
+                <div class="mc-tags">
+                  <span class="mc-tag">KPI tiles</span>
+                  <span class="mc-tag">Synthetic sparklines</span>
+                  <span class="mc-tag">Anomaly callouts</span>
+                  <span class="mc-tag">IF/THEN recommendations</span>
+                </div>
+              </div>
+              <div class="mc-right">
+                <!-- Mini dashboard visual -->
+                <svg class="mc-visual" viewBox="0 0 260 180" xmlns="http://www.w3.org/2000/svg">
+                  <rect width="260" height="180" rx="8" fill="#1a1917" />
+                  <!-- KPI cards -->
+                  <rect x="8" y="8" width="56" height="38" rx="4" fill="#2c2a28" />
+                  <text x="36" y="24" font-family="Cormorant Garamond,serif" font-size="14" fill="#0071e3"
+                    text-anchor="middle" font-weight="600">83%</text>
+                  <text x="36" y="36" font-family="IBM Plex Mono,monospace" font-size="6" fill="#6b6560"
+                    text-anchor="middle">GROWTH</text>
+                  <rect x="70" y="8" width="56" height="38" rx="4" fill="#2c2a28" />
+                  <text x="98" y="24" font-family="Cormorant Garamond,serif" font-size="14" fill="#30d158"
+                    text-anchor="middle" font-weight="600">$2.4B</text>
+                  <text x="98" y="36" font-family="IBM Plex Mono,monospace" font-size="6" fill="#6b6560"
+                    text-anchor="middle">REVENUE</text>
+                  <rect x="132" y="8" width="56" height="38" rx="4" fill="#2c2a28" />
+                  <text x="160" y="24" font-family="Cormorant Garamond,serif" font-size="14" fill="#ff9f0a"
+                    text-anchor="middle" font-weight="600">94%</text>
+                  <text x="160" y="36" font-family="IBM Plex Mono,monospace" font-size="6" fill="#6b6560"
+                    text-anchor="middle">MARGIN</text>
+                  <rect x="194" y="8" width="58" height="38" rx="4" fill="#2c2a28" />
+                  <text x="223" y="24" font-family="Cormorant Garamond,serif" font-size="14" fill="#bf5af2"
+                    text-anchor="middle" font-weight="600">12</text>
+                  <text x="223" y="36" font-family="IBM Plex Mono,monospace" font-size="6" fill="#6b6560"
+                    text-anchor="middle">REGIONS</text>
+                  <!-- Sparkline -->
+                  <rect x="8" y="54" width="244" height="60" rx="4" fill="#2c2a28" />
+                  <text x="16" y="67" font-family="IBM Plex Mono,monospace" font-size="7" fill="#4b5065">SERVICES
+                    REVENUE TREND</text>
+                  <polyline points="16,100 48,90 80,95 112,78 144,72 176,68 208,60 240,55" fill="none" stroke="#00c7be"
+                    stroke-width="1.5" stroke-linejoin="round" />
+                  <polygon points="16,100 48,90 80,95 112,78 144,72 176,68 208,60 240,55 240,108 16,108"
+                    fill="rgba(0,199,190,0.08)" />
+                  <!-- Status -->
+                  <rect x="8" y="122" width="244" height="50" rx="4" fill="#2c2a28" />
+                  <circle cx="20" cy="136" r="4" fill="#30d158" />
+                  <text x="30" y="140" font-family="IBM Plex Mono,monospace" font-size="7" fill="#b8b2a8">System healthy
+                    · 0 anomalies detected</text>
+                  <text x="16" y="158" font-family="IBM Plex Mono,monospace" font-size="7" fill="#4b5065">EMEA ↑ 12% ·
+                    APAC ↑ 8% · Americas ↑ 4%</text>
+                  <text x="16" y="168" font-family="IBM Plex Mono,monospace" font-size="7"
+                    fill="#4b5065">Recommendation: Increase iPad allocation in APAC</text>
+                </svg>
+              </div>
+            </div>
+          </div>
+
+          <div class="tab-pane" id="t2">
+            <div class="module-card">
+              <div class="mc-left">
+                <div class="mc-num">02</div>
+                <div class="mc-title">Executive Summary</div>
+                <div class="mc-desc">A distilled, high-impact view designed for C-suite decision-makers. Highlights the
+                  most critical KPIs, profitability metrics, and strategic growth trends — allowing rapid assessment of
+                  organisational health and market share analysis without wading through raw data.</div>
+                <div class="mc-tags">
+                  <span class="mc-tag">Critical KPIs</span>
+                  <span class="mc-tag">Market share</span>
+                  <span class="mc-tag">Growth trends</span>
+                  <span class="mc-tag">Profitability metrics</span>
+                </div>
+              </div>
+              <div class="mc-right">
+                <svg class="mc-visual" viewBox="0 0 260 180" xmlns="http://www.w3.org/2000/svg">
+                  <rect width="260" height="180" rx="8" fill="#1a1917" />
+                  <text x="130" y="22" font-family="Cormorant Garamond,serif" font-size="11" fill="#b8b2a8"
+                    text-anchor="middle" font-style="italic">Executive Dashboard</text>
+                  <!-- Donut placeholder -->
+                  <circle cx="70" cy="105" r="45" fill="none" stroke="#2c2a28" stroke-width="16" />
+                  <circle cx="70" cy="105" r="45" fill="none" stroke="#0071e3" stroke-width="16"
+                    stroke-dasharray="113 170" stroke-dashoffset="42" stroke-linecap="round" />
+                  <circle cx="70" cy="105" r="45" fill="none" stroke="#30d158" stroke-width="16"
+                    stroke-dasharray="51 232" stroke-dashoffset="-71" stroke-linecap="round" />
+                  <circle cx="70" cy="105" r="45" fill="none" stroke="#ff9f0a" stroke-width="16"
+                    stroke-dasharray="34 249" stroke-dashoffset="-122" stroke-linecap="round" />
+                  <circle cx="70" cy="105" r="45" fill="none" stroke="#bf5af2" stroke-width="16"
+                    stroke-dasharray="17 266" stroke-dashoffset="-156" stroke-linecap="round" />
+                  <text x="70" y="101" font-family="Cormorant Garamond,serif" font-size="15" fill="white"
+                    text-anchor="middle" font-weight="600">$4.2B</text>
+                  <text x="70" y="115" font-family="IBM Plex Mono,monospace" font-size="7" fill="#6b6560"
+                    text-anchor="middle">TOTAL</text>
+                  <!-- Legend -->
+                  <circle cx="140" cy="65" r="4" fill="#0071e3" /><text x="150" y="69"
+                    font-family="IBM Plex Mono,monospace" font-size="8" fill="#b8b2a8">iPhone 45%</text>
+                  <circle cx="140" cy="85" r="4" fill="#30d158" /><text x="150" y="89"
+                    font-family="IBM Plex Mono,monospace" font-size="8" fill="#b8b2a8">iPad 20%</text>
+                  <circle cx="140" cy="105" r="4" fill="#ff9f0a" /><text x="150" y="109"
+                    font-family="IBM Plex Mono,monospace" font-size="8" fill="#b8b2a8">Mac 13%</text>
+                  <circle cx="140" cy="125" r="4" fill="#bf5af2" /><text x="150" y="129"
+                    font-family="IBM Plex Mono,monospace" font-size="8" fill="#b8b2a8">Wear 7%</text>
+                  <circle cx="140" cy="145" r="4" fill="#00c7be" /><text x="150" y="149"
+                    font-family="IBM Plex Mono,monospace" font-size="8" fill="#b8b2a8">Services 15%</text>
+                </svg>
+              </div>
+            </div>
+          </div>
+
+          <div class="tab-pane" id="t3">
+            <div class="module-card">
+              <div class="mc-left">
+                <div class="mc-num">03</div>
+                <div class="mc-title">Overview</div>
+                <div class="mc-desc">A comprehensive look at the entire data landscape, bridging the gap between
+                  high-level summaries and granular analytics. Features comparative regional analysis and detailed
+                  product performance distributions across major global markets.</div>
+                <div class="mc-tags">
+                  <span class="mc-tag">Regional comparison</span>
+                  <span class="mc-tag">Product distributions</span>
+                  <span class="mc-tag">Global markets</span>
+                </div>
+              </div>
+              <div class="mc-right">
+                <svg class="mc-visual" viewBox="0 0 260 180" xmlns="http://www.w3.org/2000/svg">
+                  <rect width="260" height="180" rx="8" fill="#1a1917" />
+                  <text x="16" y="22" font-family="IBM Plex Mono,monospace" font-size="7" fill="#4b5065">REGIONAL
+                    PERFORMANCE</text>
+                  <!-- Bar chart -->
+                  <rect x="16" y="35" width="40" height="100" rx="3" fill="#0071e3" opacity=".8" />
+                  <rect x="62" y="55" width="40" height="80" rx="3" fill="#30d158" opacity=".8" />
+                  <rect x="108" y="70" width="40" height="65" rx="3" fill="#ff9f0a" opacity=".8" />
+                  <rect x="154" y="45" width="40" height="90" rx="3" fill="#bf5af2" opacity=".8" />
+                  <rect x="200" y="80" width="40" height="55" rx="3" fill="#00c7be" opacity=".8" />
+                  <text x="36" y="148" font-family="IBM Plex Mono,monospace" font-size="6" fill="#6b6560"
+                    text-anchor="middle">AMERICAS</text>
+                  <text x="82" y="148" font-family="IBM Plex Mono,monospace" font-size="6" fill="#6b6560"
+                    text-anchor="middle">EMEA</text>
+                  <text x="128" y="148" font-family="IBM Plex Mono,monospace" font-size="6" fill="#6b6560"
+                    text-anchor="middle">APAC</text>
+                  <text x="174" y="148" font-family="IBM Plex Mono,monospace" font-size="6" fill="#6b6560"
+                    text-anchor="middle">LATAM</text>
+                  <text x="220" y="148" font-family="IBM Plex Mono,monospace" font-size="6" fill="#6b6560"
+                    text-anchor="middle">MEA</text>
+                  <line x1="8" y1="135" x2="252" y2="135" stroke="#2c2a28" stroke-width="1" />
+                </svg>
+              </div>
+            </div>
+          </div>
+
+          <div class="tab-pane" id="t4">
+            <div class="module-card">
+              <div class="mc-left">
+                <div class="mc-num">04</div>
+                <div class="mc-title">Data Quality</div>
+                <div class="mc-desc">The foundational layer ensuring analytical integrity. Performs automated audits of
+                  missing values, schema consistency, and data coverage, providing a weighted quality index. Outlier
+                  detection via IQR (1.5×) with suggested mitigation narratives. Drift detection is demonstrative.</div>
+                <div class="mc-tags">
+                  <span class="mc-tag">Reliability index</span>
+                  <span class="mc-tag">IQR outlier detection</span>
+                  <span class="mc-tag">Schema audit</span>
+                  <span class="mc-tag">Drift demo</span>
+                </div>
+              </div>
+              <div class="mc-right">
+                <svg class="mc-visual" viewBox="0 0 260 180" xmlns="http://www.w3.org/2000/svg">
+                  <rect width="260" height="180" rx="8" fill="#1a1917" />
+                  <!-- Gauge -->
+                  <path d="M 130 140 m -60 0 a 60 60 0 0 1 120 0" fill="none" stroke="#2c2a28" stroke-width="14" />
+                  <path d="M 130 140 m -60 0 a 60 60 0 0 1 108 -36" fill="none" stroke="#30d158" stroke-width="14"
+                    stroke-linecap="round" />
+                  <text x="130" y="128" font-family="Cormorant Garamond,serif" font-size="22" fill="white"
+                    text-anchor="middle" font-weight="600">92%</text>
+                  <text x="130" y="142" font-family="IBM Plex Mono,monospace" font-size="7" fill="#6b6560"
+                    text-anchor="middle">QUALITY INDEX</text>
+                  <!-- checks -->
+                  <text x="20" y="165" font-family="IBM Plex Mono,monospace" font-size="7" fill="#30d158">
+                    Completeness</text>
+                  <text x="90" y="165" font-family="IBM Plex Mono,monospace" font-size="7" fill="#30d158"> No
+                    nulls</text>
+                  <text x="155" y="165" font-family="IBM Plex Mono,monospace" font-size="7" fill="#ff9f0a"> 2
+                    outliers</text>
+                  <!-- bar -->
+                  <rect x="20" y="40" width="220" height="12" rx="3" fill="#2c2a28" />
+                  <rect x="20" y="40" width="202" height="12" rx="3" fill="#30d158" opacity=".7" />
+                </svg>
+              </div>
+            </div>
+          </div>
+
+          <div class="tab-pane" id="t5">
+            <div class="module-card">
+              <div class="mc-left">
+                <div class="mc-num">05</div>
+                <div class="mc-title">Geospatial</div>
+                <div class="mc-desc">Interactive mapping and spatial analysis to identify regional hot-spots and
+                  logistical optimisation opportunities. Utilises heatmaps and localised deep-dives to visualise sales
+                  density and market penetration across global territories.</div>
+                <div class="mc-tags">
+                  <span class="mc-tag">Choropleth maps</span>
+                  <span class="mc-tag">Sales heatmaps</span>
+                  <span class="mc-tag">Market penetration</span>
+                  <span class="mc-tag">Regional deep-dive</span>
+                </div>
+              </div>
+              <div class="mc-right">
+                <svg class="mc-visual" viewBox="0 0 260 180" xmlns="http://www.w3.org/2000/svg">
+                  <rect width="260" height="180" rx="8" fill="#1a1917" />
+                  <!-- simplified world outline blobs -->
+                  <ellipse cx="75" cy="90" rx="48" ry="30" fill="rgba(0,113,227,0.25)" stroke="rgba(0,113,227,0.4)"
+                    stroke-width="1" />
+                  <ellipse cx="145" cy="80" rx="35" ry="28" fill="rgba(48,209,88,0.3)" stroke="rgba(48,209,88,0.5)"
+                    stroke-width="1" />
+                  <ellipse cx="210" cy="95" rx="32" ry="22" fill="rgba(255,159,10,0.25)" stroke="rgba(255,159,10,0.4)"
+                    stroke-width="1" />
+                  <ellipse cx="100" cy="130" rx="28" ry="18" fill="rgba(191,90,242,0.2)" stroke="rgba(191,90,242,0.35)"
+                    stroke-width="1" />
+                  <!-- dots -->
+                  <circle cx="75" cy="90" r="5" fill="#0071e3" opacity=".8" />
+                  <circle cx="145" cy="80" r="4" fill="#30d158" opacity=".8" />
+                  <circle cx="210" cy="95" r="4" fill="#ff9f0a" opacity=".8" />
+                  <circle cx="100" cy="130" r="3" fill="#bf5af2" opacity=".8" />
+                  <!-- legend -->
+                  <text x="10" y="170" font-family="IBM Plex Mono,monospace" font-size="6" fill="#6b6560">Americas ·
+                    EMEA · APAC · LATAM</text>
+                </svg>
+              </div>
+            </div>
+          </div>
+
+          <div class="tab-pane" id="t6">
+            <div class="module-card">
+              <div class="mc-left">
+                <div class="mc-num">06</div>
+                <div class="mc-title">Analytics</div>
+                <div class="mc-desc">Advanced statistical analysis of sales drivers, correlations, and feature
+                  importance. Explores dependencies between product lines via Welch t-tests, one-way ANOVA, and Pearson
+                  correlation — appropriate for exploratory cross-sectional analysis, not causal claims without domain
+                  design.</div>
+                <div class="mc-tags">
+                  <span class="mc-tag">Welch t-test</span>
+                  <span class="mc-tag">One-way ANOVA</span>
+                  <span class="mc-tag">Pearson correlation</span>
+                  <span class="mc-tag">Feature importance</span>
+                </div>
+              </div>
+              <div class="mc-right">
+                <svg class="mc-visual" viewBox="0 0 260 180" xmlns="http://www.w3.org/2000/svg">
+                  <rect width="260" height="180" rx="8" fill="#1a1917" />
+                  <text x="130" y="18" font-family="IBM Plex Mono,monospace" font-size="7" fill="#4b5065"
+                    text-anchor="middle">CORRELATION MATRIX</text>
+                  <!-- Simplified heatmap 5x5 -->
+                  <defs>
+                    <linearGradient id="corr" x1="0" x2="1">
+                      <stop offset="0%" stop-color="#ef4444" />
+                      <stop offset="50%" stop-color="#1a1917" />
+                      <stop offset="100%" stop-color="#0071e3" />
+                    </linearGradient>
+                  </defs>
+                  <rect x="30" y="25" width="36" height="28" rx="2" fill="rgba(0,113,227,.9)" />
+                  <rect x="68" y="25" width="36" height="28" rx="2" fill="rgba(0,113,227,.4)" />
+                  <rect x="106" y="25" width="36" height="28" rx="2" fill="rgba(0,113,227,.2)" />
+                  <rect x="144" y="25" width="36" height="28" rx="2" fill="rgba(239,68,68,.2)" />
+                  <rect x="182" y="25" width="36" height="28" rx="2" fill="rgba(0,113,227,.6)" />
+                  <rect x="30" y="55" width="36" height="28" rx="2" fill="rgba(0,113,227,.4)" />
+                  <rect x="68" y="55" width="36" height="28" rx="2" fill="rgba(0,113,227,.9)" />
+                  <rect x="106" y="55" width="36" height="28" rx="2" fill="rgba(0,113,227,.7)" />
+                  <rect x="144" y="55" width="36" height="28" rx="2" fill="rgba(0,113,227,.3)" />
+                  <rect x="182" y="55" width="36" height="28" rx="2" fill="rgba(239,68,68,.1)" />
+                  <rect x="30" y="85" width="36" height="28" rx="2" fill="rgba(0,113,227,.2)" />
+                  <rect x="68" y="85" width="36" height="28" rx="2" fill="rgba(0,113,227,.7)" />
+                  <rect x="106" y="85" width="36" height="28" rx="2" fill="rgba(0,113,227,.9)" />
+                  <rect x="144" y="85" width="36" height="28" rx="2" fill="rgba(0,113,227,.5)" />
+                  <rect x="182" y="85" width="36" height="28" rx="2" fill="rgba(0,113,227,.4)" />
+                  <rect x="30" y="115" width="36" height="28" rx="2" fill="rgba(239,68,68,.2)" />
+                  <rect x="68" y="115" width="36" height="28" rx="2" fill="rgba(0,113,227,.3)" />
+                  <rect x="106" y="115" width="36" height="28" rx="2" fill="rgba(0,113,227,.5)" />
+                  <rect x="144" y="115" width="36" height="28" rx="2" fill="rgba(0,113,227,.9)" />
+                  <rect x="182" y="115" width="36" height="28" rx="2" fill="rgba(0,113,227,.6)" />
+                  <!-- labels -->
+                  <text x="48" y="145" font-family="IBM Plex Mono,monospace" font-size="5.5" fill="#4b5065"
+                    text-anchor="middle">iPhone</text>
+                  <text x="86" y="145" font-family="IBM Plex Mono,monospace" font-size="5.5" fill="#4b5065"
+                    text-anchor="middle">iPad</text>
+                  <text x="124" y="145" font-family="IBM Plex Mono,monospace" font-size="5.5" fill="#4b5065"
+                    text-anchor="middle">Mac</text>
+                  <text x="162" y="145" font-family="IBM Plex Mono,monospace" font-size="5.5" fill="#4b5065"
+                    text-anchor="middle">Wear.</text>
+                  <text x="200" y="145" font-family="IBM Plex Mono,monospace" font-size="5.5" fill="#4b5065"
+                    text-anchor="middle">Svc.</text>
+                </svg>
+              </div>
+            </div>
+          </div>
+
+          <div class="tab-pane" id="t7">
+            <div class="module-card">
+              <div class="mc-left">
+                <div class="mc-num">07</div>
+                <div class="mc-title">Advanced Segmentation</div>
+                <div class="mc-desc">ML-driven cluster analysis to uncover hidden patterns and targetable cohorts.
+                  K-Means, Agglomerative Clustering, and DBSCAN with optional silhouette-driven k-selection. Cluster
+                  narratives generated by comparing centroids to global means.</div>
+                <div class="mc-tags">
+                  <span class="mc-tag">K-Means</span>
+                  <span class="mc-tag">Agglomerative</span>
+                  <span class="mc-tag">DBSCAN</span>
+                  <span class="mc-tag">Silhouette k</span>
+                  <span class="mc-tag">3D scatter</span>
+                </div>
+              </div>
+              <div class="mc-right">
+                <svg class="mc-visual" viewBox="0 0 260 180" xmlns="http://www.w3.org/2000/svg">
+                  <rect width="260" height="180" rx="8" fill="#1a1917" />
+                  <!-- Cluster scatter -->
+                  <!-- Cluster 1 - blue -->
+                  <circle cx="60" cy="70" r="5" fill="#0071e3" opacity=".8" />
+                  <circle cx="75" cy="60" r="4" fill="#0071e3" opacity=".7" />
+                  <circle cx="55" cy="85" r="5" fill="#0071e3" opacity=".8" />
+                  <circle cx="80" cy="80" r="3" fill="#0071e3" opacity=".6" />
+                  <circle cx="50" cy="60" r="4" fill="#0071e3" opacity=".7" />
+                  <!-- Cluster 2 - green -->
+                  <circle cx="160" cy="65" r="5" fill="#30d158" opacity=".8" />
+                  <circle cx="175" cy="75" r="4" fill="#30d158" opacity=".7" />
+                  <circle cx="155" cy="80" r="5" fill="#30d158" opacity=".8" />
+                  <circle cx="180" cy="60" r="3" fill="#30d158" opacity=".6" />
+                  <!-- Cluster 3 - amber -->
+                  <circle cx="110" cy="130" r="5" fill="#ff9f0a" opacity=".8" />
+                  <circle cx="125" cy="120" r="4" fill="#ff9f0a" opacity=".7" />
+                  <circle cx="100" cy="140" r="5" fill="#ff9f0a" opacity=".8" />
+                  <circle cx="130" cy="140" r="3" fill="#ff9f0a" opacity=".6" />
+                  <!-- Cluster 4 - purple -->
+                  <circle cx="210" cy="130" r="4" fill="#bf5af2" opacity=".8" />
+                  <circle cx="225" cy="120" r="3" fill="#bf5af2" opacity=".7" />
+                  <circle cx="200" cy="140" r="4" fill="#bf5af2" opacity=".8" />
+                  <!-- Axes -->
+                  <line x1="20" y1="160" x2="240" y2="160" stroke="#2c2a28" stroke-width="1" />
+                  <line x1="20" y1="20" x2="20" y2="160" stroke="#2c2a28" stroke-width="1" />
+                  <text x="130" y="175" font-family="IBM Plex Mono,monospace" font-size="7" fill="#4b5065"
+                    text-anchor="middle">iPhone Sales</text>
+                  <text x="10" y="90" font-family="IBM Plex Mono,monospace" font-size="7" fill="#4b5065"
+                    text-anchor="middle" transform="rotate(-90,10,90)">Services Rev.</text>
+                </svg>
+              </div>
+            </div>
+          </div>
+
+          <div class="tab-pane" id="t8">
+            <div class="module-card">
+              <div class="mc-left">
+                <div class="mc-num">08</div>
+                <div class="mc-title">Predictions</div>
+                <div class="mc-desc">Forward-looking forecasting with regression and time-series. Linear, polynomial,
+                  Random Forest, and Gradient Boosting pipelines. Auto-selects features via correlation + quick
+                  RandomForest importance. SLSQP constrained optimisation maximises predicted Services revenue under
+                  hardware-mix constraints. ARIMA demo on resampled series.</div>
+                <div class="mc-tags">
+                  <span class="mc-tag">Linear &amp; Polynomial</span>
+                  <span class="mc-tag">Random Forest</span>
+                  <span class="mc-tag">Gradient Boosting</span>
+                  <span class="mc-tag">SLSQP optimisation</span>
+                  <span class="mc-tag">ARIMA demo</span>
+                  <span class="mc-tag">What-if sliders</span>
+                </div>
+              </div>
+              <div class="mc-right">
+                <svg class="mc-visual" viewBox="0 0 260 180" xmlns="http://www.w3.org/2000/svg">
+                  <rect width="260" height="180" rx="8" fill="#1a1917" />
+                  <!-- Actual vs predicted -->
+                  <text x="16" y="18" font-family="IBM Plex Mono,monospace" font-size="7" fill="#4b5065">ACTUAL vs
+                    PREDICTED</text>
+                  <line x1="20" y1="150" x2="240" y2="150" stroke="#2c2a28" stroke-width="1" />
+                  <line x1="20" y1="20" x2="20" y2="150" stroke="#2c2a28" stroke-width="1" />
+                  <!-- confidence band -->
+                  <polygon points="30,120 80,100 130,80 180,60 230,45 230,35 180,48 130,68 80,88 30,108"
+                    fill="rgba(0,199,190,0.1)" />
+                  <!-- predicted line -->
+                  <polyline points="30,114 80,94 130,74 180,54 230,40" fill="none" stroke="#00c7be" stroke-width="1.5"
+                    stroke-dasharray="4,2" />
+                  <!-- actual dots -->
+                  <circle cx="30" cy="118" r="3" fill="#0071e3" />
+                  <circle cx="80" cy="98" r="3" fill="#0071e3" />
+                  <circle cx="130" cy="70" r="3" fill="#0071e3" />
+                  <circle cx="180" cy="58" r="3" fill="#0071e3" />
+                  <circle cx="230" cy="42" r="3" fill="#0071e3" />
+                  <!-- R2 badge -->
+                  <rect x="170" y="128" width="65" height="18" rx="4" fill="#2c2a28" />
+                  <text x="202" y="141" font-family="IBM Plex Mono,monospace" font-size="8" fill="#30d158"
+                    text-anchor="middle">R² = 0.94</text>
+                </svg>
+              </div>
+            </div>
+          </div>
+
+          <div class="tab-pane" id="t9">
+            <div class="module-card">
+              <div class="mc-left">
+                <div class="mc-num">09</div>
+                <div class="mc-title">Validation &amp; Backtesting</div>
+                <div class="mc-desc">Rigorous testing of predictive models against historical data. K-fold
+                  cross_validate on a Random Forest pipeline, on-demand 5-fold CV across linear/RF/GB, and
+                  TimeSeriesSplit forward-chaining. Band-style visualisation comparing predictions to held-out points
+                  with approximate ±1.96×RMSE band.</div>
+                <div class="mc-tags">
+                  <span class="mc-tag">K-fold CV</span>
+                  <span class="mc-tag">TimeSeriesSplit</span>
+                  <span class="mc-tag">±1.96×RMSE band</span>
+                  <span class="mc-tag">Sensitivity analysis</span>
+                </div>
+              </div>
+              <div class="mc-right">
+                <svg class="mc-visual" viewBox="0 0 260 180" xmlns="http://www.w3.org/2000/svg">
+                  <rect width="260" height="180" rx="8" fill="#1a1917" />
+                  <text x="16" y="18" font-family="IBM Plex Mono,monospace" font-size="7" fill="#4b5065">5-FOLD CROSS
+                    VALIDATION</text>
+                  <!-- CV fold bands -->
+                  <rect x="20" y="30" width="44" height="110" rx="2" fill="rgba(0,113,227,.12)"
+                    stroke="rgba(0,113,227,.25)" stroke-width="1" />
+                  <rect x="66" y="30" width="44" height="110" rx="2" fill="rgba(48,209,88,.12)"
+                    stroke="rgba(48,209,88,.25)" stroke-width="1" />
+                  <rect x="112" y="30" width="44" height="110" rx="2" fill="rgba(0,113,227,.12)"
+                    stroke="rgba(0,113,227,.25)" stroke-width="1" />
+                  <rect x="158" y="30" width="44" height="110" rx="2" fill="rgba(48,209,88,.12)"
+                    stroke="rgba(48,209,88,.25)" stroke-width="1" />
+                  <rect x="204" y="30" width="44" height="110" rx="2" fill="rgba(0,113,227,.12)"
+                    stroke="rgba(0,113,227,.25)" stroke-width="1" />
+                  <!-- Val indicators -->
+                  <rect x="20" y="30" width="44" height="20" rx="2" fill="rgba(255,159,10,.5)" />
+                  <rect x="66" y="52" width="44" height="20" rx="2" fill="rgba(255,159,10,.5)" />
+                  <rect x="112" y="74" width="44" height="20" rx="2" fill="rgba(255,159,10,.5)" />
+                  <rect x="158" y="96" width="44" height="20" rx="2" fill="rgba(255,159,10,.5)" />
+                  <rect x="204" y="118" width="44" height="20" rx="2" fill="rgba(255,159,10,.5)" />
+                  <text x="42" y="160" font-family="IBM Plex Mono,monospace" font-size="6" fill="#4b5065"
+                    text-anchor="middle">F1</text>
+                  <text x="88" y="160" font-family="IBM Plex Mono,monospace" font-size="6" fill="#4b5065"
+                    text-anchor="middle">F2</text>
+                  <text x="134" y="160" font-family="IBM Plex Mono,monospace" font-size="6" fill="#4b5065"
+                    text-anchor="middle">F3</text>
+                  <text x="180" y="160" font-family="IBM Plex Mono,monospace" font-size="6" fill="#4b5065"
+                    text-anchor="middle">F4</text>
+                  <text x="226" y="160" font-family="IBM Plex Mono,monospace" font-size="6" fill="#4b5065"
+                    text-anchor="middle">F5</text>
+                  <text x="130" y="174" font-family="IBM Plex Mono,monospace" font-size="6.5" fill="#30d158"
+                    text-anchor="middle">Mean CV R² = 0.91 ± 0.03</text>
+                </svg>
+              </div>
+            </div>
+          </div>
+
+          <div class="tab-pane" id="t10">
+            <div class="module-card">
+              <div class="mc-left">
+                <div class="mc-num">10</div>
+                <div class="mc-title">Export &amp; Reproducibility</div>
+                <div class="mc-desc">Trains a Random Forest pipeline on active features, saves joblib model, emits a
+                  JSON snapshot (timestamp, feature list, hyperparameters from fitted estimator), and attaches
+                  prediction CSV outputs. Supports "train once, download artifacts" workflows for notebooks or batch
+                  jobs.</div>
+                <div class="mc-tags">
+                  <span class="mc-tag">joblib model</span>
+                  <span class="mc-tag">JSON config</span>
+                  <span class="mc-tag">Predictions CSV</span>
+                  <span class="mc-tag">Metadata lineage</span>
+                </div>
+              </div>
+              <div class="mc-right">
+                <svg class="mc-visual" viewBox="0 0 260 180" xmlns="http://www.w3.org/2000/svg">
+                  <rect width="260" height="180" rx="8" fill="#1a1917" />
+                  <text x="130" y="20" font-family="IBM Plex Mono,monospace" font-size="7" fill="#4b5065"
+                    text-anchor="middle">EXPORT ARTIFACTS</text>
+                  <!-- artifact cards -->
+                  <rect x="20" y="35" width="68" height="55" rx="6" fill="#2c2a28" stroke="rgba(0,113,227,.3)"
+                    stroke-width="1" />
+                  <text x="54" y="55" font-family="IBM Plex Mono,monospace" font-size="18" fill="#0071e3"
+                    text-anchor="middle">⚙</text>
+                  <text x="54" y="70" font-family="IBM Plex Mono,monospace" font-size="7" fill="#b8b2a8"
+                    text-anchor="middle">model.joblib</text>
+                  <text x="54" y="83" font-family="IBM Plex Mono,monospace" font-size="6" fill="#6b6560"
+                    text-anchor="middle">RF pipeline</text>
+                  <rect x="96" y="35" width="68" height="55" rx="6" fill="#2c2a28" stroke="rgba(255,159,10,.3)"
+                    stroke-width="1" />
+                  <text x="130" y="55" font-family="IBM Plex Mono,monospace" font-size="18" fill="#ff9f0a"
+                    text-anchor="middle">{ }</text>
+                  <text x="130" y="70" font-family="IBM Plex Mono,monospace" font-size="7" fill="#b8b2a8"
+                    text-anchor="middle">config.json</text>
+                  <text x="130" y="83" font-family="IBM Plex Mono,monospace" font-size="6" fill="#6b6560"
+                    text-anchor="middle">hyperparams</text>
+                  <rect x="172" y="35" width="68" height="55" rx="6" fill="#2c2a28" stroke="rgba(48,209,88,.3)"
+                    stroke-width="1" />
+                  <text x="206" y="55" font-family="IBM Plex Mono,monospace" font-size="18" fill="#30d158"
+                    text-anchor="middle"></text>
+                  <text x="206" y="70" font-family="IBM Plex Mono,monospace" font-size="7" fill="#b8b2a8"
+                    text-anchor="middle">preds.csv</text>
+                  <text x="206" y="83" font-family="IBM Plex Mono,monospace" font-size="6" fill="#6b6560"
+                    text-anchor="middle">outputs</text>
+                  <!-- Path line -->
+                  <path d="M 54 90 Q 54 130 130 140 Q 206 150 206 90" fill="none" stroke="#2c2a28" stroke-width="1"
+                    stroke-dasharray="3,2" />
+                  <text x="130" y="160" font-family="IBM Plex Mono,monospace" font-size="7" fill="#4b5065"
+                    text-anchor="middle">src/models/saved/ — versioned artifacts</text>
+                </svg>
+              </div>
+            </div>
+          </div>
+
+          <div class="tab-pane" id="t11">
+            <div class="module-card">
+              <div class="mc-left">
+                <div class="mc-num">11</div>
+                <div class="mc-title">C-Suite AI Copilot</div>
+                <div class="mc-desc">Chat UI that routes natural-language-style prompts by keyword to the same
+                  deterministic metrics and recommendation functions used across the app. No external LLM API —
+                  responses pull region-level stats or generate_business_recommendations(). Honest about its
+                  implementation: keyword routing, not true NLP.</div>
+                <div class="mc-tags">
+                  <span class="mc-tag">Keyword routing</span>
+                  <span class="mc-tag">Region-level stats</span>
+                  <span class="mc-tag">IF/THEN recommendations</span>
+                  <span class="mc-tag">No external LLM</span>
+                </div>
+              </div>
+              <div class="mc-right">
+                <svg class="mc-visual" viewBox="0 0 260 180" xmlns="http://www.w3.org/2000/svg">
+                  <rect width="260" height="180" rx="8" fill="#1a1917" />
+                  <!-- Chat bubbles -->
+                  <rect x="20" y="20" width="160" height="28" rx="8" fill="#2c2a28" />
+                  <text x="30" y="35" font-family="IBM Plex Mono,monospace" font-size="7" fill="#b8b2a8">What drove EMEA
+                    dip last Q?</text>
+                  <rect x="80" y="58" width="170" height="38" rx="8" fill="rgba(0,113,227,.15)"
+                    stroke="rgba(0,113,227,.2)" stroke-width="1" />
+                  <text x="90" y="72" font-family="IBM Plex Mono,monospace" font-size="6.5" fill="#60a5fa">EMEA
+                    analysis: Services revenue</text>
+                  <text x="90" y="84" font-family="IBM Plex Mono,monospace" font-size="6.5" fill="#60a5fa">−8% vs prior.
+                    iPhone attach</text>
+                  <text x="90" y="96" font-family="IBM Plex Mono,monospace" font-size="6.5" fill="#60a5fa">rate below
+                    threshold.</text>
+                  <rect x="20" y="108" width="140" height="22" rx="8" fill="#2c2a28" />
+                  <text x="30" y="123" font-family="IBM Plex Mono,monospace" font-size="7" fill="#b8b2a8">Generate
+                    strategy report</text>
+                  <rect x="80" y="140" width="170" height="28" rx="8" fill="rgba(0,199,190,.12)"
+                    stroke="rgba(0,199,190,.2)" stroke-width="1" />
+                  <text x="90" y="155" font-family="IBM Plex Mono,monospace" font-size="6.5"
+                    fill="#00c7be">Recommendation: Prioritise</text>
+                  <text x="90" y="165" font-family="IBM Plex Mono,monospace" font-size="6.5" fill="#00c7be">Services
+                    bundling in EMEA...</text>
+                </svg>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ ANALYTICS STACK ═══ -->
+  <section id="analytics">
+    <div class="si">
+      <div class="sec-label">04 — Analytics Stack</div>
+      <h2 class="sec-title">Six Analytical <em>Capabilities</em></h2>
+      <p class="sec-lead">A full statistical and machine learning pipeline implemented in a clean <code
+          style="font-family:var(--font-mono);font-size:.9em;background:var(--ivory);padding:.1rem .4rem;border-radius:3px;">src/</code>
+        layer — decoupled from the UI, independently testable, and ready for extension.</p>
+
+      <div class="analytics-trio">
+        <div class="at-card rv">
+          <div class="at-colour-bar" style="background:linear-gradient(90deg,var(--iphone),#60a5fa);"></div>
+          <div class="at-icon"></div>
+          <div class="at-title">Statistical Inference</div>
+          <div class="at-desc">Welch t-test, one-way ANOVA, and Pearson correlation between regional and metric
+            comparisons. Appropriate for exploratory cross-sectional analysis — results are flagged as exploratory, not
+            causal.</div>
+          <div class="at-methods">
+            <span class="at-method">ttest_ind</span>
+            <span class="at-method">f_oneway</span>
+            <span class="at-method">pearsonr</span>
+            <span class="at-method">equal_var=False</span>
+          </div>
+        </div>
+        <div class="at-card rv d1">
+          <div class="at-colour-bar" style="background:linear-gradient(90deg,var(--ipad),#34d399);"></div>
+          <div class="at-icon"></div>
+          <div class="at-title">Clustering</div>
+          <div class="at-desc">StandardScaler normalisation → K-Means, Agglomerative, or DBSCAN. Optional
+            silhouette-driven k selection. Cluster narratives map centroids vs global means to strategy labels —
+            surfaced in the Segmentation tab.</div>
+          <div class="at-methods">
+            <span class="at-method">KMeans</span>
+            <span class="at-method">AgglomerativeClustering</span>
+            <span class="at-method">DBSCAN</span>
+            <span class="at-method">silhouette_score</span>
+          </div>
+        </div>
+        <div class="at-card rv d2">
+          <div class="at-colour-bar" style="background:linear-gradient(90deg,var(--mac),#fbbf24);"></div>
+          <div class="at-icon"></div>
+          <div class="at-title">Regression Pipelines</div>
+          <div class="at-desc">Linear, Polynomial (StandardScaler → PolynomialFeatures → LinearRegression), Random
+            Forest, and Gradient Boosting inside sklearn Pipelines. Actual vs predicted, residuals, and feature
+            importance plots.</div>
+          <div class="at-methods">
+            <span class="at-method">LinearRegression</span>
+            <span class="at-method">PolynomialFeatures</span>
+            <span class="at-method">RandomForestRegressor</span>
+            <span class="at-method">GradientBoostingRegressor</span>
+          </div>
+        </div>
+        <div class="at-card rv d3">
+          <div class="at-colour-bar" style="background:linear-gradient(90deg,var(--wear),#a78bfa);"></div>
+          <div class="at-icon"></div>
+          <div class="at-title">Constrained Optimisation</div>
+          <div class="at-desc">SLSQP (scipy.optimize.minimize) with a linear sum constraint on hardware units,
+            maximising predicted Services revenue under the currently selected fitted model. What-if sliders surface the
+            result interactively.</div>
+          <div class="at-methods">
+            <span class="at-method">scipy.optimize.minimize</span>
+            <span class="at-method">SLSQP</span>
+            <span class="at-method">Linear sum constraint</span>
+          </div>
+        </div>
+        <div class="at-card rv">
+          <div class="at-colour-bar" style="background:linear-gradient(90deg,var(--svc),#67e8f9);"></div>
+          <div class="at-icon"></div>
+          <div class="at-title">Model Validation</div>
+          <div class="at-desc">K-fold cross_validate on a Random Forest pipeline, 5-fold CV across model families, and
+            TimeSeriesSplit forward-chaining on row-ordered data. Band-style visualisation with ±1.96×RMSE confidence
+            intervals.</div>
+          <div class="at-methods">
+            <span class="at-method">cross_validate</span>
+            <span class="at-method">TimeSeriesSplit</span>
+            <span class="at-method">GridSearchCV</span>
+          </div>
+        </div>
+        <div class="at-card rv d1">
+          <div class="at-colour-bar" style="background:linear-gradient(90deg,var(--iphone),var(--svc));"></div>
+          <div class="at-icon"></div>
+          <div class="at-title">Insight Engine</div>
+          <div class="at-desc">IF-THEN style recommendations from linear regression coefficients between hardware
+            columns and Services revenue, regional efficiency aggregates, and Wearables attach-rate heuristics. Powers
+            Mission Control, Executive Summary, and the Copilot.</div>
+          <div class="at-methods">
+            <span class="at-method">insights.py</span>
+            <span class="at-method">Coefficient analysis</span>
+            <span class="at-method">Attach-rate heuristics</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Optimisation callout -->
+      <div class="opt-box rv">
+        <div class="ob-label">Featured — Constrained Optimisation</div>
+        <div class="ob-title">Hardware Mix → Maximum Services Revenue</div>
+        <div class="ob-formula">
+          <span class="kw">maximise</span>: <span class="fn">f_services</span>(iPhone, iPad, Mac, Wearables)
+          <span class="kw">subject to</span>: iPhone + iPad + Mac + Wearables = <span class="co">total_units</span>
+          iPhone ≥ 0, iPad ≥ 0, Mac ≥ 0, Wearables ≥ 0
+          <span class="co">
+            solver</span>: <span class="fn">scipy.optimize.minimize</span>(method=<span class="co">'SLSQP'</span>)
+        </div>
+        <div class="ob-desc">The solver identifies the hardware allocation that maximises predicted Services revenue
+          under the constraint that total unit count remains fixed — giving actionable product-mix guidance directly
+          from the active fitted regression model.</div>
+      </div>
+
+      <!-- Segmentation clusters -->
+      <div class="seg-wrap rv">
+        <div class="seg-title">// ML Segmentation — Cluster Profiles (K-Means, k=4)</div>
+        <div class="seg-clusters">
+          <div class="seg-cluster sc-c1">
+            <div class="sc-num">C1</div>
+            <div class="sc-name">High-Value Markets</div>
+            <div class="sc-desc">Above-average iPhone and Services revenue. High efficiency ratio. Primary growth
+              targets.</div>
+            <div class="sc-algo">KMeans · centroid above global μ on iPhone + Services</div>
+          </div>
+          <div class="seg-cluster sc-c2">
+            <div class="sc-num">C2</div>
+            <div class="sc-name">iPad-Led Regions</div>
+            <div class="sc-desc">Strong iPad attach, moderate Mac. Lower Wearables share. Education or enterprise-skewed
+              markets.</div>
+            <div class="sc-algo">KMeans · iPad share &gt; 1σ above mean</div>
+          </div>
+          <div class="seg-cluster sc-c3">
+            <div class="sc-num">C3</div>
+            <div class="sc-name">Emerging Markets</div>
+            <div class="sc-desc">Below-average volumes across all hardware lines. High growth potential, currently
+              under-penetrated.</div>
+            <div class="sc-algo">KMeans · all features below global μ</div>
+          </div>
+          <div class="seg-cluster sc-c4">
+            <div class="sc-num">C4</div>
+            <div class="sc-name">Wearables Champions</div>
+            <div class="sc-desc">High Wearables attach rate relative to iPhone base. Services revenue strong. Premium
+              lifestyle segment.</div>
+            <div class="sc-algo">KMeans · Wearables &gt; 1.5σ above mean</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ═══ ARCHITECTURE ═══ -->
+  <section class="sec-bg-graphite" id="architecture">
+    <div class="si">
+      <div class="sec-label">05 — Architecture</div>
+      <h2 class="sec-title">Layered <em>Design</em></h2>
+      <p class="sec-lead" style="color:var(--warm-mid);">A strict separation between presentation (<code
+          style="background:rgba(255,255,255,.08);padding:.1rem .35rem;border-radius:3px;font-family:var(--font-mono);font-size:.85em;">app/</code>)
+        and analytics (<code
+          style="background:rgba(255,255,255,.08);padding:.1rem .35rem;border-radius:3px;font-family:var(--font-mono);font-size:.85em;">src/</code>)
+        keeps the codebase maintainable, independently testable, and ready for extension.</p>
+
+      <div class="arch-layers rv">
+        <div class="al-card app">
+          <div class="al-layer-name">app/ — Presentation Layer</div>
+          <div class="al-title">Streamlit UI</div>
+          <ul class="al-files">
+            <li><code style="font-family:var(--font-mono);font-size:.78rem;color:#93c5fd;">main.py</code> — Entry: load
+              → features → sidebar → KPIs → tab router</li>
+            <li><code style="font-family:var(--font-mono);font-size:.78rem;color:#93c5fd;">sidebar.py</code> — Filters,
+              nav, demo launcher</li>
+            <li><code style="font-family:var(--font-mono);font-size:.78rem;color:#93c5fd;">kpi.py</code> — KPI card
+              components</li>
+            <li><code style="font-family:var(--font-mono);font-size:.78rem;color:#93c5fd;">styles.py</code> — Global
+              dark CSS system</li>
+            <li><code style="font-family:var(--font-mono);font-size:.78rem;color:#93c5fd;">demo.py</code> — Guided
+              walkthrough overlay</li>
+            <li><code style="font-family:var(--font-mono);font-size:.78rem;color:#93c5fd;">tabs/*</code> — One module
+              per page (11 total)</li>
+          </ul>
+        </div>
+        <div class="al-card src">
+          <div class="al-layer-name">src/ — Analytics Layer</div>
+          <div class="al-title">Pure Python Logic</div>
+          <ul class="al-files">
+            <li><code style="font-family:var(--font-mono);font-size:.78rem;color:#6ee7e7;">data/loader.py</code> — CSV
+              load + quality dict + @cache</li>
+            <li><code style="font-family:var(--font-mono);font-size:.78rem;color:#6ee7e7;">features/builder.py</code> —
+              Derived feature engineering</li>
+            <li><code style="font-family:var(--font-mono);font-size:.78rem;color:#6ee7e7;">analysis/statistics.py</code>
+              — t-test, ANOVA, Pearson</li>
+            <li><code style="font-family:var(--font-mono);font-size:.78rem;color:#6ee7e7;">analysis/insights.py</code> —
+              IF/THEN recommendation engine</li>
+            <li><code style="font-family:var(--font-mono);font-size:.78rem;color:#6ee7e7;">models/regression.py</code> —
+              Linear, Poly, RF, GB, CV</li>
+            <li><code style="font-family:var(--font-mono);font-size:.78rem;color:#6ee7e7;">models/clustering.py</code> —
+              K-Means, Agg., DBSCAN</li>
+            <li><code
+                style="font-family:var(--font-mono);font-size:.78rem;color:#6ee7e7;">visualization/charts.py</code> —
+              Plotly dark theme system</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="rv" style="margin-bottom:2rem;">
+        <div class="repo-tree">
+<span class="rt-dir">.</span>
+<span class="rt-dir">├── app/</span>
+<span class="rt-file">│   ├── main.py</span>                     <span class="rt-comment"># Entry point: load → features → sidebar → tab router</span>
+<span class="rt-dir">│   └── components/</span>
+<span class="rt-file">│       ├── sidebar.py</span>              <span class="rt-comment"># Region filter, nav, guided demo launcher</span>
+<span class="rt-file">│       ├── styles.py</span>               <span class="rt-comment"># Global Streamlit CSS (dark card layout)</span>
+<span class="rt-file">│       ├── kpi.py  demo.py</span>         <span class="rt-comment"># KPI cards & presentation overlay</span>
+<span class="rt-dir">│       └── tabs/</span>                    <span class="rt-comment"># One module per page (11 tab files)</span>
+<span class="rt-dir">├── src/</span>
+<span class="rt-dir">│   ├── data/</span>         <span class="rt-file">loader.py</span>      <span class="rt-comment"># CSV ingest, normalise, @st.cache_data</span>
+<span class="rt-dir">│   ├── features/</span>     <span class="rt-file">builder.py</span>    <span class="rt-comment"># Total sales, rev/unit, iPhone share</span>
+<span class="rt-dir">│   ├── analysis/</span>     <span class="rt-file">statistics.py insights.py</span>
+<span class="rt-dir">│   ├── models/</span>       <span class="rt-file">regression.py clustering.py</span>
+<span class="rt-dir">│   │   └── saved/</span>                   <span class="rt-comment"># joblib + JSON + CSV (created by Export tab)</span>
+<span class="rt-dir">│   └── visualization/</span> <span class="rt-file">charts.py</span>   <span class="rt-comment"># Plotly helpers + apply_minimal_styling()</span>
+<span class="rt-dir">├── data/raw/</span>
+<span class="rt-file">│   └── apple_sales_2024.csv</span>         <span class="rt-comment"># Single source of truth</span>
+<span class="rt-file">├── requirements.txt  README.md  CASE_STUDY.md  APP_GUIDE.md</span>
+<span class="rt-file">└── Comprehensive Data Analysis ... .ipynb</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ TECH STACK ═══ -->
+  <section id="stack" class="sec-bg-ivory">
+    <div class="si">
+      <div class="sec-label">06 — Technology</div>
+      <h2 class="sec-title">The <em>Tech Stack</em></h2>
+      <p class="sec-lead">Seven packages, each with a single responsibility. No bloat, no redundancy — every dependency
+        earns its place.</p>
+
+      <div class="tech-grid">
+        <div class="tech-card rv">
+          <div class="tc-dot" style="background:var(--iphone);"></div>
+          <div class="tc-pkg">Streamlit</div>
+          <div class="tc-role">App shell, caching, widgets, sidebar filters</div>
+        </div>
+        <div class="tech-card rv d1">
+          <div class="tc-dot" style="background:var(--mac);"></div>
+          <div class="tc-pkg">pandas</div>
+          <div class="tc-role">Data handling, column normalisation, filtering</div>
+        </div>
+        <div class="tech-card rv d2">
+          <div class="tc-dot" style="background:var(--ipad);"></div>
+          <div class="tc-pkg">Plotly</div>
+          <div class="tc-role">Interactive charts with shared dark template</div>
+        </div>
+        <div class="tech-card rv d3">
+          <div class="tc-dot" style="background:var(--wear);"></div>
+          <div class="tc-pkg">scikit-learn</div>
+          <div class="tc-role">Regression, clustering, CV, pipelines, scalers</div>
+        </div>
+        <div class="tech-card rv">
+          <div class="tc-dot" style="background:var(--svc);"></div>
+          <div class="tc-pkg">scipy</div>
+          <div class="tc-role">Statistical tests + SLSQP constrained optimisation</div>
+        </div>
+        <div class="tech-card rv d1">
+          <div class="tc-dot" style="background:#f87171;"></div>
+          <div class="tc-pkg">statsmodels</div>
+          <div class="tc-role">ARIMA demonstration block in Predictions tab</div>
+        </div>
+        <div class="tech-card rv d2">
+          <div class="tc-dot" style="background:var(--warm-mid);"></div>
+          <div class="tc-pkg">NumPy</div>
+          <div class="tc-role">Numerics, array operations, synthetic RNG</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ═══ WORKFLOW ═══ -->
+  <section>
+    <div class="si">
+      <div class="sec-label">07 — End-to-End Workflow</div>
+      <h2 class="sec-title">Ingest → <em>Insight</em> → Export</h2>
+      <p class="sec-lead">A linear workflow through six stages — each building on the last, with reproducible artifacts
+        at every step.</p>
+
+      <div class="workflow rv">
+        <div class="wf-step">
+          <div class="wf-num">01</div>
+          <div>
+            <div class="wf-title">Ingest &amp; Normalise</div>
+            <div class="wf-desc">load_data() reads the CSV, strips headers, normalises column names to stable internal
+              identifiers. @st.cache_data prevents redundant I/O across reruns. get_data_quality() audits the frame
+              simultaneously.</div>
+            <span class="wf-badge wf-b-iphone">loader.py</span>
+          </div>
+        </div>
+        <div class="wf-step">
+          <div class="wf-num">02</div>
+          <div>
+            <div class="wf-title">Engineer Features</div>
+            <div class="wf-desc">builder.py derives Total_Product_Sales, Revenue_Per_Unit, and iPhone_Market_Share — the
+              three compound features that power ratios, rankings, and model inputs downstream.</div>
+            <span class="wf-badge wf-b-mac">builder.py</span>
+          </div>
+        </div>
+        <div class="wf-step">
+          <div class="wf-num">03</div>
+          <div>
+            <div class="wf-title">Filter via Sidebar</div>
+            <div class="wf-desc">Region multiselect and minimum iPhone sales threshold propagate a single shared
+              filtered_df to all 11 tabs simultaneously. No stale views, no manual refresh.</div>
+            <span class="wf-badge wf-b-iphone">sidebar.py</span>
+          </div>
+        </div>
+        <div class="wf-step">
+          <div class="wf-num">04</div>
+          <div>
+            <div class="wf-title">Explore &amp; Analyse</div>
+            <div class="wf-desc">Statistical inference (t-tests, ANOVA, correlations), geospatial mapping, and advanced
+              segmentation (K-Means / Agglomerative / DBSCAN) surface hidden patterns across the filtered dataset.</div>
+            <span class="wf-badge wf-b-ipad">statistics.py</span>
+            <span class="wf-badge wf-b-wear">clustering.py</span>
+          </div>
+        </div>
+        <div class="wf-step">
+          <div class="wf-num">05</div>
+          <div>
+            <div class="wf-title">Model &amp; Validate</div>
+            <div class="wf-desc">Auto-selected features feed regression pipelines (Linear, Poly, RF, GB). K-fold CV and
+              TimeSeriesSplit stress-test generalisability. SLSQP optimises the hardware mix for maximum Services
+              revenue.</div>
+            <span class="wf-badge wf-b-mac">regression.py</span>
+            <span class="wf-badge wf-b-svc">validation.py</span>
+          </div>
+        </div>
+        <div class="wf-step">
+          <div class="wf-num">06</div>
+          <div>
+            <div class="wf-title">Export Artifacts</div>
+            <div class="wf-desc">Train-once workflow writes joblib model, JSON config snapshot (timestamp + feature list
+              + hyperparameters), and predictions CSV under src/models/saved/ — ready for notebooks or downstream batch
+              jobs.</div>
+            <span class="wf-badge wf-b-iphone">export.py</span>
+            <span class="wf-badge wf-b-ipad">joblib + JSON + CSV</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ═══ LIMITATIONS ═══ -->
+  <section class="sec-bg-ivory">
+    <div class="si">
+      <div class="sec-label">08 — Limitations &amp; Honest Scope</div>
+      <h2 class="sec-title">What This <em>Is — and Isn't</em></h2>
+      <p class="sec-lead">Intellectual honesty is part of the design. These boundaries are explicit in the code
+        documentation, not buried in fine print.</p>
+
+      <div class="limits-grid">
+        <div class="lim-card l1 rv">
+          <div class="lc-num">Data</div>
+          <div class="lc-title">Toy / Stylised Dataset</div>
+          <div class="lc-desc">apple_sales_2024.csv is a stylised dataset for analysis exercises. It does not represent
+            Apple's official reporting or actual retail data.</div>
+        </div>
+        <div class="lim-card l2 rv d1">
+          <div class="lc-num">Metrics</div>
+          <div class="lc-title">In-Sample vs. Generalised</div>
+          <div class="lc-desc">Many training metrics are in-sample unless the Validation tab is used. Cross-validated
+            and TimeSeriesSplit metrics are the correct generalisation indicators.</div>
+        </div>
+        <div class="lim-card l3 rv d2">
+          <div class="lc-num">Recommendations</div>
+          <div class="lc-title">Structured Storytelling</div>
+          <div class="lc-desc">Business text and dollar figures in insights are heuristic (linear shortcuts + scaling).
+            Treat them as discussion prompts, not compliance-checked financial advice.</div>
+        </div>
+        <div class="lim-card l4 rv d3">
+          <div class="lc-num">Copilot</div>
+          <div class="lc-title">Keyword Routing, Not NLP</div>
+          <div class="lc-desc">The C-Suite AI Copilot routes on keywords (risk, report, strategy) to deterministic
+            functions. It is not connected to any external LLM API and does not understand semantics.</div>
+        </div>
+      </div>
+
+      <!-- Summary stats -->
+      <div class="stat-row rv">
+        <div class="stat-cell">
+          <div class="stat-val" style="color:var(--iphone);" data-count="11" data-suf="">11</div>
+          <div class="stat-lbl">App Modules</div>
+        </div>
+        <div class="stat-cell">
+          <div class="stat-val" style="color:var(--mac);" data-count="5" data-suf="">5</div>
+          <div class="stat-lbl">Regression Models</div>
+        </div>
+        <div class="stat-cell">
+          <div class="stat-val" style="color:var(--ipad);" data-count="3" data-suf="">3</div>
+          <div class="stat-lbl">Clustering Algos</div>
+        </div>
+        <div class="stat-cell">
+          <div class="stat-val" style="color:var(--wear);" data-count="3" data-suf="">3</div>
+          <div class="stat-lbl">Derived Features</div>
+        </div>
+        <div class="stat-cell">
+          <div class="stat-val" style="color:var(--svc);">7</div>
+          <div class="stat-lbl">Python Packages</div>
+        </div>
+        <div class="stat-cell">
+          <div class="stat-val" style="color:var(--ink);">1</div>
+          <div class="stat-lbl">Source of Truth</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ FOOTER ═══ -->
+  <footer class="site-footer">
+    <div class="footer-content">
+      <div class="footer-left">
+        <p class="copyright">&copy; 2025 Shahid Ul Islam</p>
+        <p class="footer-meta">Data Scientist & AI Developer</p>
+      </div>
+      <div class="footer-right">
+        <div class="footer-links">
+          <a href="#home" class="back-to-top">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="12" y1="19" x2="12" y2="5"></line>
+              <polyline points="5 12 12 5 19 12"></polyline>
+            </svg>
+            <span>Back to Top</span>
+          </a>
+          <div class="social-links11">
+            <a href="https://github.com/Khanz9664" target="_blank" class="social-link11">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path
+                  d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22" />
+              </svg>
+            </a>
+            <a href="https://linkedin.com/in/shahid-ul-islam-13650998" target="_blank" class="social-link11">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" />
+                <rect x="2" y="9" width="4" height="12" />
+                <circle cx="4" cy="4" r="2" />
+              </svg>
+            </a>
+            <a href="mailto:shahid9664@gmail.com" class="social-link11">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
+                <polyline points="22,6 12,13 2,6" />
+              </svg>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="made-with">
+      <p>Crafted with <span class="heart-icon">❤️</span> By Shahid</p>
+    </div>
   </footer>
-
-  <a href="https://github.com/Khanz9664/Breast-Cancer-Prediction" target="_blank" class="sticky-repo-btn">
-    <i class="fab fa-github"></i>
-    <span>Visit Project Repo</span>
-  </a>
-
-  <script>
-    // Progress bar
-    window.addEventListener('scroll', () => {
-      const doc = document.documentElement;
-      const pct = (doc.scrollTop / (doc.scrollHeight - doc.clientHeight)) * 100;
-      document.getElementById('progress-bar').style.width = pct + '%';
-    });
-
-    // Scroll reveal
-    const reveals = document.querySelectorAll('.reveal');
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(e => {
-        if (e.isIntersecting) {
-          e.target.classList.add('visible');
-          observer.unobserve(e.target);
-        }
-      });
-    }, { threshold: 0.12 });
-    reveals.forEach(r => observer.observe(r));
-
-    // Animated counters
-    function animateCount(el) {
-      const target = parseFloat(el.dataset.count);
-      const suffix = el.dataset.suffix || '';
-      const isFloat = String(target).includes('.');
-      const duration = 1400;
-      const start = performance.now();
-      function step(now) {
-        const p = Math.min((now - start) / duration, 1);
-        const ease = 1 - Math.pow(1 - p, 3);
-        const val = target * ease;
-        el.textContent = (isFloat ? val.toFixed(3) : Math.round(val)) + suffix;
-        if (p < 1) requestAnimationFrame(step);
-      }
-      requestAnimationFrame(step);
-    }
-
-    const counterObs = new IntersectionObserver((entries) => {
-      entries.forEach(e => {
-        if (e.isIntersecting && e.target.dataset.count) {
-          animateCount(e.target);
-          counterObs.unobserve(e.target);
-        }
-      });
-    }, { threshold: 0.5 });
-    document.querySelectorAll('[data-count]').forEach(el => counterObs.observe(el));
-
-    // SHAP bars
-    const shapObs = new IntersectionObserver((entries) => {
-      entries.forEach(e => {
-        if (e.isIntersecting) {
-          document.querySelectorAll('.shap-bar').forEach(bar => {
-            bar.style.width = bar.dataset.width + '%';
-          });
-          shapObs.disconnect();
-        }
-      });
-    }, { threshold: 0.3 });
-    const shapChart = document.querySelector('.shap-chart');
-    if (shapChart) shapObs.observe(shapChart);
-  </script>
+  <script src="js/AppleSales.js"></script>
 </body>
 
 </html>

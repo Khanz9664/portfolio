@@ -21,6 +21,7 @@
   <link rel="stylesheet" href="css/navigation.css" />
   <link rel="stylesheet" href="css/hero.css" />
   <link rel="stylesheet" href="css/footer.css" />
+  <link rel="stylesheet" href="css/index-slider.css" />
 
   <!-- Scripts -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
@@ -28,6 +29,7 @@
   <script defer src="js/generative-bg.js"></script>
   <script defer src="js/common.js"></script>
   <script defer src="js/index.js"></script>
+  <script defer src="js/index-slider.js"></script>
 </head>
 
 <body>
@@ -165,77 +167,112 @@
         </p>
       </div>
 
-      <div class="projects-grid">
-
-        <!-- Respiratory Disease -->
-        <div class="project-card featured">
-          <div class="card-image" style="background-image: url('img/projects/respiratory.png');"></div>
-          <div class="card-content">
-            <h3>Respiratory Disease Classification (XAI)</h3>
-            <p>
-              Transfer learning with explainable AI to classify respiratory diseases from medical imaging.
-            </p>
-
-            <div class="project-tags">
-              <span>Deep Learning</span>
-              <span>XAI</span>
-              <span>Healthcare</span>
+      <div class="double-slider-wrapper" id="project-slider-main">
+        <!-- 1. Background Image Tracker -->
+        <div class="slider-background-container">
+          <div class="slider-bg-track">
+            <div class="bg-slide-item">
+              <div class="bg-image-inner" style="background-image: url('img/projects/respiratory.png');"></div>
             </div>
-
-            <div class="project-links">
-              <a href="https://github.com/Khanz9664/Transfer-Learning-for-Respiratory-Disease-Classification"
-                target="_blank" class="btn github">GitHub</a>
-              <a href="projects/TransferLearning.html" class="btn case-study">Case Study</a>
+            <div class="bg-slide-item">
+              <div class="bg-image-inner" style="background-image: url('img/projects/breast_cancer.png');"></div>
+            </div>
+            <div class="bg-slide-item">
+              <div class="bg-image-inner" style="background-image: url('img/projects/apple_sales.png');"></div>
             </div>
           </div>
         </div>
 
-        <!-- Breast Cancer -->
-        <div class="project-card featured">
-          <div class="card-image" style="background-image: url('img/projects/breast_cancer.png');"></div>
-          <div class="card-content">
-            <h3>Breast Cancer Prediction</h3>
-            <p>
-              Machine learning models to predict cancer diagnosis using statistical and classification techniques.
-            </p>
+        <!-- 2. Content Overlay Tracker -->
+        <div class="slider-overlay-container">
+          <div class="slider-details-track">
 
-            <div class="project-tags">
-              <span>ML</span>
-              <span>Classification</span>
-              <span>Healthcare</span>
+            <!-- Slide 1 -->
+            <div class="slide-detail-item">
+              <div class="project-tags-slider">
+                <span>Core Research</span>
+                <span>Deep Learning</span>
+              </div>
+              <h3>Respiratory Disease<br>Classification</h3>
+              <p>Advanced transfer learning with explainable AI (XAI) to classify respiratory conditions from medical
+                imaging with clinical-grade precision.</p>
+              <div class="project-links-slider">
+                <a href="projects/TransferLearning.html" class="slider-btn case-study">Explore Case Study</a>
+                <a href="https://github.com/Khanz9664/Transfer-Learning-for-Respiratory-Disease-Classification"
+                  target="_blank" class="slider-btn github">
+                  <i class="fab fa-github"></i>
+                </a>
+              </div>
             </div>
 
-            <div class="project-links">
-              <a href="https://github.com/Khanz9664/Breast-Cancer-Prediction" target="_blank"
-                class="btn github">GitHub</a>
-              <a href="projects/BreastCancer.html" class="btn case-study">Case Study</a>
+            <!-- Slide 2 -->
+            <div class="slide-detail-item">
+              <div class="project-tags-slider">
+                <span>ML Models</span>
+                <span>Healthcare</span>
+              </div>
+              <h3>Breast Cancer<br>Prediction</h3>
+              <p>Predictive analytics framework leveraging statistical classification techniques to assist in
+                early-stage breast cancer diagnosis.</p>
+              <div class="project-links-slider">
+                <a href="projects/BreastCancer.html" class="slider-btn case-study">Explore Case Study</a>
+                <a href="https://github.com/Khanz9664/Breast-Cancer-Prediction" target="_blank"
+                  class="slider-btn github">
+                  <i class="fab fa-github"></i>
+                </a>
+              </div>
             </div>
+
+            <!-- Slide 3 -->
+            <div class="slide-detail-item">
+              <div class="project-tags-slider">
+                <span>Data Science</span>
+                <span>Analytics</span>
+              </div>
+              <h3>Apple Sales<br>Dashboard</h3>
+              <p>Comprehensive data visualization ecosystem providing real-time market insights and product performance
+                analytics for Apple ecosystem sales.</p>
+              <div class="project-links-slider">
+                <a href="projects/AppleSales.html" class="slider-btn case-study">Explore Case Study</a>
+                <a href="https://github.com/Khanz9664/Comprehensive-Data-Analysis-Visualization-of-Apple-Product-Sales"
+                  target="_blank" class="slider-btn github">
+                  <i class="fab fa-github"></i>
+                </a>
+              </div>
+            </div>
+
           </div>
         </div>
 
-        <!-- Apple Sales -->
-        <div class="project-card featured">
-          <div class="card-image" style="background-image: url('img/projects/apple_sales.png');"></div>
-          <div class="card-content">
-            <h3>Apple Sales Analysis Dashboard</h3>
-            <p>
-              End-to-end data analysis and interactive dashboard for Apple product sales insights.
-            </p>
-
-            <div class="project-tags">
-              <span>Data Analysis</span>
-              <span>Visualization</span>
-              <span>Dashboard</span>
-            </div>
-
-            <div class="project-links">
-              <a href="https://github.com/Khanz9664/Comprehensive-Data-Analysis-Visualization-of-Apple-Product-Sales"
-                target="_blank" class="btn github">GitHub</a>
-              <a href="projects/AppleSales.html" class="btn case-study">Case Study</a>
-            </div>
+        <!-- 3. Preview Window (Next Card) -->
+        <div class="slider-preview-window" id="next-slide-preview">
+          <div class="preview-label">UP NEXT</div>
+          <div class="preview-track">
+            <!-- These are offset by 1 compared to main -->
+            <div class="preview-slide-item" style="background-image: url('img/projects/breast_cancer.png');"></div>
+            <div class="preview-slide-item" style="background-image: url('img/projects/apple_sales.png');"></div>
+            <div class="preview-slide-item" style="background-image: url('img/projects/respiratory.png');"></div>
           </div>
         </div>
 
+        <!-- 4. Navigation (Desktop Only) -->
+        <div class="slider-main-navigation">
+          <div class="nav-trigger" id="main-prev">
+            <i class="fas fa-arrow-left"></i>
+          </div>
+          <div class="nav-trigger" id="main-next">
+            <i class="fas fa-arrow-right"></i>
+          </div>
+        </div>
+
+        <!-- 5. Progress Bar -->
+        <div class="slider-progress-bar" id="slider-progress"></div>
+
+        <!-- Hidden triggers for sync logic -->
+        <div class="hidden-triggers">
+          <a id="hidden-next-bg" href="javascript:void(0)"></a>
+          <a id="hidden-next-details" href="javascript:void(0)"></a>
+        </div>
       </div>
 
       <div class="projects-footer fade-in">

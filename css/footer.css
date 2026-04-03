@@ -4,7 +4,7 @@
     padding: 3rem 0;
     margin-top: 4rem;
     position: relative;
-    border-top: 1px solid var(--border-light);
+    border-top: var(--border-light);
 }
 
 .site-footer::before {

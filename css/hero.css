@@ -389,7 +389,7 @@
 }
 
 /* Tablet Optimizations */
-@media (width <= 1024px) {
+@media (width <=1024px) {
   .hero-content {
     grid-template-columns: 1fr;
     gap: 2rem;
@@ -420,7 +420,7 @@
 }
 
 /* Mobile Optimizations */
-@media (width <= 768px) {
+@media (width <=768px) {
   .authority-bar {
     flex-direction: column;
     gap: 2rem;
@@ -446,14 +446,14 @@
 
 /* Personal Narrative Intro Section - Enhanced */
 .personal-intro {
-  padding: 5rem 5%;
+  padding: 3rem 5%;
   background: transparent;
   position: relative;
   overflow: hidden;
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 80vh;
+  min-height: 40vh;
 }
 
 .intro-container {
@@ -470,7 +470,7 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  font-size: clamp(10rem, 30vw, 40rem);
+  font-size: clamp(10rem, 26vw, 35rem);
   font-weight: 900;
   color: rgb(255 255 255 / 0.2);
   -webkit-text-stroke: 2px rgb(255 255 255 / 0.3);
@@ -535,10 +535,14 @@
   animation-delay: -3s;
 }
 
-@media (width <= 768px) {
+@media (width <=768px) {
   .personal-intro {
-    padding: 8rem 5%;
-    min-height: 60vh;
+    padding: 4rem 5%;
+
+    /* Reduced from 8rem */
+    min-height: auto;
+
+    /* Allow content to dictate height on mobile */
   }
 
   .narrative-title {
@@ -797,7 +801,7 @@
    RESPONSIVE DESIGN
 ═══════════════════════════════════════ */
 
-@media (width <= 768px) {
+@media (width <=768px) {
   .articles-section {
     padding: 70px 5%;
   }
@@ -815,7 +819,7 @@
   }
 }
 
-@media (width <= 480px) {
+@media (width <=480px) {
   .articles-header p {
     font-size: 0.9rem;
   }
@@ -1100,7 +1104,7 @@
 ═══════════════════════════════════════ */
 
 /* Tablet */
-@media (width <= 768px) {
+@media (width <=768px) {
   .projects-section {
     padding: 70px 5%;
   }
@@ -1124,7 +1128,7 @@
 }
 
 /* Mobile */
-@media (width <= 480px) {
+@media (width <=480px) {
   .projects-header p {
     font-size: 0.9rem;
   }
@@ -1145,7 +1149,7 @@
 }
 
 /* Response */
-@media (width <= 900px) {
+@media (width <=900px) {
   .modern-hero {
     padding-top: calc(var(--nav-height) + 2rem);
 
@@ -1208,14 +1212,14 @@
 }
 
 /* --- Responsive Optimization (Mobile / Tablet) --- */
-@media (width <= 1024px) {
+@media (width <=1024px) {
   .hero-content {
     gap: 2rem;
     padding: 1rem 0;
   }
 }
 
-@media (width <= 768px) {
+@media (width <=768px) {
   .modern-hero {
     padding-top: calc(var(--nav-height) + 2rem);
     justify-content: flex-start;
@@ -1297,9 +1301,14 @@
   .stat-item {
     flex: 1 1 120px;
   }
+
+  .intro-watermark {
+    font-size: 20vw;
+    top: 30%;
+  }
 }
 
-@media (width <= 480px) {
+@media (width <=480px) {
   .hero-title {
     font-size: 15vw;
   }

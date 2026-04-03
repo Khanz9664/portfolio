@@ -2,332 +2,34 @@
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Transfer Learning Case Study | Shahid Ul Islam</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Case Study — Beyond Visual Plausibility · Shahid Ul Islam</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link
-    href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Instrument+Sans:ital,wght@0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@400;500&display=swap"
+    href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800;900&family=Poppins:wght@300;400;600;800;900&family=Space+Grotesk:wght@400;700&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,600;1,8..60,400;1,8..60,600&family=IBM+Plex+Mono:wght@400;500;600&display=swap"
     rel="stylesheet" />
-<link rel="stylesheet" href="../css/variables.css" />
-<link rel="stylesheet" href="../css/navigation.css" />
-<link rel="stylesheet" href="../css/footer.css" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
-<script defer src="../js/common.js"></script>
-<style>
-  :root {
-    --navy: #070e1a;
-    --navy-mid: #0d1f38;
-    --navy-light: #132844;
-    --ink: #0f172a;
-    --slate: #334155;
-    --muted: #64748b;
-    --border: #1e3a5f;
-    --border-light: #e2e8f0;
-    --off-white: #f7f4ef;
-    --white: #ffffff;
-    --red: #dc2626;
-    --red-light: #fef2f2;
-    --red-mid: #fee2e2;
-    --green: #16a34a;
-    --green-light: #f0fdf4;
-    --blue: #2563eb;
-    --blue-light: #eff6ff;
-    --amber: #d97706;
-    --amber-light: #fffbeb;
-    --purple: #7c3aed;
-    --accent-glow: rgba(37, 99, 235, 0.15);
-    --font-display: 'Playfair Display', Georgia, serif;
-    --font-body: 'Instrument Sans', system-ui, sans-serif;
-    --font-mono: 'JetBrains Mono', monospace;
-  }
 
-  *,
-  *::before,
-  *::after {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-  }
+  <link rel="stylesheet" href="../css/variables.css" />
+  <link rel="stylesheet" href="../css/animations.css" />
+  <link rel="stylesheet" href="../css/base.css" />
+  <link rel="stylesheet" href="../css/navigation.css" />
+  <link rel="stylesheet" href="../css/footer.css" />
+  <link rel="stylesheet" href="css/TransferLearning.css" />
 
-  html {
-    scroll-behavior: smooth;
-    font-size: 16px;
-  }
-
-  body {
-    font-family: var(--font-body);
-    background: var(--off-white);
-    color: var(--ink);
-    line-height: 1.7;
-    overflow-x: hidden;
-  }
-
-  /* ── PROGRESS BAR ── */
-  #progress-bar {
-    position: fixed;
-    top: 0;
-    left: 0;
-    height: 3px;
-    width: 0%;
-    background: linear-gradient(90deg, var(--blue), var(--purple));
-    z-index: 1000;
-    transition: width 0.1s linear;
-  }
-
-  .nav-links a:hover {
-    color: #e2e8f0;
-  }
-
-  /* ── HERO ── */
-  .hero {
-    background: var(--navy);
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    padding: 100px 2rem 80px;
-    position: relative;
-    overflow: hidden;
-  }
-
-  .hero::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background:
-      radial-gradient(ellipse 80% 60% at 20% 50%, rgba(37, 99, 235, 0.12) 0%, transparent 60%),
-      radial-gradient(ellipse 60% 80% at 80% 20%, rgba(220, 38, 38, 0.08) 0%, transparent 50%);
-    pointer-events: none;
-  }
-
-  .hero-grid {
-    position: absolute;
-    inset: 0;
-    opacity: 0.04;
-    background-image: linear-gradient(rgba(255, 255, 255, 0.5) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(255, 255, 255, 0.5) 1px, transparent 1px);
-    background-size: 60px 60px;
-  }
-
-  .hero-inner {
-    max-width: 1100px;
-    margin: 0 auto;
-    width: 100%;
-    position: relative;
-    z-index: 1;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: flex-start;
-  }
-
-  .hero-text-content {
-    width: 100%;
-    text-align: left;
-  }
-
-  .hero-text-content {
-    flex: 1;
-    text-align: left;
-  }
-
-  .hero-eyebrow {
-    font-family: var(--font-mono);
-    font-size: 0.75rem;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    color: #60a5fa;
-    margin-bottom: 1.5rem;
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-  }
-
-  @media (max-width: 1024px) {
-    .hero-inner {
-      gap: 3rem;
-      text-align: center;
-      align-items: center;
-    }
-
-    .hero-text-content {
-      text-align: center;
-    }
-
-    .hero-eyebrow {
-      justify-content: center;
-    }
-  }
-
-  .hero-eyebrow::before {
-    content: '';
-    display: block;
-    width: 40px;
-    height: 1px;
-    background: #60a5fa;
-  }
-
-  .hero h1 {
-    font-family: var(--font-display);
-    font-size: clamp(2.4rem, 6vw, 5rem);
-    font-weight: 900;
-    line-height: 1.08;
-    color: var(--white);
-    margin-bottom: 1rem;
-    letter-spacing: -0.02em;
-  }
-
-  .hero h1 em {
-    font-style: italic;
-    color: #93c5fd;
-  }
-
-  .hero-subtitle {
-    font-size: clamp(1rem, 2.5vw, 1.25rem);
-    color: #94a3b8;
-    max-width: 620px;
-    margin-bottom: 2.5rem;
-    font-weight: 400;
-  }
-
-  .hero-meta {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.75rem;
-    margin-bottom: 3rem;
-  }
-
-  .badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.4rem;
-    padding: 0.3rem 0.8rem;
-    border-radius: 999px;
-    font-family: var(--font-mono);
-    font-size: 0.72rem;
-    font-weight: 500;
-    letter-spacing: 0.03em;
-    border: 1px solid;
-  }
-
-  .badge-blue {
-    background: rgba(37, 99, 235, 0.15);
-    border-color: rgba(37, 99, 235, 0.4);
-    color: #93c5fd;
-  }
-
-  .badge-green {
-    background: rgba(22, 163, 74, 0.15);
-    border-color: rgba(22, 163, 74, 0.4);
-    color: #86efac;
-  }
-
-  .badge-red {
-    background: rgba(220, 38, 38, 0.15);
-    border-color: rgba(220, 38, 38, 0.4);
-    color: #fca5a5;
-  }
-
-  .badge-amber {
-    background: rgba(217, 119, 6, 0.15);
-    border-color: rgba(217, 119, 6, 0.4);
-    color: #fcd34d;
-  }
-
-  .badge-purple {
-    background: rgba(124, 58, 237, 0.15);
-    border-color: rgba(124, 58, 237, 0.4);
-    color: #c4b5fd;
-  }
-
-  .hero-stats {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-    gap: 1px;
-    background: var(--border);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    overflow: hidden;
-    max-width: 640px;
-  }
-
-  .hero-stat {
-    background: var(--navy-light);
-    padding: 1.25rem 1.5rem;
-    text-align: center;
-  }
-
-  .hero-stat-val {
-    font-family: var(--font-display);
-    font-size: 2rem;
-    font-weight: 700;
-    color: var(--white);
-    line-height: 1;
-    margin-bottom: 0.3rem;
-  }
-
-  .hero-stat-val.green {
-    color: #4ade80;
-  }
-
-  .hero-stat-val.blue {
-    color: #60a5fa;
-  }
-
-  .hero-stat-val.red {
-    color: #f87171;
-  }
-
-  .hero-stat-label {
-    font-size: 0.7rem;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    color: #64748b;
-    font-family: var(--font-mono);
-  }
-
-  .hero-scroll {
-    position: absolute;
-    bottom: 2rem;
-    left: 50%;
-    transform: translateX(-50%);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 0.5rem;
-    color: #475569;
-    font-size: 0.7rem;
-    font-family: var(--font-mono);
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    animation: bounce 2s infinite;
-  }
-
-  @keyframes bounce {
-
-    0%,
-    100% {
-      transform: translateX(-50%) translateY(0)
-    }
-
-    50% {
-      transform: translateX(-50%) translateY(8px)
-    }
-  }
-
-  .scroll-arrow {
-    width: 20px;
-    height: 20px;
-    border-right: 2px solid #475569;
-    border-bottom: 2px solid #475569;
-    transform: rotate(45deg);
-  }
-</style>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <script defer src="../js/common.js"></script>
 </head>
 
 <body>
-
-  <div id="progress-bar"></div>
+  <div id="prog"></div>
 
   <!-- Navigation -->
   <div class="top-bar">
@@ -337,12 +39,12 @@
     </div>
     <nav class="nav-container">
       <ul class="nav-links">
-        <li><a href="../index.html" class="nav-link"><span>.</span> Home</a></li>
-        <li><a href="../about.html" class="nav-link"><span>.</span> About</a></li>
-        <li><a href="../skills.html" class="nav-link"><span>.</span> Skills</a></li>
-        <li><a href="../projects.html" class="nav-link"><span>.</span> Projects</a></li>
-        <li><a href="../contact.html" class="nav-link"><span>.</span> Contact</a></li>
-        <li><a href="../articles.html" class="nav-link"><span>.</span> Articles</a></li>
+        <li><a href="../index.html" class="nav-link">.Home</a></li>
+        <li><a href="../about.html" class="nav-link">.About</a></li>
+        <li><a href="../skills.html" class="nav-link">.Skills</a></li>
+        <li><a href="../projects.html" class="nav-link">.Projects</a></li>
+        <li><a href="../contact.html" class="nav-link">.Contact</a></li>
+        <li><a href="../articles.html" class="nav-link">.Articles</a></li>
       </ul>
       <div class="menu-toggle">
         <div class="hamburger"></div>
@@ -350,58 +52,1024 @@
     </nav>
   </div>
 
-  <!-- ── HERO ── -->
+  <!-- ═══════════════════════ HERO ═══════════════════════ -->
   <section class="hero">
-    <div class="hero-grid"></div>
+    <div class="hero-scan"></div>
+    <div class="hero-glow"></div>
+    <div class="hero-glow-2"></div>
     <div class="hero-inner">
-      <div class="hero-text-content">
-        <div class="hero-eyebrow">Case Study · June 2025</div>
-        <h1>Transfer Learning <br /><em>for Respiratory-Disease Classification </em><br />With XAI</h1>
-        <p class="hero-subtitle">A comprehensive comparative study analyzing the effectiveness of transfer learning
-          versus training from scratch and The faithfulness comparison of CNN's versus Vision Transformers using XAI.
+      <div class="hero-eyebrow">Research Case Study · 2026 · Under Peer Review</div>
+      <h1>Beyond Visual<br /><em>Plausibility</em></h1>
+      <div class="hero-sub-title">Faithfulness-Aware Comparison of CNNs and Vision Transformers<br />for Chest X-Ray
+        Classification</div>
+      <p class="hero-lede">The model that produces the most visually convincing heatmaps is the one whose explanations
+        are causally hollow.</p>
+      <div class="hero-authors">
+        Department of Computer Science · Islamic University of Science and Technology, Awantipora<br />
+        <span>Dr. Owais</span> &nbsp;·&nbsp; <span>Shahid Ul Islam</span>
+      </div>
+      <div class="arch-badges">
+        <div class="arch-badge vgg">
+          <div class="arch-dot"></div>
+          <div>
+            <div class="arch-name">VGG16</div>
+            <div class="arch-desc">Transfer Learning · 83% acc.</div>
+          </div>
+        </div>
+        <div class="arch-badge vit">
+          <div class="arch-dot"></div>
+          <div>
+            <div class="arch-name">ViT-B/16</div>
+            <div class="arch-desc">Transfer Learning · 82% acc.</div>
+          </div>
+        </div>
+        <div class="arch-badge cnn">
+          <div class="arch-dot"></div>
+          <div>
+            <div class="arch-name">Custom CNN</div>
+            <div class="arch-desc">From Scratch · 74% acc.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="hero-scroll-indicator">
+      <div class="scroll-line"></div>
+      <div class="scroll-label">Scroll</div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════ WHAT MAKES IT DIFFERENT ═══════════════════════ -->
+  <section style="background:var(--charcoal);">
+    <div class="si">
+      <div class="sec-label">00 — Context</div>
+      <h2 class="sec-title">What Makes This Study <em>Different</em></h2>
+      <p class="sec-lead">Most deep learning studies ask "how accurate is the model?" — this study asks the harder
+        question: can we trust <em>why</em> the model made that decision?</p>
+
+      <div class="rv" style="overflow-x:auto;border-radius:10px;border:1px solid var(--border);">
+        <table class="diff-table">
+          <thead>
+            <tr>
+              <th>Conventional Study</th>
+              <th>This Study</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="td-conv">Reports accuracy only</td>
+              <td class="td-this">Reports accuracy <em>plus</em> faithfulness of explanations</td>
+            </tr>
+            <tr>
+              <td class="td-conv">One CAM method per model</td>
+              <td class="td-this">Two CAM methods with inter-method agreement evaluation</td>
+            </tr>
+            <tr>
+              <td class="td-conv">Visual inspection of heatmaps</td>
+              <td class="td-this">Quantitative pixel deletion — AOPC and AUC curves</td>
+            </tr>
+            <tr>
+              <td class="td-conv">Single metric evaluation</td>
+              <td class="td-this">Six-dimensional explainability framework</td>
+            </tr>
+            <tr>
+              <td class="td-conv">No statistical correction</td>
+              <td class="td-this">Bonferroni-corrected non-parametric testing (α 0.0083)</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="findings-grid" style="margin-top:2.5rem;">
+        <div class="finding-card rv">
+          <div class="finding-icon"></div>
+          <div class="finding-title">Transfer Learning</div>
+          <div class="finding-desc">Compare pretrained architectures (VGG16, ViT-B/16) against a custom baseline to
+            quantify the advantage of ImageNet pretraining in the medical domain.</div>
+        </div>
+        <div class="finding-card rv d1">
+          <div class="finding-icon"></div>
+          <div class="finding-title">Explainable AI</div>
+          <div class="finding-desc">Apply GradCAM++ and EigenCAM to both top models. Evaluate heatmaps across six
+            independent quantitative dimensions with rigorous statistical testing.</div>
+        </div>
+        <div class="finding-card rv d2">
+          <div class="finding-icon"></div>
+          <div class="finding-title">Faithfulness Testing</div>
+          <div class="finding-desc">Use progressive pixel deletion to ask whether highlighted pixels causally drive
+            model confidence — revealing a paradox that visual inspection alone cannot detect.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════ DATASET ═══════════════════════ -->
+  <section style="background:var(--obsidian);">
+    <div class="si">
+      <div class="sec-label">01 — Data</div>
+      <h2 class="sec-title">Dataset &amp; <em>Class Structure</em></h2>
+      <p class="sec-lead">6,432 posterior-anterior chest X-rays from the Kaggle Pneumonia &amp; COVID-19 Image Dataset —
+        a challenging four-class classification problem with meaningful class imbalance.</p>
+
+      <div class="ds-grid rv">
+        <div class="ds-cell">
+          <div class="ds-lbl">Total Images</div>
+          <div class="ds-num c" data-count="6432" data-suf="">0</div>
+          <div class="ds-sub">PA chest X-rays · stratified split</div>
+        </div>
+        <div class="ds-cell">
+          <div class="ds-lbl">Classes</div>
+          <div class="ds-num a">4</div>
+          <div class="ds-sub">Normal · Bacterial · Viral · COVID-19</div>
+        </div>
+        <div class="ds-cell">
+          <div class="ds-lbl">Training Split</div>
+          <div class="ds-num e">80%</div>
+          <div class="ds-sub">10% val · 10% test (withheld)</div>
+        </div>
+        <div class="ds-cell">
+          <div class="ds-lbl">Imbalance Handling</div>
+          <div class="ds-num" style="font-size:1.4rem;color:var(--violet);">w = N/Kn</div>
+          <div class="ds-sub">Class-weighted cross-entropy</div>
+        </div>
+      </div>
+
+      <div class="class-bars rv"
+        style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:1.75rem;margin-bottom:2.5rem;">
+        <div
+          style="font-family:var(--font-mono);font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;color:var(--subtle);margin-bottom:1.25rem;">
+          Class Distribution in Training Set</div>
+        <div class="cb-row" style="margin-bottom:.9rem;">
+          <div class="cb-label">Bacterial Pneumonia</div>
+          <div class="cb-track">
+            <div class="cb-fill" data-w="40" style="background:linear-gradient(90deg,var(--amber),#fbbf24);"></div>
+          </div>
+          <div class="cb-pct">~40%</div>
+        </div>
+        <div class="cb-row" style="margin-bottom:.9rem;">
+          <div class="cb-label">Viral Pneumonia</div>
+          <div class="cb-track">
+            <div class="cb-fill" data-w="23" style="background:linear-gradient(90deg,var(--crimson),#f87171);"></div>
+          </div>
+          <div class="cb-pct">~23%</div>
+        </div>
+        <div class="cb-row" style="margin-bottom:.9rem;">
+          <div class="cb-label">Normal</div>
+          <div class="cb-track">
+            <div class="cb-fill" data-w="22" style="background:linear-gradient(90deg,var(--cyan),#67e8f9);"></div>
+          </div>
+          <div class="cb-pct">~22%</div>
+        </div>
+        <div class="cb-row">
+          <div class="cb-label">COVID-19</div>
+          <div class="cb-track">
+            <div class="cb-fill" data-w="15" style="background:linear-gradient(90deg,var(--violet),#a78bfa);"></div>
+          </div>
+          <div class="cb-pct">~15%</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════ TRANSFER LEARNING ═══════════════════════ -->
+  <section id="transfer" style="background:var(--charcoal);">
+    <div class="si">
+      <div class="sec-label">02 — Transfer Learning</div>
+      <h2 class="sec-title">Three Architectures, <em>One Question</em></h2>
+      <p class="sec-lead">Does ImageNet pretraining confer a decisive advantage for medical image classification? Two
+        pretrained models face a custom baseline trained from scratch on the same data.</p>
+
+      <div class="tl-cards">
+        <div class="tl-card rv">
+          <div class="tl-icon"></div>
+          <div class="tl-title">Stage 1 — Frozen Backbone</div>
+          <div class="tl-desc">Classification head adapts rapidly to the 4-class target label space. The pretrained
+            encoder's ImageNet representations are preserved intact, preventing catastrophic forgetting.</div>
+        </div>
+        <div class="tl-card rv d1">
+          <div class="tl-icon"></div>
+          <div class="tl-title">Stage 2 — Fine-Tuning</div>
+          <div class="tl-desc">Full network trained end-to-end at η = 10⁻⁴. Incremental domain adaptation refines —
+            rather than overwrites — the ImageNet initialization advantage.</div>
+        </div>
+        <div class="tl-card rv d2">
+          <div class="tl-icon"></div>
+          <div class="tl-title">Early Stopping</div>
+          <div class="tl-desc">Patience P = 3 epochs, threshold δ = 10⁻⁴. Checkpoint restored at minimum validation
+            loss. Prevents overfitting without a predefined epoch ceiling.</div>
+        </div>
+        <div class="tl-card rv d3">
+          <div class="tl-icon"></div>
+          <div class="tl-title">Differential Augmentation</div>
+          <div class="tl-desc">VGG16 tolerates aggressive augmentation (±30°, blur, erasing). ViT-B/16 requires a
+            moderated pipeline — empirically discovered: aggressive transforms destabilize transformer training.</div>
+        </div>
+      </div>
+
+      <div class="aug-grid rv">
+        <div class="aug-cell">
+          <div class="aug-name vgg">VGG16 — Aggressive</div>
+          <ul class="aug-techniques">
+            <li>±30° random rotation</li>
+            <li>Scale [0.8, 1.0] crop</li>
+            <li>Horizontal flip p=0.5</li>
+            <li>Gaussian blur</li>
+            <li>Random erasing</li>
+            <li>ImageNet normalize</li>
+          </ul>
+        </div>
+        <div class="aug-cell">
+          <div class="aug-name vit">ViT-B/16 — Moderated</div>
+          <ul class="aug-techniques">
+            <li>±15° rotation (half of VGG16)</li>
+            <li>Colour jitter (B, C, S)</li>
+            <li>Horizontal flip p=0.5</li>
+            <li>Random erasing ↓ prob.</li>
+            <li>ImageNet normalize</li>
+            <li>No blur — patch stability</li>
+          </ul>
+        </div>
+        <div class="aug-cell">
+          <div class="aug-name cnn">Custom CNN — Standard</div>
+          <ul class="aug-techniques">
+            <li>Random rotation</li>
+            <li>Horizontal flip</li>
+            <li>Colour jitter</li>
+            <li>No erasing</li>
+            <li>Random initialize</li>
+            <li>Runs all 15 epochs</li>
+          </ul>
+        </div>
+      </div>
+
+      <div
+        style="font-family:var(--font-mono);font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;color:var(--subtle);margin-bottom:1rem;"
+        class="rv">// Training Outcomes</div>
+      <div class="rv" style="overflow-x:auto;border-radius:10px;border:1px solid var(--border);">
+        <table class="training-table">
+          <thead>
+            <tr>
+              <th>Model</th>
+              <th>Stop Epoch</th>
+              <th>Best Val Acc</th>
+              <th>Best Val Loss</th>
+              <th>Train Time</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="tt-model tt-vgg">VGG16</td>
+              <td><span style="font-family:var(--font-mono);color:var(--amber);">6</span></td>
+              <td><span style="font-family:var(--font-mono);color:var(--amber);">84.48%</span></td>
+              <td style="font-family:var(--font-mono);color:var(--subtle);">0.4021</td>
+              <td style="font-family:var(--font-mono);color:var(--subtle);">~3.3 min</td>
+            </tr>
+            <tr>
+              <td class="tt-model tt-vit">ViT-B/16</td>
+              <td><span style="font-family:var(--font-mono);color:var(--violet);">7</span></td>
+              <td><span style="font-family:var(--font-mono);color:var(--violet);">82.38%</span></td>
+              <td style="font-family:var(--font-mono);color:var(--subtle);">0.4169</td>
+              <td style="font-family:var(--font-mono);color:var(--subtle);">~5.4 min</td>
+            </tr>
+            <tr>
+              <td class="tt-model tt-cnn">Custom CNN</td>
+              <td><span style="font-family:var(--font-mono);color:var(--emerald);">15</span></td>
+              <td><span style="font-family:var(--font-mono);color:var(--emerald);">74.37%</span></td>
+              <td style="font-family:var(--font-mono);color:var(--subtle);">0.8472</td>
+              <td style="font-family:var(--font-mono);color:var(--subtle);">~11.1 min</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="rv" style="font-size:.85rem;color:var(--muted);font-style:italic;font-family:var(--font-mono);">→
+        Transfer learning delivers a 9-point accuracy advantage and 2–3× faster convergence over training from scratch.
+      </p>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════ CLASSIFICATION RESULTS ═══════════════════════ -->
+  <section id="results" style="background:var(--obsidian);">
+    <div class="si">
+      <div class="sec-label">03 — Classification Results</div>
+      <h2 class="sec-title">Model <em>Performance</em></h2>
+      <p class="sec-lead">Overall classification performance across all three architectures, measured on a held-out
+        stratified 20% test set with class-weighted cross-entropy training.</p>
+
+      <div class="model-trio">
+        <div class="model-card vgg rv">
+          <span class="mc-tag">Transfer Learning</span>
+          <div class="mc-name">VGG16</div>
+          <div class="mc-strategy">ImageNet Pretrained · Aggressive Augmentation</div>
+          <div class="mc-stat-row">
+            <div class="mc-stat">
+              <div class="mc-val" data-count="83" data-suf="%">0%</div>
+              <div class="mc-val-lbl">Accuracy</div>
+            </div>
+            <div class="mc-stat">
+              <div class="mc-val" data-count="0.84" data-suf="">0.00</div>
+              <div class="mc-val-lbl">Macro F1</div>
+            </div>
+          </div>
+          <div class="mc-divider"></div>
+          <ul class="mc-feats">
+            <li>Excels at focal, spatially-bounded patterns</li>
+            <li>Bacterial Pneumonia F1 = 0.83 (strong)</li>
+            <li>COVID-19 F1 = 0.98 (near-perfect)</li>
+            <li>13 convolutional layers · VGG-pure design</li>
+          </ul>
+          <div class="mc-stop">⏱ Stopped at epoch 6 · inference 1.068s</div>
+        </div>
+        <div class="model-card vit rv d1">
+          <span class="mc-tag">Transfer Learning</span>
+          <div class="mc-name">ViT-B/16</div>
+          <div class="mc-strategy">HuggingFace Pretrained · Moderated Augmentation</div>
+          <div class="mc-stat-row">
+            <div class="mc-stat">
+              <div class="mc-val" data-count="82" data-suf="%">0%</div>
+              <div class="mc-val-lbl">Accuracy</div>
+            </div>
+            <div class="mc-stat">
+              <div class="mc-val" data-count="0.84" data-suf="">0.00</div>
+              <div class="mc-val-lbl">Macro F1</div>
+            </div>
+          </div>
+          <div class="mc-divider"></div>
+          <ul class="mc-feats">
+            <li>Global self-attention — no spatial bias</li>
+            <li>COVID-19 recall = 0.99 (best of all models)</li>
+            <li>14×14 patch grid attention maps</li>
+            <li>196 patches of 16×16 from 224×224 input</li>
+          </ul>
+          <div class="mc-stop">⏱ Stopped at epoch 7 · inference 0.977s</div>
+        </div>
+        <div class="model-card cnn rv d2">
+          <span class="mc-tag">From Scratch · Baseline</span>
+          <div class="mc-name">Custom CNN</div>
+          <div class="mc-strategy">Random Init · 4 Conv Blocks · 15 Epochs</div>
+          <div class="mc-stat-row">
+            <div class="mc-stat">
+              <div class="mc-val" data-count="74" data-suf="%">0%</div>
+              <div class="mc-val-lbl">Accuracy</div>
+            </div>
+            <div class="mc-stat">
+              <div class="mc-val" data-count="0.75" data-suf="">0.00</div>
+              <div class="mc-val-lbl">Macro F1</div>
+            </div>
+          </div>
+          <div class="mc-divider"></div>
+          <ul class="mc-feats">
+            <li>Quantifies pretraining advantage directly</li>
+            <li>4 × (Conv→BN→ReLU×2 → MaxPool → Dropout)</li>
+            <li>Viral Pneumonia hardest class (F1 = 0.55)</li>
+            <li>Needs all 15 epochs to converge</li>
+          </ul>
+          <div class="mc-stop">⏱ All 15 epochs · inference 0.768s</div>
+        </div>
+      </div>
+
+      <div
+        style="font-family:var(--font-mono);font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;color:var(--subtle);margin-bottom:1rem;"
+        class="rv">// Class-wise F1 Scores</div>
+      <div class="rv" style="overflow-x:auto;border-radius:10px;border:1px solid var(--border);">
+        <div class="f1-grid">
+          <div class="f1-cell head">Class</div>
+          <div class="f1-cell head" style="color:var(--amber);">VGG16</div>
+          <div class="f1-cell head" style="color:var(--violet);">ViT-B/16</div>
+          <div class="f1-cell head" style="color:var(--emerald);">Custom CNN</div>
+
+          <div class="f1-cell row-label">Normal</div>
+          <div class="f1-cell"><span class="f1-pill f1-hi">0.91</span></div>
+          <div class="f1-cell"><span class="f1-pill f1-hi">0.91</span></div>
+          <div class="f1-cell"><span class="f1-pill f1-mid">0.80</span></div>
+
+          <div class="f1-cell row-label">Bacterial Pneumonia</div>
+          <div class="f1-cell"><span class="f1-pill f1-hi">0.83</span></div>
+          <div class="f1-cell"><span class="f1-pill f1-mid">0.81</span></div>
+          <div class="f1-cell"><span class="f1-pill f1-mid">0.74</span></div>
+
+          <div class="f1-cell row-label">Viral Pneumonia</div>
+          <div class="f1-cell"><span class="f1-pill f1-lo">0.64</span></div>
+          <div class="f1-cell"><span class="f1-pill f1-lo">0.64</span></div>
+          <div class="f1-cell"><span class="f1-pill f1-lo">0.55</span></div>
+
+          <div class="f1-cell row-label">COVID-19</div>
+          <div class="f1-cell"><span class="f1-pill f1-hi">0.98</span></div>
+          <div class="f1-cell"><span class="f1-pill f1-hi">0.99</span></div>
+          <div class="f1-cell"><span class="f1-pill f1-hi">0.92</span></div>
+        </div>
+      </div>
+      <p class="rv"
+        style="margin-top:.75rem;font-size:.82rem;color:var(--muted);font-style:italic;font-family:var(--font-mono);">→
+        Viral Pneumonia remains the hardest class across all models due to its radiographic overlap with bacterial
+        pneumonia.</p>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════ PARADOX BANNER ═══════════════════════ -->
+  <div class="paradox-header" id="paradox">
+    <div class="paradox-statement">"The model that produces the most <strong>visually convincing heatmaps</strong> is
+      the one whose explanations are <strong>causally hollow.</strong>"</div>
+    <div class="paradox-sub">— The Explainability Paradox · Central finding of this study</div>
+  </div>
+
+  <!-- ═══════════════════════ PIXEL DELETION ═══════════════════════ -->
+  <section style="background:var(--charcoal);">
+    <div class="si">
+      <div class="sec-label">04 — The Paradox</div>
+      <h2 class="sec-title">Progressive Pixel <em>Deletion</em></h2>
+      <p class="sec-lead">If a heatmap genuinely reflects the model's reasoning, removing the highlighted pixels should
+        reduce confidence. We test exactly this — and discover opposite behavior in the two models.</p>
+
+      <!-- Animated SVG chart -->
+      <div class="pdel-wrap rv">
+        <div class="pdel-title">
+          // CONFIDENCE vs. PIXELS REMOVED
+          <span>
+            <div class="pdel-legend-dot" style="background:var(--amber);"></div>VGG16 — confidence rises
+          </span>
+          <span>
+            <div class="pdel-legend-dot" style="background:var(--emerald);"></div>ViT-B/16 — confidence falls
+          </span>
+        </div>
+        <div class="chart-area">
+          <svg class="pdel-svg" viewBox="0 0 700 320" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="vggGrad" x1="0" x2="1" y1="0" y2="0">
+                <stop offset="0%" stop-color="#f59e0b" />
+                <stop offset="100%" stop-color="#ef4444" />
+              </linearGradient>
+              <linearGradient id="vitGrad" x1="0" x2="1" y1="0" y2="0">
+                <stop offset="0%" stop-color="#10b981" />
+                <stop offset="100%" stop-color="#06b6d4" />
+              </linearGradient>
+              <marker id="arrowV" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto">
+                <path d="M0,0 L0,6 L6,3 Z" fill="#4b5065" />
+              </marker>
+              <clipPath id="chartClip">
+                <rect x="60" y="20" width="610" height="250" />
+              </clipPath>
+            </defs>
+            <!-- Grid lines -->
+            <line x1="60" y1="20" x2="60" y2="270" stroke="#23262f" stroke-width="1" />
+            <line x1="60" y1="270" x2="670" y2="270" stroke="#23262f" stroke-width="1" />
+            <!-- Y gridlines -->
+            <line x1="60" y1="70" x2="670" y2="70" stroke="#1a1c25" stroke-width="1" stroke-dasharray="4,4" />
+            <line x1="60" y1="120" x2="670" y2="120" stroke="#1a1c25" stroke-width="1" stroke-dasharray="4,4" />
+            <line x1="60" y1="170" x2="670" y2="170" stroke="#1a1c25" stroke-width="1" stroke-dasharray="4,4" />
+            <line x1="60" y1="220" x2="670" y2="220" stroke="#1a1c25" stroke-width="1" stroke-dasharray="4,4" />
+            <!-- Y labels -->
+            <text x="52" y="24" font-family="IBM Plex Mono" font-size="10" fill="#4b5065" text-anchor="end">1.0</text>
+            <text x="52" y="74" font-family="IBM Plex Mono" font-size="10" fill="#4b5065" text-anchor="end">0.8</text>
+            <text x="52" y="124" font-family="IBM Plex Mono" font-size="10" fill="#4b5065" text-anchor="end">0.6</text>
+            <text x="52" y="174" font-family="IBM Plex Mono" font-size="10" fill="#4b5065" text-anchor="end">0.4</text>
+            <text x="52" y="224" font-family="IBM Plex Mono" font-size="10" fill="#4b5065" text-anchor="end">0.2</text>
+            <!-- X labels -->
+            <text x="60" y="288" font-family="IBM Plex Mono" font-size="10" fill="#4b5065"
+              text-anchor="middle">0%</text>
+            <text x="162" y="288" font-family="IBM Plex Mono" font-size="10" fill="#4b5065"
+              text-anchor="middle">10%</text>
+            <text x="264" y="288" font-family="IBM Plex Mono" font-size="10" fill="#4b5065"
+              text-anchor="middle">20%</text>
+            <text x="366" y="288" font-family="IBM Plex Mono" font-size="10" fill="#4b5065"
+              text-anchor="middle">33%</text>
+            <text x="468" y="288" font-family="IBM Plex Mono" font-size="10" fill="#4b5065"
+              text-anchor="middle">50%</text>
+            <text x="570" y="288" font-family="IBM Plex Mono" font-size="10" fill="#4b5065"
+              text-anchor="middle">70%</text>
+            <text x="670" y="288" font-family="IBM Plex Mono" font-size="10" fill="#4b5065"
+              text-anchor="middle">90%</text>
+            <text x="370" y="308" font-family="IBM Plex Mono" font-size="10" fill="#4b5065"
+              text-anchor="middle">Fraction of highlighted pixels removed →</text>
+            <!-- Cross point annotation -->
+            <line x1="366" y1="20" x2="366" y2="270" stroke="rgba(255,255,255,0.08)" stroke-width="1"
+              stroke-dasharray="3,3" />
+            <text x="370" y="38" font-family="IBM Plex Mono" font-size="9" fill="#4b5065">Curves cross</text>
+            <text x="370" y="50" font-family="IBM Plex Mono" font-size="9" fill="#4b5065">at ~33%</text>
+
+            <!-- VGG16 data: 0.47→0.51→0.61→0.74→0.82→0.91→0.98 ; y = 270 - val*250 -->
+            <!-- Pixels: x=60,162,264,366,468,570,670 -->
+            <!-- VGG y-coords: 270-0.47*250=152.5 → 270-0.51*250=142.5 → 270-0.61*250=117.5 → 270-0.74*250=85 → 270-0.82*250=65 → 270-0.91*250=42.5 → 270-0.98*250=25 -->
+            <g clip-path="url(#chartClip)">
+              <polyline id="vggLine" points="60,152.5 162,142.5 264,117.5 366,85 468,65 570,42.5 670,25" fill="none"
+                stroke="url(#vggGrad)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"
+                stroke-dasharray="1000" stroke-dashoffset="1000" />
+              <!-- VGG area fill -->
+              <polygon id="vggArea" points="60,152.5 162,142.5 264,117.5 366,85 468,65 570,42.5 670,25 670,270 60,270"
+                fill="url(#vggGrad)" opacity="0" />
+
+              <!-- ViT data: 0.99→0.96→0.81→0.63→0.52→0.44→0.41 -->
+              <!-- ViT y: 270-0.99*250=22.5 → 270-0.96*250=30 → 270-0.81*250=67.5 → 270-0.63*250=112.5 → 270-0.52*250=140 → 270-0.44*250=160 → 270-0.41*250=167.5 -->
+              <polyline id="vitLine" points="60,22.5 162,30 264,67.5 366,112.5 468,140 570,160 670,167.5" fill="none"
+                stroke="url(#vitGrad)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"
+                stroke-dasharray="1000" stroke-dashoffset="1000" />
+              <polygon id="vitArea" points="60,22.5 162,30 264,67.5 366,112.5 468,140 570,160 670,167.5 670,270 60,270"
+                fill="url(#vitGrad)" opacity="0" />
+            </g>
+
+            <!-- Dots VGG -->
+            <circle cx="60" cy="152.5" r="4" fill="var(--amber)" opacity="0" class="vgg-dot" />
+            <circle cx="162" cy="142.5" r="4" fill="var(--amber)" opacity="0" class="vgg-dot" />
+            <circle cx="264" cy="117.5" r="4" fill="var(--amber)" opacity="0" class="vgg-dot" />
+            <circle cx="366" cy="85" r="4" fill="var(--amber)" opacity="0" class="vgg-dot" />
+            <circle cx="468" cy="65" r="4" fill="var(--amber)" opacity="0" class="vgg-dot" />
+            <circle cx="570" cy="42.5" r="4" fill="var(--amber)" opacity="0" class="vgg-dot" />
+            <circle cx="670" cy="25" r="4" fill="var(--crimson)" opacity="0" class="vgg-dot" />
+            <!-- Dots ViT -->
+            <circle cx="60" cy="22.5" r="4" fill="var(--emerald)" opacity="0" class="vit-dot" />
+            <circle cx="162" cy="30" r="4" fill="var(--emerald)" opacity="0" class="vit-dot" />
+            <circle cx="264" cy="67.5" r="4" fill="var(--emerald)" opacity="0" class="vit-dot" />
+            <circle cx="366" cy="112.5" r="4" fill="var(--emerald)" opacity="0" class="vit-dot" />
+            <circle cx="468" cy="140" r="4" fill="var(--cyan)" opacity="0" class="vit-dot" />
+            <circle cx="570" cy="160" r="4" fill="var(--cyan)" opacity="0" class="vit-dot" />
+            <circle cx="670" cy="167.5" r="4" fill="var(--cyan)" opacity="0" class="vit-dot" />
+
+            <!-- Labels -->
+            <text x="672" y="22" font-family="IBM Plex Mono" font-size="10" fill="var(--crimson)">VGG16</text>
+            <text x="672" y="164" font-family="IBM Plex Mono" font-size="10" fill="var(--emerald)">ViT-B/16</text>
+          </svg>
+        </div>
+        <p class="pdel-note">n=32 stratified images · T=10 deletion steps · pixels replaced with channel-wise ImageNet
+          mean</p>
+      </div>
+
+      <div class="faith-duo rv">
+        <div class="faith-card unfaithful">
+          <div class="faith-verdict">Causally Unfaithful</div>
+          <div class="faith-model">VGG16</div>
+          <div class="faith-desc">Visually convincing heatmaps. Anatomically broad. Clinically intuitive. Yet confidence
+            <em>rises</em> as highlighted pixels are removed.
+          </div>
+          <div class="faith-metrics">
+            <div class="fm-item">
+              <div class="fm-val">0.828</div>
+              <div class="fm-lbl">AUC ↑ (bad)</div>
+            </div>
+            <div class="fm-item">
+              <div class="fm-val">−0.012</div>
+              <div class="fm-lbl">AOPC ↓ (bad)</div>
+            </div>
+          </div>
+          <div class="faith-trend">Confidence progression as pixels removed:</div>
+          <div class="faith-progression">
+            <div class="fp-step">
+              <div class="fp-pct">0%</div>
+              <div class="fp-val">0.47</div>
+            </div>
+            <div class="fp-arrow">→</div>
+            <div class="fp-step">
+              <div class="fp-pct">10%</div>
+              <div class="fp-val">0.51</div>
+            </div>
+            <div class="fp-arrow">→</div>
+            <div class="fp-step">
+              <div class="fp-pct">33%</div>
+              <div class="fp-val">0.74</div>
+            </div>
+            <div class="fp-arrow">→</div>
+            <div class="fp-step">
+              <div class="fp-pct">70%</div>
+              <div class="fp-val">0.91</div>
+            </div>
+            <div class="fp-arrow">→</div>
+            <div class="fp-step">
+              <div class="fp-pct">90%</div>
+              <div class="fp-val">0.98</div>
+            </div>
+          </div>
+        </div>
+        <div class="faith-card faithful">
+          <div class="faith-verdict">Causally Faithful</div>
+          <div class="faith-model">ViT-B/16</div>
+          <div class="faith-desc">Patchier, less visually consistent heatmaps. Some clinically puzzling. Yet confidence
+            <em>falls</em> sharply as highlighted pixels are removed.
+          </div>
+          <div class="faith-metrics">
+            <div class="fm-item">
+              <div class="fm-val">0.588</div>
+              <div class="fm-lbl">AUC ↓ (good)</div>
+            </div>
+            <div class="fm-item">
+              <div class="fm-val">+0.199</div>
+              <div class="fm-lbl">AOPC ↑ (good)</div>
+            </div>
+          </div>
+          <div class="faith-trend">Confidence progression as pixels removed:</div>
+          <div class="faith-progression">
+            <div class="fp-step">
+              <div class="fp-pct">0%</div>
+              <div class="fp-val">0.99</div>
+            </div>
+            <div class="fp-arrow">→</div>
+            <div class="fp-step">
+              <div class="fp-pct">10%</div>
+              <div class="fp-val">0.96</div>
+            </div>
+            <div class="fp-arrow">→</div>
+            <div class="fp-step">
+              <div class="fp-pct">33%</div>
+              <div class="fp-val">0.63</div>
+            </div>
+            <div class="fp-arrow">→</div>
+            <div class="fp-step">
+              <div class="fp-pct">70%</div>
+              <div class="fp-val">0.44</div>
+            </div>
+            <div class="fp-arrow">→</div>
+            <div class="fp-step">
+              <div class="fp-pct">90%</div>
+              <div class="fp-val">0.41</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════ WHY IT HAPPENS ═══════════════════════ -->
+  <section style="background:var(--obsidian);">
+    <div class="si">
+      <div class="sec-label">05 — Root Causes</div>
+      <h2 class="sec-title">Three Interlocking <em>Causes</em></h2>
+      <p class="sec-lead">VGG16's explanation infidelity is not a single failure — it arises from three compounding
+        structural properties of convolutional gradient geometry.</p>
+
+      <div class="causes-grid">
+        <div class="cause-card rv">
+          <div class="cause-num">01</div>
+          <div class="cause-title">Negative Inter-Method Agreement</div>
+          <div class="cause-stat">ρ(VGG16) = −0.309</div>
+          <div class="cause-desc">GradCAM++ and EigenCAM identify <em>different</em> regions for the same VGG16
+            prediction. When two independently derived methods actively contradict each other, neither can be trusted to
+            represent the model's true reasoning.</div>
+        </div>
+        <div class="cause-card rv d1">
+          <div class="cause-num">02</div>
+          <div class="cause-title">Gradient Landscape Instability</div>
+          <div class="cause-stat">Robustness ρ(VGG16) = 0.542</div>
+          <div class="cause-desc">Thirteen stacked convolutional layers with nonlinear activations produce a highly
+            non-smooth gradient landscape. Small input perturbations cause large heatmap shifts. The CAM reflects a
+            snapshot of local gradient geometry, not stable feature use.</div>
+        </div>
+        <div class="cause-card rv d2">
+          <div class="cause-num">03</div>
+          <div class="cause-title">Non-Pathological Decision Basis</div>
+          <div class="cause-stat">Sparsity 0.466 · Entropy 5.159</div>
+          <div class="cause-desc">High sparsity and high entropy — superficially contradictory — are reconciled by a
+            model relying on distributed, low-level statistical image properties (background, scanner artifacts) rather
+            than coherent pathological structures.</div>
+        </div>
+      </div>
+
+      <div class="context-pair rv">
+        <div class="ctx-box vgg">
+          <div class="ctx-model">VGG16 — The Hollow Explainer</div>
+          <div class="ctx-heading">Plausible but not causal</div>
+          <div class="ctx-body">Heatmaps concentrate over bilateral lower lung zones for COVID-19 — anatomically
+            consistent, clinically familiar. Yet confidence rises monotonically as these pixels are erased. The actual
+            decision signal lives in background regions the heatmap does not highlight.</div>
+          <div class="ctx-badge">Visual plausibility ≠ causal faithfulness</div>
+        </div>
+        <div class="ctx-box vit">
+          <div class="ctx-model">ViT-B/16 — The Honest Explainer</div>
+          <div class="ctx-heading">Imperfect but genuine</div>
+          <div class="ctx-body">Patchier attention maps. Some edge-focused, some puzzling to a radiologist. But
+            inter-method agreement is positive (+0.301), robustness is high (0.809), and confidence falls sharply when
+            highlighted patches are removed — causal structure is real.</div>
+          <div class="ctx-badge">Imperfect appearance, genuine causality</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════ 6-DIM FRAMEWORK ═══════════════════════ -->
+  <section id="faithfulness" style="background:var(--charcoal);">
+    <div class="si">
+      <div class="sec-label">06 — Explainability Framework</div>
+      <h2 class="sec-title">Six-Dimensional <em>Evaluation</em></h2>
+      <p class="sec-lead">Heatmap quality measured across six independent dimensions with Bonferroni-corrected
+        statistical testing — all six comparisons reach significance at α 0.0083.</p>
+
+      <div class="sixdim-wrap rv">
+        <div class="sixdim-title">// EXPLAINABILITY PROFILE — GRADCAM++ · EIGENCAM</div>
+        <div class="sdim-header">
+          <div style="font-family:var(--font-mono);font-size:.68rem;color:var(--muted);">Dimension</div>
+          <div class="sdim-col-label vgg">VGG16 Score</div>
+          <div class="sdim-col-label vit">ViT-B/16 Score</div>
+        </div>
+
+        <div class="sixdim-row">
+          <div class="sdim-name">Visual Intuitiveness</div>
+          <div class="sdim-bar-wrap">
+            <div class="sdim-track"></div>
+            <div class="sdim-fill vgg-fill" data-w="90" style="width:0"><span class="sdim-fill-label">0.90</span></div>
+          </div>
+          <div class="sdim-bar-wrap">
+            <div class="sdim-track"></div>
+            <div class="sdim-fill vit-fill" data-w="60" style="width:0"><span class="sdim-fill-label">0.60</span></div>
+          </div>
+        </div>
+        <div class="sixdim-row">
+          <div class="sdim-name">Activation Contrast</div>
+          <div class="sdim-bar-wrap">
+            <div class="sdim-track"></div>
+            <div class="sdim-fill vgg-fill" data-w="45" style="width:0"><span class="sdim-fill-label">0.45</span></div>
+          </div>
+          <div class="sdim-bar-wrap">
+            <div class="sdim-track"></div>
+            <div class="sdim-fill vit-fill" data-w="85" style="width:0"><span class="sdim-fill-label">0.85</span></div>
+          </div>
+        </div>
+        <div class="sixdim-row">
+          <div class="sdim-name">Spatial Selectivity</div>
+          <div class="sdim-bar-wrap">
+            <div class="sdim-track"></div>
+            <div class="sdim-fill vgg-fill" data-w="80" style="width:0"><span class="sdim-fill-label">0.80</span></div>
+          </div>
+          <div class="sdim-bar-wrap">
+            <div class="sdim-track"></div>
+            <div class="sdim-fill vit-fill" data-w="45" style="width:0"><span class="sdim-fill-label">0.45</span></div>
+          </div>
+        </div>
+        <div class="sixdim-row">
+          <div class="sdim-name">Perturbation Robustness ↑</div>
+          <div class="sdim-bar-wrap">
+            <div class="sdim-track"></div>
+            <div class="sdim-fill vgg-fill" data-w="35" style="width:0"><span class="sdim-fill-label">0.35</span></div>
+          </div>
+          <div class="sdim-bar-wrap">
+            <div class="sdim-track"></div>
+            <div class="sdim-fill vit-fill" data-w="95" style="width:0"><span class="sdim-fill-label">0.95</span></div>
+          </div>
+        </div>
+        <div class="sixdim-row">
+          <div class="sdim-name">Inter-Method Agreement ↑</div>
+          <div class="sdim-bar-wrap">
+            <div class="sdim-track"></div>
+            <div class="sdim-fill" data-w="5" style="width:0;background:rgba(239,68,68,.6);"><span
+                class="sdim-fill-label">-0.31</span></div>
+          </div>
+          <div class="sdim-bar-wrap">
+            <div class="sdim-track"></div>
+            <div class="sdim-fill vit-fill" data-w="75" style="width:0"><span class="sdim-fill-label">0.75</span></div>
+          </div>
+        </div>
+        <div class="sixdim-row">
+          <div class="sdim-name">Causal Faithfulness ↑</div>
+          <div class="sdim-bar-wrap">
+            <div class="sdim-track"></div>
+            <div class="sdim-fill" data-w="5" style="width:0;background:rgba(239,68,68,.6);"><span
+                class="sdim-fill-label">-0.01</span></div>
+          </div>
+          <div class="sdim-bar-wrap">
+            <div class="sdim-track"></div>
+            <div class="sdim-fill vit-fill" data-w="80" style="width:0"><span class="sdim-fill-label">0.80</span></div>
+          </div>
+        </div>
+        <p style="font-family:var(--font-mono);font-size:.7rem;color:var(--muted);margin-top:1rem;font-style:italic;">
+          ↑ = higher is better · VGG16 leads on surface metrics · ViT-B/16 leads on every trustworthiness dimension
         </p>
       </div>
-      <div class="hero-meta">
-        <span class="badge badge-blue">Python 3.10+</span>
-        <span class="badge badge-amber">CNN's</span>
-        <span class="badge badge-green">Vision Transformers</span>
-        <span class="badge badge-red">Transfer Learning</span>
-        <span class="badge badge-purple">XAI</span>
+
+      <div
+        style="font-family:var(--font-mono);font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;color:var(--subtle);margin-bottom:1rem;"
+        class="rv">// Quantitative Metric Values</div>
+      <div class="rv" style="overflow-x:auto;border-radius:10px;border:1px solid var(--border);">
+        <table class="training-table">
+          <thead>
+            <tr>
+              <th>Metric</th>
+              <th style="color:var(--amber);">VGG16</th>
+              <th style="color:var(--violet);">ViT-B/16</th>
+              <th>Winner</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="tt-model">Shannon Entropy</td>
+              <td style="font-family:var(--font-mono);font-size:.85rem;">5.159 ± 0.034</td>
+              <td style="font-family:var(--font-mono);font-size:.85rem;">4.987 ± 0.092</td>
+              <td style="color:var(--muted);font-size:.82rem;">—</td>
+            </tr>
+            <tr>
+              <td class="tt-model">Activation Std Dev</td>
+              <td style="font-family:var(--font-mono);font-size:.85rem;">0.216 ± 0.018</td>
+              <td style="font-family:var(--font-mono);font-size:.85rem;color:var(--violet);">0.250 ± 0.024</td>
+              <td style="color:var(--violet);font-size:.82rem;">ViT-B/16</td>
+            </tr>
+            <tr>
+              <td class="tt-model">Sparsity</td>
+              <td style="font-family:var(--font-mono);font-size:.85rem;">0.466 ± 0.148</td>
+              <td style="font-family:var(--font-mono);font-size:.85rem;">0.252 ± 0.116</td>
+              <td style="color:var(--muted);font-size:.82rem;">—</td>
+            </tr>
+            <tr>
+              <td class="tt-model">Top-k Mass Concentration</td>
+              <td style="font-family:var(--font-mono);font-size:.85rem;">16.350 ± 0.874</td>
+              <td style="font-family:var(--font-mono);font-size:.85rem;">16.197 ± 0.861</td>
+              <td style="color:var(--cyan);font-size:.82rem;"> Tie</td>
+            </tr>
+            <tr>
+              <td class="tt-model" style="color:var(--emerald);">Perturbation Robustness ↑</td>
+              <td style="font-family:var(--font-mono);font-size:.85rem;color:var(--crimson);">0.542 ± 0.215</td>
+              <td style="font-family:var(--font-mono);font-size:.85rem;color:var(--violet);">0.809 ± 0.217</td>
+              <td style="color:var(--violet);font-size:.82rem;">ViT-B/16</td>
+            </tr>
+            <tr>
+              <td class="tt-model" style="color:var(--emerald);">Inter-Method Agreement ↑</td>
+              <td style="font-family:var(--font-mono);font-size:.85rem;color:var(--crimson);">−0.309 ± 0.483</td>
+              <td style="font-family:var(--font-mono);font-size:.85rem;color:var(--violet);">+0.301 ± 0.406</td>
+              <td style="color:var(--violet);font-size:.82rem;">ViT-B/16</td>
+            </tr>
+          </tbody>
+        </table>
       </div>
-      <div class="hero-stats">
-        <div class="hero-stat">
-          <div class="hero-stat-val green">GradCam, EigenCam</div>
-          <div class="hero-stat-label">XAI</div>
-        </div>
-        <div class="hero-stat">
-          <div class="hero-stat-val blue">VGG16 & VIT</div>
-          <div class="hero-stat-label">Models</div>
-        </div>
-        <div class="hero-stat">
-          <div class="hero-stat-val">Pixel Deletion</div>
-          <div class="hero-stat-label">Faithfulness</div>
-        </div>
-        <div class="hero-stat">
-          <div class="hero-stat-val red">Streamlit</div>
-          <div class="hero-stat-label">UI/UX</div>
-        </div>
-      </div>
-    </div>
-    <div class="hero-scroll">
-      <div class="scroll-arrow"></div>
-      Scroll
+      <p class="rv"
+        style="margin-top:.75rem;font-family:var(--font-mono);font-size:.78rem;color:var(--muted);font-style:italic;">
+        Statistical testing: Mann-Whitney U with Bonferroni correction. All six comparisons significant at p &lt;
+        0.0083.</p>
     </div>
   </section>
 
-  <section>
-    <div class="hero-stat">
-      <div class="hero-stat-val">Comming Soon</div>
+  <!-- ═══════════════════════ CLINICAL RISK ═══════════════════════ -->
+  <section style="background:var(--obsidian);">
+    <div class="si">
+      <div class="sec-label">07 — Clinical Risk</div>
+      <h2 class="sec-title">Why This <em>Matters</em> Clinically</h2>
+      <p class="sec-lead">Explanation infidelity is not an academic curiosity. When a hollow explanation accompanies a
+        wrong prediction, it actively prevents the clinician from detecting the error.</p>
+
+      <div class="risk-callout rv">
+        <div class="rc-label">Real Case — Identified in Qualitative Analysis</div>
+        <p>VGG16 predicted <strong>Normal</strong> with <strong>90.8% confidence</strong> on an image whose ground truth
+          was <strong>Viral Pneumonia</strong>. The GradCAM++ heatmap concentrated activation on the vertebral column
+          and chest wall — non-pathological regions that appeared anatomically reasonable. A clinician relying on visual
+          heatmap validation would have no signal that the explanation was misleading. Only the AOPC faithfulness test
+          reveals the failure.</p>
+      </div>
+
+      <div class="findings-grid">
+        <div class="finding-card rv">
+          <div class="finding-icon"></div>
+          <div class="finding-title">False Confidence</div>
+          <div class="finding-desc">A model with AOPC ≤ 0 actively deceives clinicians — the heatmap provides a false
+            sense of transparency that is more dangerous than acknowledged uncertainty.</div>
+        </div>
+        <div class="finding-card rv d1">
+          <div class="finding-icon"></div>
+          <div class="finding-title">Visual Inspection Is Insufficient</div>
+          <div class="finding-desc">The dominant validation practice — presenting GradCAM heatmaps and asking if they
+            look clinically reasonable — can systematically endorse causally hollow models.</div>
+        </div>
+        <div class="finding-card rv d2">
+          <div class="finding-icon"></div>
+          <div class="finding-title">AOPC as Safety Requirement</div>
+          <div class="finding-desc">Faithfulness evaluation via AOPC should be treated as a clinical safety requirement,
+            not an optional post-hoc analysis. AOPC ≤ 0 should block deployment.</div>
+        </div>
+        <div class="finding-card rv d3">
+          <div class="finding-icon"></div>
+          <div class="finding-title">Accuracy–Faithfulness Tradeoff</div>
+          <div class="finding-desc">VGG16 (83%) vs ViT-B/16 (82%) — a 1-point accuracy gap. But VGG16's AOPC = −0.012 vs
+            ViT-B/16's +0.199. In clinical deployment, faithfulness wins.</div>
+        </div>
+      </div>
     </div>
   </section>
 
+  <!-- ═══════════════════════ THREE LAYER FRAMEWORK ═══════════════════════ -->
+  <section id="framework" style="background:var(--charcoal);">
+    <div class="si">
+      <div class="sec-label">08 — Proposed Framework</div>
+      <h2 class="sec-title">Three-Layer <em>Validation</em></h2>
+      <p class="sec-lead">We propose that heatmap-based explanation evaluation must operate across three ascending
+        layers of rigor. Each layer catches failures the previous cannot detect.</p>
 
+      <div class="layers-stack rv">
+        <div class="layer l1">
+          <div class="layer-num">I</div>
+          <div>
+            <div class="layer-title">Visual Inspection</div>
+            <div class="layer-desc">Fast and interpretable. Detects gross anatomical failures — heatmaps on backgrounds,
+              uninformative uniform activations. But it cannot distinguish visually plausible from causally faithful. In
+              some cases it actively misleads.</div>
+            <div class="layer-pros-cons">
+              <span class="lpc pro">Fast · interpretable · detects gross failures</span>
+              <span class="lpc con">Cannot detect subtle unfaithfulness · actively misleading in some cases</span>
+            </div>
+          </div>
+          <div class="layer-verdict">NECESSARY · NOT SUFFICIENT</div>
+        </div>
+        <div class="layer l2">
+          <div class="layer-num">II</div>
+          <div>
+            <div class="layer-title">Inter-Method Agreement (ρ)</div>
+            <div class="layer-desc">Computationally cheap — requires only two CAM passes per image. A negative
+              correlation score is an immediate deployment red flag: if GradCAM++ and EigenCAM disagree, neither method
+              reliably captures the model's reasoning.</div>
+            <div class="layer-pros-cons">
+              <span class="lpc pro">Cheap · requires only 2 CAM passes · negative ρ = red flag</span>
+              <span class="lpc con">Does not prove causal faithfulness — only method consistency</span>
+            </div>
+          </div>
+          <div class="layer-verdict">ρ &lt; 0 → REVIEW REQUIRED</div>
+        </div>
+        <div class="layer l3">
+          <div class="layer-num">III</div>
+          <div>
+            <div class="layer-title">Faithfulness Testing — AOPC</div>
+            <div class="layer-desc">Progressive pixel deletion is the only causal test available without ground-truth
+              saliency masks. Quantifiable, standardizable, and reveals hollow explanations definitively. The
+              computational cost (10 forward passes per image) is a clinical safety overhead worth paying.</div>
+            <div class="layer-pros-cons">
+              <span class="lpc pro">Only causal test · quantifiable · definitively reveals hollow explanations</span>
+              <span class="lpc con">Requires ~10 forward passes per image · computationally heavier</span>
+            </div>
+          </div>
+          <div class="layer-verdict">AOPC ≤ 0 → DEPLOYMENT BLOCKED</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════ KEY FINDINGS ═══════════════════════ -->
+  <section style="background:var(--obsidian);">
+    <div class="si">
+      <div class="sec-label">09 — Summary</div>
+      <h2 class="sec-title">Key Findings <em>at a Glance</em></h2>
+
+      <div class="stat-row rv">
+        <div class="stat-cell">
+          <div class="stat-val" style="color:var(--amber);" data-count="83" data-suf="%">0%</div>
+          <div class="stat-lbl">VGG16 Accuracy</div>
+        </div>
+        <div class="stat-cell">
+          <div class="stat-val" style="color:var(--violet);" data-count="82" data-suf="%">0%</div>
+          <div class="stat-lbl">ViT-B/16 Accuracy</div>
+        </div>
+        <div class="stat-cell">
+          <div class="stat-val" style="color:var(--crimson);">−0.012</div>
+          <div class="stat-lbl">VGG16 AOPC</div>
+        </div>
+        <div class="stat-cell">
+          <div class="stat-val" style="color:var(--emerald);">+0.199</div>
+          <div class="stat-lbl">ViT-B/16 AOPC</div>
+        </div>
+        <div class="stat-cell">
+          <div class="stat-val" style="color:var(--cyan);" data-count="9" data-suf="pt">0pt</div>
+          <div class="stat-lbl">TL Accuracy Gain</div>
+        </div>
+        <div class="stat-cell">
+          <div class="stat-val" style="color:var(--violet);">6</div>
+          <div class="stat-lbl">Eval. Dimensions</div>
+        </div>
+      </div>
+
+      <div class="findings-grid rv">
+        <div class="finding-card">
+          <div class="finding-icon"></div>
+          <div class="finding-title">Transfer Learning Wins</div>
+          <div class="finding-desc">9-point accuracy gap and 2–3× faster convergence. Both pretrained models stop in 6–7
+            epochs; the custom CNN needs all 15 and still trails significantly.</div>
+        </div>
+        <div class="finding-card">
+          <div class="finding-icon"></div>
+          <div class="finding-title">Architecture–Task Alignment</div>
+          <div class="finding-desc">VGG16 excels at focal, spatially-bounded patterns (bacterial pneumonia). ViT-B/16
+            excels at global patterns (COVID-19 recall = 0.99). Task structure determines which architecture fits.</div>
+        </div>
+        <div class="finding-card">
+          <div class="finding-icon"></div>
+          <div class="finding-title">The Explainability Paradox</div>
+          <div class="finding-desc">VGG16's AOPC = −0.012. Confidence rises as important pixels are removed. The
+            explanation is causally hollow despite being visually convincing.</div>
+        </div>
+        <div class="finding-card">
+          <div class="finding-icon"></div>
+          <div class="finding-title">ViT as the Faithful Explainer</div>
+          <div class="finding-desc">ViT-B/16 wins all three trustworthiness dimensions: robustness (0.809), inter-method
+            agreement (+0.301), and causal faithfulness (AOPC +0.199).</div>
+        </div>
+      </div>
+
+      <!-- Citation -->
+      <div style="margin-top:2rem;" class="rv">
+        <div class="sec-label" style="margin-bottom:1rem;">// Citation</div>
+        <div class="citation-block">
+          <pre><span class="cite-key">@misc</span>{<span class="cite-val">owais2026beyondvisual</span>,
+  <span class="cite-key">author</span>    = {<span class="cite-val">Owais and {Shahid Ul Islam}</span>},
+  <span class="cite-key">title</span>     = {<span class="cite-val">Beyond Visual Plausibility: A Faithfulness-Aware Comparison of
+               CNNs and Vision Transformers for Multi-Class Chest X-Ray Classification</span>},
+  <span class="cite-key">year</span>      = {<span class="cite-val">2026</span>},
+  <span class="cite-key">note</span>      = {<span class="cite-val">Manuscript under peer review</span>},
+  <span class="cite-key">institution</span> = {<span class="cite-val">Islamic University of Science and Technology, Awantipora</span>}
+}</pre>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════ FOOTER ═══════════════════════ -->
   <!-- Footer -->
-  <footer class="site-footer" style="background: var(--navy); border-top: 1px solid var(--border);">
+  <footer class="site-footer">
     <div class="footer-content">
       <div class="footer-main">
         <div class="footer-left">
@@ -410,19 +1078,36 @@
         </div>
         <div class="footer-right">
           <div class="footer-links">
-            <a href="#top" class="back-to-top">
-              <i class="fas fa-arrow-up"></i>
+            <a href="#home" class="back-to-top">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="12" y1="19" x2="12" y2="5"></line>
+                <polyline points="5 12 12 5 19 12"></polyline>
+              </svg>
               <span>Back to Top</span>
             </a>
             <div class="social-links11">
               <a href="https://github.com/Khanz9664" target="_blank" class="social-link11">
-                <i class="fab fa-github"></i>
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path
+                    d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22" />
+                </svg>
               </a>
               <a href="https://linkedin.com/in/shahid-ul-islam-13650998" target="_blank" class="social-link11">
-                <i class="fab fa-linkedin"></i>
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" />
+                  <rect x="2" y="9" width="4" height="12" />
+                  <circle cx="4" cy="4" r="2" />
+                </svg>
               </a>
               <a href="mailto:shahid9664@gmail.com" class="social-link11">
-                <i class="fas fa-envelope"></i>
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
+                  <polyline points="22,6 12,13 2,6" />
+                </svg>
               </a>
             </div>
           </div>
@@ -434,72 +1119,8 @@
     </div>
   </footer>
 
-  <a href="https://github.com/Khanz9664/Breast-Cancer-Prediction" target="_blank" class="sticky-repo-btn">
-    <i class="fab fa-github"></i>
-    <span>Visit Project Repo</span>
-  </a>
 
-  <script>
-    // Progress bar
-    window.addEventListener('scroll', () => {
-      const doc = document.documentElement;
-      const pct = (doc.scrollTop / (doc.scrollHeight - doc.clientHeight)) * 100;
-      document.getElementById('progress-bar').style.width = pct + '%';
-    });
-
-    // Scroll reveal
-    const reveals = document.querySelectorAll('.reveal');
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(e => {
-        if (e.isIntersecting) {
-          e.target.classList.add('visible');
-          observer.unobserve(e.target);
-        }
-      });
-    }, { threshold: 0.12 });
-    reveals.forEach(r => observer.observe(r));
-
-    // Animated counters
-    function animateCount(el) {
-      const target = parseFloat(el.dataset.count);
-      const suffix = el.dataset.suffix || '';
-      const isFloat = String(target).includes('.');
-      const duration = 1400;
-      const start = performance.now();
-      function step(now) {
-        const p = Math.min((now - start) / duration, 1);
-        const ease = 1 - Math.pow(1 - p, 3);
-        const val = target * ease;
-        el.textContent = (isFloat ? val.toFixed(3) : Math.round(val)) + suffix;
-        if (p < 1) requestAnimationFrame(step);
-      }
-      requestAnimationFrame(step);
-    }
-
-    const counterObs = new IntersectionObserver((entries) => {
-      entries.forEach(e => {
-        if (e.isIntersecting && e.target.dataset.count) {
-          animateCount(e.target);
-          counterObs.unobserve(e.target);
-        }
-      });
-    }, { threshold: 0.5 });
-    document.querySelectorAll('[data-count]').forEach(el => counterObs.observe(el));
-
-    // SHAP bars
-    const shapObs = new IntersectionObserver((entries) => {
-      entries.forEach(e => {
-        if (e.isIntersecting) {
-          document.querySelectorAll('.shap-bar').forEach(bar => {
-            bar.style.width = bar.dataset.width + '%';
-          });
-          shapObs.disconnect();
-        }
-      });
-    }, { threshold: 0.3 });
-    const shapChart = document.querySelector('.shap-chart');
-    if (shapChart) shapObs.observe(shapChart);
-  </script>
+  <script src="js/TransferLearning.js"></script>
 </body>
 
 </html>

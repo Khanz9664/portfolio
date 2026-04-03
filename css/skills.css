@@ -1,9 +1,9 @@
 /* Skills Section - Premium Modern Overhaul */
 
 .skills-page-section {
-    padding: 6rem 8% 4rem;
+    padding: clamp(5rem, 15vw, 12rem) 8% 4rem;
     max-width: 1400px;
-    margin: 2rem auto;
+    margin: 0 auto;
     position: relative;
     z-index: 2;
 }
@@ -21,7 +21,9 @@
     top: 35%;
     left: 50%;
     transform: translate(-50%, -50%);
-    font-size: clamp(8rem, 25vw, 18rem);
+    font-size: clamp(3.5rem, 20vw, 18rem);
+
+    /* Slightly reduced max vw */
     font-family: Outfit, sans-serif;
     font-weight: 900;
     color: rgb(255 255 255 / 0.02);
@@ -29,6 +31,8 @@
     z-index: -1;
     pointer-events: none;
     letter-spacing: 0.1em;
+    width: 100%;
+    overflow: hidden;
 }
 
 .skills-title-main {
@@ -313,7 +317,7 @@
 }
 
 /* Responsive Customizations */
-@media (width <= 768px) {
+@media (width <=768px) {
     .skills-grid {
         grid-template-columns: 1fr;
     }

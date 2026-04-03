@@ -171,7 +171,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (msg) msg.innerText = "Sending...";
 
             fetch(scriptURL, { method: 'POST', body: new FormData(form) })
-                .then(response => {
+                .then(() => {
                     if (msg) {
                         msg.innerText = "Message Sent Successfully!";
                         msg.style.color = 'var(--accent-cyan)';

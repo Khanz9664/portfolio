@@ -21,7 +21,10 @@ export default [
                 gsap: "readonly",
                 ScrollTrigger: "readonly",
                 CanvasNest: "readonly",
-                Swiper: "readonly"
+                Swiper: "readonly",
+                navigator: "readonly",
+                FormData: "readonly",
+                MathJax: "readonly"
             }
         },
         rules: {

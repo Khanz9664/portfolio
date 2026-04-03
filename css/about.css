@@ -9,10 +9,9 @@
 }
 
 .about-section {
-    padding: var(--section-spacing) 5% 4rem;
+    padding: clamp(5rem, 15vw, 12rem) 5% 4rem;
     max-width: 1400px;
     margin: 0 auto;
-    margin-top: 30px;
     position: relative;
     z-index: 2;
 }
@@ -29,7 +28,7 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    font-size: clamp(4rem, 20vw, 18rem);
+    font-size: clamp(4rem, 18vw, 18rem); /* Slightly reduced max vw for mobile safety */
     font-family: Outfit, sans-serif;
     font-weight: 900;
     color: rgb(255 255 255 / 0.03);
@@ -37,6 +36,8 @@
     z-index: -1;
     pointer-events: none;
     letter-spacing: 0.1em;
+    width: 100%;
+    overflow: hidden;
 }
 
 .about-title-main {

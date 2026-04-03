@@ -52,13 +52,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- Navbar Scroll Effect ---
     const handleNavScroll = () => {
-        if (window.scrollY > 50) {
-            topBar?.classList.add('scrolled');
+        if (!topBar) return;
+        const scrollThreshold = window.innerWidth < 1024 ? 20 : 50; 
+        if (window.scrollY > scrollThreshold) {
+            topBar.classList.add('scrolled');
         } else {
-            topBar?.classList.remove('scrolled');
+            topBar.classList.remove('scrolled');
         }
     };
-    window.addEventListener('scroll', handleNavScroll);
+    window.addEventListener('scroll', handleNavScroll, { passive: true });
     handleNavScroll();
 
     // --- Back to Top ---
@@ -116,49 +118,53 @@ document.addEventListener('DOMContentLoaded', () => {
             );
         });
 
-        // Magnetic Button Interaction
-        const magneticBtns = document.querySelectorAll('.cinema-btn, .cta-button, .explore-btn');
-        magneticBtns.forEach(btn => {
-            btn.addEventListener('mousemove', (e) => {
-                const rect = btn.getBoundingClientRect();
-                const x = e.clientX - rect.left - rect.width / 2;
-                const y = e.clientY - rect.top - rect.height / 2;
+        // Magnetic Button Interaction (Disable on Touch Devices)
+        const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+        
+        if (!isTouchDevice) {
+            const magneticBtns = document.querySelectorAll('.cinema-btn, .cta-button, .explore-btn');
+            magneticBtns.forEach(btn => {
+                btn.addEventListener('mousemove', (e) => {
+                    const rect = btn.getBoundingClientRect();
+                    const x = e.clientX - rect.left - rect.width / 2;
+                    const y = e.clientY - rect.top - rect.height / 2;
 
-                gsap.to(btn, {
-                    x: x * 0.3,
-                    y: y * 0.3,
-                    duration: 0.3,
-                    ease: 'power2.out'
-                });
-                
-                const span = btn.querySelector('span');
-                if (span) {
-                    gsap.to(span, {
-                        x: x * 0.15,
-                        y: y * 0.15,
+                    gsap.to(btn, {
+                        x: x * 0.3,
+                        y: y * 0.3,
                         duration: 0.3,
                         ease: 'power2.out'
                     });
-                }
-            });
-
-            btn.addEventListener('mouseleave', () => {
-                gsap.to(btn, {
-                    x: 0,
-                    y: 0,
-                    duration: 0.5,
-                    ease: 'elastic.out(1, 0.3)'
+                    
+                    const span = btn.querySelector('span');
+                    if (span) {
+                        gsap.to(span, {
+                            x: x * 0.15,
+                            y: y * 0.15,
+                            duration: 0.3,
+                            ease: 'power2.out'
+                        });
+                    }
                 });
-                const span = btn.querySelector('span');
-                if (span) {
-                    gsap.to(span, {
+
+                btn.addEventListener('mouseleave', () => {
+                    gsap.to(btn, {
                         x: 0,
                         y: 0,
                         duration: 0.5,
                         ease: 'elastic.out(1, 0.3)'
                     });
-                }
+                    const span = btn.querySelector('span');
+                    if (span) {
+                        gsap.to(span, {
+                            x: 0,
+                            y: 0,
+                            duration: 0.5,
+                            ease: 'elastic.out(1, 0.3)'
+                        });
+                    }
+                });
             });
-        });
+        }
     }
 });

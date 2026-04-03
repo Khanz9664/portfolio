@@ -1,7 +1,7 @@
 /* Projects Section - Premium Modern Overhaul */
 
 .projects-page-section {
-    padding: 10rem 10% 1rem;
+    padding: clamp(5rem, 15vw, 12rem) 10% 4rem;
     max-width: 1600px;
     margin: 0 auto;
     position: relative;
@@ -21,16 +21,18 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    font-size: clamp(8rem, 20vw, 12rem);
+    font-size: clamp(2rem, 12vw, 12rem);
+
+    /* Slightly reduced max vw for mobile safety */
     font-family: Outfit, sans-serif;
     font-weight: 900;
     color: rgb(255 255 255 / 0.03);
     -webkit-text-stroke: 1px rgb(255 255 255 / 0.05);
     z-index: -1;
     pointer-events: none;
-    letter-spacing: 0.05em;
+    letter-spacing: 0.1em;
     width: 100%;
-    white-space: nowrap;
+    overflow: hidden;
 }
 
 .projects-title-main {
@@ -317,7 +319,7 @@
 /* --- Best-in-Class Responsiveness --- */
 
 /* Large Screens (1400px+) - Luxurious Spacing */
-@media (width >= 1400px) {
+@media (width >=1400px) {
     .projects-grid {
         grid-template-columns: repeat(3, 1fr);
         gap: 3rem;
@@ -325,7 +327,7 @@
 }
 
 /* Medium Desktop / Tablet Landscape (1024px - 1399px) */
-@media (width <= 1399px) {
+@media (width <=1399px) {
     .projects-page-section {
         padding: 10rem 8% 2rem;
     }
@@ -337,17 +339,13 @@
 }
 
 /* Tablet Portrait (769px - 1023px) */
-@media (width <= 1023px) {
+@media (width <=1023px) {
     .projects-page-section {
         padding: 9rem 6% 2rem;
     }
 
     .projects-header {
         margin-bottom: 4rem;
-    }
-
-    .header-watermark {
-        font-size: clamp(6rem, 18vw, 10rem);
     }
 
     .projects-grid {
@@ -357,29 +355,7 @@
 }
 
 /* Mobile (Up to 768px) */
-@media (width <= 768px) {
-    .projects-page-section {
-        padding: 8rem 5% 1rem;
-    }
-
-    .projects-header {
-        margin-bottom: 3.5rem;
-    }
-
-    .header-watermark {
-        font-size: clamp(5rem, 15vw, 8rem);
-    }
-
-    .projects-title-main {
-        font-size: clamp(2.5rem, 8vw, 3.5rem);
-    }
-
-    .section-subtitle {
-        font-size: 0.95rem;
-        margin-bottom: 2rem;
-        padding: 0 1rem;
-    }
-
+@media (width <=768px) {
     .projects-grid {
         grid-template-columns: 1fr;
         gap: 2.5rem;
@@ -390,50 +366,7 @@
     }
 
     .work-card-content {
-        padding: 1.8rem;
-    }
-
-    .work-card-content h3 {
-        font-size: 1.5rem;
-    }
-
-    .explore-more-container {
-        margin-top: 4rem;
-    }
-
-    .btn-explore-all {
-        padding: 1.1rem 2.8rem;
-        font-size: 1.05rem;
-        width: 90%;
-        justify-content: center;
-    }
-}
-
-/* Very Small Mobile (<480px) */
-@media (width <= 480px) {
-    .projects-page-section {
-        padding: 7rem 4% 1rem;
-    }
-
-    .projects-title-main {
-        font-size: 2.2rem;
-    }
-
-    .header-watermark {
-        font-size: 4.5rem;
-    }
-
-    .work-card-content {
         padding: 1.5rem;
-    }
-
-    .card-tags {
-        gap: 0.5rem;
-    }
-
-    .card-tags span {
-        padding: 0.3rem 0.8rem;
-        font-size: 0.75rem;
     }
 
     .btn-premium-link {

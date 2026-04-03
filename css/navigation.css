@@ -3,11 +3,9 @@
 /* Base (Mobile First) */
 .top-bar {
     position: fixed;
-    top: 1rem;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 95%;
-    max-width: 1200px;
+    top: 0; /* Changed from 1rem for better mobile stability */
+    left: 0;
+    width: 100%;
     height: 60px;
     background: rgb(10 10 10 / 0.4);
     backdrop-filter: blur(20px);
@@ -16,10 +14,24 @@
     justify-content: space-between;
     align-items: center;
     padding: 0 1.5rem;
-    border-radius: 20px;
-    border: 1px solid rgb(255 255 255 / 0.08);
-    box-shadow: 0 10px 40px rgb(0 0 0 / 0.3);
-    transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    border-bottom: 1px solid rgb(255 255 255 / 0.08); /* Replaces border-radius and shadow for default mobile state */
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Tablet/Desktop gets the floating bar back */
+@media (width >= 1024px) {
+    .top-bar {
+        top: 1.5rem;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 95%;
+        max-width: 1200px;
+        height: 70px;
+        padding: 0 2.5rem;
+        border-radius: 20px;
+        border: 1px solid rgb(255 255 255 / 0.08);
+        box-shadow: 0 10px 40px rgb(0 0 0 / 0.3);
+    }
 }
 
 .top-bar.scrolled {
@@ -67,19 +79,20 @@
     top: 0;
     right: -100%;
     flex-direction: column;
-    justify-content: center;
-    align-items: center;
+    justify-content: flex-start;
+    align-items: flex-start;
     background: rgb(5 5 5 / 0.98);
     backdrop-filter: blur(30px);
     width: 100%;
-    height: 100vh;
-    padding: 2rem;
+    height: 100dvh;
+    padding: 100px 3rem 4rem; /* Top padding to clear navbar */
     transition: right 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-    gap: 2.5rem;
+    gap: 1.2rem; /* Reduced gap */
     z-index: 999;
     list-style: none;
     margin: 0;
     display: flex;
+    overflow-y: auto; /* Enable scrolling for many links */
 }
 
 .nav-links.active {
@@ -89,14 +102,14 @@
 .nav-link {
     color: rgb(255 255 255 / 0.6);
     text-decoration: none;
-    font-size: 1.5rem;
+    font-size: 1.4rem; /* Slightly smaller for density */
     font-weight: 600;
     position: relative;
-    padding: 1rem 0;
-    width: auto;
+    padding: 0.8rem 0;
+    width: 100%; /* Full width for better touch target */
     transition: all 0.3s ease;
     text-transform: uppercase;
-    letter-spacing: 0.5px;
+    letter-spacing: 1px;
     display: block;
 }
 
@@ -132,8 +145,8 @@
     content: '';
     position: absolute;
     bottom: 0;
-    left: 50%;
-    transform: translateX(-50%);
+    left: 0; /* Left align indicator */
+    transform: none;
     width: 0;
     height: 2px;
     background: var(--accent-cyan);
@@ -143,7 +156,7 @@
 
 .nav-link:hover::after,
 .nav-link.active::after {
-    width: 15px;
+    width: 30px;
 }
 
 /* Mobile Toggle */
@@ -182,28 +195,21 @@
 
 .menu-toggle.open .hamburger {
     background: transparent;
+    transform: rotate(180deg);
 }
 
 .menu-toggle.open .hamburger::before {
-    transform: rotate(45deg) translate(5px, 5px);
+    top: 0;
+    transform: rotate(45deg);
 }
 
 .menu-toggle.open .hamburger::after {
-    transform: rotate(-45deg) translate(5px, -5px);
+    top: 0;
+    transform: rotate(-45deg);
 }
 
 /* Tablet / Desktop Upwards */
 @media (width >= 1024px) {
-    .top-bar {
-        top: 1.5rem;
-        height: 70px;
-        padding: 0 2.5rem;
-    }
-
-    .top-bar.scrolled {
-        height: 65px;
-    }
-
     .nav-links {
         position: static;
         flex-direction: row;
@@ -213,6 +219,7 @@
         background: transparent;
         backdrop-filter: none;
         gap: 1.5rem;
+        overflow-y: visible;
     }
 
     .nav-link {

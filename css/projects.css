@@ -367,9 +367,7 @@
     }
 
     .header-watermark {
-        top: 50%;
         font-size: clamp(5rem, 15vw, 8rem);
-        opacity: 0.05;
     }
 
     .projects-title-main {

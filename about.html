@@ -18,6 +18,7 @@
   <link rel="stylesheet" href="css/navigation.css" />
   <link rel="stylesheet" href="css/about.css" />
   <link rel="stylesheet" href="css/footer.css" />
+  <link rel="stylesheet" href="css/responsive-overrides.css" />
 
   <!-- Scripts -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
@@ -58,19 +59,19 @@
   <!-- Header: Profile & Intro -->
   <main class="about-section">
 
-    <div class="about-header section-header-premium">
-      <div class="header-watermark">ABOUT</div>
+    <header class="about-header section-header-premium">
+      <div class="header-watermark" aria-hidden="true">ABOUT</div>
       <h1 class="about-title-main">
         <span class="title-part-1">The Mind</span>
         <span class="title-part-2">Behind the Data</span>
       </h1>
-      <div class="header-separator-line"></div>
+      <div class="header-separator-line" aria-hidden="true"></div>
       <p class="about-tagline">Data Scientist | Machine Learning Engineer | Deep Learning Engineer</p>
-    </div>
+    </header>
 
-    <div class="about-hero-narrative">
+    <section class="about-hero-narrative" aria-labelledby="intro-heading">
       <div class="about-intro-full">
-        <h2 class="intro-headline-premium">Bridging Data and Decision Science</h2>
+        <h2 id="intro-heading" class="intro-headline-premium">Bridging Data and Decision Science</h2>
         <div class="intro-text-premium">
           <p>
             I am an <span class="highlight-cyan">AI Engineer</span> and <span class="highlight-violet">Data
@@ -86,65 +87,65 @@
           </p>
         </div>
 
-        <div class="intro-stats-premium">
-          <div class="stat-box">
+        <div class="intro-stats-premium" role="list">
+          <div class="stat-box" role="listitem">
             <h3 class="stat-number" data-target="1">0</h3>
             <p class="stat-label">Years Experience</p>
           </div>
-          <div class="stat-box">
+          <div class="stat-box" role="listitem">
             <h3 class="stat-number" data-target="15">0</h3>
             <p class="stat-label">Production Projects</p>
           </div>
-          <div class="stat-box">
+          <div class="stat-box" role="listitem">
             <h3 class="stat-number" data-target="4">0</h3>
             <p class="stat-label">Articles Published</p>
           </div>
-          <div class="stat-box">
+          <div class="stat-box" role="listitem">
             <h3 class="stat-number" data-target="10">0</h3>
             <p class="stat-label">Expert Certs</p>
           </div>
         </div>
       </div>
-    </div>
+    </section>
 
     <!-- Expertise Grid -->
-    <section class="expertise-section">
-      <h2 class="small-section-title"><i class="fas fa-layer-group"></i> Core Pillars of Expertise</h2>
+    <section class="expertise-section" aria-labelledby="expertise-heading">
+      <h2 id="expertise-heading" class="small-section-title"><i class="fas fa-layer-group" aria-hidden="true"></i> Core Pillars of Expertise</h2>
       <div class="expertise-grid">
-        <div class="expertise-card card-ai">
+        <article class="expertise-card card-ai">
           <div class="card-glass-glow"></div>
-          <div class="card-icon"><i class="fas fa-brain"></i></div>
+          <div class="card-icon"><i class="fas fa-brain" aria-hidden="true"></i></div>
           <h3>Advanced AI & ML</h3>
           <p>Developing deep learning architectures and ensemble models with a focus on interpretability and clinical
             accuracy.</p>
-        </div>
-        <div class="expertise-card card-data">
+        </article>
+        <article class="expertise-card card-data">
           <div class="card-glass-glow"></div>
-          <div class="card-icon"><i class="fas fa-database"></i></div>
+          <div class="card-icon"><i class="fas fa-database" aria-hidden="true"></i></div>
           <h3>Data Engineering</h3>
           <p>Designing scalable ETL pipelines and managing massive datasets using BigQuery, SQL, and cloud-native tools.
           </p>
-        </div>
-        <div class="expertise-card card-mlops">
+        </article>
+        <article class="expertise-card card-mlops">
           <div class="card-glass-glow"></div>
-          <div class="card-icon"><i class="fas fa-microchip"></i></div>
+          <div class="card-icon"><i class="fas fa-microchip" aria-hidden="true"></i></div>
           <h3>MLOps & Cloud</h3>
           <p>Implementing production-grade deployment strategies on GCP, ensuring model stability and real-time
             monitoring.</p>
-        </div>
-        <div class="expertise-card card-analytics">
+        </article>
+        <article class="expertise-card card-analytics">
           <div class="card-glass-glow"></div>
-          <div class="card-icon"><i class="fas fa-terminal"></i></div>
+          <div class="card-icon"><i class="fas fa-terminal" aria-hidden="true"></i></div>
           <h3>Full-Stack Analytics</h3>
           <p>Integrating complex backend AI models into sleek, interactive React-based command centers for end-users.
           </p>
-        </div>
+        </article>
       </div>
     </section>
 
     <!-- Experience Timeline -->
-    <section class="timeline-section-wrapper">
-      <h2 class="small-section-title"><i class="fas fa-briefcase"></i> Professional Journey</h2>
+    <section class="timeline-section-wrapper" aria-labelledby="journey-heading">
+      <h2 id="journey-heading" class="small-section-title"><i class="fas fa-briefcase" aria-hidden="true"></i> Professional Journey</h2>
       <div class="timeline-container">
         <div class="timeline-block">
           <div class="timeline-marker"></div>
@@ -172,10 +173,10 @@
     </section>
 
     <!-- Education Timeline -->
-    <section class="timeline-section-wrapper">
-      <h2 class="small-section-title"><i class="fas fa-graduation-cap"></i> Academic Foundation</h2>
+    <section class="timeline-section-wrapper" aria-labelledby="academic-heading">
+      <h2 id="academic-heading" class="small-section-title"><i class="fas fa-graduation-cap" aria-hidden="true"></i> Academic Foundation</h2>
       <div class="timeline-container">
-        <div class="timeline-block">
+        <article class="timeline-block">
           <div class="timeline-marker"></div>
           <div class="timeline-content-card">
             <div class="timeline-header">
@@ -190,9 +191,9 @@
               </p>
             </div>
           </div>
-        </div>
+        </article>
 
-        <div class="timeline-block">
+        <article class="timeline-block">
           <div class="timeline-marker"></div>
           <div class="timeline-content-card">
             <div class="timeline-header">
@@ -206,7 +207,7 @@
               <p>Foundational principles of Software Engineering, Database Management, and System Architecture.</p>
             </div>
           </div>
-        </div>
+        </article>
       </div>
     </section>
 
@@ -231,7 +232,7 @@
               <span>Back to Top</span>
             </a>
             <div class="social-links11">
-              <a href="https://github.com/Khanz9664" target="_blank" class="social-link11">
+              <a href="https://github.com/Khanz9664" target="_blank" class="social-link11" aria-label="GitHub Profile">
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
                   stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                   <path
@@ -239,7 +240,7 @@
                   </path>
                 </svg>
               </a>
-              <a href="https://linkedin.com/in/shahid-ul-islam-13650998" target="_blank" class="social-link11">
+              <a href="https://linkedin.com/in/shahid-ul-islam-13650998" target="_blank" class="social-link11" aria-label="LinkedIn Profile">
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
                   stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                   <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path>
@@ -247,7 +248,7 @@
                   <circle cx="4" cy="4" r="2"></circle>
                 </svg>
               </a>
-              <a href="mailto:shahid9664@gmail.com" class="social-link11">
+              <a href="mailto:shahid9664@gmail.com" class="social-link11" aria-label="Send Email">
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
                   stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                   <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>

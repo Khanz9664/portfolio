@@ -1,0 +1,133 @@
+@media (width >= 48rem) {
+  .overview-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .skills-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .tools-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .projects-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .articles-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .channels-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .hero-actions {
+    width: auto;
+  }
+
+  .slider-btn,
+  .btn-premium-link,
+  .submit-button {
+    width: auto;
+  }
+}
+
+@media (width >= 64rem) {
+  .top-bar {
+    padding: 0 2rem;
+    min-height: 4rem;
+  }
+
+  .nav-links {
+    position: static;
+    width: auto;
+    height: auto;
+    background: transparent;
+    padding: 0;
+    flex-direction: row;
+    gap: 1rem;
+  }
+
+  .menu-toggle {
+    display: none;
+  }
+
+  .hero-content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    gap: 2rem;
+  }
+
+  .hero-main-text {
+    align-items: flex-start;
+    text-align: left;
+  }
+
+  .hero-portrait-container {
+    order: 0;
+  }
+
+  .hero-socials {
+    left: 0;
+    transform: none;
+    bottom: 14%;
+    flex-direction: column;
+  }
+
+  .authority-bar {
+    flex-direction: row;
+  }
+
+  .service-item {
+    position: sticky;
+    top: 6rem;
+  }
+
+  .service-item-content {
+    padding: 2rem;
+  }
+
+  .skills-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .tools-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .projects-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .channels-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (width >= 75rem) {
+  .overview-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .projects-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .slider-preview-window {
+    display: block;
+  }
+
+  .slider-main-navigation {
+    left: auto;
+    right: 22rem;
+    bottom: 2rem;
+  }
+
+  .slide-detail-item {
+    padding: 0 4rem;
+    justify-content: center;
+  }
+}

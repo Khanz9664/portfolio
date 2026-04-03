@@ -530,30 +530,35 @@
     }
 
     /* ── RESPONSIVENESS ── */
-    @media (max-width: 1024px) {
+    @media (width <= 1024px) {
       .hero {
         padding: 60px 32px 40px;
       }
+
       .toc-list {
         columns: 1;
       }
     }
 
-    @media (max-width: 768px) {
+    @media (width <= 768px) {
       .hero h1 {
         font-size: 3rem;
       }
+
       .section-header {
         flex-direction: column;
         align-items: flex-start;
         gap: 10px;
       }
+
       .toc-wrap {
         padding: 24px;
       }
+
       .content {
         padding: 0 20px 60px;
       }
+
       table {
         display: block;
         width: 100%;
@@ -561,24 +566,28 @@
         -webkit-overflow-scrolling: touch;
         border-collapse: collapse;
       }
+
       .derivation-step {
         grid-template-columns: 1fr;
         gap: 10px;
         padding: 16px 20px;
       }
+
       .derivation-step div {
         overflow-x: auto;
       }
+
       .hero-pills {
         gap: 8px;
       }
+
       .pill {
         padding: 4px 10px;
         font-size: 10px;
       }
+
       .mjx-container {
-        overflow-x: auto !important;
-        overflow-y: hidden !important;
+        overflow: auto hidden !important;
         max-width: 100% !important;
         padding: 10px 0;
       }

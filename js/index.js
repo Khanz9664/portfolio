@@ -139,6 +139,30 @@ document.addEventListener('DOMContentLoaded', () => {
                 ease: 'power3.out'
             }
         );
+
+        // --- Pixel Hive Stacked Sticky Scroll Effect ---
+        const phCards = gsap.utils.toArray('.service-item');
+        if (phCards.length > 0) {
+            phCards.forEach((card, index) => {
+                // Don't animate the very last card
+                if (index === phCards.length - 1) return;
+
+                // Animate current card based on the scroll position of the NEXT card
+                gsap.to(card, {
+                    scale: 0.9,
+                    y: -40,
+                    filter: 'blur(4px)',
+                    opacity: 0.5,
+                    transformOrigin: "top center",
+                    scrollTrigger: {
+                        trigger: phCards[index + 1], // Triggered by the next card
+                        start: "top 15%", // When the next card reaches the sticky offset
+                        end: "top -60%", // Ends as user continues to scroll down
+                        scrub: true,
+                    }
+                });
+            });
+        }
     }
 
     // --- Multi-Layered Parallax Handler ---

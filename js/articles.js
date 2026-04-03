@@ -72,27 +72,43 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     animate();
 
-    // 2. Scroll Reveal Animation for Cards
+    // 2. Ultra-Premium Article Card Logic (3D Tilt & Parallax)
     const cards = document.querySelectorAll('.article-card');
-    const observerOptions = {
-        threshold: 0.1,
-        rootMargin: "0px 0px -50px 0px"
-    };
-
-    const cardObserver = new IntersectionObserver((entries, observer) => {
-        entries.forEach((entry, index) => {
-            if (entry.isIntersecting) {
-                setTimeout(() => {
-                    entry.target.classList.add('visible');
-                }, index * 100);
-                observer.unobserve(entry.target);
+    
+    cards.forEach(card => {
+        const glare = card.querySelector('.card-glare');
+        
+        card.addEventListener('mousemove', (e) => {
+            if (glare) {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                const glareX = (x / rect.width) * 100;
+                const glareY = (y / rect.height) * 100;
+                card.style.setProperty('--glare-x', `${glareX}%`);
+                card.style.setProperty('--glare-y', `${glareY}%`);
             }
         });
-    }, observerOptions);
+    });
 
-    cards.forEach(card => cardObserver.observe(card));
+    // 3. GSAP Staggered Reveal for Cards
+    if (typeof gsap !== 'undefined') {
+        gsap.from('.article-card', {
+            scrollTrigger: {
+                trigger: '.articles-grid',
+                start: 'top 80%',
+            },
+            y: 100,
+            opacity: 0,
+            scale: 0.9,
+            duration: 1.2,
+            stagger: 0.15,
+            ease: 'expo.out',
+            clearProps: 'all' // Clean up after animation so tilt works
+        });
+    }
 
-    // 3. Search and Filter Functionality
+    // 4. Search and Filter Functionality
     const searchInput = document.getElementById('article-search');
     const filterPills = document.querySelectorAll('.pill');
 
@@ -111,11 +127,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
             if (matchesSearch && matchesFilter) {
                 card.style.display = 'flex';
-                // Small delay to allow display flex to apply before opacity transition
-                setTimeout(() => card.classList.add('visible'), 10);
+                gsap.to(card, { opacity: 1, scale: 1, duration: 0.4 });
             } else {
                 card.style.display = 'none';
-                card.classList.remove('visible');
+                card.style.opacity = '0';
+                card.style.transform = 'scale(0.9)';
             }
         });
     }

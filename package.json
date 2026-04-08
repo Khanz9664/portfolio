@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
     "test": "playwright test",
-    "test:ui": "playwright test --ui"
+    "test:ui": "playwright test --ui",
+    "lint:html": "htmlhint \"**/*.html\" --ignore \"playwright-report/**,test-results/**,node_modules/**\"",
+    "lint:css": "stylelint \"**/*.css\""
   },
   "repository": {
     "type": "git",
@@ -21,6 +23,7 @@
   "devDependencies": {
     "htmllint": "^0.7.2",
     "htmllint-cli": "^0.0.7",
+    "htmlhint": "^1.1.4",
     "stylelint": "^15.11.0",
     "stylelint-config-standard": "^34.0.0",
     "@playwright/test": "^1.40.0"

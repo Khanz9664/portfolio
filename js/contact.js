@@ -7,159 +7,22 @@ if (typeof gsap !== 'undefined') {
     gsap.registerPlugin(ScrollTrigger);
 }
 
-class CoderAnimation {
-    constructor() {
-        this.canvas = document.getElementById('coderCanvas');
-        if (!this.canvas) return;
-
-        this.ctx = this.canvas.getContext('2d');
-        this.resize();
-
-        this.time = 0;
-        this.particles = [];
-        this.codeScroll = 0;
-
-        window.addEventListener('resize', () => this.resize());
-        this.animate();
-    }
-
-    resize() {
-        const parent = this.canvas.parentElement;
-        this.canvas.width = parent.clientWidth;
-        this.canvas.height = parent.clientHeight || 420;
-        this.width = this.canvas.width;
-        this.height = this.canvas.height;
-    }
-
-    drawChair(x, y, s) {
-        const c = this.ctx;
-        c.fillStyle = '#1e293b';
-        c.fillRect(x - 42 * s, y + 50 * s, 84 * s, 10 * s);
-        c.fillRect(x - 48 * s, y - 30 * s, 10 * s, 90 * s);
-        c.fillRect(x - 10 * s, y + 60 * s, 10 * s, 55 * s);
-        c.fillRect(x - 35 * s, y + 115 * s, 60 * s, 6 * s);
-    }
-
-    drawTable(x, y, s) {
-        const c = this.ctx;
-        c.fillStyle = 'rgba(0,0,0,0.2)';
-        c.fillRect(x + 20 * s, y + 28 * s, 130 * s, 6 * s);
-        c.fillStyle = '#475569';
-        c.fillRect(x + 20 * s, y + 20 * s, 130 * s, 10 * s);
-        c.fillRect(x + 135 * s, y + 30 * s, 10 * s, 90 * s);
-    }
-
-    drawLaptop(x, y, s) {
-        const c = this.ctx;
-        c.fillStyle = '#94a3b8';
-        c.fillRect(x + 55 * s, y + 15 * s, 45 * s, 6 * s);
-        c.fillStyle = '#334155';
-        c.fillRect(x + 55 * s, y - 32 * s, 45 * s, 47 * s);
-        const pulse = Math.sin(this.time * 2) * 0.15 + 0.85;
-        const g = c.createLinearGradient(0, y - 32 * s, 0, y + 15 * s);
-        g.addColorStop(0, `rgba(0,242,255,${pulse})`);
-        g.addColorStop(1, 'rgba(0,120,160,0.6)');
-        c.fillStyle = g;
-        c.fillRect(x + 58 * s, y - 29 * s, 39 * s, 41 * s);
-        c.fillStyle = 'rgba(255,255,255,0.9)';
-        for (let i = 0; i < 6; i++) {
-            const offset = (this.codeScroll + i * 8) % 40;
-            c.fillRect(x + 60 * s, y - 25 * s + offset, (18 + Math.sin(i) * 10) * s, 2 * s);
-        }
-        this.codeScroll += 0.3;
-    }
-
-    drawPerson(x, y, s) {
-        const c = this.ctx;
-        const breath = Math.sin(this.time) * 2;
-        const blink = Math.sin(this.time * 1.2) > 0.95 ? 2 : 6;
-        c.fillStyle = '#f1f5f9';
-        c.beginPath();
-        c.arc(x, y - 58 * s + breath, 15 * s, 0, Math.PI * 2);
-        c.fill();
-        c.fillStyle = '#020617';
-        c.fillRect(x - 5 * s, y - 60 * s + breath, 3 * s, blink * s);
-        c.fillRect(x + 2 * s, y - 60 * s + breath, 3 * s, blink * s);
-        c.fillRect(x - 4 * s, y - 43 * s + breath, 8 * s, 8 * s);
-        c.fillStyle = '#0ea5e9';
-        c.beginPath();
-        c.moveTo(x - 22 * s, y - 35 * s + breath);
-        c.lineTo(x + 22 * s, y - 35 * s + breath);
-        c.lineTo(x + 30 * s, y + 50 * s);
-        c.lineTo(x - 30 * s, y + 50 * s);
-        c.closePath();
-        c.fill();
-        const type = Math.sin(this.time * 8) * 3;
-        c.strokeStyle = '#f1f5f9';
-        c.lineWidth = 6 * s;
-        c.lineCap = 'round';
-        c.beginPath();
-        c.moveTo(x - 15 * s, y - 25 * s + breath);
-        c.lineTo(x + 15 * s, y + 5 * s);
-        c.lineTo(x + 45 * s, y + 15 * s + type);
-        c.stroke();
-        c.beginPath();
-        c.moveTo(x + 15 * s, y - 25 * s + breath);
-        c.lineTo(x + 25 * s, y + 5 * s);
-        c.lineTo(x + 55 * s, y + 15 * s - type);
-        c.stroke();
-        c.strokeStyle = '#1e293b';
-        c.lineWidth = 8 * s;
-        c.beginPath();
-        c.moveTo(x - 10 * s, y + 50 * s);
-        c.lineTo(x + 30 * s, y + 55 * s);
-        c.lineTo(x + 30 * s, y + 95 * s);
-        c.stroke();
-    }
-
-    createParticle() {
-        if (Math.random() > 0.96) {
-            const s = Math.min(this.width, this.height) / 400;
-            this.particles.push({
-                x: this.width / 2 + 80 * s,
-                y: this.height / 2,
-                vx: (Math.random() - 0.5) * 0.6,
-                vy: -Math.random() * 1.5,
-                life: 1,
-                char: ['{', '}', ';', '0', '1', '<', '>'][Math.floor(Math.random() * 7)]
-            });
-        }
-    }
-
-    drawParticles() {
-        const c = this.ctx;
-        c.font = '12px monospace';
-        c.fillStyle = '#00f2ff';
-        for (let i = this.particles.length - 1; i >= 0; i--) {
-            const p = this.particles[i];
-            p.x += p.vx;
-            p.y += p.vy;
-            p.life -= 0.02;
-            c.globalAlpha = p.life;
-            c.fillText(p.char, p.x, p.y);
-            c.globalAlpha = 1;
-            if (p.life <= 0) this.particles.splice(i, 1);
-        }
-    }
-
-    animate() {
-        this.time += 0.05;
-        this.ctx.clearRect(0, 0, this.width, this.height);
-        const s = Math.min(this.width, this.height) / 320;
-        const x = this.width / 2 - 50 * s;
-        const y = this.height / 2;
-        this.drawChair(x, y, s);
-        this.drawPerson(x, y, s);
-        this.drawTable(x, y, s);
-        this.drawLaptop(x, y, s);
-        this.createParticle();
-        this.drawParticles();
-        requestAnimationFrame(() => this.animate());
-    }
-}
-
 document.addEventListener('DOMContentLoaded', () => {
-    // --- Form Submission (Google Sheets) ---
+    // --- Service Chip Interactivity ---
+    const chips = document.querySelectorAll('.chip');
+    const serviceInput = document.getElementById('service-input');
+
+    chips.forEach(chip => {
+        chip.addEventListener('click', () => {
+            chips.forEach(c => c.classList.remove('active'));
+            chip.classList.add('active');
+            if (serviceInput) {
+                serviceInput.value = chip.getAttribute('data-value');
+            }
+        });
+    });
+
+    // --- Form Submission (Keep existing Google Sheets logic) ---
     const form = document.forms['submit-to-google-sheet'];
     const msg = document.getElementById('msg');
 
@@ -168,16 +31,23 @@ document.addEventListener('DOMContentLoaded', () => {
 
         form.addEventListener('submit', (e) => {
             e.preventDefault();
-            if (msg) msg.innerText = "Sending...";
+            if (msg) {
+                msg.innerText = "Sending...";
+                msg.style.color = '#fff';
+            }
 
             fetch(scriptURL, { method: 'POST', body: new FormData(form) })
-                .then(() => {
+                .then(response => {
+                    if (!response.ok) throw new Error('Network response was not ok');
                     if (msg) {
                         msg.innerText = "Message Sent Successfully!";
-                        msg.style.color = 'var(--accent-cyan)';
+                        msg.style.color = '#fff';
                         setTimeout(() => msg.innerText = "", 5000);
                     }
                     form.reset();
+                    // Reset chips to default
+                    chips.forEach(c => c.classList.remove('active'));
+                    chips[1].classList.add('active'); // AI Solutions default
                 })
                 .catch(error => {
                     if (msg) {
@@ -189,12 +59,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // --- Start Coder Animation ---
-    if (document.getElementById('coderCanvas')) {
-        new CoderAnimation();
-    }
-
-    // --- Cinematic Reveals ---
+    // --- Cinematic Reveals & Floating Animation ---
     initContactAnimations();
 });
 
@@ -204,10 +69,10 @@ document.addEventListener('DOMContentLoaded', () => {
 function initContactAnimations() {
     const tl = gsap.timeline();
 
-    // Ensure section is visible since common.js skips it
+    // Ensure section is visible
     gsap.set('#contact', { opacity: 1, visibility: 'visible' });
 
-    // 1. Initial Header & Form Entry
+    // 1. Initial Header Entry (Maintained from original)
     tl.fromTo('.header-watermark', 
         { scale: 0.9, opacity: 0 },
         { scale: 1, opacity: 1, duration: 1.5, ease: 'expo.out' }
@@ -232,34 +97,51 @@ function initContactAnimations() {
         { opacity: 1, y: 0, duration: 1, ease: 'power3.out' }, 
         '-=0.3'
     )
+    // 2. Form Card & Panels Entry
     .fromTo('.contact-form-wrapper', 
-        { x: -50, opacity: 0 },
-        { x: 0, opacity: 1, duration: 1.2, ease: 'power3.out' }, 
+        { y: 50, opacity: 0, scale: 0.98 },
+        { y: 0, opacity: 1, scale: 1, duration: 1.2, ease: 'power3.out' }, 
         '-=0.5'
     )
-    .fromTo('.coder-animation-wrapper', 
-        { x: 50, opacity: 0 },
-        { x: 0, opacity: 1, duration: 1.2, ease: 'power3.out' }, 
-        '-=1.2'
+    .fromTo('.form-left-panel', 
+        { x: -30, opacity: 0 },
+        { x: 0, opacity: 1, duration: 1, ease: 'power2.out' }, 
+        '-=0.8'
+    )
+    .fromTo('.form-right-panel', 
+        { x: 30, opacity: 0 },
+        { x: 0, opacity: 1, duration: 1, ease: 'power2.out' }, 
+        '-=0.8'
     );
 
-    // 2. Channel Cards Staggered Entry
-    gsap.fromTo('.channel-card-premium', 
-        { y: 40, opacity: 0 },
+    // 3. Floating Animation for Illustration
+    gsap.to('#contactIllustration', {
+        y: -20,
+        duration: 3,
+        ease: 'sine.inOut',
+        repeat: -1,
+        yoyo: true
+    });
+
+    // 4. Pill Links Staggered Entry
+    gsap.fromTo('.channel-pill-link', 
+        { y: 40, opacity: 0, scale: 0.9 },
         {
             scrollTrigger: {
                 trigger: '.contact-bottom-channels',
-                start: 'top 85%',
+                start: 'top 90%',
                 once: true
             },
             y: 0,
             opacity: 1,
+            scale: 1,
             duration: 0.8,
-            stagger: 0.15,
-            ease: 'power3.out'
+            stagger: 0.1,
+            ease: 'back.out(1.7)'
         }
     );
 
-    // Refresh ScrollTrigger to ensure all positions are calculated correctly
+    // Refresh ScrollTrigger
     ScrollTrigger.refresh();
 }
+

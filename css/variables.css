@@ -7,6 +7,7 @@
   --text-muted: #a0a0a0;
   --accent-cyan: #00f2ff;
   --accent-violet: #bd00ff;
+  --accent-arooth-blue: #0040C1;
   --accent-gradient: linear-gradient(135deg, var(--accent-cyan), var(--accent-violet));
   
   /* --- Typography --- */

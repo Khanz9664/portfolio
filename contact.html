@@ -57,95 +57,93 @@
           <span class="title-part-2">Connect</span>
         </h2>
         <div class="header-separator-line"></div>
-        <p class="section-subtitle">Have a project in mind or want to discuss data solutions? Let's architect the future together.</p>
+        <p class="section-subtitle">Have a project in mind or want to discuss data solutions? Let's architect the future
+          together.</p>
       </div>
 
-      <!-- Main Grid: Form Left, Animation Right -->
+      <!-- Main Grid: Two-Panel Blue Card -->
       <div class="contact-grid">
-        <!-- Contact Form -->
         <div class="contact-form-wrapper">
-          <div class="form-title-group">
-            <h3>Send a Message</h3>
-            <p>I usually respond within 24 hours.</p>
-          </div>
-          <form id="custom-contact-form" name="submit-to-google-sheet" class="contact-form">
-            <div class="form-group floating-label">
-              <input type="text" id="name" name="name" required>
-              <label for="name">Your Name</label>
-              <div class="underline"></div>
-            </div>
-
-            <div class="form-group floating-label">
-              <input type="email" id="email" name="email" required>
-              <label for="email">Email Address</label>
-              <div class="underline"></div>
-            </div>
-
-            <div class="form-group floating-label">
-              <textarea id="message" name="message" rows="5" required></textarea>
-              <label for="message">Your Message</label>
-              <div class="underline"></div>
-            </div>
-
-            <button type="submit" class="submit-button">
-              <span>Send Message</span>
-              <div class="button-icon">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
-                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <line x1="22" y1="2" x2="11" y2="13" />
-                  <polygon points="22 2 15 22 11 13 2 9 22 2" />
-                </svg>
+          <!-- Left Panel: Branding & Illustration -->
+          <div class="form-left-panel">
+            <div class="panel-branding">
+              <div class="brand-logo">
+                <img src="img/plogo.png" alt="Logo" class="mini-logo">
+                <span>SHAHID Portfolio</span>
               </div>
-            </button>
-            <span id="msg"></span>
-          </form>
-          <div class="form-status"></div>
-        </div>
+              <h3>Fill This Form.</h3>
+            </div>
+            <div class="panel-illustration">
+              <img src="img/contact-illustration.png" alt="Technology Illustration" id="contactIllustration">
+            </div>
+          </div>
 
-        <!-- JavaScript Animation -->
-        <div class="coder-animation-wrapper">
-          <canvas id="coderCanvas"></canvas>
+          <!-- Right Panel: Contact Form -->
+          <div class="form-right-panel">
+            <form id="custom-contact-form" name="submit-to-google-sheet" class="contact-form">
+              <!-- Service Selection Chips -->
+              <div class="service-selection-area">
+                <label>Tell me about your projects*</label>
+                <div class="chips-container">
+                  <div class="chip" data-value="Development">Development</div>
+                  <div class="chip active" data-value="AI Solutions">AI Solutions</div>
+                  <div class="chip" data-value="Data Analytics">Data Analytics</div>
+                  <div class="chip" data-value="Consultation">Consultation</div>
+                </div>
+                <input type="hidden" name="service" id="service-input" value="AI Solutions">
+              </div>
+
+              <div class="form-group-arooth">
+                <input type="text" id="name" name="name" placeholder="Your Name *" required>
+              </div>
+
+              <div class="form-group-arooth">
+                <input type="email" id="email" name="email" placeholder="Email Address *" required>
+              </div>
+
+              <div class="form-group-arooth">
+                <textarea id="message" name="message" placeholder="Your Message *" rows="4" required></textarea>
+              </div>
+
+              <div class="form-footer">
+                <button type="submit" class="get-in-touch-btn">Get In Touch</button>
+                <span id="msg"></span>
+              </div>
+            </form>
+          </div>
         </div>
       </div>
 
-      <!-- Direct Communication -->
-      <div class="contact-bottom-channels">
-        <h3 class="channel-group-title">Technical Briefing Channels</h3>
-        <div class="channels-grid">
-          <a href="mailto:shahid9664@gmail.com" class="channel-card-premium">
-            <div class="channel-glow"></div>
-            <div class="channel-icon">
-              <i class="fas fa-envelope-open-text"></i>
-            </div>
-            <div class="channel-info">
-              <h4>Secure Email</h4>
-              <p>shahid9664@gmail.com</p>
-            </div>
-            <div class="card-edge-glow"></div>
+      <!-- Bottom Experience: Massive Hero Title & Social Pills -->
+      <div class="contact-bottom-experience">
+        <div class="massive-hero-footer">
+          <span class="hero-word">PROJECT</span>
+          <span class="hero-icon-circle">
+            <i class="fas fa-arrow-up"></i>
+          </span>
+          <span class="hero-word">IN</span>
+          <span class="hero-word italic-blue">MIND?</span>
+        </div>
+
+        <div class="channels-pill-row">
+          <a href="mailto:shahid9664@gmail.com" class="footer-pill-link">
+            <i class="fas fa-envelope"></i>
+            <span>SECURE EMAIL</span>
           </a>
 
-          <a href="https://wa.me/+917780858125" class="channel-card-premium">
-            <div class="channel-glow"></div>
-            <div class="channel-icon">
-              <i class="fab fa-whatsapp"></i>
-            </div>
-            <div class="channel-info">
-              <h4>Direct WhatsApp</h4>
-              <p>+91 77808 58125</p>
-            </div>
-            <div class="card-edge-glow"></div>
+          <a href="https://wa.me/+917780858125" class="footer-pill-link">
+            <i class="fab fa-whatsapp"></i>
+            <span>DIRECT WHATSAPP</span>
           </a>
 
-          <a href="https://linkedin.com/in/shahid-ul-islam-13650998" target="_blank" class="channel-card-premium">
-            <div class="channel-glow"></div>
-            <div class="channel-icon">
-              <i class="fab fa-linkedin-in"></i>
-            </div>
-            <div class="channel-info">
-              <h4>Professional Intel</h4>
-              <p>LinkedIn Network</p>
-            </div>
-            <div class="card-edge-glow"></div>
+          <a href="https://linkedin.com/in/shahid-ul-islam-13650998" target="_blank" class="footer-pill-link">
+            <i class="fab fa-linkedin-in"></i>
+            <span>LINKEDIN</span>
+          </a>
+
+          <a href="https://instagram.com/shaddy9664" target="_blank" class="footer-pill-link">
+            <i class="fab fa-instagram"></i>
+            <span>INSTAGRAM</span>
           </a>
         </div>
       </div>

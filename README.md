@@ -9,6 +9,7 @@
   
   [![Deploy to GitHub Pages](https://github.com/Khanz9664/portfolio/actions/workflows/deploy.yml/badge.svg)](https://github.com/Khanz9664/portfolio/actions/workflows/deploy.yml)
   [![Lint Code Base](https://github.com/Khanz9664/portfolio/actions/workflows/lint.yml/badge.svg)](https://github.com/Khanz9664/portfolio/actions/workflows/lint.yml)
+  [![Playwright Tests](https://github.com/Khanz9664/portfolio/actions/workflows/test.yml/badge.svg)](https://github.com/Khanz9664/portfolio/actions/workflows/test.yml)
 
   <br />
 
@@ -19,18 +20,24 @@
 
 ---
 
-##  Overview
+##  Visual Showcase
 
-This repository hosts a high-fidelity, research-oriented portfolio showcasing advanced applications in **Artificial Intelligence**, **Deep Learning**, and **Mathematical Optimization**. Built with a "Machine Learning First Principles" philosophy, it serves as both a professional trajectory and a technical repository for rigorous ML articles.
+Experience the high-fidelity design system built with custom modular CSS and cinematic GSAP animations.
 
-> [!IMPORTANT]
-> This environment is maintained under strict engineering standards, featuring **100% clean linting** for both HTML and CSS, and automated CI/CD for continuous deployment.
+<p align="center">
+  <img src="img/screenshots/1.png" width="48%" alt="Home Hub" />
+  <img src="img/screenshots/2.png" width="48%" alt="Contact Gateway" />
+</p>
+<p align="center">
+  <img src="img/screenshots/3.png" width="48%" alt="Project CTA" />
+  <img src="img/screenshots/4.png" width="48%" alt="Mobile Responsive" />
+</p>
 
 ---
 
 ##  Technical Architecture
 
-The portfolio is architected as a modular, high-performance static environment, prioritizing cinematic visuals without compromising on core performance metrics.
+The portfolio is architected as a modular, high-performance static environment, prioritizing cinematic visuals without compromising on core DevOps stability.
 
 ```mermaid
 graph TD
@@ -42,133 +49,132 @@ graph TD
 
     subgraph "Structural Layer"
         HTML5["Semantic HTML5<br/>Modular UI Templates"]
-        CSS3["Modular CSS System<br/>(Glassmorphism / Flexbox / Grid)"]
+        CSS3["Modular CSS System<br/>(Zero-Error Standard)"]
     end
 
-    subgraph "Deployment & Quality"
-        GHA["GitHub Actions<br/>(CI/CD Pipeline)"]
-        Lint["Stylelint & HTMLHint<br/>(Zero-Error Standard)"]
+    subgraph "DevOps & Quality Gates"
+        GHA["GitHub Actions CI/CD"]
+        Lint["Stylelint & htmlhint<br/>(Static Analysis)"]
+        Tests["Playwright E2E Tests<br/>(Functional Verification)"]
     end
 
     HTML5 --> GSAP
     HTML5 --> MathJax
     CSS3 --> HTML5
     CanvasJS --> GSAP
+    
     GHA --> Lint
+    GHA --> Tests
+    
     Lint --> |Passes| GHA
-    GHA --> |Auto-Deploy| GH_Pages["Production (GitHub Pages)"]
+    Tests --> |Passes| GHA
+    
+    GHA --> |Atomic Deploy| GH_Pages["Production Env (live)"]
 
     style GSAP fill:#bd00ff,stroke:#333,stroke-width:2px,color:#fff
-    style CanvasJS fill:#00f2ff,stroke:#333,stroke-width:2px,color:#111
     style GHA fill:#2ea44f,stroke:#333,stroke-width:2px,color:#fff
-    style MathJax fill:#fff,stroke:#333,stroke-width:2px,color:#111
+    style Tests fill:#00f2ff,stroke:#333,stroke-width:2px,color:#111
 ```
 
 ---
 
 ##  Automated CI/CD Pipeline
 
-We employ a robust DevOps strategy using **GitHub Actions** to ensure that every commitment to the production environment meets high-level code quality standards.
-
-### Workflow Logic:
+Every commitment to the production environment undergoes a rigorous evaluation through our automated quality gates.
 
 ```mermaid
 sequenceDiagram
-    participant Developer
-    participant GitHub as GitHub Actions
-    participant Linter as Static Analysis
-    participant Deployment as Production Env
+    participant Dev as Developer
+    participant GHA as GitHub Actions CI
+    participant QG as Quality Gates (Lint/Test)
+    participant Prod as GitHub Pages
 
-    Developer->>GitHub: Git Push (Main Branch)
-    activate GitHub
-    GitHub->>Linter: Execute HTMLHint (Standard Rules)
-    GitHub->>Linter: Execute Stylelint (standard-config)
-    Linter-->>GitHub: Quality Report (Pass/Fail)
+    Dev->>GHA: Git Push (Main)
+    activate GHA
+    
+    par Quality Audit
+        GHA->>QG: Execute htmlhint & stylelint
+        GHA->>QG: Execute Playwright E2E Suite
+    end
+    
+    QG-->>GHA: Success Report
     
     rect rgb(20, 40, 20)
-    Note right of GitHub: If Linting Passes
-    GitHub->>Deployment: Trigger Deployment Workflow
-    Deployment->>Deployment: Build Static Assets
-    Deployment->>Production Env: Atomic Deployment (live)
+    Note right of GHA: Deployment Gate
+    GHA->>Prod: Trigger Atomic Deployment
+    Prod->>Prod: Build & Sync
+    Prod->>Dev: Deployment Live
     end
-    deactivate GitHub
+    deactivate GHA
 ```
 
-- **Clean Code Guarantee:** Automated `htmlhint` and `stylelint` prevent broken tags or inconsistent styling from reaching production.
-- **Zero-Latency Deployment:** Direct integration with GitHub Pages ensures the site is updated within seconds of a successful push.
+---
+
+##  Automated Testing Methodology
+
+To guarantee a premium user experience across all devices, we employ a **Playwright-driven** testing suite.
+
+- **E2E Navigation**: Verifies navbar integrity, mobile menu toggles, and active link states across **Desktop Chrome**, **Firefox**, and **Mobile Safari**.
+- **Functional Integrity**: Comprehensive testing of the "Arooth" contact form, including service chip selection and mocked API submissions.
+- **Robust Error Handling**: Verified server-side failure detection to ensure graceful feedback to users.
+- **Cross-Device Reliability**: Automated testing of the fluid typography and modular grid stacking at key breakpoints (`375px`, `768px`, `1024px`).
 
 ---
 
 ##  Scientific Methodology: ML Articles
 
-A core pillar of this portfolio is the **"Machine Learning From First Principles"** series. These articles are not just summaries; they are rigorous mathematical derivations.
+A core pillar of this portfolio is the **"Machine Learning From First Principles"** series. These are rigorous mathematical derivations rendered with `MathJax`.
 
-- **LaTeX Rendering:** Uses `MathJax` for precision rendering of calculus and linear algebra.
-- **Interactive Visuals:** GSAP-driven diagrams to illustrate concepts like Gradient Descent trajectories and Lagrange optimization boundaries.
-- **Rigorous Structure:** Every article follows a standard scientific narrative: *Intuition -> Mathematical Derivation -> Algorithmic Implementation*.
+- **LaTeX Accuracy**: Precise rendering of calculus and linear algebra primitives.
+- **Interactive Methodology**: GSAP-driven diagrams to illustrate concepts like Gradient Descent trajectories and Lagrange optimization boundaries.
+- **Standard Scientific Narrative**: *Intuition -> Mathematical Derivation -> Algorithmic Implementation*.
 
 ---
 
-##  Design System Tokens
+##  Repository & Tooling
 
-The project utilizes a custom **High-Tech Aesthetic** design system built entirely from scratch (No Frameworks).
-
-| Category | Implementation | Description |
+| Category | Tools | Standard |
 | :--- | :--- | :--- |
-| **Glassmorphism** | `backdrop-filter: blur(15px)` | Subtle, translucent overlays with glowing borders. |
-| **Typography** | `Outfit`, `Space Grotesk` | High-readability technical pair using variable weights. |
-| **Color Space** | `#00f2ff` (Cyan), `#bd00ff` (Violet) | Vibrant gradients against a `#050505` (Core Black) depth. |
-| **Animation** | `GSAP`, `ScrollTrigger` | Cinematic, scroll-synced transitions for a premium feel. |
+| **Animation** | GSAP 3.12+ | Cinematic / Scroll-synced |
+| **Logic** | Vanilla JS (ES6+) | Modular / Modern |
+| **Quality** | Playwright, Stylelint | Zero-Error Policy |
+| **Hosting** | GitHub Pages | Atomic CI/CD |
 
----
-
-##  Repository Structure
-
-```text
-/
-├── .github/workflows/   # CI/CD definition files (lint.yml, deploy.yml)
-├── articles/            # Scientific ML derivations (HTML/MathJax)
-├── css/                 # 12 Modular stylesheets (articles.css, hero.css, etc.)
-├── js/                  # Interaction logic & Generative Backgrounds
-├── img/                 # High-resolution optimized technical assets
-├── index.html           # Command Center
-└── ...                  # Modular Page Templates (about, skills, articles, contact)
-```
-
----
-
-##  Local Setup
-
-To replicate the development environment:
-
+### Local Setup
 1. **Clone & Install:**
    ```bash
    git clone https://github.com/Khanz9664/portfolio.git
    npm install
    ```
-
-2. **Linting Commands:**
+2. **Execute Tests:**
    ```bash
-   npx htmlhint "**/*.html"
+   npm test          # Run headless suite
+   npm run test:ui   # Open Playwright UI
+   ```
+3. **Static Analysis:**
+   ```bash
    npx stylelint "**/*.css"
    ```
 
-3. **Live Environment:**
-   Launch using **VS Code Live Server** for optimal hot-reloading.
-
----
-
-##  Connectivity
-
-I am actively seeking technical partnerships and research collaborations.
-
-<div align="center">
-  <a href="mailto:shahid9664@gmail.com"><b>Direct Email</b></a> • 
-  <a href="https://linkedin.com/in/shahid-ul-islam-13650998"><b>LinkedIn</b></a> • 
-  <a href="https://github.com/Khanz9664"><b>GitHub Lab</b></a>
-</div>
-
 ---
 <p align="center">
-  Engineering Design © 2025 Shahid Ul Islam.
+  Engineering Design © 2025 Shahid Ul Islam. <br />
+  Built with passion for Mathematical Rigor and Technical Excellence.
+</p>
+<p align="center">
+  <a href="https://khanz9664.github.io/portfolio">
+    <img src="https://img.shields.io/badge/Portfolio-255E00?style=for-the-badge&logo=google-chrome&logoColor=white" alt="Portfolio">
+  </a>
+  <a href="https://github.com/khanz9664">
+    <img src="https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white" alt="GitHub">
+  </a>
+  <a href="https://www.linkedin.com/in/shahid-ul-islam-13650998/">
+    <img src="https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white" alt="LinkedIn">
+  </a>
+  <a href="https://www.kaggle.com/shaddy9664">
+    <img src="https://img.shields.io/badge/Kaggle-20BEFF?style=for-the-badge&logo=Kaggle&logoColor=white" alt="Kaggle">
+  </a>
+  <a href="mailto:[EMAIL_ADDRESS]">
+    <img src="https://img.shields.io/badge/Email-D14836?style=for-the-badge&logo=gmail&logoColor=white" alt="Email">
+  </a>
 </p>

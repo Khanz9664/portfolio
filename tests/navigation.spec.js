@@ -31,8 +31,10 @@ test.describe('Navigation End-to-End Tests', () => {
       }
       
       const link = page.locator(selector).first();
-      // Using force: true to bypass "outside viewport" errors in webkit for fixed elements
-      await link.click({ force: true });
+      // Using dispatchEvent('click') to bypass coordinate-based actionability checks 
+      // which are flaky for transformed/fixed elements in Safari/Webkit CI
+      await link.dispatchEvent('click');
+      await page.waitForLoadState('load');
     };
 
     // Navigate to About

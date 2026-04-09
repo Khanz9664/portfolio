@@ -10,6 +10,8 @@ module.exports = defineConfig({
   use: {
     baseURL: 'http://127.0.0.1:8080',
     trace: 'on-first-retry',
+    screenshot: 'only-on-failure',
+    video: 'retain-on-failure',
   },
 
   /* Configure projects for major browsers */

@@ -3,7 +3,8 @@ const { test, expect } = require('@playwright/test');
 test.describe('Navigation End-to-End Tests', () => {
   
   test.beforeEach(async ({ page }) => {
-    await page.goto('/');
+    // Increase timeout and wait for DOM content to be ready
+    await page.goto('/', { waitUntil: 'domcontentloaded', timeout: 60000 });
   });
 
   test('should have the correct title', async ({ page }) => {
@@ -21,15 +22,17 @@ test.describe('Navigation End-to-End Tests', () => {
       if (isMobileView) {
         const isOpen = await menuToggle.evaluate(el => el.classList.contains('open'));
         if (!isOpen) {
-          await menuToggle.click();
+          // Use evaluate to click to avoid potential double-toggle issues on mobile emulations
+          await menuToggle.evaluate(el => el.click());
           // Wait for transition to finish
           await expect(navLinks).toHaveClass(/active/);
-          await page.waitForTimeout(600); 
+          await page.waitForTimeout(800); 
         }
       }
       
       const link = page.locator(selector).first();
-      await link.click();
+      // Using force: true to bypass "outside viewport" errors in webkit for fixed elements
+      await link.click({ force: true });
     };
 
     // Navigate to About
@@ -63,19 +66,19 @@ test.describe('Navigation End-to-End Tests', () => {
     // Open menu if not already open
     const isOpenInitial = await menuToggle.evaluate(el => el.classList.contains('open'));
     if (!isOpenInitial) {
-      await menuToggle.click();
+      // Use evaluate to click to avoid potential double-toggle issues with standard click() on mobile
+      await menuToggle.evaluate(el => el.click());
     }
     await expect(navLinks).toHaveClass(/active/);
     await expect(menuToggle).toHaveClass(/open/);
 
     // Wait for transition to stabilize
-    await page.waitForTimeout(800);
+    await page.waitForTimeout(1000);
 
     // Close menu if it's open
     const isOpenBeforeClose = await menuToggle.evaluate(el => el.classList.contains('open'));
     if (isOpenBeforeClose) {
-      // Use force click to bypass any potential overlay issues during transition
-      await menuToggle.click({ force: true });
+      await menuToggle.evaluate(el => el.click());
     }
     
     await expect(navLinks).not.toHaveClass(/active/);

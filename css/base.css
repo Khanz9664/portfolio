@@ -80,3 +80,8 @@ canvas {
     transform: translateY(-2px);
     color: var(--accent-cyan);
 }
+
+/* Utilities */
+.no-scroll {
+    overflow: hidden !important;
+}

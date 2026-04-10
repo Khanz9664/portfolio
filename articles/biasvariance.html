@@ -1,0 +1,1825 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bias–Variance & Generalization | Shahid Ul Islam</title>
+  <meta name="description" content="A complete masterclass on Bias-Variance tradeoff and Generalization theory in Machine Learning." />
+  <meta name="author" content="Shahid Ul Islam" />
+  <link rel="icon" type="image/png" href="../img/plogo.png" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.min.js"></script>
+  <link
+    href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=JetBrains+Mono:wght@300;400;600;700&family=Lora:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="css/biasvariance.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <link rel="stylesheet" href="../css/variables.css" />
+  <link rel="stylesheet" href="../css/navigation.css" />
+  <link rel="stylesheet" href="../css/footer.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <script defer src="../js/common.js"></script>
+
+</head>
+
+<body>
+  <div class="top-bar">
+    <div class="logo">
+      <img src="../img/plogo.png" alt="Personal Logo" class="logo-icon">
+      <span class="logo-text">SHAHID<span class="logo-accent">||</span>Portfolio</span>
+    </div>
+    <nav class="nav-container">
+      <ul class="nav-links">
+        <li><a href="../index.html" class="nav-link">.Home</a></li>
+        <li><a href="../about.html" class="nav-link">.About</a></li>
+        <li><a href="../skills.html" class="nav-link">.Skills</a></li>
+        <li><a href="../projects.html" class="nav-link">.Projects</a></li>
+        <li><a href="../contact.html" class="nav-link">.Contact</a></li>
+        <li><a href="../articles.html" class="nav-link">.Articles</a></li>
+      </ul>
+      <div class="menu-toggle">
+        <div class="hamburger"></div>
+      </div>
+    </nav>
+  </div>
+
+  <!-- ══ HERO ══ -->
+  <div class="hero">
+    <div class="hero-canvas"></div>
+    <div class="hero-orb2"></div>
+    <div class="hero-inner">
+      <div class="hero-tag">// Machine Learning — Generalization Theory</div>
+      <h1>
+        <span class="hi">Under</span> &amp; <span class="hi">Over</span>fitting<br>
+        <span class="hl">Bias–Variance</span> &amp; Beyond
+      </h1>
+      <p class="hero-sub">The deepest question in ML is not how to fit data — it's how to generalize. This is the
+        complete mathematical and intuitive treatment: from first principles through every practical remedy, including
+        the modern double-descent surprise.</p>
+      <div class="hero-pills">
+        <span class="pill">Generalization Gap</span>
+        <span class="pill">Bias²</span>
+        <span class="pill">Variance</span>
+        <span class="pill">Irreducible Noise</span>
+        <span class="pill">Learning Curves</span>
+        <span class="pill">Regularization</span>
+        <span class="pill">Dropout</span>
+        <span class="pill">Early Stopping</span>
+        <span class="pill">Cross-Validation</span>
+        <span class="pill">Ensembles</span>
+        <span class="pill">Double Descent</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ TOC ══ -->
+  <div class="toc-outer">
+    <div class="toc-box">
+      <div class="toc-label">// Table of Contents</div>
+      <ol class="toc-list">
+        <li><a href="#s1"><span class="toc-num">01</span>What Does "Generalize" Mean?</a></li>
+        <li><a href="#s2"><span class="toc-num">02</span>Underfitting — High Bias</a></li>
+        <li><a href="#s3"><span class="toc-num">03</span>Overfitting — High Variance</a></li>
+        <li><a href="#s4"><span class="toc-num">04</span>Bias–Variance Decomposition — Full Proof</a></li>
+        <li><a href="#s5"><span class="toc-num">05</span>The Tradeoff — Geometry and Intuition</a></li>
+        <li><a href="#s6"><span class="toc-num">06</span>Diagnosing — Learning Curves</a></li>
+        <li><a href="#s7"><span class="toc-num">07</span>Fixing Underfitting</a></li>
+        <li><a href="#s8"><span class="toc-num">08</span>Regularization — L1, L2, Elastic Net</a></li>
+        <li><a href="#s9"><span class="toc-num">09</span>Dropout — Randomized Regularization</a></li>
+        <li><a href="#s10"><span class="toc-num">10</span>Early Stopping — Implicit Regularization</a></li>
+        <li><a href="#s11"><span class="toc-num">11</span>Data Augmentation and More Data</a></li>
+        <li><a href="#s12"><span class="toc-num">12</span>Cross-Validation — Unbiased Error Estimation</a></li>
+        <li><a href="#s13"><span class="toc-num">13</span>Ensemble Methods — Bagging and Boosting</a></li>
+        <li><a href="#s14"><span class="toc-num">14</span>Double Descent — The Modern Twist</a></li>
+        <li><a href="#s15"><span class="toc-num">15</span>Decision Framework — What to Do When</a></li>
+        <li><a href="#s16"><span class="toc-num">16</span>The Full Mental Model</a></li>
+      </ol>
+    </div>
+  </div>
+
+  <div class="content">
+
+    <!-- ══════════════════════════════════════════════ -->
+    <div class="section" id="s1">
+      <div class="section-header">
+        <span class="section-num">§01</span>
+        <h2>What Does "Generalize" Mean?</h2>
+      </div>
+
+      <p>A model that memorizes its training data perfectly is useless — the world will always show it examples it
+        hasn't seen before. The fundamental goal of supervised learning is not to fit training data. It is to learn the
+        <em>underlying pattern</em> well enough to make accurate predictions on new data.
+      </p>
+
+      <div class="math-block dark">
+        <span class="label">The Generalization Problem</span>
+        \[
+        \underbrace{R[h]}_{\text{true risk}} = \mathbb{E}_{(\mathbf{x}, y) \sim P}\left[\mathcal{L}(h(\mathbf{x}),
+        y)\right]
+        \qquad
+        \underbrace{\hat{R}[h]}_{\text{empirical risk}} = \frac{1}{m}\sum_{i=1}^{m}\mathcal{L}(h(\mathbf{x}^{(i)}),
+        y^{(i)})
+        \]
+        \[
+        \text{Generalization Gap} = R[h] - \hat{R}[h]
+        \]
+      </div>
+
+      <p>We optimize \(\hat{R}\) (the training loss) but care about \(R\) (the true risk over the entire distribution).
+        The gap between them is what we must control. A large gap means the model learned something specific to the
+        training set — it will fail on new data.</p>
+
+      <div class="subsection">
+        <h3>The Three Sets — Why They All Exist</h3>
+        <ul class="prop-list">
+          <li><strong>Training set:</strong> Used to fit model parameters. Loss here is \(\hat{R}\). Models always
+            perform best here — they were literally optimized on it.</li>
+          <li><strong>Validation set:</strong> Used to tune hyperparameters (learning rate, regularization strength,
+            architecture choices). Never used for gradient updates. Gives an unbiased estimate of generalization
+            <em>during development</em>.
+          </li>
+          <li><strong>Test set:</strong> Touched exactly once — after all development is complete. Provides the final,
+            unbiased generalization estimate. Using the test set to make any model decision contaminates it.</li>
+        </ul>
+
+        <div class="callout coral">
+          <div class="callout-title">⚠ Test Set Contamination</div>
+          <p>If you ever use the test set to make any decision — choosing between models, deciding to add more data,
+            stopping early — it becomes part of your validation set. You have inadvertently fit hyperparameters to it.
+            Report results on a truly held-out set, or use cross-validation with a separate final test set.</p>
+        </div>
+      </div>
+
+      <div class="subsection">
+        <h3 class="emerald">The Two Failure Modes</h3>
+        <div class="scenario-grid">
+          <div class="scenario-card" style="background: var(--cor-bg); border-color: rgba(248,113,113,0.3);">
+            <div class="s-label" style="color:var(--coral);">Underfitting</div>
+            <div class="s-val" style="color:var(--coral);">High Error</div>
+            <p>On both training AND test data. The model never learned the pattern. Bias is too high.</p>
+          </div>
+          <div class="scenario-card" style="background: var(--em-bg); border-color: rgba(52,211,153,0.3);">
+            <div class="s-label" style="color:var(--emerald);">Good Fit</div>
+            <div class="s-val" style="color:var(--emerald);">Low Error</div>
+            <p>Low on both. The model learned the true pattern without memorizing noise. The goal.</p>
+          </div>
+          <div class="scenario-card" style="background: var(--vio-bg); border-color: rgba(192,132,252,0.3);">
+            <div class="s-label" style="color:var(--violet);">Overfitting</div>
+            <div class="s-val" style="color:var(--violet);">Big Gap</div>
+            <p>Low on training, high on test. The model memorized training noise. Variance is too high.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════════ -->
+    <div class="section" id="s2">
+      <div class="section-header">
+        <span class="section-num">§02</span>
+        <h2>Underfitting — High Bias</h2>
+      </div>
+
+      <p>Underfitting occurs when a model is too simple to capture the underlying pattern in the data. The model makes
+        <em>systematic errors</em> — it consistently predicts wrong in the same direction, regardless of which training
+        samples were used.
+      </p>
+
+      <div class="subsection">
+        <h3>What Bias Means Precisely</h3>
+        <p>Bias is the expected deviation of the model's prediction from the true value, averaged over all possible
+          training sets:</p>
+
+        <div class="math-block coral">
+          <span class="label">Bias Definition</span>
+          \[
+          \text{Bias}[\hat{f}(\mathbf{x})] = \mathbb{E}_{\mathcal{D}}\left[\hat{f}(\mathbf{x})\right] - f(\mathbf{x})
+          \]
+        </div>
+
+        <p>The expectation is over all possible training sets \(\mathcal{D}\) of size \(m\) drawn from the same
+          distribution. Even with infinite data, a high-bias model will still predict wrong — because the hypothesis
+          class doesn't contain the true function.</p>
+
+        <div class="callout coral">
+          <div class="callout-title">🔴 Concrete Example</div>
+          <p>True relationship: \(y = 0.5x^3 - 2x^2 + x + \epsilon\). You fit a linear model \(\hat{y} = \theta_0 +
+            \theta_1 x\). No matter how much data you give it, the best linear fit will consistently underestimate the
+            peaks and overestimate the troughs — because a line cannot represent a cubic. This systematic error is bias.
+            Adding more data won't fix it.</p>
+        </div>
+      </div>
+
+      <div class="subsection">
+        <h3 class="coral">Symptoms of Underfitting</h3>
+
+        <div class="figure">
+          <svg viewBox="0 0 580 200" xmlns="http://www.w3.org/2000/svg" style="max-width:580px;">
+            <rect width="580" height="200" fill="#07090b" />
+            <defs>
+              <marker id="ga" markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto">
+                <path d="M0,0 L0,5 L7,2.5z" fill="#456070" />
+              </marker>
+            </defs>
+            <!-- Axes -->
+            <line x1="50" y1="170" x2="280" y2="170" stroke="#1a2530" stroke-width="1.2" marker-end="url(#ga)" />
+            <line x1="50" y1="170" x2="50" y2="20" stroke="#1a2530" stroke-width="1.2" marker-end="url(#ga)" />
+            <text x="285" y="173" font-family="Inconsolata" font-size="10" fill="#456070">epoch</text>
+            <text x="14" y="18" font-family="Inconsolata" font-size="10" fill="#456070">loss</text>
+            <!-- Training loss (high, barely decreasing) -->
+            <path d="M55,40 C80,42 120,52 180,75 C220,90 260,105 278,110" fill="none" stroke="#f87171"
+              stroke-width="2.2" />
+            <!-- Validation loss (almost same, high) -->
+            <path d="M55,50 C80,52 120,60 180,80 C220,95 260,108 278,113" fill="none" stroke="#f0b429"
+              stroke-width="2.2" stroke-dasharray="6,3" />
+            <!-- Labels -->
+            <text x="60" y="30" font-family="Inconsolata" font-size="10" fill="#f87171">train loss (high)</text>
+            <text x="60" y="45" font-family="Inconsolata" font-size="10" fill="#f0b429">val loss (similar, also
+              high)</text>
+            <text x="60" y="185" font-family="Inconsolata" font-size="10" fill="#456070"
+              font-style="italic">Underfitting: both losses high and close together</text>
+
+            <!-- Right panel: decision boundary -->
+            <line x1="310" y1="170" x2="570" y2="170" stroke="#1a2530" stroke-width="1.2" marker-end="url(#ga)" />
+            <line x1="310" y1="170" x2="310" y2="20" stroke="#1a2530" stroke-width="1.2" marker-end="url(#ga)" />
+            <!-- True boundary (wavy) -->
+            <path d="M315,140 C340,110 370,60 400,80 C430,100 460,50 540,60" fill="none" stroke="#34d399"
+              stroke-width="1.5" stroke-dasharray="5,3" opacity="0.6" />
+            <!-- Fitted line (too simple) -->
+            <line x1="315" y1="150" x2="555" y2="60" stroke="#f87171" stroke-width="2.2" />
+            <!-- Class dots -->
+            <g fill="#60a5fa" opacity="0.8">
+              <circle cx="340" cy="155" r="4" />
+              <circle cx="360" cy="145" r="4" />
+              <circle cx="380" cy="130" r="4" />
+              <circle cx="400" cy="135" r="4" />
+              <circle cx="500" cy="75" r="4" />
+              <circle cx="520" cy="80" r="4" />
+            </g>
+            <g fill="#f87171" opacity="0.8">
+              <circle cx="330" cy="100" r="4" />
+              <circle cx="420" cy="100" r="4" />
+              <circle cx="440" cy="60" r="4" />
+              <circle cx="460" cy="120" r="4" />
+              <circle cx="540" cy="140" r="4" />
+            </g>
+            <text x="315" y="185" font-family="Inconsolata" font-size="10" fill="#f87171" font-style="italic">linear
+              boundary can't capture true pattern</text>
+          </svg>
+          <div class="figure-cap">Fig 1. Left: Learning curve signature of underfitting — both train and val loss are
+            high and close together. Right: The hypothesis class (line) is too simple for the true boundary.</div>
+        </div>
+
+        <ul class="prop-list">
+          <li><strong>High training loss and high validation loss</strong> — both are bad, and they're similar to each
+            other. The model fails on the data it was trained on.</li>
+          <li><strong>Performance doesn't improve much with more data</strong> — adding more samples of the same
+            distribution won't help a model that structurally can't represent the pattern.</li>
+          <li><strong>Large residuals with clear systematic structure</strong> — in regression, a residual plot shows
+            obvious curves or trends; the model missed a real pattern.</li>
+        </ul>
+      </div>
+
+      <div class="subsection">
+        <h3 class="coral">Causes of Underfitting</h3>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Cause</th>
+                <th>What's Wrong</th>
+                <th>Fix</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Hypothesis class too simple</td>
+                <td>Linear model for nonlinear data; shallow tree; too few neurons</td>
+                <td>Increase model capacity</td>
+              </tr>
+              <tr>
+                <td>Regularization too strong</td>
+                <td>\(\lambda\) so large that weights are crushed to near-zero</td>
+                <td>Decrease regularization</td>
+              </tr>
+              <tr>
+                <td>Too few features</td>
+                <td>Missing variables that explain the variance in \(y\)</td>
+                <td>Feature engineering; add relevant inputs</td>
+              </tr>
+              <tr>
+                <td>Training too short</td>
+                <td>Stopped before convergence</td>
+                <td>Train longer</td>
+              </tr>
+              <tr>
+                <td>Learning rate too large</td>
+                <td>Gradient descent diverges/oscillates; never settles</td>
+                <td>Reduce learning rate</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════════ -->
+    <div class="section" id="s3">
+      <div class="section-header">
+        <span class="section-num">§03</span>
+        <h2>Overfitting — High Variance</h2>
+      </div>
+
+      <p>Overfitting occurs when a model is so powerful that it learns not just the true pattern, but also the random
+        noise specific to the training set. The model fits every quirk of the training data — including sampling
+        accidents that won't appear in new data.</p>
+
+      <div class="subsection">
+        <h3>What Variance Means Precisely</h3>
+
+        <div class="math-block violet">
+          <span class="label">Variance Definition</span>
+          \[
+          \text{Var}[\hat{f}(\mathbf{x})] = \mathbb{E}_{\mathcal{D}}\left[\left(\hat{f}(\mathbf{x}) -
+          \mathbb{E}_{\mathcal{D}}[\hat{f}(\mathbf{x})]\right)^2\right]
+          \]
+        </div>
+
+        <p>Variance measures how much the model's prediction at \(\mathbf{x}\) changes when you retrain on a different
+          sample of the same size from the same distribution. A high-variance model is wildly sensitive to which
+          specific data points ended up in the training set.</p>
+
+        <div class="callout violet">
+          <div class="callout-title">🟣 Concrete Example</div>
+          <p>A degree-15 polynomial fit to 20 data points. If you redraw 20 samples from the same distribution and
+            refit, the polynomial looks completely different — it bends wildly to pass through all 20 new points. The
+            two polynomials agree at the training points but disagree everywhere else. That disagreement is variance.
+            The model learned the noise, not the signal.</p>
+        </div>
+      </div>
+
+      <div class="subsection">
+        <h3 class="violet">Symptoms of Overfitting</h3>
+
+        <div class="figure">
+          <svg viewBox="0 0 580 200" xmlns="http://www.w3.org/2000/svg" style="max-width:580px;">
+            <rect width="580" height="200" fill="#07090b" />
+            <!-- Left panel: learning curves -->
+            <line x1="50" y1="170" x2="280" y2="170" stroke="#1a2530" stroke-width="1.2" marker-end="url(#ga)" />
+            <line x1="50" y1="170" x2="50" y2="20" stroke="#1a2530" stroke-width="1.2" marker-end="url(#ga)" />
+            <!-- Training loss (keeps going down) -->
+            <path d="M55,130 C80,100 110,75 150,52 C180,36 220,28 278,22" fill="none" stroke="#f87171"
+              stroke-width="2.2" />
+            <!-- Validation loss (initially falls, then rises) -->
+            <path d="M55,140 C80,108 110,85 140,72 C160,65 180,66 210,75 C240,84 265,100 278,110" fill="none"
+              stroke="#f0b429" stroke-width="2.2" stroke-dasharray="6,3" />
+            <!-- Gap shading -->
+            <path
+              d="M150,52 C180,36 220,28 278,22 L278,110 C265,100 240,84 210,75 C180,66 160,65 140,72 C120,80 90,95 55,140 L55,130 C80,100 110,75 150,52Z"
+              fill="rgba(192,132,252,0.08)" />
+            <!-- Best point marker -->
+            <line x1="148" y1="25" x2="148" y2="170" stroke="#34d399" stroke-width="1.2" stroke-dasharray="4,3" />
+            <text x="140" y="185" font-family="Inconsolata" font-size="9" fill="#34d399">best point</text>
+            <!-- Labels -->
+            <text x="55" y="18" font-family="Inconsolata" font-size="10" fill="#f87171">train loss (→ 0)</text>
+            <text x="55" y="32" font-family="Inconsolata" font-size="10" fill="#f0b429">val loss (rises)</text>
+            <text x="185" y="68" font-family="Inconsolata" font-size="9" fill="#c084fc">gap = overfit</text>
+            <text x="285" y="173" font-family="Inconsolata" font-size="10" fill="#456070">epoch</text>
+
+            <!-- Right panel: wavy overfit curve -->
+            <line x1="310" y1="170" x2="570" y2="170" stroke="#1a2530" stroke-width="1.2" marker-end="url(#ga)" />
+            <line x1="310" y1="170" x2="310" y2="20" stroke="#1a2530" stroke-width="1.2" marker-end="url(#ga)" />
+            <!-- True smooth boundary -->
+            <path d="M315,120 C360,60 430,60 555,120" fill="none" stroke="#34d399" stroke-width="1.5"
+              stroke-dasharray="5,3" opacity="0.6" />
+            <!-- Overfit boundary (wiggly through all points) -->
+            <path
+              d="M315,140 C328,145 335,95 345,92 C358,88 362,148 375,155 C385,158 392,70 405,65 C420,58 428,148 440,150 C455,152 462,62 475,58 C490,52 500,150 515,155 C528,158 540,65 555,68"
+              fill="none" stroke="#c084fc" stroke-width="2.2" />
+            <!-- Data points -->
+            <g fill="#34d399" opacity="0.9">
+              <circle cx="345" cy="92" r="4" />
+              <circle cx="375" cy="155" r="4" />
+              <circle cx="405" cy="65" r="4" />
+              <circle cx="440" cy="150" r="4" />
+              <circle cx="475" cy="58" r="4" />
+              <circle cx="515" cy="155" r="4" />
+            </g>
+            <text x="315" y="185" font-family="Inconsolata" font-size="10" fill="#c084fc" font-style="italic">high-deg.
+              model fits every noise point</text>
+          </svg>
+          <div class="figure-cap">Fig 2. Left: Overfitting learning curve — train loss → 0, val loss diverges upward.
+            Gap is the overfit region. Right: High-capacity model passes through all training points but oscillates
+            wildly on unseen data.</div>
+        </div>
+      </div>
+
+      <div class="subsection">
+        <h3 class="violet">Causes of Overfitting</h3>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Cause</th>
+                <th>What's Wrong</th>
+                <th>Fix</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Model too complex</td>
+                <td>Too many parameters relative to data size</td>
+                <td>Reduce capacity; regularize</td>
+              </tr>
+              <tr>
+                <td>Too little data</td>
+                <td>Training set too small — model memorizes it</td>
+                <td>Get more data; augment</td>
+              </tr>
+              <tr>
+                <td>No regularization</td>
+                <td>Weights grow unrestricted to fit noise</td>
+                <td>L1/L2/Dropout</td>
+              </tr>
+              <tr>
+                <td>Training too long</td>
+                <td>Kept training after the validation loss started rising</td>
+                <td>Early stopping</td>
+              </tr>
+              <tr>
+                <td>Noisy / mislabeled data</td>
+                <td>Model learns the wrong labels</td>
+                <td>Clean data; label smoothing</td>
+              </tr>
+              <tr>
+                <td>Feature leakage</td>
+                <td>Test-time information smuggled into training features</td>
+                <td>Strict feature engineering pipeline</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════════ -->
+    <div class="section" id="s4">
+      <div class="section-header">
+        <span class="section-num">§04</span>
+        <h2>Bias–Variance Decomposition — Full Proof</h2>
+      </div>
+
+      <p>The expected test error at a point \(\mathbf{x}\) can be decomposed into three terms. This decomposition is the
+        mathematical backbone of everything in this masterclass. We prove it from scratch.</p>
+
+      <div class="subsection">
+        <h3>Setup</h3>
+        <p>Assume: \(y = f(\mathbf{x}) + \epsilon\) where \(f\) is the true unknown function and \(\epsilon \sim (0,
+          \sigma^2)\) is irreducible noise. We learn \(\hat{f}(\mathbf{x})\) from a training set \(\mathcal{D}\).
+          Define:</p>
+
+        <div class="math-block">
+          \[
+          \bar{f}(\mathbf{x}) = \mathbb{E}_{\mathcal{D}}[\hat{f}(\mathbf{x})] \quad \text{(average prediction over all
+          possible training sets)}
+          \]
+        </div>
+      </div>
+
+      <div class="subsection">
+        <h3 class="gold">The Decomposition Proof</h3>
+
+        <div class="derivation">
+          <div class="deriv-hdr">// Full proof: E[(y − f̂(x))²] = Bias² + Variance + σ²</div>
+          <div class="deriv-step">
+            <span class="step-n">1</span>
+            <div>
+              Expand expected squared error (expectation over both \(\mathcal{D}\) and noise \(\epsilon\)):
+              \[\mathbb{E}\left[(y - \hat{f})^2\right] = \mathbb{E}\left[(f + \epsilon - \hat{f})^2\right]\]
+            </div>
+          </div>
+          <div class="deriv-step">
+            <span class="step-n">2</span>
+            <div>
+              Add and subtract \(\bar{f}\):
+              \[= \mathbb{E}\left[(f - \bar{f}) + (\bar{f} - \hat{f}) + \epsilon\right]^2\]
+              Expand the square (three terms, three cross-products):
+              \[= \mathbb{E}[(f-\bar{f})^2] + \mathbb{E}[(\bar{f}-\hat{f})^2] + \mathbb{E}[\epsilon^2] +
+              2\cdot\text{cross terms}\]
+            </div>
+          </div>
+          <div class="deriv-step">
+            <span class="step-n">3</span>
+            <div>
+              Show cross terms vanish:
+              <ul style="margin-top:8px;padding-left:20px;font-size:0.92em;">
+                <li>\(2(f-\bar{f})\mathbb{E}_\mathcal{D}[(\bar{f}-\hat{f})] = 2(f-\bar{f})\cdot 0 = 0\) since
+                  \(\mathbb{E}[\hat{f}] = \bar{f}\) by definition.</li>
+                <li>\(2\mathbb{E}[\epsilon(f-\bar{f})] = 0\) since \(\epsilon\) is independent of \(\hat{f}\) and \(f\),
+                  and \(\mathbb{E}[\epsilon]=0\).</li>
+                <li>\(2\mathbb{E}[\epsilon(\bar{f}-\hat{f})] = 0\) by independence of noise and training set.</li>
+              </ul>
+            </div>
+          </div>
+          <div class="deriv-step">
+            <span class="step-n">4</span>
+            <div>
+              What remains:
+              \[= \underbrace{(f(\mathbf{x}) - \bar{f}(\mathbf{x}))^2}_{\text{Bias}^2[\hat{f}]} +
+              \underbrace{\mathbb{E}_\mathcal{D}\left[(\hat{f}(\mathbf{x}) -
+              \bar{f}(\mathbf{x}))^2\right]}_{\text{Var}[\hat{f}]} + \underbrace{\sigma^2}_{\text{Irreducible}}\]
+              <div class="step-note">Note: (f − f̄)² has no expectation over 𝒟 since both f(x) and f̄(x) are
+                deterministic at a fixed x. ∎</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="math-block dark">
+          <span class="label">Bias–Variance Decomposition</span>
+          \[
+          \underbrace{\mathbb{E}\!\left[(y - \hat{f}(\mathbf{x}))^2\right]}_{\text{Expected Test MSE}} =
+          \underbrace{\left(\mathbb{E}_\mathcal{D}[\hat{f}(\mathbf{x})] - f(\mathbf{x})\right)^{\!2}}_{\text{Bias}^2} +
+          \underbrace{\mathbb{E}_\mathcal{D}\!\left[\left(\hat{f}(\mathbf{x}) -
+          \mathbb{E}_\mathcal{D}[\hat{f}]\right)^{\!2}\right]}_{\text{Variance}} +
+          \underbrace{\sigma^2}_{\text{Irreducible Noise}}
+          \]
+        </div>
+
+        <div class="callout emerald">
+          <div class="callout-title">★ What Each Term Is</div>
+          <p><strong>Bias²</strong> — how far the average prediction is from the truth. A property of the hypothesis
+            class, not the specific training set. Eliminated only by using a richer model family. &nbsp;|&nbsp;
+            <strong>Variance</strong> — how much the prediction fluctuates across different training sets of the same
+            size. Reduced by regularization, more data, ensembling. &nbsp;|&nbsp; <strong>σ²</strong> — the irreducible
+            noise floor of the data-generating process. No model, no matter how perfect, can do better than this.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════════ -->
+    <div class="section" id="s5">
+      <div class="section-header">
+        <span class="section-num">§05</span>
+        <h2>The Tradeoff — Geometry and Intuition</h2>
+      </div>
+
+      <p>Bias and variance move in opposite directions as model complexity increases. This creates the classic U-shaped
+        test error curve.</p>
+
+      <div class="figure">
+        <svg viewBox="0 0 600 260" xmlns="http://www.w3.org/2000/svg" style="max-width:600px;">
+          <rect width="600" height="260" fill="#07090b" />
+          <!-- Axes -->
+          <defs>
+            <marker id="axarr" markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto">
+              <path d="M0,0 L0,5 L7,2.5z" fill="#456070" />
+            </marker>
+          </defs>
+          <line x1="55" y1="210" x2="565" y2="210" stroke="#1a2530" stroke-width="1.5" marker-end="url(#axarr)" />
+          <line x1="55" y1="210" x2="55" y2="20" stroke="#1a2530" stroke-width="1.5" marker-end="url(#axarr)" />
+          <text x="570" y="214" font-family="Inconsolata" font-size="11" fill="#456070">complexity</text>
+          <text x="12" y="18" font-family="Inconsolata" font-size="11" fill="#456070">Error</text>
+          <!-- complexity axis labels -->
+          <text x="75" y="225" font-family="Inconsolata" font-size="9" fill="#456070">simple</text>
+          <text x="280" y="225" font-family="Inconsolata" font-size="9" fill="#456070">moderate</text>
+          <text x="480" y="225" font-family="Inconsolata" font-size="9" fill="#456070">complex</text>
+
+          <!-- Irreducible noise floor -->
+          <line x1="55" y1="185" x2="565" y2="185" stroke="#34d399" stroke-width="1.2" stroke-dasharray="5,4"
+            opacity="0.7" />
+          <text x="400" y="198" font-family="Inconsolata" font-size="9" fill="#34d399">σ² irreducible floor</text>
+
+          <!-- Bias² curve (monotone decreasing) -->
+          <path d="M65,40 C120,48 190,80 260,110 C320,135 390,158 540,178" fill="none" stroke="#f87171"
+            stroke-width="2.2" />
+          <text x="548" y="175" font-family="Inconsolata" font-size="10" fill="#f87171">Bias²</text>
+
+          <!-- Variance curve (monotone increasing) -->
+          <path d="M65,180 C120,178 180,172 240,160 C300,148 360,128 420,108 C460,94 500,72 540,48" fill="none"
+            stroke="#c084fc" stroke-width="2.2" />
+          <text x="548" y="46" font-family="Inconsolata" font-size="10" fill="#c084fc">Var</text>
+
+          <!-- Total test error (U-shaped) -->
+          <path
+            d="M65,120 C100,110 150,102 200,100 C240,99 270,100 300,104 C340,110 380,120 430,135 C470,148 510,162 540,180"
+            fill="none" stroke="#f0b429" stroke-width="2.5" />
+          <text x="548" y="182" font-family="Inconsolata" font-size="10" fill="#f0b429">Total</text>
+
+          <!-- Training error curve -->
+          <path d="M65,200 C110,195 180,183 260,165 C340,145 420,110 540,65" fill="none" stroke="#60a5fa"
+            stroke-width="1.5" stroke-dasharray="5,3" opacity="0.8" />
+          <text x="458" y="60" font-family="Inconsolata" font-size="9" fill="#60a5fa">Train error</text>
+
+          <!-- Optimal point -->
+          <circle cx="255" cy="100" r="6" fill="#34d399" />
+          <line x1="255" y1="100" x2="255" y2="210" stroke="#34d399" stroke-width="1.2" stroke-dasharray="4,3" />
+          <text x="215" y="245" font-family="Inconsolata" font-size="10" fill="#34d399">optimal</text>
+
+          <!-- Underfit region label -->
+          <text x="78" y="90" font-family="Inconsolata" font-size="9" fill="#f87171">← underfit</text>
+          <!-- Overfit region label -->
+          <text x="350" y="90" font-family="Inconsolata" font-size="9" fill="#c084fc">overfit →</text>
+        </svg>
+        <div class="figure-cap">Fig 3. The bias–variance tradeoff. As complexity grows: Bias² (red) falls, Variance
+          (violet) rises. Total test error (gold) is U-shaped, with a unique minimum. Train error (blue dashed) keeps
+          falling, diverging from test error.</div>
+      </div>
+
+      <div class="subsection">
+        <h3>The Fundamental Tension</h3>
+        <ul class="prop-list">
+          <li><strong>Simple models</strong> (low complexity): High bias (can't fit the pattern) but low variance
+            (stable across training sets). Example: linear regression for nonlinear data.</li>
+          <li><strong>Complex models</strong> (high complexity): Low bias (can represent complex patterns) but high
+            variance (sensitive to training sample). Example: deep neural networks without regularization.</li>
+          <li><strong>The sweet spot</strong> is wherever \(\text{Bias}^2 + \text{Variance}\) is minimized — the optimal
+            complexity for your data size and noise level.</li>
+          <li><strong>More data shifts the curve:</strong> With \(m \to \infty\) samples, variance \(\to 0\) for most
+            models (by the law of large numbers) — bias is all that remains. More data always helps variance; never
+            helps bias.</li>
+        </ul>
+      </div>
+
+      <div class="subsection">
+        <h3 class="sky">Effect of Training Size on Bias and Variance</h3>
+
+        <div class="math-block sky">
+          <span class="label">Variance Scaling</span>
+          \[
+          \text{Var}[\hat{f}(\mathbf{x})] \sim \frac{\sigma^2 \cdot \text{complexity}}{m}
+          \]
+          <p style="font-family:'Inconsolata',monospace;font-size:0.82em;color:var(--muted);margin-top:10px;">For many
+            models (e.g. linear models with n features): Var ∝ σ²n/m. More data always reduces variance; more features
+            increases it.</p>
+        </div>
+
+        <p>This formula captures a crucial practical insight: <em>you can afford more model complexity if you have more
+            data</em>. A 1000-parameter model needs far fewer samples to generalize than a 1 billion-parameter model.
+          Modern deep learning works by having model complexity so high it seems it should fail — but the massive
+          datasets compensate.</p>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════════ -->
+    <div class="section" id="s6">
+      <div class="section-header">
+        <span class="section-num">§06</span>
+        <h2>Diagnosing — Learning Curves</h2>
+      </div>
+
+      <p>Before fixing a problem, you must diagnose it correctly. Learning curves — plots of training and validation
+        loss vs. training set size (or epoch count) — are the primary diagnostic tool.</p>
+
+      <div class="subsection">
+        <h3>Training Size Learning Curves</h3>
+        <p>Fix the model, vary the number of training samples \(m\). Plot train and validation error as functions of
+          \(m\):</p>
+
+        <div class="figure">
+          <svg viewBox="0 0 600 200" xmlns="http://www.w3.org/2000/svg" style="max-width:600px;">
+            <rect width="600" height="200" fill="#07090b" />
+
+            <!-- Panel 1: High Bias -->
+            <rect x="10" y="10" width="180" height="180" rx="3" fill="#0c1014" stroke="#1a2530" stroke-width="1" />
+            <text x="100" y="28" text-anchor="middle" font-family="Inconsolata" font-size="9" fill="#f87171"
+              letter-spacing="0.1em">HIGH BIAS</text>
+            <line x1="28" y1="165" x2="182" y2="165" stroke="#1a2530" stroke-width="1" />
+            <line x1="28" y1="165" x2="28" y2="35" stroke="#1a2530" stroke-width="1" />
+            <!-- train error (rises then plateaus high) -->
+            <path d="M32,50 C60,65 90,80 120,90 C145,97 168,100 183,102" fill="none" stroke="#f87171"
+              stroke-width="1.8" />
+            <!-- val error (falls then plateaus near train) -->
+            <path d="M32,155 C55,140 80,125 110,112 C140,102 165,103 183,104" fill="none" stroke="#f0b429"
+              stroke-width="1.8" stroke-dasharray="5,2" />
+            <!-- gap label -->
+            <text x="100" y="155" text-anchor="middle" font-family="Inconsolata" font-size="8" fill="#456070">small gap,
+              both high</text>
+            <text x="100" y="182" text-anchor="middle" font-family="Inconsolata" font-size="8" fill="#f87171">→ add
+              complexity</text>
+            <text x="28" y="185" font-family="Inconsolata" font-size="8" fill="#456070">m →</text>
+
+            <!-- Panel 2: Good Fit -->
+            <rect x="210" y="10" width="180" height="180" rx="3" fill="#0c1014" stroke="#34d399" stroke-width="1" />
+            <text x="300" y="28" text-anchor="middle" font-family="Inconsolata" font-size="9" fill="#34d399"
+              letter-spacing="0.1em">GOOD FIT</text>
+            <line x1="228" y1="165" x2="382" y2="165" stroke="#1a2530" stroke-width="1" />
+            <line x1="228" y1="165" x2="228" y2="35" stroke="#1a2530" stroke-width="1" />
+            <!-- train error (rises then plateau low) -->
+            <path d="M232,40 C260,52 285,65 315,78 C340,88 365,92 383,94" fill="none" stroke="#f87171"
+              stroke-width="1.8" />
+            <!-- val error (falls and converges near train) -->
+            <path d="M232,155 C255,138 278,120 308,108 C335,98 360,97 383,97" fill="none" stroke="#f0b429"
+              stroke-width="1.8" stroke-dasharray="5,2" />
+            <text x="300" y="155" text-anchor="middle" font-family="Inconsolata" font-size="8" fill="#456070">small gap,
+              both low</text>
+            <text x="300" y="182" text-anchor="middle" font-family="Inconsolata" font-size="8" fill="#34d399">→ well
+              calibrated</text>
+            <text x="228" y="185" font-family="Inconsolata" font-size="8" fill="#456070">m →</text>
+
+            <!-- Panel 3: High Variance -->
+            <rect x="410" y="10" width="180" height="180" rx="3" fill="#0c1014" stroke="#c084fc" stroke-width="1" />
+            <text x="500" y="28" text-anchor="middle" font-family="Inconsolata" font-size="9" fill="#c084fc"
+              letter-spacing="0.1em">HIGH VARIANCE</text>
+            <line x1="428" y1="165" x2="582" y2="165" stroke="#1a2530" stroke-width="1" />
+            <line x1="428" y1="165" x2="428" y2="35" stroke="#1a2530" stroke-width="1" />
+            <!-- train error (stays very low) -->
+            <path d="M432,55 C460,45 490,38 520,34 C548,30 568,28 583,27" fill="none" stroke="#f87171"
+              stroke-width="1.8" />
+            <!-- val error (falls but stays much higher) -->
+            <path d="M432,155 C455,142 478,130 508,118 C535,108 555,102 583,96" fill="none" stroke="#f0b429"
+              stroke-width="1.8" stroke-dasharray="5,2" />
+            <!-- gap shading -->
+            <path
+              d="M432,55 C460,45 490,38 520,34 C548,30 568,28 583,27 L583,96 C555,102 535,108 508,118 C478,130 455,142 432,155 Z"
+              fill="rgba(192,132,252,0.08)" />
+            <text x="500" y="155" text-anchor="middle" font-family="Inconsolata" font-size="8" fill="#c084fc">large
+              gap</text>
+            <text x="500" y="182" text-anchor="middle" font-family="Inconsolata" font-size="8" fill="#c084fc">→
+              regularize / more data</text>
+            <text x="428" y="185" font-family="Inconsolata" font-size="8" fill="#456070">m →</text>
+          </svg>
+          <div class="figure-cap">Fig 4. Learning curves vs. training size. Red = train error, gold dashed = val error.
+            Left: high bias — both plateau high. Centre: good fit — converge low. Right: high variance — persistent
+            large gap.</div>
+        </div>
+      </div>
+
+      <div class="subsection">
+        <h3 class="sky">Reading Learning Curves — Diagnostic Rules</h3>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Observation</th>
+                <th>Diagnosis</th>
+                <th>Remedy</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Train error ≈ Val error, both high</td>
+                <td>High bias / underfitting</td>
+                <td>More capacity, less regularization, better features</td>
+              </tr>
+              <tr>
+                <td>Train error low, Val error much higher</td>
+                <td>High variance / overfitting</td>
+                <td>Regularize, more data, simpler model, dropout</td>
+              </tr>
+              <tr>
+                <td>Val error rising during training</td>
+                <td>Overfitting mid-training</td>
+                <td>Early stopping</td>
+              </tr>
+              <tr>
+                <td>Both errors high and diverging</td>
+                <td>Learning rate issues</td>
+                <td>Reduce LR; check gradient flow</td>
+              </tr>
+              <tr>
+                <td>Val error bouncing wildly</td>
+                <td>Batch size too small / LR too high</td>
+                <td>Increase batch size; use LR schedule</td>
+              </tr>
+              <tr>
+                <td>Gap closes as m increases</td>
+                <td>Variance problem (more data helps)</td>
+                <td>Collect more training data</td>
+              </tr>
+              <tr>
+                <td>Gap persists regardless of m</td>
+                <td>Bias problem (more data won't help)</td>
+                <td>Increase model complexity</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════════ -->
+    <div class="section" id="s7">
+      <div class="section-header">
+        <span class="section-num">§07</span>
+        <h2>Fixing Underfitting</h2>
+      </div>
+
+      <div class="technique-grid">
+        <div class="technique-card" style="border-top-color: var(--coral);">
+          <div class="tc-name" style="color:var(--coral);">Increase Model Capacity</div>
+          <p>Add more layers or neurons (deep learning). Increase polynomial degree. Use a more expressive algorithm
+            (e.g., tree → neural net). The hypothesis class must contain a good approximation of the true function.</p>
+        </div>
+        <div class="technique-card" style="border-top-color: var(--coral);">
+          <div class="tc-name" style="color:var(--coral);">Feature Engineering</div>
+          <p>Add interaction terms (\(x_1 x_2\)), polynomial features (\(x^2, x^3\)), domain-specific transformations
+            (\(\log x\), \(\sqrt{x}\)), or embeddings. A better representation lets a simpler model capture complex
+            patterns.</p>
+        </div>
+        <div class="technique-card" style="border-top-color: var(--coral);">
+          <div class="tc-name" style="color:var(--coral);">Reduce Regularization</div>
+          <p>If you over-regularized (λ too high, dropout rate too high), the model is prevented from learning. Decrease
+            \(\lambda\). Check that regularization is appropriate for the data size.</p>
+        </div>
+        <div class="technique-card" style="border-top-color: var(--coral);">
+          <div class="tc-name" style="color:var(--coral);">Train Longer / Better Optimizer</div>
+          <p>If training hasn't converged, running more epochs or switching from SGD to Adam can reach a better minimum.
+            Check that the learning rate is appropriate — too large prevents convergence.</p>
+        </div>
+      </div>
+
+      <div class="callout coral">
+        <div class="callout-title">⚠ Underfitting is Not Solved by More Data</div>
+        <p>This is the most important diagnostic distinction. If your model has high training error <em>and</em> high
+          validation error with a small gap between them, adding more training data will not help — the model
+          structurally cannot learn the pattern. You must change the model family or the features. More data only helps
+          variance (overfitting), not bias (underfitting).</p>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════════ -->
+    <div class="section" id="s8">
+      <div class="section-header">
+        <span class="section-num">§08</span>
+        <h2>Regularization — L1, L2, Elastic Net</h2>
+      </div>
+
+      <p>Regularization is the primary tool for fighting overfitting in parametric models. It adds a penalty on model
+        complexity directly to the loss — deliberately introducing bias to reduce variance.</p>
+
+      <div class="subsection">
+        <h3>L2 Regularization (Ridge / Weight Decay)</h3>
+
+        <div class="math-block emerald">
+          <span class="label">L2 Regularized Loss</span>
+          \[
+          J_{\text{L2}}(\boldsymbol{\theta}) = \underbrace{\frac{1}{m}\sum_{i=1}^{m}\mathcal{L}(\hat{y}^{(i)},
+          y^{(i)})}_{\text{empirical risk}} + \underbrace{\frac{\lambda}{2}\|\boldsymbol{\theta}\|_2^2}_{\text{L2
+          penalty}}
+          \]
+        </div>
+
+        <p>The gradient update becomes \(\boldsymbol{\theta} \leftarrow \boldsymbol{\theta}(1 - \alpha\lambda/m) -
+          \alpha\nabla\hat{R}\) — the factor \((1-\alpha\lambda/m) &lt; 1\) is weight decay: weights shrink each step. L2
+            penalizes large weights but never drives them exactly to zero. All features remain in the model, but large
+            coefficients are suppressed.</p>
+
+            <p><strong>Effect on bias–variance:</strong> Larger \(\lambda\) → smaller effective weights → simpler model
+              → higher bias, lower variance. \(\lambda = 0\) recovers unregularized OLS; \(\lambda \to \infty\) drives
+              all weights to zero.</p>
+      </div>
+
+      <div class="subsection">
+        <h3 class="emerald">L1 Regularization (Lasso)</h3>
+
+        <div class="math-block">
+          <span class="label">L1 Regularized Loss</span>
+          \[
+          J_{\text{L1}}(\boldsymbol{\theta}) = \frac{1}{m}\sum_{i=1}^{m}\mathcal{L}(\hat{y}^{(i)}, y^{(i)}) +
+          \lambda\|\boldsymbol{\theta}\|_1 = \frac{1}{m}\sum_i\mathcal{L} + \lambda\sum_j|\theta_j|
+          \]
+        </div>
+
+        <p>L1 drives many weights exactly to zero — performing implicit feature selection. The L1 ball has corners at
+          coordinate axes; gradient descent paths tend to land there. Useful when you suspect many features are
+          irrelevant — L1 automatically discards them.</p>
+      </div>
+
+      <div class="subsection">
+        <h3 class="emerald">Elastic Net (Best of Both)</h3>
+
+        <div class="math-block">
+          <span class="label">Elastic Net</span>
+          \[
+          J_{\text{EN}} = \frac{1}{m}\sum_i\mathcal{L} + \lambda_1\|\boldsymbol{\theta}\|_1 +
+          \frac{\lambda_2}{2}\|\boldsymbol{\theta}\|_2^2
+          \]
+        </div>
+      </div>
+
+      <div class="subsection">
+        <h3 class="emerald">Choosing λ — The Regularization Path</h3>
+        <p>There's no universal rule. Cross-validate over a grid of \(\lambda\) values. The optimal \(\lambda\) is the
+          one that minimizes validation error. In practice:</p>
+        <ul class="prop-list">
+          <li>Start with a coarse log-scale grid: \(\lambda \in \{10^{-4}, 10^{-3}, 10^{-2}, 10^{-1}, 1, 10\}\)</li>
+          <li>Refine around the best coarse value</li>
+          <li>In neural networks, L2 regularization is typically applied only to weight matrices, not biases</li>
+        </ul>
+
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th></th>
+                <th>L1 (Lasso)</th>
+                <th>L2 (Ridge)</th>
+                <th>Elastic Net</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Weights</td>
+                <td>Sparse: many exact zeros</td>
+                <td>Shrinks, never zero</td>
+                <td>Sparse + stable</td>
+              </tr>
+              <tr>
+                <td>Feature selection</td>
+                <td>Yes (implicit)</td>
+                <td>No</td>
+                <td>Yes (grouped)</td>
+              </tr>
+              <tr>
+                <td>Correlated features</td>
+                <td>Picks one arbitrarily</td>
+                <td>Shrinks all equally</td>
+                <td>Groups them</td>
+              </tr>
+              <tr>
+                <td>Closed-form?</td>
+                <td>No (subgradient)</td>
+                <td>Yes (for linear models)</td>
+                <td>No</td>
+              </tr>
+              <tr>
+                <td>Best for</td>
+                <td>High-dim, sparse true model</td>
+                <td>Most deep learning</td>
+                <td>High-dim, correlated features</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════════ -->
+    <div class="section" id="s9">
+      <div class="section-header">
+        <span class="section-num">§09</span>
+        <h2>Dropout — Randomized Regularization</h2>
+      </div>
+
+      <p>Dropout (Srivastava et al., 2014) is the most important regularization technique for neural networks. During
+        training, each neuron is randomly set to zero with probability \(p\) (the dropout rate) at each forward pass.
+      </p>
+
+      <div class="math-block sky">
+        <span class="label">Dropout Forward Pass</span>
+        \[
+        \tilde{h}_j^{(l)} = h_j^{(l)} \cdot r_j^{(l)}, \quad r_j^{(l)} \sim \text{Bernoulli}(1-p)
+        \]
+        \[
+        \text{At test time: } h_j^{(l)} \leftarrow (1-p) \cdot h_j^{(l)} \quad \text{(scale down to match expected
+        training activation)}
+        \]
+      </div>
+
+      <div class="subsection">
+        <h3>Why Dropout Works — Two Perspectives</h3>
+
+        <div class="two-col">
+          <div class="col-card">
+            <div class="col-card-title" style="color:var(--sky);">Ensemble Interpretation</div>
+            <p>With \(N\) neurons and dropout rate \(p\), each training step samples a different subnetwork from the
+              \(2^N\) possible networks. At test time, using the full network with scaled weights approximates averaging
+              the predictions of all \(2^N\) subnetworks. Ensembles reduce variance (§13) — and dropout implicitly does
+              the same at almost no extra cost.</p>
+          </div>
+          <div class="col-card">
+            <div class="col-card-title" style="color:var(--sky);">Co-Adaptation Prevention</div>
+            <p>Without dropout, neurons can develop complex co-dependencies — "neuron A fires only because neuron B is
+              always active." Dropout forces each neuron to be useful independently, since it can't rely on any specific
+              neighbor being present. This encourages learning more robust, distributed representations.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="subsection">
+        <h3 class="sky">Inverted Dropout (Standard Implementation)</h3>
+
+        <div class="algo">
+          <span class="hdr">// Inverted Dropout — PyTorch-style</span>
+          <span class="cmt"># Training forward pass</span><br>
+          <span class="kw">def</span> <span class="fn">forward_train</span>(<span class="var">h</span>, p_drop):<br>
+          &nbsp;&nbsp;<span class="var">mask</span> = (torch.<span class="fn">rand_like</span>(<span
+            class="var">h</span>) &gt; p_drop).<span class="fn">float</span>()<br>
+          &nbsp;&nbsp;<span class="kw">return</span> (<span class="var">h</span> * <span class="var">mask</span>) /
+          (<span class="num">1</span> <span class="op">-</span> p_drop) &nbsp;<span class="cmt"># scale up during
+            training</span><br><br>
+          <span class="cmt"># Test forward pass — NO dropout, NO scaling needed</span><br>
+          <span class="kw">def</span> <span class="fn">forward_test</span>(<span class="var">h</span>):<br>
+          &nbsp;&nbsp;<span class="kw">return</span> <span class="var">h</span> &nbsp;<span class="cmt"># use full
+            network as-is</span>
+        </div>
+
+        <p>Inverted dropout divides by \((1-p)\) at training time (not test time), keeping expected activation the same.
+          Standard dropout scales at test time — both are equivalent but inverted is preferred in practice since
+          test-time inference doesn't need to know \(p\).</p>
+      </div>
+
+      <div class="subsection">
+        <h3 class="sky">Practical Dropout Guidelines</h3>
+        <ul class="prop-list">
+          <li><strong>Typical rate:</strong> 0.2–0.5 for fully connected layers. 0.1–0.2 for convolutional layers (less
+            effective there — spatial structure helps).</li>
+          <li><strong>Where to apply:</strong> After activation functions in hidden layers. Usually not applied to input
+            layer or output layer.</li>
+          <li><strong>Interaction with BatchNorm:</strong> Using both can be counterproductive — BatchNorm normalizes
+            across the batch and effectively does its own regularization. Many modern architectures use BatchNorm
+            without Dropout.</li>
+          <li><strong>Training vs inference:</strong> Always disable dropout at inference. PyTorch:
+            <code>model.eval()</code>. Forgetting this is a common bug — your test performance will be noisy and lower
+            than it should be.
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════════ -->
+    <div class="section" id="s10">
+      <div class="section-header">
+        <span class="section-num">§10</span>
+        <h2>Early Stopping — Implicit Regularization</h2>
+      </div>
+
+      <p>Early stopping monitors validation loss during training and halts when it stops improving. It exploits the
+        observation that validation error initially decreases with training, reaches a minimum, then starts rising as
+        the model begins overfitting.</p>
+
+      <div class="figure">
+        <svg viewBox="0 0 560 200" xmlns="http://www.w3.org/2000/svg" style="max-width:560px;">
+          <rect width="560" height="200" fill="#07090b" />
+          <defs>
+            <marker id="e-arr" markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto">
+              <path d="M0,0 L0,5 L7,2.5z" fill="#456070" />
+            </marker>
+          </defs>
+          <line x1="40" y1="170" x2="540" y2="170" stroke="#1a2530" stroke-width="1.3" marker-end="url(#e-arr)" />
+          <line x1="40" y1="170" x2="40" y2="15" stroke="#1a2530" stroke-width="1.3" marker-end="url(#e-arr)" />
+          <text x="544" y="173" font-family="Inconsolata" font-size="10" fill="#456070">epoch</text>
+          <text x="10" y="14" font-family="Inconsolata" font-size="10" fill="#456070">loss</text>
+
+          <!-- Train loss (monotone falling) -->
+          <path d="M48,148 C80,130 120,110 170,88 C220,68 280,48 360,32 C410,22 460,17 535,14" fill="none"
+            stroke="#f87171" stroke-width="2.2" />
+          <text x="472" y="12" font-family="Inconsolata" font-size="10" fill="#f87171">train loss</text>
+
+          <!-- Val loss (U-shape) -->
+          <path
+            d="M48,155 C80,138 120,118 160,104 C200,92 230,86 260,84 C290,83 315,84 340,88 C370,93 400,104 450,124 C480,136 510,150 535,160"
+            fill="none" stroke="#f0b429" stroke-width="2.2" stroke-dasharray="6,3" />
+          <text x="456" y="162" font-family="Inconsolata" font-size="10" fill="#f0b429">val loss</text>
+
+          <!-- Best model marker -->
+          <line x1="260" y1="84" x2="260" y2="170" stroke="#34d399" stroke-width="1.5" stroke-dasharray="5,3" />
+          <circle cx="260" cy="84" r="5" fill="#34d399" />
+          <text x="218" y="183" font-family="Inconsolata" font-size="10" fill="#34d399">best val loss</text>
+
+          <!-- Patience window -->
+          <rect x="260" y="80" width="100" height="12" fill="rgba(192,132,252,0.15)" stroke="none" />
+          <line x1="360" y1="75" x2="360" y2="105" stroke="#c084fc" stroke-width="1.2" stroke-dasharray="3,2" />
+          <text x="270" y="70" font-family="Inconsolata" font-size="9" fill="#c084fc">← patience window →</text>
+          <text x="362" y="106" font-family="Inconsolata" font-size="9" fill="#c084fc">stop here</text>
+        </svg>
+        <div class="figure-cap">Fig 5. Early stopping. Best checkpoint saved at minimum validation loss (green).
+          Training continues for patience epochs after the best point, then stops. Model weights rolled back to green
+          marker.</div>
+      </div>
+
+      <div class="subsection">
+        <h3>The Algorithm</h3>
+
+        <div class="algo">
+          <span class="hdr">// Early Stopping with Patience</span>
+          <span class="var">best_val_loss</span> = ∞<br>
+          <span class="var">patience_count</span> = <span class="num">0</span><br>
+          <span class="var">best_weights</span> = <span class="kw">None</span><br><br>
+          <span class="kw">for</span> epoch <span class="kw">in</span> range(max_epochs):<br>
+          &nbsp;&nbsp;<span class="fn">train_one_epoch</span>(model, optimizer)<br>
+          &nbsp;&nbsp;<span class="var">val_loss</span> = <span class="fn">evaluate</span>(model, val_loader)<br><br>
+          &nbsp;&nbsp;<span class="kw">if</span> val_loss &lt; best_val_loss <span class="op">−</span> min_delta:<br>
+          &nbsp;&nbsp;&nbsp;&nbsp;<span class="var">best_val_loss</span> = val_loss<br>
+          &nbsp;&nbsp;&nbsp;&nbsp;<span class="var">best_weights</span> = <span class="fn">copy</span>(model.weights)
+          &nbsp;<span class="cmt"># checkpoint</span><br>
+          &nbsp;&nbsp;&nbsp;&nbsp;<span class="var">patience_count</span> = <span class="num">0</span><br>
+          &nbsp;&nbsp;<span class="kw">else</span>:<br>
+          &nbsp;&nbsp;&nbsp;&nbsp;<span class="var">patience_count</span> += <span class="num">1</span><br>
+          &nbsp;&nbsp;&nbsp;&nbsp;<span class="kw">if</span> patience_count &gt;= patience:<br>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="kw">break</span> &nbsp;<span class="cmt"># stop
+            training</span><br><br>
+          model.weights = <span class="var">best_weights</span> &nbsp;<span class="cmt"># restore best checkpoint</span>
+        </div>
+      </div>
+
+      <div class="subsection">
+        <h3 class="peach">Why Early Stopping is Implicit L2 Regularization</h3>
+        <p>For gradient descent with step size \(\alpha\) and \(T\) steps, the effective regularization is approximately
+          \(\lambda \approx \frac{1}{\alpha T}\). Stopping early limits the total movement of parameters from their
+          initial values — effectively constraining them to a ball around the initialization. This was proven formally
+          by Bishop (1995) for quadratic losses and has been generalized to deep networks empirically.</p>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════════ -->
+    <div class="section" id="s11">
+      <div class="section-header">
+        <span class="section-num">§11</span>
+        <h2>Data Augmentation and More Data</h2>
+      </div>
+
+      <p>The most reliable remedy for overfitting is more data. More training samples reduce variance directly — the
+        model has less ability to memorize specific examples when there are more of them. When real data is limited,
+        data augmentation manufactures additional training examples from existing ones.</p>
+
+      <div class="subsection">
+        <h3>Why More Data Reduces Variance</h3>
+        <p>From the bias–variance analysis: \(\text{Var}[\hat{f}] \propto 1/m\) for many model families. Each additional
+          sample constrains the model further, reducing its freedom to fit noise. In the limit \(m \to \infty\):
+          variance \(\to 0\) and performance is limited only by bias and irreducible noise.</p>
+      </div>
+
+      <div class="subsection">
+        <h3 class="violet">Data Augmentation — Category by Domain</h3>
+
+        <div class="technique-grid">
+          <div class="technique-card" style="border-top-color: var(--violet);">
+            <div class="tc-name" style="color:var(--violet);">Computer Vision</div>
+            <p>Random crop, horizontal/vertical flip, rotation (±15°), color jitter (brightness, contrast, saturation),
+              Gaussian noise, random erase, mixup, cutout, RandAugment. Must preserve label semantics — flipping a "9"
+              to get a "6" would be wrong.</p>
+          </div>
+          <div class="technique-card" style="border-top-color: var(--violet);">
+            <div class="tc-name" style="color:var(--violet);">NLP / Text</div>
+            <p>Synonym replacement, back-translation (translate to French, back to English), random
+              insertion/deletion/swap of words, word2vec neighborhood sampling, EDA (Easy Data Augmentation). More
+              constrained — syntax and semantics must be preserved.</p>
+          </div>
+          <div class="technique-card" style="border-top-color: var(--violet);">
+            <div class="tc-name" style="color:var(--violet);">Audio / Speech</div>
+            <p>Time stretching, pitch shifting, adding background noise, SpecAugment (frequency/time masking on the
+              spectrogram). SpecAugment is standard for speech recognition.</p>
+          </div>
+          <div class="technique-card" style="border-top-color: var(--violet);">
+            <div class="tc-name" style="color:var(--violet);">Tabular Data</div>
+            <p>SMOTE (synthetic minority oversampling for imbalanced classes), Gaussian noise on continuous features,
+              bootstrapping. Less natural than image augmentation — use carefully.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="subsection">
+        <h3 class="violet">Advanced Augmentation — Mixup and CutMix</h3>
+
+        <div class="math-block violet">
+          <span class="label">Mixup</span>
+          \[
+          \tilde{\mathbf{x}} = \lambda\mathbf{x}_i + (1-\lambda)\mathbf{x}_j, \quad \tilde{y} = \lambda y_i +
+          (1-\lambda)y_j, \quad \lambda \sim \text{Beta}(\alpha, \alpha)
+          \]
+        </div>
+
+        <p>Mixup creates new training examples by linearly interpolating between two random training samples — both
+          inputs and labels. It encourages the model to have linear behavior between training points, strongly
+          regularizing the decision boundary. Proven especially effective for large CNNs and ViTs — directly relevant to
+          your chest X-ray classifier.</p>
+      </div>
+
+      <div class="callout violet">
+        <div class="callout-title">💡 Augmentation vs. Bias</div>
+        <p>Data augmentation reduces variance by effectively increasing \(m\). But poor augmentation introduces bias —
+          if the augmented samples don't reflect the true test distribution. For example, medical images should not be
+          augmented with horizontal flip if lesions are laterality-specific. Always validate that your augmentations are
+          semantically valid for the task.</p>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════════ -->
+    <div class="section" id="s12">
+      <div class="section-header">
+        <span class="section-num">§12</span>
+        <h2>Cross-Validation — Unbiased Error Estimation</h2>
+      </div>
+
+      <p>Cross-validation gives a reliable estimate of generalization error while using all available data for both
+        training and validation — essential when data is limited.</p>
+
+      <div class="subsection">
+        <h3>k-Fold Cross-Validation</h3>
+
+        <div class="math-block">
+          <span class="label">k-Fold CV Error Estimate</span>
+          \[
+          \text{CV}(k) = \frac{1}{k}\sum_{i=1}^{k} \text{Error}_{\text{val}}^{(i)} \quad \text{where fold } i \text{ is
+          held out and the rest are used for training}
+          \]
+        </div>
+
+        <div class="algo">
+          <span class="hdr">// k-Fold Cross-Validation</span>
+          <span class="fn">shuffle</span>(data) &nbsp;<span class="cmt"># randomize order</span><br>
+          folds = <span class="fn">split</span>(data, k=<span class="num">5</span>) &nbsp;<span class="cmt"># split into
+            k equal parts</span><br>
+          errors = []<br><br>
+          <span class="kw">for</span> i <span class="kw">in</span> range(k):<br>
+          &nbsp;&nbsp;<span class="var">val_fold</span> = folds[i]<br>
+          &nbsp;&nbsp;<span class="var">train_folds</span> = <span class="fn">concat</span>(folds[:i] + folds[i+<span
+            class="num">1</span>:])<br>
+          &nbsp;&nbsp;model = <span class="fn">train</span>(<span class="var">train_folds</span>)<br>
+          &nbsp;&nbsp;errors.<span class="fn">append</span>(<span class="fn">evaluate</span>(model, <span
+            class="var">val_fold</span>))<br><br>
+          cv_error = <span class="fn">mean</span>(errors) &nbsp;<span class="cmt"># unbiased generalization
+            estimate</span><br>
+          cv_std = <span class="fn">std</span>(errors) &nbsp;&nbsp;<span class="cmt"># uncertainty in the
+            estimate</span>
+        </div>
+      </div>
+
+      <div class="subsection">
+        <h3 class="sky">Choosing k</h3>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>k</th>
+                <th>Bias of Estimate</th>
+                <th>Variance of Estimate</th>
+                <th>Compute Cost</th>
+                <th>Best For</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>k = 5</td>
+                <td>Slightly higher</td>
+                <td>Lower</td>
+                <td>5× training</td>
+                <td>Large datasets; most common default</td>
+              </tr>
+              <tr>
+                <td>k = 10</td>
+                <td>Lower</td>
+                <td>Moderate</td>
+                <td>10× training</td>
+                <td>Standard recommendation (ESL)</td>
+              </tr>
+              <tr>
+                <td>k = m (LOOCV)</td>
+                <td>Lowest (nearly unbiased)</td>
+                <td>Very high</td>
+                <td>m× training</td>
+                <td>Very small datasets (&lt;100 samples)</td>
+              </tr>
+              <tr>
+                <td>Stratified k-fold</td>
+                <td>Same as k-fold</td>
+                <td>Lower for imbalanced</td>
+                <td>Same as k-fold</td>
+                <td>Classification with class imbalance</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="subsection">
+        <h3 class="sky">Using CV for Hyperparameter Tuning</h3>
+
+        <div class="callout sky">
+          <div class="callout-title">⚠ The Right Way to Use Cross-Validation</div>
+          <p>CV estimates test error for a <em>given</em> hyperparameter setting. When you search over hyperparameters
+            (grid search, random search, Bayesian optimization) and pick the best CV score, the selected model's CV
+            error is <em>optimistically biased</em> — you've implicitly overfit the hyperparameters to the CV folds.
+            Always maintain a completely separate test set to get the final unbiased estimate after all hyperparameter
+            decisions are made. Use CV only for comparing options, not for final reporting.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════════ -->
+    <div class="section" id="s13">
+      <div class="section-header">
+        <span class="section-num">§13</span>
+        <h2>Ensemble Methods — Bagging and Boosting</h2>
+      </div>
+
+      <p>Ensembles combine multiple models to produce a prediction better than any individual model. They work by
+        exploiting the bias–variance decomposition in different ways.</p>
+
+      <div class="subsection">
+        <h3>Why Ensembles Work — The Math</h3>
+        <p>For \(B\) independent models each with variance \(\sigma^2\), the variance of their mean is:</p>
+
+        <div class="math-block">
+          <span class="label">Variance of Ensemble Mean</span>
+          \[
+          \text{Var}\left[\frac{1}{B}\sum_{b=1}^{B}\hat{f}_b(\mathbf{x})\right] = \rho\sigma^2 +
+          \frac{1-\rho}{B}\sigma^2
+          \]
+        </div>
+
+        <p>Where \(\rho\) is the pairwise correlation between individual model predictions. As \(B \to \infty\):
+          variance \(\to \rho\sigma^2\). The key: <em>uncorrelated</em> (\(\rho = 0\)) models give \(\frac{\sigma^2}{B}
+          \to 0\). The ensemble reduces variance proportionally to \(1/B\) — as long as the models are diverse. High
+          correlation kills the benefit.</p>
+      </div>
+
+      <div class="subsection">
+        <h3 class="peach">Bagging — Bootstrap Aggregating</h3>
+        <p>Train \(B\) copies of the same model on different bootstrap samples (random samples with replacement, same
+          size \(m\)). Average (regression) or vote (classification) their predictions.</p>
+
+        <div class="math-block peach">
+          <span class="label">Bagging Prediction</span>
+          \[
+          \hat{f}_{\text{bag}}(\mathbf{x}) = \frac{1}{B}\sum_{b=1}^{B}\hat{f}_b(\mathbf{x}), \quad \mathcal{D}_b \sim
+          \text{Bootstrap}(\mathcal{D})
+          \]
+        </div>
+
+        <ul class="prop-list">
+          <li><strong>Random Forest</strong> = Bagging + at each split, only consider a random subset of features. This
+            decorrelates the trees (reduces \(\rho\)) — giving much better variance reduction than simple bagging.</li>
+          <li><strong>What it fixes:</strong> Reduces variance without increasing bias significantly. Works best on
+            high-variance, low-bias base learners (deep trees).</li>
+          <li><strong>Out-of-bag error:</strong> Each bootstrap sample leaves out ~37% of data. These out-of-bag samples
+            give a free validation estimate — no need for a separate val set.</li>
+        </ul>
+      </div>
+
+      <div class="subsection">
+        <h3 class="peach">Boosting — Sequential Bias Reduction</h3>
+        <p>Boosting trains models sequentially, each one focused on correcting the errors of the previous ones. Instead
+          of reducing variance (like bagging), it reduces bias.</p>
+
+        <div class="algo">
+          <span class="hdr">// Gradient Boosting (simplified)</span>
+          <span class="var">F_0</span>(x) = <span class="fn">mean</span>(y) &nbsp;<span class="cmt"># initial
+            prediction</span><br><br>
+          <span class="kw">for</span> b = <span class="num">1</span> <span class="kw">to</span> B:<br>
+          &nbsp;&nbsp;<span class="cmt"># Compute residuals (negative gradient of loss)</span><br>
+          &nbsp;&nbsp;<span class="var">r_i</span> = <span class="op">−</span>∂L/∂F(x_i) &nbsp;<span class="cmt">#
+            pseudo-residuals</span><br><br>
+          &nbsp;&nbsp;<span class="cmt"># Fit a weak learner (small tree) to residuals</span><br>
+          &nbsp;&nbsp;<span class="var">h_b</span> = <span class="fn">fit_tree</span>(<span class="var">r</span>,
+          max_depth=<span class="num">3</span>)<br><br>
+          &nbsp;&nbsp;<span class="cmt"># Update ensemble with step size α (shrinkage)</span><br>
+          &nbsp;&nbsp;<span class="var">F_b</span>(x) = <span class="var">F_{b-1}</span>(x) + α·<span
+            class="var">h_b</span>(x)
+        </div>
+
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th></th>
+                <th>Bagging</th>
+                <th>Boosting</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Goal</td>
+                <td>Reduce variance</td>
+                <td>Reduce bias</td>
+              </tr>
+              <tr>
+                <td>Training</td>
+                <td>Parallel — independent models</td>
+                <td>Sequential — each corrects prior</td>
+              </tr>
+              <tr>
+                <td>Base learner</td>
+                <td>Low-bias, high-variance (deep trees)</td>
+                <td>High-bias, low-variance (shallow trees)</td>
+              </tr>
+              <tr>
+                <td>Overfitting risk</td>
+                <td>Low (averaging reduces it)</td>
+                <td>High (can overfit with too many rounds)</td>
+              </tr>
+              <tr>
+                <td>Examples</td>
+                <td>Random Forest, Extra Trees</td>
+                <td>XGBoost, LightGBM, AdaBoost, CatBoost</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════════ -->
+    <div class="section" id="s14">
+      <div class="section-header">
+        <span class="section-num">§14</span>
+        <h2>Double Descent — The Modern Twist</h2>
+      </div>
+
+      <p>Classical theory predicts a single U-shaped test error curve with increasing model complexity. Modern deep
+        learning broke this prediction — error can rise, then fall again, giving a "double descent" curve. Understanding
+        this resolves the apparent paradox that overparameterized models generalize well.</p>
+
+      <div class="figure">
+        <svg viewBox="0 0 600 240" xmlns="http://www.w3.org/2000/svg" style="max-width:600px;">
+          <rect width="600" height="240" fill="#07090b" />
+          <defs>
+            <marker id="da" markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto">
+              <path d="M0,0 L0,5 L7,2.5z" fill="#456070" />
+            </marker>
+          </defs>
+          <line x1="40" y1="200" x2="575" y2="200" stroke="#1a2530" stroke-width="1.5" marker-end="url(#da)" />
+          <line x1="40" y1="200" x2="40" y2="15" stroke="#1a2530" stroke-width="1.5" marker-end="url(#da)" />
+          <text x="578" y="203" font-family="Inconsolata" font-size="10" fill="#456070">model size →</text>
+          <text x="8" y="14" font-family="Inconsolata" font-size="10" fill="#456070">Test Error</text>
+
+          <!-- Classical U-shaped (first descent) -->
+          <path d="M50,80 C90,72 140,68 180,70 C210,73 235,80 255,100 C268,115 280,145 290,185" fill="none"
+            stroke="#f0b429" stroke-width="2" opacity="0.7" stroke-dasharray="7,3" />
+
+          <!-- Full double descent curve -->
+          <path
+            d="M50,80 C90,72 140,68 180,70 C210,73 235,80 255,100 C268,115 280,145 290,195 C302,215 308,220 315,200 C322,175 330,148 350,118 C380,80 420,55 480,42 C510,36 540,32 570,30"
+            fill="none" stroke="#f0b429" stroke-width="2.5" />
+
+          <!-- Interpolation threshold line -->
+          <line x1="290" y1="15" x2="290" y2="200" stroke="#f87171" stroke-width="1.5" stroke-dasharray="5,3" />
+          <text x="258" y="212" font-family="Inconsolata" font-size="9" fill="#f87171">interpolation</text>
+          <text x="262" y="224" font-family="Inconsolata" font-size="9" fill="#f87171">threshold</text>
+
+          <!-- Irreducible noise floor -->
+          <line x1="40" y1="175" x2="575" y2="175" stroke="#34d399" stroke-width="1" stroke-dasharray="4,4"
+            opacity="0.5" />
+          <text x="460" y="170" font-family="Inconsolata" font-size="9" fill="#34d399">irreducible noise</text>
+
+          <!-- Region labels -->
+          <text x="80" y="165" font-family="Inconsolata" font-size="9" fill="#456070">classical</text>
+          <text x="78" y="178" font-family="Inconsolata" font-size="9" fill="#456070">regime</text>
+          <!-- bracket -->
+          <line x1="50" y1="158" x2="282" y2="158" stroke="#456070" stroke-width="0.8" />
+          <line x1="50" y1="155" x2="50" y2="161" stroke="#456070" stroke-width="0.8" />
+          <line x1="282" y1="155" x2="282" y2="161" stroke="#456070" stroke-width="0.8" />
+
+          <text x="360" y="168" font-family="Inconsolata" font-size="9" fill="#c084fc">modern overparameterized</text>
+          <text x="370" y="180" font-family="Inconsolata" font-size="9" fill="#c084fc">regime</text>
+          <line x1="300" y1="158" x2="570" y2="158" stroke="#c084fc" stroke-width="0.8" opacity="0.6" />
+          <line x1="300" y1="155" x2="300" y2="161" stroke="#c084fc" stroke-width="0.8" opacity="0.6" />
+          <line x1="570" y1="155" x2="570" y2="161" stroke="#c084fc" stroke-width="0.8" opacity="0.6" />
+
+          <!-- Train error -->
+          <path d="M50,170 C90,162 150,140 220,110 C260,90 280,65 288,18 C295,18 360,18 480,18 C520,18 550,18 570,18"
+            fill="none" stroke="#f87171" stroke-width="1.5" stroke-dasharray="5,2" opacity="0.8" />
+          <text x="400" y="14" font-family="Inconsolata" font-size="9" fill="#f87171">train error = 0</text>
+
+          <!-- Annotation at spike -->
+          <text x="295" y="60" font-family="Inconsolata" font-size="9" fill="#f0b429">spike: too many</text>
+          <text x="295" y="73" font-family="Inconsolata" font-size="9" fill="#f0b429">params to find</text>
+          <text x="295" y="86" font-family="Inconsolata" font-size="9" fill="#f0b429">good interpolant</text>
+        </svg>
+        <div class="figure-cap">Fig 6. Double descent. Classical U-shape occurs below the interpolation threshold (model
+          can't memorize training data). At the threshold, test error spikes. Beyond it, in the overparameterized
+          regime, error decreases again — often below the classical minimum.</div>
+      </div>
+
+      <div class="subsection">
+        <h3>The Interpolation Threshold and What Happens There</h3>
+        <p>The <span class="hl">interpolation threshold</span> is where the model has exactly enough parameters to fit
+          the training data perfectly — where training error reaches zero. Near this threshold, a model has just enough
+          parameters to interpolate but many of them lead to poor generalizers — hence the error spike.</p>
+
+        <p>Beyond this threshold, the model is <span class="hl2">overparameterized</span> — there are infinitely many
+          interpolating solutions. Gradient descent with small initialization implicitly finds the <em>minimum-norm
+            interpolating solution</em> — the one with the smallest weights among all perfect interpolators. In high
+          dimensions, this minimum-norm solution generalizes surprisingly well.</p>
+      </div>
+
+      <div class="subsection">
+        <h3 class="sky">Why This Matters for Deep Learning</h3>
+        <ul class="prop-list">
+          <li><strong>Modern neural networks</strong> operate in the far-right of the double descent curve — massively
+            overparameterized, achieving near-zero training loss while still generalizing. Classical theory said this
+            should be catastrophic; double descent explains why it isn't.</li>
+          <li><strong>Implicit regularization:</strong> SGD with small initialization has an implicit bias toward flat
+            minima and minimum-norm solutions — which happen to generalize well. This is an active research area.</li>
+          <li><strong>Your ViT model:</strong> Vision Transformers with hundreds of millions of parameters trained on
+            limited chest X-ray data are in this regime. Regularization (weight decay, dropout), data augmentation, and
+            pretraining are all essential to move the generalization curve downward.</li>
+        </ul>
+
+        <div class="callout sky">
+          <div class="callout-title">💡 The Updated Picture</div>
+          <p>Classical advice: "if your model overfits, use a simpler model or more regularization." Modern deep
+            learning advice: "if your model overfits, consider making it <em>much larger</em> and adding implicit
+            regularization through SGD dynamics, data augmentation, and architectural choices." Both are true — they
+            operate in different regimes of the double descent curve. Your diagnosis (learning curves, bias–variance)
+            tells you which regime you're in.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════════ -->
+    <div class="section" id="s15">
+      <div class="section-header">
+        <span class="section-num">§15</span>
+        <h2>Decision Framework — What to Do When</h2>
+      </div>
+
+      <div class="callout emerald">
+        <div class="callout-title">✓ The Diagnostic First</div>
+        <p>Always diagnose before treating. Train the model. Plot learning curves. Is train error too high? → bias
+          problem. Is val error much higher than train? → variance problem. Is the gap constant as m increases? → bias.
+          Does more data close the gap? → variance. Most wasted ML effort comes from applying variance fixes
+          (regularization) to bias problems and vice versa.</p>
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Symptom</th>
+              <th>Cause</th>
+              <th>Treatments (in rough priority order)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Train error high + Val error ≈ Train error</td>
+              <td>High Bias / Underfitting</td>
+              <td>1) Larger model · 2) More features / better representation · 3) Reduce λ · 4) Train longer · 5) Better
+                optimizer</td>
+            </tr>
+            <tr>
+              <td>Train error low + Val error ≫ Train error</td>
+              <td>High Variance / Overfitting</td>
+              <td>1) More data · 2) L2/L1 regularization · 3) Dropout · 4) Early stopping · 5) Smaller model · 6) Data
+                augmentation · 7) Ensemble</td>
+            </tr>
+            <tr>
+              <td>Val error rises during training</td>
+              <td>Overfitting in time</td>
+              <td>1) Early stopping · 2) Reduce LR at the same epoch · 3) Increase λ</td>
+            </tr>
+            <tr>
+              <td>High error, both losses diverge</td>
+              <td>Training instability</td>
+              <td>1) Reduce learning rate · 2) Gradient clipping · 3) Better initialization · 4) BatchNorm</td>
+            </tr>
+            <tr>
+              <td>Gap doesn't close with 10× data</td>
+              <td>High Bias (irreducible in current class)</td>
+              <td>1) Fundamentally different model architecture · 2) New features · 3) Transfer learning</td>
+            </tr>
+            <tr>
+              <td>Large variance in CV scores</td>
+              <td>High model sensitivity</td>
+              <td>1) Ensemble · 2) More regularization · 3) Larger k in k-fold · 4) More data</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="subsection">
+        <h3>The Bias–Variance Priority Rule</h3>
+        <p>When both bias and variance are high, fix bias first. Here's why: applying variance-reduction techniques
+          (regularization, simpler model) to a high-bias model makes it worse — it reduces capacity further. But
+          increasing capacity (to fix bias) on a high-variance model is manageable — you can then apply regularization.
+          Fix the model class first, then regularize.</p>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════════ -->
+    <div class="section" id="s16">
+      <div class="section-header">
+        <span class="section-num">§16</span>
+        <h2>The Full Mental Model</h2>
+      </div>
+
+      <div class="figure">
+        <svg viewBox="0 0 680 600" xmlns="http://www.w3.org/2000/svg" style="max-width:680px;">
+          <rect width="680" height="600" fill="#040608" />
+          <text x="340" y="26" text-anchor="middle" font-family="Inconsolata" font-size="9" fill="#1a2530"
+            letter-spacing="0.24em">GENERALIZATION — COMPLETE MENTAL MAP</text>
+
+          <!-- Central: Generalization Error -->
+          <rect x="220" y="44" width="240" height="58" rx="3" fill="#0c1014" stroke="#f0b429" stroke-width="2" />
+          <text x="340" y="66" text-anchor="middle" font-family="Inconsolata" font-size="11" fill="#f0b429"
+            font-weight="700">GENERALIZATION ERROR</text>
+          <text x="340" y="84" text-anchor="middle" font-family="Inconsolata" font-size="9.5" fill="#456070">E[(y −
+            f̂)²] = Bias² + Var + σ²</text>
+
+          <!-- Bias box -->
+          <rect x="20" y="150" width="190" height="58" rx="3" fill="#0c1014" stroke="#f87171" stroke-width="1.8" />
+          <text x="115" y="172" text-anchor="middle" font-family="Inconsolata" font-size="11" fill="#f87171"
+            font-weight="700">BIAS² (Underfitting)</text>
+          <text x="115" y="190" text-anchor="middle" font-family="Inconsolata" font-size="9" fill="#456070">systematic
+            error · model too simple</text>
+
+          <!-- Variance box -->
+          <rect x="470" y="150" width="190" height="58" rx="3" fill="#0c1014" stroke="#c084fc" stroke-width="1.8" />
+          <text x="565" y="172" text-anchor="middle" font-family="Inconsolata" font-size="11" fill="#c084fc"
+            font-weight="700">VARIANCE (Overfitting)</text>
+          <text x="565" y="190" text-anchor="middle" font-family="Inconsolata" font-size="9" fill="#456070">sensitivity
+            to training set · model too complex</text>
+
+          <!-- Irreducible noise -->
+          <rect x="250" y="150" width="180" height="58" rx="3" fill="#0c1014" stroke="#34d399" stroke-width="1.5" />
+          <text x="340" y="172" text-anchor="middle" font-family="Inconsolata" font-size="10" fill="#34d399"
+            font-weight="700">IRREDUCIBLE σ²</text>
+          <text x="340" y="190" text-anchor="middle" font-family="Inconsolata" font-size="9" fill="#456070">noise floor
+            · cannot be eliminated</text>
+
+          <!-- Arrows from generalization -->
+          <defs>
+            <marker id="g-arr" markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto">
+              <path d="M0,0 L0,5 L7,2.5z" fill="#456070" />
+            </marker>
+            <marker id="r-arr2" markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto">
+              <path d="M0,0 L0,5 L7,2.5z" fill="#f87171" />
+            </marker>
+            <marker id="v-arr2" markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto">
+              <path d="M0,0 L0,5 L7,2.5z" fill="#c084fc" />
+            </marker>
+            <marker id="e-arr2" markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto">
+              <path d="M0,0 L0,5 L7,2.5z" fill="#34d399" />
+            </marker>
+            <marker id="y-arr" markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto">
+              <path d="M0,0 L0,5 L7,2.5z" fill="#f0b429" />
+            </marker>
+          </defs>
+          <line x1="280" y1="102" x2="155" y2="148" stroke="#f87171" stroke-width="1.3" stroke-dasharray="4,3"
+            marker-end="url(#r-arr2)" />
+          <line x1="340" y1="102" x2="340" y2="148" stroke="#34d399" stroke-width="1.3" stroke-dasharray="4,3"
+            marker-end="url(#e-arr2)" />
+          <line x1="400" y1="102" x2="525" y2="148" stroke="#c084fc" stroke-width="1.3" stroke-dasharray="4,3"
+            marker-end="url(#v-arr2)" />
+
+          <!-- DIAGNOSE box -->
+          <rect x="240" y="258" width="200" height="50" rx="3" fill="#0c1014" stroke="#60a5fa" stroke-width="1.5" />
+          <text x="340" y="278" text-anchor="middle" font-family="Inconsolata" font-size="10" fill="#60a5fa"
+            font-weight="700">DIAGNOSE</text>
+          <text x="340" y="296" text-anchor="middle" font-family="Inconsolata" font-size="9" fill="#456070">learning
+            curves · train vs val loss</text>
+          <line x1="340" y1="208" x2="340" y2="256" stroke="#60a5fa" stroke-width="1.3" stroke-dasharray="4,3"
+            marker-end="url(#g-arr)" />
+
+          <!-- Fix underfitting -->
+          <rect x="20" y="345" width="195" height="80" rx="3" fill="#0c1014" stroke="#f87171" stroke-width="1.5" />
+          <text x="117" y="363" text-anchor="middle" font-family="Inconsolata" font-size="10" fill="#f87171">FIX
+            UNDERFITTING</text>
+          <text x="35" y="381" font-family="Inconsolata" font-size="9" fill="#456070">· More capacity</text>
+          <text x="35" y="396" font-family="Inconsolata" font-size="9" fill="#456070">· Feature engineering</text>
+          <text x="35" y="411" font-family="Inconsolata" font-size="9" fill="#456070">· Reduce regularization</text>
+
+          <!-- Fix overfitting -->
+          <rect x="465" y="345" width="195" height="80" rx="3" fill="#0c1014" stroke="#c084fc" stroke-width="1.5" />
+          <text x="562" y="363" text-anchor="middle" font-family="Inconsolata" font-size="10" fill="#c084fc">FIX
+            OVERFITTING</text>
+          <text x="478" y="381" font-family="Inconsolata" font-size="9" fill="#456070">· L1/L2 regularization</text>
+          <text x="478" y="396" font-family="Inconsolata" font-size="9" fill="#456070">· Dropout · Early stop</text>
+          <text x="478" y="411" font-family="Inconsolata" font-size="9" fill="#456070">· More data · Ensemble</text>
+
+          <!-- Estimate -->
+          <rect x="240" y="345" width="200" height="80" rx="3" fill="#0c1014" stroke="#f0b429" stroke-width="1.5" />
+          <text x="340" y="363" text-anchor="middle" font-family="Inconsolata" font-size="10"
+            fill="#f0b429">ESTIMATE</text>
+          <text x="255" y="381" font-family="Inconsolata" font-size="9" fill="#456070">· k-fold cross-validation</text>
+          <text x="255" y="396" font-family="Inconsolata" font-size="9" fill="#456070">· Held-out test set</text>
+          <text x="255" y="411" font-family="Inconsolata" font-size="9" fill="#456070">· Train/val/test split</text>
+
+          <!-- Arrows from diagnose -->
+          <line x1="280" y1="280" x2="160" y2="343" stroke="#f87171" stroke-width="1.2" stroke-dasharray="4,3"
+            marker-end="url(#r-arr2)" />
+          <line x1="340" y1="308" x2="340" y2="343" stroke="#f0b429" stroke-width="1.2" stroke-dasharray="4,3"
+            marker-end="url(#y-arr)" />
+          <line x1="400" y1="280" x2="522" y2="343" stroke="#c084fc" stroke-width="1.2" stroke-dasharray="4,3"
+            marker-end="url(#v-arr2)" />
+
+          <!-- Bottom: Modern View -->
+          <rect x="20" y="462" width="640" height="120" rx="3" fill="#0a0c0e" stroke="#1a2530" stroke-width="1" />
+          <text x="340" y="482" text-anchor="middle" font-family="Inconsolata" font-size="9" fill="#1e2e3a"
+            letter-spacing="0.2em">THE MODERN VIEW — DOUBLE DESCENT</text>
+          <text x="40" y="503" font-family="Inconsolata" font-size="9" fill="#456070">Classical regime
+            (underparameterized): bias² + variance tradeoff. Optimize model size.</text>
+          <text x="40" y="521" font-family="Inconsolata" font-size="9" fill="#456070">Interpolation threshold: error
+            spike. Exactly enough params to fit training data.</text>
+          <text x="40" y="539" font-family="Inconsolata" font-size="9" fill="#c084fc">Modern regime (overparameterized):
+            min-norm interpolation. Error decreases again.</text>
+          <text x="40" y="557" font-family="Inconsolata" font-size="9" fill="#34d399">SGD implicit bias + augmentation +
+            pretraining enable massive models to generalize.</text>
+          <text x="40" y="575" font-family="Inconsolata" font-size="9" fill="#f0b429">In both regimes: more diverse data
+            + appropriate regularization always helps.</text>
+        </svg>
+        <div class="figure-cap">Fig 7. Complete mental map — from the bias–variance decomposition through diagnosis,
+          remedies, and the modern double-descent picture.</div>
+      </div>
+
+      <p style="margin-top: clamp(24px, 4vw, 38px);">The complete story in one thread:</p>
+
+      <ol style="padding-left: clamp(18px, 3vw, 26px); line-height: 2.5; font-size: clamp(14px, 1.9vw, 16px);">
+        <li><strong>The Goal is Generalization:</strong> We minimize empirical risk \(\hat{R}\) but care about true risk
+          \(R\). The generalization gap \(R - \hat{R}\) is what we control.</li>
+        <li><strong>Expected test error decomposes exactly:</strong> \(\text{Bias}^2 + \text{Variance} + \sigma^2\).
+          This is not an approximation — it's a theorem. Irreducible noise \(\sigma^2\) is a ceiling no model can break
+          through.</li>
+        <li><strong>Underfitting = high bias:</strong> The hypothesis class doesn't contain a good approximation of the
+          true function. Even with infinite data, performance is bounded. Fix: richer model, better features. Symptoms:
+          both train and val loss are high, gap is small.</li>
+        <li><strong>Overfitting = high variance:</strong> The model learned the training noise. Sensitive to which
+          specific training points were sampled. Fix: regularization, more data, ensembling, simpler model. Symptoms:
+          low train loss, high val loss, large gap.</li>
+        <li><strong>Diagnose first with learning curves</strong> — the shape tells you which problem you have. Then
+          apply the correct remedy. Applying variance fixes to a bias problem makes things worse.</li>
+        <li><strong>Regularization</strong> introduces bias deliberately to reduce variance — trading error sources for
+          net gain. L2 shrinks all weights. L1 drives many to exactly zero. Dropout ensembles \(2^N\) networks
+          implicitly. Early stopping constrains the parameter path.</li>
+        <li><strong>More data always reduces variance, never reduces bias.</strong> Cross-validation gives an unbiased
+          generalization estimate when held-out test data is scarce.</li>
+        <li><strong>Ensembles exploit the Bias–Variance identity:</strong> Averaging \(B\) uncorrelated models of
+          variance \(\sigma^2\) gives variance \(\sigma^2/B\). Bagging reduces variance. Boosting reduces bias
+          sequentially.</li>
+        <li><strong>Double descent:</strong> Classical theory predicts one U-shaped curve. Modern overparameterized
+          models (like; Vision Transformers) operate beyond the interpolation threshold — in a regime where more parameters actually
+          helps, because SGD's implicit bias finds minimum-norm solutions that generalize.</li>
+      </ol>
+
+      <div class="callout" style="margin-top: clamp(24px, 4vw, 288px);">
+        <div class="callout-title">★ The One Fact That Ties Everything Together</div>
+        <p>Every technique in this document is either reducing bias, reducing variance, or estimating which one needs
+          reducing. L2 regularization reduces variance at the cost of bias. Feature engineering reduces bias. Data
+          augmentation reduces variance. Ensembles reduce variance. Boosting reduces bias. Cross-validation estimates
+          total error so you can identify which term dominates. The bias–variance decomposition is not just a
+          theoretical result — it is the organizing principle of all of machine learning.</p>
+      </div>
+    </div>
+
+  </div><!-- /content -->
+
+  <!-- ═══ FOOTER ═══ -->
+  <footer class="site-footer">
+    <div class="footer-content">
+      <div class="footer-main">
+        <div class="footer-left">
+          <p class="copyright">&copy; 2025 Shahid Ul Islam</p>
+          <p class="footer-meta">Data Scientist & AI Developer</p>
+        </div>
+        <div class="footer-right">
+          <div class="footer-links">
+            <a href="#" class="back-to-top">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="12" y1="19" x2="12" y2="5"></line>
+                <polyline points="5 12 12 5 19 12"></polyline>
+              </svg>
+              <span>Back to Top</span>
+            </a>
+            <div class="social-links11">
+              <a href="https://github.com/Khanz9664" target="_blank" class="social-link11">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path
+                    d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22" />
+                </svg>
+              </a>
+              <a href="https://linkedin.com/in/shahid-ul-islam-13650998" target="_blank" class="social-link11">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" />
+                  <rect x="2" y="9" width="4" height="12" />
+                  <circle cx="4" cy="4" r="2" />
+                </svg>
+              </a>
+              <a href="mailto:shahid9664@gmail.com" class="social-link11">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
+                  <polyline points="22,6 12,13 2,6" />
+                </svg>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="made-with">
+      <p>Crafted with <span class="heart-icon">❤️</span> By Shahid</p>
+    </div>
+  </footer>
+
+
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['\\(', '\\)'], ['$', '$']],
+        displayMath: [['\\[', '\\]']]
+      },
+      options: { skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre'] }
+    };
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js"></script>
+  <canvas id="bg-canvas"></canvas>
+</body>
+
+</html>

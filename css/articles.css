@@ -277,6 +277,16 @@
     }
 }
 
+/* Procedural Visual Components (General) */
+.v-point {
+    position: absolute;
+    width: 6px;
+    height: 6px;
+    background: #fff;
+    border-radius: 50%;
+    box-shadow: 0 0 10px #fff;
+}
+
 /* Lagrange Visual */
 .visual-lagrange .v-circle {
     position: absolute;
@@ -311,6 +321,111 @@
     background: #fff;
     border-radius: 50%;
     box-shadow: 0 0 15px #fff;
+}
+
+/* Bias-Variance Visual */
+.visual-bias-variance .v-target-ring {
+    position: absolute;
+    border: 1px solid rgb(0 242 255 / 0.1);
+    border-radius: 50%;
+    animation: targetPulse 4s infinite ease-in-out;
+}
+
+.v-target-ring-1 {
+    width: 60px;
+    height: 60px;
+}
+
+.v-target-ring-2 {
+    width: 120px;
+    height: 120px;
+}
+
+.v-target-ring-3 {
+    width: 180px;
+    height: 180px;
+}
+
+.v-point-cluster {
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    animation: shiftCluster 8s infinite ease-in-out;
+}
+
+/* Individual point offsets and jitters */
+.p1 {
+    top: 10%;
+    left: 10%;
+    animation: jitter1 2s infinite ease-in-out;
+}
+
+.p2 {
+    top: 70%;
+    left: 20%;
+    animation: jitter2 2.5s infinite ease-in-out;
+}
+
+.p3 {
+    top: 40%;
+    left: 80%;
+    animation: jitter3 1.8s infinite ease-in-out;
+}
+
+.p4 {
+    top: 80%;
+    left: 60%;
+    animation: jitter4 2.2s infinite ease-in-out;
+}
+
+@keyframes targetPulse {
+    0%, 100% { border-color: rgb(0 242 255 / 0.05); }
+    50% { border-color: rgb(0 242 255 / 0.15); }
+}
+
+@keyframes shiftCluster {
+    0%,
+    100% {
+        transform: translate(0, 0) scale(1.5);
+        opacity: 0.4;
+    } /* High Variance, Centered */
+    25% {
+        transform: translate(45px, -45px) scale(0.6);
+        opacity: 1;
+    } /* Low Variance, High Bias */
+    50% {
+        transform: translate(0, 0) scale(1.5);
+        opacity: 0.4;
+    }
+
+    75% {
+        transform: translate(-35px, 25px) scale(0.6);
+        opacity: 1;
+    }
+}
+
+@keyframes jitter1 {
+    0%,
+    100% { transform: translate(0, 0); }
+    50% { transform: translate(8px, -4px); }
+}
+
+@keyframes jitter2 {
+    0%,
+    100% { transform: translate(0, 0); }
+    50% { transform: translate(-6px, 10px); }
+}
+
+@keyframes jitter3 {
+    0%,
+    100% { transform: translate(0, 0); }
+    50% { transform: translate(4px, 12px); }
+}
+
+@keyframes jitter4 {
+    0%,
+    100% { transform: translate(0, 0); }
+    50% { transform: translate(-10px, -6px); }
 }
 
 /* Linear Regression Visual */

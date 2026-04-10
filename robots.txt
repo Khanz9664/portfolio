@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://khanz9664.github.io/portfolio/sitemap.xml

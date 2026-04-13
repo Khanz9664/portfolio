@@ -1,0 +1,1460 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CardioSense AI | Shahid Ul Islam</title>
+  <meta name="description" content="An Integrated eXplainable Clinical Decision Support System (X-CDSS) for Precision Cardiovascular Risk Assessment.">
+  <meta name="author" content="Shahid Ul Islam">
+
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="CardioSense AI | Shahid Ul Islam">
+  <meta property="og:description" content="Precision Cardiovascular Risk Assessment with eXplainable AI (SHAP + LIME).">
+  <meta property="og:image" content="../img/shahid.png">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="../img/plogo.png">
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.min.js"></script>
+  <link
+    href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=JetBrains+Mono:wght@300;400;600;700&family=Lora:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Bitter:ital,wght@0,400;0,700;0,900;1,400&family=Nunito+Sans:ital,wght@0,300;0,400;0,600;0,700;1,400&family=Roboto+Mono:wght@400;500;600&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="css/cardiosense.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="../css/variables.css">
+  <link rel="stylesheet" href="../css/navigation.css">
+  <link rel="stylesheet" href="../css/footer.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <script defer src="../js/common.js"></script>
+</head>
+
+<body>
+  <!-- Scroll Progress -->
+  <div id="prog"></div>
+
+  <div class="top-bar">
+    <div class="logo">
+      <img src="../img/plogo.png" alt="Personal Logo" class="logo-icon">
+      <span class="logo-text">SHAHID<span class="logo-accent">||</span>Portfolio</span>
+    </div>
+    <nav class="nav-container">
+      <ul class="nav-links">
+        <li><a href="../index.html" class="nav-link">.Home</a></li>
+        <li><a href="../about.html" class="nav-link">.About</a></li>
+        <li><a href="../skills.html" class="nav-link">.Skills</a></li>
+        <li><a href="../projects.html" class="nav-link">.Projects</a></li>
+        <li><a href="../contact.html" class="nav-link">.Contact</a></li>
+        <li><a href="../articles.html" class="nav-link">.Articles</a></li>
+      </ul>
+      <div class="menu-toggle">
+        <div class="hamburger"></div>
+      </div>
+    </nav>
+  </div>
+
+  <!-- ═══ HERO ═══ -->
+  <section class="hero">
+    <div class="hero-texture"></div>
+    <div class="hero-glow"></div>
+    <svg class="hero-ecg" viewBox="0 0 1200 120" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      <polyline id="ecgLine"
+        points="0,60 80,60 100,60 115,20 125,100 135,60 200,60 280,60 300,60 315,20 325,100 335,60 400,60 480,60 500,60 515,20 525,100 535,60 600,60 680,60 700,60 715,20 725,100 735,60 800,60 880,60 900,60 915,20 925,100 935,60 1000,60 1080,60 1100,60 1115,20 1125,100 1135,60 1200,60"
+        fill="none" stroke="rgba(255,100,100,0.8)" stroke-width="2" stroke-linejoin="round" />
+    </svg>
+
+    <div class="hero-inner">
+      <div class="hero-eyebrow">Research Paper · v2.4.0 · April 2026 · Clinical Validation Active</div>
+      <h1><em>CardioSense</em> AI</h1>
+      <div class="hero-subtitle">An Integrated eXplainable Clinical Decision Support System (X-CDSS)<br>for Precision
+        Cardiovascular Risk Assessment</div>
+      <p class="hero-abstract">Cardiovascular diseases remain the leading cause of global mortality. We present
+        CardioSense AI — a state-of-the-art system that integrates optimized XGBoost with multi-modal interpretability
+        layers (SHAP + LIME), ACC/AHA safety guardrails, and a novel Least Effort Path (LEP) optimization algorithm.
+        High performance and full interpretability are not mutually exclusive.</p>
+      <div class="hero-kpis">
+        <div class="hk">
+          <div class="hk-val red">88.52%</div>
+          <div class="hk-lbl">Clinical Accuracy</div>
+        </div>
+        <div class="hk">
+          <div class="hk-val grn">0.9621</div>
+          <div class="hk-lbl">ROC-AUC</div>
+        </div>
+        <div class="hk">
+          <div class="hk-val grn">92.86%</div>
+          <div class="hk-lbl">Recall (Sensitivity)</div>
+        </div>
+        <div class="hk">
+          <div class="hk-val yel">0.0814</div>
+          <div class="hk-lbl">Brier Score</div>
+        </div>
+        <div class="hk">
+          <div class="hk-val">0.9553</div>
+          <div class="hk-lbl">PR-AUC</div>
+        </div>
+        <div class="hk">
+          <div class="hk-val red">100%</div>
+          <div class="hk-lbl">Security Audit</div>
+        </div>
+      </div>
+      <div class="hero-author"><strong>Shahid Ul Islam</strong> · ML Engineer | CV Engineer ·
+        Keywords: XAI, XGBoost, SHAP, LIME, Risk Optimization, CDSS</div>
+    </div>
+    <div class="hero-scroll">
+      <div class="hs-line"></div>
+      <div class="hs-lbl">Read</div>
+    </div>
+  </section>
+
+  <!-- ═══ ABSTRACT / INTRO ═══ -->
+  <section id="problem" class="sec-ivory">
+    <div class="si">
+      <div class="sec-label">§1 — Introduction</div>
+      <h2 class="sec-title">The <em>Interpretability Gap</em> in Clinical AI</h2>
+      <p class="sec-lead">Cardiovascular medicine is inherently data-rich. Traditional risk calculators — Framingham
+        Score, ASCVD Estimator — rely on linear assumptions that fail to capture high-dimensional non-linear
+        dependencies. AI offers a solution, but deployment is hampered by the "Black Box" problem.</p>
+
+      <div class="callout rv">
+        <p><strong>"A High Risk notification from a model, without a supporting clinical rationale, is often viewed with
+            scepticism. The clinician is ethically and legally responsible for every diagnosis they provide."</strong> A
+          passive model that provides a risk score without explanation — and without intervention guidance — is
+          clinically inert.</p>
+      </div>
+
+      <div class="contrib-trio">
+        <div class="cc c1 rv">
+          <div class="cc-num">01</div>
+          <div class="cc-title">Trust via Multi-Modal XAI</div>
+          <div class="cc-desc">Global (SHAP) and local (LIME) explainability techniques provide a "glass-box" view of
+            every prediction. Every inference is accompanied by a feature-level waterfall decomposition and a
+            sensitivity analysis.</div>
+        </div>
+        <div class="cc c2 rv d1">
+          <div class="cc-num">02</div>
+          <div class="cc-title">Safety via Guideline Integration</div>
+          <div class="cc-desc">AHA/ACC Hypertension Guidelines are embedded directly into a Safety Engine as
+            deterministic "Hard-Stop" guardrails that act before the probabilistic ML model's output is presented to the
+            clinician.</div>
+        </div>
+        <div class="cc c3 rv d2">
+          <div class="cc-num">03</div>
+          <div class="cc-title">Active Decision Support (LEP)</div>
+          <div class="cc-desc">The Least Effort Path (LEP) optimization algorithm identifies the most feasible clinical
+            interventions for a specific patient — transforming passive prediction into an actionable clinical roadmap.
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ═══ DATASET ═══ -->
+  <section>
+    <div class="si">
+      <div class="sec-label">§2 — Data</div>
+      <h2 class="sec-title">UCI Cleveland <em>Clinical Dataset</em></h2>
+      <p class="sec-lead">CardioSense AI is trained and validated on the internationally recognized UCI Cleveland Heart
+        Disease dataset — 303 patient records, 13 clinical features, binary cardiovascular disease target. VIF analysis
+        confirms all features exhibit VIF &lt; 2.5 (low multicollinearity).</p>
+
+      <div class="rv" style="overflow-x:auto;border-radius:12px;box-shadow:var(--sh-sm);margin-bottom:2.5rem;">
+        <table class="dt">
+          <thead>
+            <tr>
+              <th>Feature</th>
+              <th>Description</th>
+              <th>Clinical Significance</th>
+              <th>Range / Type</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="ft">age</td>
+              <td class="fs">Patient age in years</td>
+              <td class="fc">Primary risk factor for vascular decay</td>
+              <td class="fs">29–77 yrs</td>
+            </tr>
+            <tr>
+              <td class="ft">sex</td>
+              <td class="fs">Biological sex</td>
+              <td class="fc">Biological variance in coronary anatomy</td>
+              <td class="fs">0: Female, 1: Male</td>
+            </tr>
+            <tr>
+              <td class="ft">cp</td>
+              <td class="fs">Chest pain type (1–4)</td>
+              <td class="fc">Qualitative indicator of ischemic stress</td>
+              <td class="fs">Categorical</td>
+            </tr>
+            <tr>
+              <td class="ft">trestbps</td>
+              <td class="fs">Resting systolic BP</td>
+              <td class="fc">Hemodynamic marker of vascular pressure</td>
+              <td class="fs">94–200 mmHg</td>
+            </tr>
+            <tr>
+              <td class="ft">chol</td>
+              <td class="fs">Serum cholesterol</td>
+              <td class="fc">Risk factor for lipid-driven plaque formation</td>
+              <td class="fs">126–564 mg/dl</td>
+            </tr>
+            <tr>
+              <td class="ft">fbs</td>
+              <td class="fs">Fasting blood sugar &gt; 120mg/dl</td>
+              <td class="fc">Metabolic indicator of diabetic risk</td>
+              <td class="fs">0/1 Boolean</td>
+            </tr>
+            <tr>
+              <td class="ft">restecg</td>
+              <td class="fs">Resting ECG results</td>
+              <td class="fc">Electric signal evidence of hypertrophy/ischemia</td>
+              <td class="fs">0, 1, 2</td>
+            </tr>
+            <tr>
+              <td class="ft">thalach</td>
+              <td class="fs">Maximum heart rate achieved</td>
+              <td class="fc">Marker of cardiac reserve and fitness</td>
+              <td class="fs">71–202 bpm</td>
+            </tr>
+            <tr>
+              <td class="ft">exang</td>
+              <td class="fs">Exercise induced angina</td>
+              <td class="fc">Direct evidence of coronary insufficiency</td>
+              <td class="fs">0/1 Boolean</td>
+            </tr>
+            <tr>
+              <td class="ft">oldpeak</td>
+              <td class="fs">ST depression via exercise</td>
+              <td class="fc">Metric for myocardial repolarization delay</td>
+              <td class="fs">0.0–6.2</td>
+            </tr>
+            <tr>
+              <td class="ft">slope</td>
+              <td class="fs">Peak exercise ST slope</td>
+              <td class="fc">Clinical indicator of ischemia severity</td>
+              <td class="fs">Upsloping/Flat/Down</td>
+            </tr>
+            <tr>
+              <td class="ft">ca</td>
+              <td class="fs">Number of major vessels (0–3)</td>
+              <td class="fc">Structural marker of coronary calcification</td>
+              <td class="fs">0–3</td>
+            </tr>
+            <tr>
+              <td class="ft">thal</td>
+              <td class="fs">Thalassemia score</td>
+              <td class="fc">Genetic/structural marker of blood flow</td>
+              <td class="fs">3 / 6 / 7</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3 class="rv"
+        style="font-family:var(--font-disp);font-size:1.25rem;font-weight:700;color:var(--text-ink);margin-bottom:1rem;">
+        Clinical Safety Thresholds</h3>
+      <div class="rv"
+        style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1rem;margin-bottom:2rem;">
+        <div style="border-radius:10px;padding:1.25rem;border:1px solid rgba(192,21,42,.2);background:var(--crimson-dim);">
+          <div
+            style="font-family:var(--font-mono);font-size:.65rem;text-transform:uppercase;letter-spacing:.1em;color:var(--crimson);margin-bottom:.4rem;">
+            Hypertensive Crisis</div>
+          <div style="font-family:var(--font-disp);font-size:1.5rem;font-weight:700;color:var(--crimson);">≥ 180 mmHg
+          </div>
+          <div style="font-size:.82rem;color:var(--text-muted);">trestbps — triggers immediate risk escalation</div>
+        </div>
+        <div style="border-radius:10px;padding:1.25rem;border:1px solid rgba(180,83,9,.2);background:var(--amber-dim);">
+          <div
+            style="font-family:var(--font-mono);font-size:.65rem;text-transform:uppercase;letter-spacing:.1em;color:var(--amber);margin-bottom:.4rem;">
+            Critical ST Depression</div>
+          <div style="font-family:var(--font-disp);font-size:1.5rem;font-weight:700;color:var(--amber);">&gt; 3.0</div>
+          <div style="font-size:.82rem;color:var(--text-muted);">oldpeak — ischemic severity override</div>
+        </div>
+        <div style="border-radius:10px;padding:1.25rem;border:1px solid rgba(29,78,216,.2);background:var(--blue-dim);">
+          <div
+            style="font-family:var(--font-mono);font-size:.65rem;text-transform:uppercase;letter-spacing:.1em;color:var(--blue);margin-bottom:.4rem;">
+            Multivessel Disease</div>
+          <div style="font-family:var(--font-disp);font-size:1.5rem;font-weight:700;color:var(--blue);">ca ≥ 2</div>
+          <div style="font-size:.82rem;color:var(--text-muted);">Major vessels — structural override trigger</div>
+        </div>
+        <div style="border-radius:10px;padding:1.25rem;border:1px solid rgba(192,21,42,.2);background:var(--crimson-dim);">
+          <div
+            style="font-family:var(--font-mono);font-size:.65rem;text-transform:uppercase;letter-spacing:.1em;color:var(--crimson);margin-bottom:.4rem;">
+            Tachycardia Risk</div>
+          <div style="font-family:var(--font-disp);font-size:1.5rem;font-weight:700;color:var(--crimson);">&gt; 190 bpm
+          </div>
+          <div style="font-size:.82rem;color:var(--text-muted);">thalach — cardiac stress override</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ═══ MATHEMATICAL FOUNDATIONS ═══ -->
+  <section id="math" class="sec-ivory">
+    <div class="si">
+      <div class="sec-label">§3 — Methodology</div>
+      <h2 class="sec-title">Mathematical <em>Foundations</em></h2>
+      <p class="sec-lead">CardioSense AI's clinical intelligence rests on four mathematical pillars: a robust
+        preprocessing pipeline, the XGBoost objective, Bayesian hyperparameter optimization, and sigmoid probability
+        calibration.</p>
+
+      <!-- Preprocessing -->
+      <h3 class="rv"
+        style="font-family:var(--font-disp);font-size:1.3rem;font-weight:700;color:var(--text-ink);margin-bottom:.75rem;">
+        §3.1 Robust Preprocessing Pipeline</h3>
+      <p class="rv math-inline-row" style="font-size:.9rem;color:var(--text-muted);margin-bottom:1rem;line-height:1.8;">Numerical vitals
+        \((x_{\text{num}} \in \{\text{age, trestbps, chol, thalach, oldpeak}\})\) are standardised via Z-score
+        normalisation. Categorical features are transformed via One-Hot Encoding. Parameters are fitted exclusively on
+        training data and persisted in <code
+          style="font-family:var(--font-mono);font-size:.85em;background:var(--linen);padding:.1rem .35rem;border-radius:3px;">preprocessor.joblib</code>
+        to eliminate training-serving skew.</p>
+      <div class="math-box rv">
+        <div class="math-label">Z-Score Normalisation (StandardScaler)</div>
+        <div class="math-content" style="text-align:center;color:#fde68a;font-size:1.1rem;">
+          \[ z = \frac{x - \mu}{\sigma} \]
+        </div>
+        <div class="math-desc">where \(\mu\) and \(\sigma\) are the channel-wise mean and standard deviation computed
+          exclusively from the training set, preventing data leakage into the clinical validation pipeline.</div>
+      </div>
+
+      <!-- XGBoost -->
+      <h3 class="rv"
+        style="font-family:var(--font-disp);font-size:1.3rem;font-weight:700;color:var(--text-ink);margin:.1rem 0 .75rem;">
+        §3.2 Core Intelligence Engine: XGBoost Objective</h3>
+      <p class="rv" style="font-size:.9rem;color:var(--text-muted);margin-bottom:1rem;line-height:1.8;">XGBoost optimises
+        a second-order Taylor expansion of the loss function, enabling rapid convergence on the \(N=303\) clinical
+        dataset while controlling overfitting through explicit regularisation of tree structure.</p>
+      <div class="math-box rv">
+        <div class="math-label">Regularised XGBoost Objective</div>
+        <div class="math-content" style="text-align:center;color:#fde68a;font-size:1.05rem;">
+          \[ \mathcal{L}(\phi) = \sum_i l(\hat{y}_i, y_i) + \sum_k \Omega(f_k) \]
+        </div>
+        <div class="math-desc">
+          where \(\sum_i l(\hat{y}_i, y_i)\) is the differentiable convex loss (binary cross-entropy for clinical
+          classification), and the regularisation term \(\Omega(f) = \gamma T + \frac{1}{2}\lambda\|w\|^2\) penalises the
+          number of leaves \(T\) and leaf weights \(w\), preventing overfitting to the small clinical cohort.
+        </div>
+      </div>
+
+      <!-- Optuna -->
+      <h3 class="rv"
+        style="font-family:var(--font-disp);font-size:1.3rem;font-weight:700;color:var(--text-ink);margin:.1rem 0 .75rem;">
+        §3.3 Bayesian Hyperparameter Optimization (Optuna TPE)</h3>
+      <p class="rv" style="font-size:.9rem;color:var(--text-muted);margin-bottom:.75rem;line-height:1.8;">Unlike grid or
+        random search, Optuna uses a <strong>Tree-structured Parzen Estimator (TPE)</strong> to intelligently navigate
+        the hyperparameter space. We executed 50 trials with 5-fold Stratified Cross-Validation.</p>
+      <div class="rv"
+        style="background:var(--white);border:1px solid var(--border);border-radius:12px;padding:1.5rem;margin-bottom:1.5rem;box-shadow:var(--sh-sm);">
+        <div
+          style="font-family:var(--font-mono);font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:var(--text-muted);margin-bottom:1rem;">
+          Optimised Hyperparameters (v2.4.0)</div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:.75rem;">
+          <div style="background:var(--ivory);border-radius:6px;padding:.75rem 1rem;">
+            <div style="font-family:var(--font-mono);font-size:.65rem;color:var(--text-muted);">n_estimators</div>
+            <div style="font-family:var(--font-disp);font-size:1.3rem;font-weight:700;color:var(--text-ink);">80</div>
+          </div>
+          <div style="background:var(--ivory);border-radius:6px;padding:.75rem 1rem;">
+            <div style="font-family:var(--font-mono);font-size:.65rem;color:var(--text-muted);">max_depth</div>
+            <div style="font-family:var(--font-disp);font-size:1.3rem;font-weight:700;color:var(--text-ink);">12</div>
+          </div>
+          <div style="background:var(--ivory);border-radius:6px;padding:.75rem 1rem;">
+            <div style="font-family:var(--font-mono);font-size:.65rem;color:var(--text-muted);">learning_rate</div>
+            <div style="font-family:var(--font-disp);font-size:1.3rem;font-weight:700;color:var(--text-ink);">0.1477</div>
+          </div>
+          <div style="background:var(--ivory);border-radius:6px;padding:.75rem 1rem;">
+            <div style="font-family:var(--font-mono);font-size:.65rem;color:var(--text-muted);">subsample</div>
+            <div style="font-family:var(--font-disp);font-size:1.3rem;font-weight:700;color:var(--text-ink);">0.7827</div>
+          </div>
+          <div style="background:var(--ivory);border-radius:6px;padding:.75rem 1rem;">
+            <div style="font-family:var(--font-mono);font-size:.65rem;color:var(--text-muted);">min_child_weight</div>
+            <div style="font-family:var(--font-disp);font-size:1.3rem;font-weight:700;color:var(--text-ink);">9</div>
+          </div>
+          <div style="background:var(--ivory);border-radius:6px;padding:.75rem 1rem;">
+            <div style="font-family:var(--font-mono);font-size:.65rem;color:var(--text-muted);">gamma</div>
+            <div style="font-family:var(--font-disp);font-size:1.3rem;font-weight:700;color:var(--text-ink);">2.192</div>
+          </div>
+        </div>
+      </div>
+      <p class="rv" style="font-size:.85rem;color:var(--text-muted);font-style:italic;margin-bottom:2rem;">The <code
+          style="font-family:var(--font-mono);background:var(--linen);">scale_pos_weight</code> is automatically set as
+        \(N_{\text{neg}}/N_{\text{pos}}\) to address inherent class imbalance in cardiac datasets.</p>
+
+      <!-- Calibration -->
+      <h3 class="rv"
+        style="font-family:var(--font-disp);font-size:1.3rem;font-weight:700;color:var(--text-ink);margin-bottom:.75rem;">
+        §3.4 Clinical Probability Calibration (Platt Scaling)</h3>
+      <p class="rv" style="font-size:.9rem;color:var(--text-muted);margin-bottom:1rem;line-height:1.8;">Raw XGBoost
+        probabilities are pushed away from 0 and 1 due to the boosting process. We apply <strong>Sigmoid
+          Calibration</strong> via <code
+          style="font-family:var(--font-mono);background:var(--linen);padding:.1rem .35rem;border-radius:3px;font-size:.85em;">CalibratedClassifierCV</code>.
+        A predicted 20% risk should correspond to an actual 20% frequency in the clinical population.</p>
+      <div class="math-box rv">
+        <div class="math-label">Brier Score — Calibration Measure</div>
+        <div class="math-content" style="text-align:center;color:#fde68a;font-size:1.05rem;">
+          \[ \text{BS} = \frac{1}{N} \sum_{i=1}^{N} (p_i - o_i)^2 = 0.0814 \]
+        </div>
+        <div class="math-desc">A Brier Score approaching zero indicates near-perfect calibration. Our score of 0.0814
+          confirms high calibration integrity — the clinical "Risk Pulse" percentage is statistically accurate.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ PIPELINE VISUAL ═══ -->
+  <section class="sec-linen" style="padding:3rem 2rem;">
+    <div class="si">
+      <div class="rv" style="overflow-x:auto;margin-bottom:.5rem;">
+        <div class="pipe-flow">
+          <div class="pf-step">
+            <div class="pfs-icon">🏥</div>
+            <div class="pfs-name">Clinical Input</div>
+            <div class="pfs-desc">13 patient vitals via Streamlit / API</div>
+          </div>
+          <div class="pf-step">
+            <div class="pfs-icon">🔄</div>
+            <div class="pfs-name">Preprocessor</div>
+            <div class="pfs-desc">StandardScaler + OHE · persisted joblib</div>
+          </div>
+          <div class="pf-step">
+            <div class="pfs-icon">🛡️</div>
+            <div class="pfs-name">Safety Engine</div>
+            <div class="pfs-desc">ACC/AHA overrides · OOD · Entropy</div>
+          </div>
+          <div class="pf-step">
+            <div class="pfs-icon">🌲</div>
+            <div class="pfs-name">XGBoost</div>
+            <div class="pfs-desc">Optuna-calibrated ensemble</div>
+          </div>
+          <div class="pf-step">
+            <div class="pfs-icon">🔬</div>
+            <div class="pfs-name">SHAP + LIME</div>
+            <div class="pfs-desc">Waterfall · sensitivity · physician summary</div>
+          </div>
+          <div class="pf-step">
+            <div class="pfs-icon">🗺️</div>
+            <div class="pfs-name">LEP Engine</div>
+            <div class="pfs-desc">Least Effort Path roadmap</div>
+          </div>
+          <div class="pf-step" style="border-radius:0 10px 10px 0;">
+            <div class="pfs-icon">📄</div>
+            <div class="pfs-name">PDF Report</div>
+            <div class="pfs-desc">Audit hash · clinical export</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ═══ XAI ═══ -->
+  <section id="xai">
+    <div class="si">
+      <div class="sec-label">§4 — Explainability</div>
+      <h2 class="sec-title">Multi-Modal <em>XAI Framework</em></h2>
+      <p class="sec-lead">A dual-engine interpretability layer ensures every prediction is explainable from multiple
+        mathematical perspectives — global consistency via SHAP and local sensitivity via LIME. Neither technique alone
+        is sufficient for clinical trust.</p>
+
+      <div class="xai-duo rv">
+        <div class="xai-card xai-shap">
+          <span class="xai-tag">SHAP · Global Consistency</span>
+          <div class="xai-title">Shapley Additive Explanations</div>
+          <div class="xai-desc">Based on cooperative game theory, SHAP provides a mathematically consistent allocation
+            of "blame" or "credit" to each feature. We utilize TreeSHAP — a fast and exact algorithm for tree ensembles
+            that satisfies <em>Efficiency, Symmetry, and Additivity</em> axioms.</div>
+          <div style="font-family:var(--font-mono);font-size:.68rem;letter-spacing:.08em;color:var(--crimson);margin-bottom:.4rem;">
+            SHAPLEY VALUE FORMULA</div>
+          \[\phi_i = \sum_{S \subseteq \{x_1,\dots,x_p\}\setminus\{x_i\}} \frac{|S|!\,(M-|S|-1)!}{M!}\left[f(S \cup
+          \{x_i\}) - f(S)\right]\]
+          <div style="font-size:.8rem;color:var(--text-muted);margin-top:.75rem;">The Shapley value \(\phi_i\) represents
+            the fair marginal contribution of feature \(x_i\) across all possible orderings of feature coalitions \(S\).
+          </div>
+        </div>
+        <div class="xai-card xai-lime">
+          <span class="xai-tag">LIME · Local Sensitivity</span>
+          <div class="xai-title">Local Interpretable Model-agnostic Explanations</div>
+          <div class="xai-desc">LIME generates a linear approximation of the complex XGBoost model in the immediate
+            vicinity of a specific patient's data point. It reveals how small changes in vitals (e.g., a 5 mmHg drop in
+            BP) would shift the AI's risk assessment.</div>
+          <div style="font-family:var(--font-mono);font-size:.68rem;letter-spacing:.08em;color:var(--blue);margin-bottom:.4rem;">
+            LIME OBJECTIVE</div>
+          \[\xi(x) = \arg\min_{g \in G} \mathcal{L}(f, g, \pi_x) + \Omega(g)\]
+          <div style="font-size:.8rem;color:var(--text-muted);margin-top:.75rem;">where \(g\) is an interpretable linear
+            surrogate, \(\pi_x\) is a proximity measure weighting perturbed samples by closeness to the patient \(x\),
+            and \(\Omega(g)\) controls the surrogate's complexity.</div>
+        </div>
+      </div>
+
+      <!-- SHAP Waterfall -->
+      <h3 class="rv"
+        style="font-family:var(--font-disp);font-size:1.2rem;font-weight:700;color:var(--text-ink);margin-bottom:1rem;">
+        Diagnostic "X-Ray" — SHAP Waterfall Decomposition</h3>
+      <div class="shap-wrap rv">
+        <div class="shap-label">// SHAP WATERFALL — ILLUSTRATIVE HIGH-RISK PATIENT · f(X) = 0.92 · E[f(X)] = 0.46</div>
+        <svg class="shap-svg" viewBox="0 0 700 280" xmlns="http://www.w3.org/2000/svg">
+          <!-- Axes -->
+          <line x1="200" y1="20" x2="200" y2="255" stroke="rgba(255,255,255,.15)" stroke-width="1" />
+          <line x1="200" y1="255" x2="680" y2="255" stroke="rgba(255,255,255,.1)" stroke-width="1" />
+          <!-- Base label -->
+          <text x="198" y="268" font-family="Roboto Mono" font-size="9" fill="rgba(255,160,160,.5)"
+            text-anchor="end">Feature</text>
+          <text x="700" y="268" font-family="Roboto Mono" font-size="9" fill="rgba(255,160,160,.5)" text-anchor="end">SHAP
+            value →</text>
+          <!-- Baseline marker -->
+          <line x1="420" y1="20" x2="420" y2="255" stroke="rgba(255,255,255,.08)" stroke-width="1"
+            stroke-dasharray="3,3" />
+          <text x="420" y="14" font-family="Roboto Mono" font-size="8" fill="rgba(255,180,180,.4)"
+            text-anchor="middle">E[f(X)]=0.46</text>
+          <!-- Feature rows — red=risk, blue=protective -->
+          <!-- exang: +0.22 -->
+          <text x="195" y="50" font-family="Roboto Mono" font-size="10" fill="#e2d5d5" text-anchor="end">exang=1</text>
+          <rect x="420" y="37" width="110" height="18" rx="3" fill="#ef4444" opacity=".85" />
+          <text x="535" y="50" font-family="Roboto Mono" font-size="9" fill="#fca5a5">+0.22</text>
+          <!-- oldpeak: +0.18 -->
+          <text x="195" y="80" font-family="Roboto Mono" font-size="10" fill="#e2d5d5" text-anchor="end">oldpeak=2.5</text>
+          <rect x="420" y="67" width="88" height="18" rx="3" fill="#ef4444" opacity=".85" />
+          <text x="513" y="80" font-family="Roboto Mono" font-size="9" fill="#fca5a5">+0.18</text>
+          <!-- ca: +0.15 -->
+          <text x="195" y="110" font-family="Roboto Mono" font-size="10" fill="#e2d5d5" text-anchor="end">ca=1</text>
+          <rect x="420" y="97" width="74" height="18" rx="3" fill="#ef4444" opacity=".85" />
+          <text x="499" y="110" font-family="Roboto Mono" font-size="9" fill="#fca5a5">+0.15</text>
+          <!-- cp: +0.12 -->
+          <text x="195" y="140" font-family="Roboto Mono" font-size="10" fill="#e2d5d5" text-anchor="end">cp=4</text>
+          <rect x="420" y="127" width="60" height="18" rx="3" fill="#ef4444" opacity=".85" />
+          <text x="485" y="140" font-family="Roboto Mono" font-size="9" fill="#fca5a5">+0.12</text>
+          <!-- age: +0.08 -->
+          <text x="195" y="170" font-family="Roboto Mono" font-size="10" fill="#e2d5d5" text-anchor="end">age=55</text>
+          <rect x="420" y="157" width="40" height="18" rx="3" fill="#ef4444" opacity=".85" />
+          <text x="465" y="170" font-family="Roboto Mono" font-size="9" fill="#fca5a5">+0.08</text>
+          <!-- thalach: -0.09 protective -->
+          <text x="195" y="200" font-family="Roboto Mono" font-size="10" fill="#e2d5d5" text-anchor="end">thalach=130</text>
+          <rect x="375" y="187" width="45" height="18" rx="3" fill="#3b82f6" opacity=".85" />
+          <text x="370" y="200" font-family="Roboto Mono" font-size="9" fill="#93c5fd" text-anchor="end">−0.09</text>
+          <!-- chol: -0.05 protective -->
+          <text x="195" y="230" font-family="Roboto Mono" font-size="10" fill="#e2d5d5" text-anchor="end">chol=250</text>
+          <rect x="397" y="217" width="23" height="18" rx="3" fill="#3b82f6" opacity=".85" />
+          <text x="392" y="230" font-family="Roboto Mono" font-size="9" fill="#93c5fd" text-anchor="end">−0.05</text>
+          <!-- f(x) label -->
+          <rect x="600" y="30" width="90" height="30" rx="5" fill="rgba(239,68,68,.2)" stroke="rgba(239,68,68,.4)"
+            stroke-width="1" />
+          <text x="645" y="48" font-family="Roboto Mono" font-size="9" fill="#fca5a5" text-anchor="middle">f(X) =
+            0.92</text>
+          <!-- Legend -->
+          <rect x="210" y="258" width="14" height="8" rx="2" fill="#ef4444" opacity=".85" />
+          <text x="228" y="266" font-family="Roboto Mono" font-size="8" fill="rgba(255,180,180,.6)">Risk factors</text>
+          <rect x="310" y="258" width="14" height="8" rx="2" fill="#3b82f6" opacity=".85" />
+          <text x="328" y="266" font-family="Roboto Mono" font-size="8" fill="rgba(180,200,255,.6)">Protective
+            factors</text>
+        </svg>
+      </div>
+
+      <!-- Radar chart + Global importance -->
+      <div class="radar-wrap rv">
+        <div class="radar-box">
+          <div class="radar-box-title">// Risk Optimization Radar — Patient vs Target</div>
+          <svg class="radar-svg" viewBox="0 0 260 240" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <polygon id="hex" points="130,20 220,70 220,160 130,210 40,160 40,70" />
+            </defs>
+            <!-- grid -->
+            <polygon points="130,50 192,85 192,155 130,190 68,155 68,85" fill="none" stroke="var(--border)"
+              stroke-width="1" />
+            <polygon points="130,80 173,103 173,142 130,165 87,142 87,103" fill="none" stroke="var(--border)"
+              stroke-width="1" />
+            <polygon points="130,105 158,121 158,134 130,150 102,134 102,121" fill="none" stroke="var(--border)"
+              stroke-width="1" />
+            <line x1="130" y1="20" x2="130" y2="210" stroke="var(--border)" stroke-width=".5" />
+            <line x1="40" y1="70" x2="220" y2="160" stroke="var(--border)" stroke-width=".5" />
+            <line x1="220" y1="70" x2="40" y2="160" stroke="var(--border)" stroke-width=".5" />
+            <!-- Patient profile (high risk) -->
+            <polygon points="130,28 210,85 205,162 130,200 55,162 50,85" fill="rgba(192,21,42,.18)"
+              stroke="rgba(192,21,42,.7)" stroke-width="2" />
+            <!-- Target / green path -->
+            <polygon points="130,68 172,103 168,142 130,168 92,142 88,103" fill="rgba(22,128,60,.15)"
+              stroke="rgba(22,128,60,.7)" stroke-width="2" stroke-dasharray="4,2" />
+            <!-- Axis labels -->
+            <text x="130" y="16" font-family="Roboto Mono" font-size="8" fill="var(--text-muted)"
+              text-anchor="middle">trestbps</text>
+            <text x="225" y="80" font-family="Roboto Mono" font-size="8" fill="var(--text-muted)">chol</text>
+            <text x="225" y="168" font-family="Roboto Mono" font-size="8" fill="var(--text-muted)">oldpeak</text>
+            <text x="130" y="220" font-family="Roboto Mono" font-size="8" fill="var(--text-muted)"
+              text-anchor="middle">thalach</text>
+            <text x="8" y="168" font-family="Roboto Mono" font-size="8" fill="var(--text-muted)">ca</text>
+            <text x="8" y="80" font-family="Roboto Mono" font-size="8" fill="var(--text-muted)">age</text>
+            <!-- Legend -->
+            <line x1="80" y1="235" x2="100" y2="235" stroke="rgba(192,21,42,.7)" stroke-width="2" />
+            <text x="104" y="238" font-family="Roboto Mono" font-size="7" fill="var(--text-muted)">Current</text>
+            <line x1="150" y1="235" x2="170" y2="235" stroke="rgba(22,128,60,.7)" stroke-width="2" stroke-dasharray="4,2" />
+            <text x="174" y="238" font-family="Roboto Mono" font-size="7" fill="var(--text-muted)">LEP Target</text>
+          </svg>
+        </div>
+        <!-- Confidence gauge -->
+        <div class="radar-box">
+          <div class="radar-box-title">// Shannon Entropy Confidence Engine</div>
+          <svg viewBox="0 0 260 200" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:280px;">
+            <!-- gauge arc -->
+            <path d="M 50 160 A 80 80 0 0 1 210 160" fill="none" stroke="var(--linen)" stroke-width="20" />
+            <!-- low conf zone -->
+            <path d="M 50 160 A 80 80 0 0 1 100 95" fill="none" stroke="#fbbf24" stroke-width="20" opacity=".7" />
+            <!-- high conf zone -->
+            <path d="M 100 95 A 80 80 0 0 1 210 160" fill="none" stroke="#22c55e" stroke-width="20" opacity=".7" />
+            <!-- needle -->
+            <line x1="130" y1="160" x2="76" y2="87" stroke="var(--crimson)" stroke-width="2.5" stroke-linecap="round" />
+            <circle cx="130" cy="160" r="5" fill="var(--crimson)" />
+            <!-- text -->
+            <text x="130" y="145" font-family="Bitter" font-size="20" fill="var(--text-ink)" text-anchor="middle"
+              font-weight="700">HIGH</text>
+            <text x="130" y="165" font-family="Roboto Mono" font-size="9" fill="var(--text-muted)"
+              text-anchor="middle">C = 1 − H(p)</text>
+            <text x="40" y="180" font-family="Roboto Mono" font-size="8" fill="var(--amber)">LOW</text>
+            <text x="200" y="180" font-family="Roboto Mono" font-size="8" fill="var(--green)">HIGH</text>
+          </svg>
+          <!-- Entropy math -->
+          <div style="width:100%;padding:.75rem 0 0;border-top:1px solid var(--border);margin-top:.5rem;">
+            \[ H(p) = -(p\log_2 p + (1-p)\log_2(1-p)) \]
+            \[ C = 1 - H(p) \]
+            <div style="font-size:.78rem;color:var(--text-muted);margin-top:.5rem;font-style:italic;text-align:center;">
+              When \(p \approx 0.5\), entropy is maximal → LOW confidence warning</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ═══ SAFETY ENGINE ═══ -->
+  <section id="safety" class="sec-ivory">
+    <div class="si">
+      <div class="sec-label">§5 — Safety & Trust</div>
+      <h2 class="sec-title">Clinical Safety <em>&amp; Trust Framework</em></h2>
+      <p class="sec-lead">In medical AI, "Black Box" models are clinically unusable. CardioSense AI implements six
+        interlocking layers of trust — from hard-stop clinical overrides to cryptographic audit hashes.</p>
+
+      <div class="safety-stack rv">
+        <div class="sl">
+          <div class="sl-num">1</div>
+          <div>
+            <div class="sl-title">Clinical Overrides (ACC/AHA Alignment)</div>
+            <div class="sl-desc">Hard-stop rules based on ACC/AHA guidelines trigger alerts regardless of AI
+              probability. If trestbps ≥ 180 mmHg (Hypertensive Crisis), the system overrides any model output below 90%
+              and escalates immediately. Similar triggers exist for ca ≥ 2 (multivessel disease) and oldpeak &gt; 3.0
+              (ischemic severity).</div>
+            <span class="sl-badge sl-b-red">Deterministic Hard-Stop</span>
+            <span class="sl-badge sl-b-red">ACC/AHA 2017 Guidelines</span>
+          </div>
+        </div>
+        <div class="sl">
+          <div class="sl-num">2</div>
+          <div>
+            <div class="sl-title">Out-of-Distribution (OOD) Monitoring</div>
+            <div class="sl-desc">Compares input data against the statistical bounds of the training set (age ranges, BP
+              maximums). If a patient's vitals fall outside the training distribution — e.g., age outside [29, 77] or
+              cholesterol above 564 mg/dl — a clinical alert is surfaced before inference.</div>
+            <span class="sl-badge sl-b-amb">Statistical Bounds</span>
+            <span class="sl-badge sl-b-amb">Training Distribution Guard</span>
+          </div>
+        </div>
+        <div class="sl">
+          <div class="sl-num">3</div>
+          <div>
+            <div class="sl-title">Entropy-Based Confidence Quantification</div>
+            <div class="sl-desc">Every prediction includes a Confidence Gauge derived from \(C = 1 - H(p)\) where \(H(p)
+              = -(p\log_2 p + (1-p)\log_2(1-p))\). A high-entropy prediction (\(p \approx 0.5\)) yields a LOW confidence
+              warning, signalling the patient sits on a statistical boundary and requires closer human investigation.
+            </div>
+            <span class="sl-badge sl-b-blue">Shannon Entropy</span>
+            <span class="sl-badge sl-b-blue">High / Moderate / Low</span>
+          </div>
+        </div>
+        <div class="sl">
+          <div class="sl-num">4</div>
+          <div>
+            <div class="sl-title">Cryptographic Audit Hashes</div>
+            <div class="sl-desc">Every inference result is cryptographically linked to the model version and timestamp
+              via SHA-256 hashing (<code
+                style="font-family:var(--font-mono);font-size:.82rem;">usedforsecurity=False</code> flagged for audit
+              compliance). This allows clinicians to verify that the decision support engine has not been altered since
+              its last validated training run.</div>
+            <span class="sl-badge sl-b-grn">SHA-256 Audit Hash</span>
+            <span class="sl-badge sl-b-grn">Full Traceability</span>
+          </div>
+        </div>
+        <div class="sl">
+          <div class="sl-num">5</div>
+          <div>
+            <div class="sl-title">Adaptive Monitoring Gateway (Evidently AI)</div>
+            <div class="sl-desc">Detects Data Drift using Kolmogorov-Smirnov (K-S) tests on clinical feature
+              distributions and Performance Decay via Recall Stability monitoring from real-world clinician feedback.
+              Uses an Adaptive Search pattern for 99.9% telemetry uptime across diverse hosting environments.</div>
+            <span class="sl-badge sl-b-blue">K-S Test · Drift Share</span>
+            <span class="sl-badge sl-b-blue">Concept Drift Alert</span>
+          </div>
+        </div>
+        <div class="sl">
+          <div class="sl-num">6</div>
+          <div>
+            <div class="sl-title">Security Audit (Bandit SAST + Safety SCA)</div>
+            <div class="sl-desc">Every release is audited with Bandit (Static Application Security Testing) for insecure
+              Python patterns (CWE-mapped reports) and Safety (Software Composition Analysis) to verify all dependencies
+              are free from known CVEs. Current status: 100% PASS — No High/Medium vulnerabilities detected.</div>
+            <span class="sl-badge sl-b-grn">100% PASS · Bandit + Safety</span>
+            <span class="sl-badge sl-b-grn">OWASP Aligned</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ═══ LEP ALGORITHM ═══ -->
+  <section>
+    <div class="si">
+      <div class="sec-label">§6 — Risk Optimization</div>
+      <h2 class="sec-title">The Least Effort Path <em>Algorithm</em></h2>
+      <p class="sec-lead">The most significant innovation in CardioSense AI — moving from passive prediction to active
+        intervention planning. The LEP algorithm identifies the minimum patient effort required to reach a
+        clinician-set target risk level.</p>
+
+      <div class="math-box rv">
+        <div class="math-label">LEP Optimization Objective</div>
+        <div class="math-content" style="text-align:center;color:#fde68a;font-size:1.05rem;">
+          \[ \arg\min_{\Delta X}\; \mathrm{Risk}(X + \Delta X) + \lambda \sum_i w_i |\Delta x_i| \]
+        </div>
+        <div class="math-desc">where \(X\) is the current patient vitals vector, \(\Delta X\) is the proposed
+          intervention, \(w_i\) is the clinical cost weight (difficulty) of modifying feature \(i\), and \(\lambda\)
+          controls the effort-risk tradeoff. The result is a prioritized <strong>Treatment Roadmap</strong> ranking
+          interventions by their risk-reduction ROI.</div>
+      </div>
+
+      <div class="lep-box rv">
+        <div class="lep-label">Clinical Effort Weights — w_i</div>
+        <div class="lep-title">Cost-Weighted Feasibility Matrix</div>
+        <div class="lep-weights">
+          <div class="lw">
+            <div class="lw-val lw-w1">1.0</div>
+            <div class="lw-name">trestbps</div>
+            <div class="lw-desc">High feasibility — medication or dietary intervention</div>
+          </div>
+          <div class="lw">
+            <div class="lw-val lw-w2">1.5</div>
+            <div class="lw-name">chol</div>
+            <div class="lw-desc">Moderate — statin therapy + lifestyle</div>
+          </div>
+          <div class="lw">
+            <div class="lw-val lw-w3">2.0</div>
+            <div class="lw-name">thalach</div>
+            <div class="lw-desc">Lower feasibility — sustained conditioning required</div>
+          </div>
+          <div class="lw">
+            <div class="lw-val lw-w4">3.5</div>
+            <div class="lw-name">oldpeak</div>
+            <div class="lw-desc">Structural effort — cardiologic intervention</div>
+          </div>
+        </div>
+        <div
+          style="font-size:.88rem;color:var(--text-muted);font-style:italic;border-top:1px solid var(--border);padding-top:.75rem;margin-top:.25rem;">
+          The greedy optimizer identifies which modifications yield the greatest risk reduction relative to their
+          clinical effort — producing an actionable, prioritized clinical sequence for the treating physician.</div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ═══ RESULTS ═══ -->
+  <section id="results" class="sec-ivory">
+    <div class="si">
+      <div class="sec-label">§7 — Experimental Results</div>
+      <h2 class="sec-title">Clinical Performance <em>Metrics</em></h2>
+      <p class="sec-lead">Validated using a Hold-Out Test Set (20%) and Stratified 5-Fold Cross-Validation during
+        optimization. Metrics represent the system's state after Sigmoid Calibration and Target-Enriched Optuna
+        optimization.</p>
+
+      <div class="perf-bars rv">
+        <div class="pb-title">// Clinical Performance — v2.4.0 · n=303 UCI Cleveland Dataset</div>
+        <div class="pb-rows">
+          <div class="pb-row">
+            <div class="pb-label">Accuracy</div>
+            <div class="pb-track">
+              <div class="pb-fill" data-w="88.52" style="background:linear-gradient(90deg,var(--crimson),var(--pulse));">
+                <span class="pb-fill-lbl">88.52%</span></div>
+            </div>
+            <div class="pb-val">88.52%</div>
+          </div>
+          <div class="pb-row">
+            <div class="pb-label">ROC-AUC</div>
+            <div class="pb-track">
+              <div class="pb-fill" data-w="96.21" style="background:linear-gradient(90deg,var(--green),#4ade80);"><span
+                  class="pb-fill-lbl">0.9621</span></div>
+            </div>
+            <div class="pb-val">0.9621</div>
+          </div>
+          <div class="pb-row">
+            <div class="pb-label">PR-AUC</div>
+            <div class="pb-track">
+              <div class="pb-fill" data-w="95.53" style="background:linear-gradient(90deg,var(--green),#4ade80);"><span
+                  class="pb-fill-lbl">0.9553</span></div>
+            </div>
+            <div class="pb-val">0.9553</div>
+          </div>
+          <div class="pb-row">
+            <div class="pb-label">Recall (Sensitivity)</div>
+            <div class="pb-track">
+              <div class="pb-fill" data-w="92.86" style="background:linear-gradient(90deg,var(--crimson),var(--pulse));">
+                <span class="pb-fill-lbl">92.86%</span></div>
+            </div>
+            <div class="pb-val">92.86%</div>
+          </div>
+          <div class="pb-row">
+            <div class="pb-label">Precision</div>
+            <div class="pb-track">
+              <div class="pb-fill" data-w="83.87" style="background:linear-gradient(90deg,var(--amber),#fbbf24);"><span
+                  class="pb-fill-lbl">83.87%</span></div>
+            </div>
+            <div class="pb-val">83.87%</div>
+          </div>
+          <div class="pb-row">
+            <div class="pb-label">F1-Score</div>
+            <div class="pb-track">
+              <div class="pb-fill" data-w="88.14" style="background:linear-gradient(90deg,var(--blue),#60a5fa);"><span
+                  class="pb-fill-lbl">0.8814</span></div>
+            </div>
+            <div class="pb-val">0.8814</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="rv" style="overflow-x:auto;border-radius:12px;box-shadow:var(--sh-sm);margin-bottom:2.5rem;">
+        <table class="metrics-table">
+          <thead>
+            <tr>
+              <th>Metric</th>
+              <th>Score</th>
+              <th>Professional Interpretation</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="mt-metric">Model Version</td>
+              <td class="mt-val">v2.4.0</td>
+              <td class="mt-note">Professional Optuna-calibrated clinical ensemble</td>
+            </tr>
+            <tr>
+              <td class="mt-metric">Clinical Accuracy</td>
+              <td class="mt-val mt-hi">88.52%</td>
+              <td class="mt-note">High fidelity across all diagnostic classes</td>
+            </tr>
+            <tr>
+              <td class="mt-metric">ROC-AUC Score</td>
+              <td class="mt-val mt-hi">0.9621</td>
+              <td class="mt-note">Exceptional class discrimination power</td>
+            </tr>
+            <tr>
+              <td class="mt-metric">PR-AUC Score</td>
+              <td class="mt-val mt-hi">0.9553</td>
+              <td class="mt-note">Precise performance in unbalanced medical sets</td>
+            </tr>
+            <tr>
+              <td class="mt-metric">Recall (Sensitivity)</td>
+              <td class="mt-val mt-hi">92.86%</td>
+              <td class="mt-note">Critical safety metric — minimising false negatives</td>
+            </tr>
+            <tr>
+              <td class="mt-metric">F1-Score</td>
+              <td class="mt-val mt-hi">0.8814</td>
+              <td class="mt-note">Robust harmonic balance of precision and recall</td>
+            </tr>
+            <tr>
+              <td class="mt-metric">Brier Score</td>
+              <td class="mt-val mt-hi">0.0814</td>
+              <td class="mt-note">Strong probability calibration (Platt Scaling verified)</td>
+            </tr>
+            <tr>
+              <td class="mt-metric">Test Coverage</td>
+              <td class="mt-val mt-mid">63.00%</td>
+              <td class="mt-note">40 verified clinical scenarios across core logic</td>
+            </tr>
+            <tr>
+              <td class="mt-metric">Security Audit</td>
+              <td class="mt-val mt-hi">100% Pass</td>
+              <td class="mt-note">Bandit (SAST) &amp; Safety (SCA) verified release</td>
+            </tr>
+            <tr>
+              <td class="mt-metric">Data Drift</td>
+              <td class="mt-val mt-hi">Monitored</td>
+              <td class="mt-note">Adaptive Evidently AI K-S monitoring gateway</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Fairness -->
+      <h3 class="rv"
+        style="font-family:var(--font-disp);font-size:1.3rem;font-weight:700;color:var(--text-ink);margin-bottom:1rem;">
+        §7.3 Bias Audit &amp; Demographic Parity</h3>
+      <div class="callout rv">
+        <p><strong>Clinical Priority:</strong> We prioritize <strong>Recall (Sensitivity)</strong> in senior and female
+          populations to ensure no high-risk patient is "missed" due to algorithmic bias. The system maintains 100%
+          Recall for the Senior (≥65) cohort — the highest baseline risk population.</p>
+      </div>
+      <div class="rv" style="overflow-x:auto;border-radius:12px;box-shadow:var(--sh-sm);margin-bottom:2rem;">
+        <table class="fair-table">
+          <thead>
+            <tr>
+              <th>Demographic Group</th>
+              <th>N</th>
+              <th>Accuracy</th>
+              <th>Recall (Sensitivity)</th>
+              <th>F1-Score</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="ft-grp">Gender: Female</td>
+              <td style="font-family:var(--font-mono);font-size:.82rem;">20</td>
+              <td><span style="font-family:var(--font-mono);font-size:.85rem;font-weight:600;color:var(--green);">95.00%</span>
+              </td>
+              <td><span style="font-family:var(--font-mono);font-size:.85rem;font-weight:600;color:var(--amber);">85.71%</span>
+              </td>
+              <td style="font-family:var(--font-mono);font-size:.82rem;">92.31%</td>
+            </tr>
+            <tr>
+              <td class="ft-grp">Gender: Male</td>
+              <td style="font-family:var(--font-mono);font-size:.82rem;">41</td>
+              <td><span style="font-family:var(--font-mono);font-size:.85rem;font-weight:600;color:var(--amber);">87.80%</span>
+              </td>
+              <td><span style="font-family:var(--font-mono);font-size:.85rem;font-weight:600;color:var(--green);">95.24%</span>
+              </td>
+              <td style="font-family:var(--font-mono);font-size:.82rem;">88.89%</td>
+            </tr>
+            <tr>
+              <td class="ft-grp">Age: Young (&lt;45)</td>
+              <td style="font-family:var(--font-mono);font-size:.82rem;">13</td>
+              <td><span style="font-family:var(--font-mono);font-size:.85rem;font-weight:600;color:var(--green);">100.0%</span>
+              </td>
+              <td><span style="font-family:var(--font-mono);font-size:.85rem;font-weight:600;color:var(--green);">100.0%</span>
+              </td>
+              <td style="font-family:var(--font-mono);font-size:.82rem;">100.0%</td>
+            </tr>
+            <tr>
+              <td class="ft-grp">Age: Middle (45–64)</td>
+              <td style="font-family:var(--font-mono);font-size:.82rem;">42</td>
+              <td><span style="font-family:var(--font-mono);font-size:.85rem;font-weight:600;color:var(--green);">90.48%</span>
+              </td>
+              <td><span style="font-family:var(--font-mono);font-size:.85rem;font-weight:600;color:var(--green);">90.91%</span>
+              </td>
+              <td style="font-family:var(--font-mono);font-size:.82rem;">90.91%</td>
+            </tr>
+            <tr>
+              <td class="ft-grp" style="color:var(--crimson);">Age: Senior (≥65) ★</td>
+              <td style="font-family:var(--font-mono);font-size:.82rem;">6</td>
+              <td><span style="font-family:var(--font-mono);font-size:.85rem;font-weight:600;color:var(--amber);">66.67%</span>
+              </td>
+              <td><span style="font-family:var(--font-mono);font-size:.85rem;font-weight:600;color:var(--green);">100.0%
+                  ★</span></td>
+              <td style="font-family:var(--font-mono);font-size:.82rem;">75.00%</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="rv" style="font-size:.83rem;color:var(--text-muted);font-style:italic;">★ Recall of 100% for the Senior
+        (≥65) population is clinically vital. The accuracy dip is explained by small sample size (N=6) and deliberate
+        prioritisation of sensitivity over specificity in the highest-risk cohort.</p>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ═══ ARCHITECTURE ═══ -->
+  <section class="sec-dark" id="arch">
+    <div class="si">
+      <div class="sec-label">§8 — Architecture</div>
+      <h2 class="sec-title">System <em>Architecture</em></h2>
+      <p class="sec-lead">A four-layer decoupled architecture for maximum scalability and auditability. Each layer is
+        independently testable and integrates via well-defined interfaces.</p>
+
+      <div class="arch-grid rv">
+        <div class="al" style="background:rgba(255,255,255,.05);border-color:rgba(255,150,150,.2);">
+          <div class="al-num" style="color:rgba(255,150,150,.1);">01</div>
+          <div class="al-title" style="color:#fff;">Core Intelligence Layer</div>
+          <div class="al-sub">Python · XGBoost · SHAP · LIME</div>
+          <div class="al-desc" style="color:rgba(255,200,200,.65);">The predictive and explainability engines.
+            HeartDiseasePredictor wraps the XGBoost pipeline. SHAP Engine provides TreeSHAP waterfall plots. LIME Engine
+            generates local linear surrogates. Intervention Simulator runs the LEP coordinate descent optimizer.</div>
+          <div class="al-tags">
+            <span class="al-tag"
+              style="background:rgba(255,255,255,.06);border-color:rgba(255,150,150,.2);color:rgba(255,180,180,.7);">src/models/</span>
+            <span class="al-tag"
+              style="background:rgba(255,255,255,.06);border-color:rgba(255,150,150,.2);color:rgba(255,180,180,.7);">src/explainability/</span>
+            <span class="al-tag"
+              style="background:rgba(255,255,255,.06);border-color:rgba(255,150,150,.2);color:rgba(255,180,180,.7);">src/simulation/</span>
+          </div>
+        </div>
+        <div class="al" style="background:rgba(255,255,255,.05);border-color:rgba(150,255,200,.2);">
+          <div class="al-num" style="color:rgba(150,255,200,.1);">02</div>
+          <div class="al-title" style="color:#fff;">Inference Gateway (FastAPI)</div>
+          <div class="al-sub">FastAPI · Pydantic · Uvicorn · Lifespan</div>
+          <div class="al-desc" style="color:rgba(220,255,220,.6);">RESTful API handling real-time risk assessments with
+            Pydantic validation for medical data integrity. Implements Lifespan context management for robust
+            initialization. X-Request-ID injection for full clinical audit traceability. Rotating JSON logger (5MB, 3
+            backups).</div>
+          <div class="al-tags">
+            <span class="al-tag"
+              style="background:rgba(255,255,255,.06);border-color:rgba(150,255,200,.2);color:rgba(150,255,200,.7);">api/main.py</span>
+            <span class="al-tag"
+              style="background:rgba(255,255,255,.06);border-color:rgba(150,255,200,.2);color:rgba(150,255,200,.7);">/predict
+              · /monitoring</span>
+            <span class="al-tag"
+              style="background:rgba(255,255,255,.06);border-color:rgba(150,255,200,.2);color:rgba(150,255,200,.7);">X-Request-ID</span>
+          </div>
+        </div>
+        <div class="al" style="background:rgba(255,255,255,.05);border-color:rgba(150,200,255,.2);">
+          <div class="al-num" style="color:rgba(150,200,255,.1);">03</div>
+          <div class="al-title" style="color:#fff;">Clinical Dashboard (Streamlit)</div>
+          <div class="al-sub">Streamlit · Plotly · fpdf</div>
+          <div class="al-desc" style="color:rgba(200,220,255,.65);">Premium clinician-focused interface rendering SHAP
+            waterfall plots, optimization radar charts, LIME sensitivity analysis, and global population-level
+            importance. Generates professional clinical PDF reports with embedded Audit Hash. CI/CD via GitHub Actions
+            (5-job pipeline).</div>
+          <div class="al-tags">
+            <span class="al-tag"
+              style="background:rgba(255,255,255,.06);border-color:rgba(150,200,255,.2);color:rgba(150,200,255,.7);">app/main.py</span>
+            <span class="al-tag"
+              style="background:rgba(255,255,255,.06);border-color:rgba(150,200,255,.2);color:rgba(150,200,255,.7);">PDF
+              Reports</span>
+            <span class="al-tag"
+              style="background:rgba(255,255,255,.06);border-color:rgba(150,200,255,.2);color:rgba(150,200,255,.7);">Audit
+              Hash Display</span>
+          </div>
+        </div>
+        <div class="al" style="background:rgba(255,255,255,.05);border-color:rgba(255,200,150,.2);">
+          <div class="al-num" style="color:rgba(255,200,150,.1);">04</div>
+          <div class="al-title" style="color:#fff;">Data &amp; Persistence</div>
+          <div class="al-sub">SQLite · Evidently AI · joblib · JSON</div>
+          <div class="al-desc" style="color:rgba(255,230,200,.65);">SQLite database for persistent inference telemetry
+            enabling longitudinal drift analysis. model_metadata.json embeds calibration metrics, fairness audit
+            results, and feature importance rankings. Evidently AI monitors K-S statistical distributions across all 25
+            features.</div>
+          <div class="al-tags">
+            <span class="al-tag"
+              style="background:rgba(255,255,255,.06);border-color:rgba(255,200,150,.2);color:rgba(255,200,150,.7);">SQLite
+              · history.db</span>
+            <span class="al-tag"
+              style="background:rgba(255,255,255,.06);border-color:rgba(255,200,150,.2);color:rgba(255,200,150,.7);">model_metadata.json</span>
+            <span class="al-tag"
+              style="background:rgba(255,255,255,.06);border-color:rgba(255,200,150,.2);color:rgba(255,200,150,.7);">reports/monitoring/</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- CI/CD jobs -->
+      <h3 class="rv" style="font-family:var(--font-disp);font-size:1.2rem;font-weight:700;color:#fff;margin-bottom:1rem;">
+        Automated Clinical Pipeline — GitHub Actions (5 Jobs)</h3>
+      <div class="rv"
+        style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:1rem;margin-bottom:2rem;">
+        <div
+          style="border-radius:8px;padding:1rem;background:rgba(255,255,255,.06);border:1px solid rgba(255,150,150,.2);text-align:center;">
+          <div style="font-size:1.5rem;margin-bottom:.4rem;">🔍</div>
+          <div style="font-family:var(--font-mono);font-size:.72rem;color:#ffa5b0;margin-bottom:.25rem;">JOB 1</div>
+          <div style="font-weight:600;font-size:.85rem;color:#fff;">Linting</div>
+          <div style="font-size:.75rem;color:rgba(255,180,180,.6);">flake8 — code quality</div>
+        </div>
+        <div
+          style="border-radius:8px;padding:1rem;background:rgba(255,255,255,.06);border:1px solid rgba(150,255,200,.2);text-align:center;">
+          <div style="font-size:1.5rem;margin-bottom:.4rem;">🧪</div>
+          <div style="font-family:var(--font-mono);font-size:.72rem;color:#86efac;margin-bottom:.25rem;">JOB 2</div>
+          <div style="font-weight:600;font-size:.85rem;color:#fff;">Clinical Testing</div>
+          <div style="font-size:.75rem;color:rgba(180,255,200,.6);">pytest · 40 scenarios</div>
+        </div>
+        <div
+          style="border-radius:8px;padding:1rem;background:rgba(255,255,255,.06);border:1px solid rgba(150,200,255,.2);text-align:center;">
+          <div style="font-size:1.5rem;margin-bottom:.4rem;">📦</div>
+          <div style="font-family:var(--font-mono);font-size:.72rem;color:#93c5fd;margin-bottom:.25rem;">JOB 3</div>
+          <div style="font-weight:600;font-size:.85rem;color:#fff;">Model Ingest Audit</div>
+          <div style="font-size:.75rem;color:rgba(180,200,255,.6);">ColumnTransformer verify</div>
+        </div>
+        <div
+          style="border-radius:8px;padding:1rem;background:rgba(255,255,255,.06);border:1px solid rgba(255,200,150,.2);text-align:center;">
+          <div style="font-size:1.5rem;margin-bottom:.4rem;">🔒</div>
+          <div style="font-family:var(--font-mono);font-size:.72rem;color:#fcd34d;margin-bottom:.25rem;">JOB 4</div>
+          <div style="font-weight:600;font-size:.85rem;color:#fff;">Security Audit</div>
+          <div style="font-size:.75rem;color:rgba(255,220,150,.6);">Bandit + Safety scan</div>
+        </div>
+        <div
+          style="border-radius:8px;padding:1rem;background:rgba(255,255,255,.06);border:1px solid rgba(200,150,255,.2);text-align:center;">
+          <div style="font-size:1.5rem;margin-bottom:.4rem;">🐳</div>
+          <div style="font-family:var(--font-mono);font-size:.72rem;color:#c4b5fd;margin-bottom:.25rem;">JOB 5</div>
+          <div style="font-weight:600;font-size:.85rem;color:#fff;">Docker Build</div>
+          <div style="font-size:.75rem;color:rgba(200,180,255,.6);">FastAPI container</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ API GUIDE ═══ -->
+  <section id="api" class="sec-ivory">
+    <div class="si">
+      <div class="sec-label">§9 — Production API</div>
+      <h2 class="sec-title">FastAPI <em>Inference Gateway</em></h2>
+      <p class="sec-lead">CardioSense AI exposes a production-grade FastAPI REST interface for seamless integration with
+        Electronic Health Record (EHR) systems. Every request receives a unique X-Request-ID for full clinical audit
+        traceability.</p>
+
+      <div class="rv" style="overflow-x:auto;border-radius:12px;box-shadow:var(--sh-sm);margin-bottom:2.5rem;">
+        <table class="api-table">
+          <thead>
+            <tr>
+              <th>Method</th>
+              <th>Endpoint</th>
+              <th>Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="api-method api-post">POST</span></td>
+              <td class="api-ep">/predict</td>
+              <td style="font-size:.85rem;color:var(--text-muted);">Primary inference endpoint — submits patient vitals,
+                returns risk probability with X-Request-ID audit trace</td>
+            </tr>
+            <tr>
+              <td><span class="api-method api-get">GET</span></td>
+              <td class="api-ep">/monitoring/status</td>
+              <td style="font-size:.85rem;color:var(--text-muted);">Returns data drift (Evidently K-S) and concept drift
+                (Recall Stability) summary with timestamps</td>
+            </tr>
+            <tr>
+              <td><span class="api-method api-post">POST</span></td>
+              <td class="api-ep">/feedback/{id}</td>
+              <td style="font-size:.85rem;color:var(--text-muted);">Clinician endpoint for ground-truth outcome labeling
+                — feeds the Concept Drift monitoring loop</td>
+            </tr>
+            <tr>
+              <td><span class="api-method api-get">GET</span></td>
+              <td class="api-ep">/health</td>
+              <td style="font-size:.85rem;color:var(--text-muted);">System health check — returns model version, uptime
+                heartbeat, and artifact load status</td>
+            </tr>
+            <tr>
+              <td><span class="api-method api-get">GET</span></td>
+              <td class="api-ep">/docs</td>
+              <td style="font-size:.85rem;color:var(--text-muted);">Interactive Swagger UI for live endpoint testing and
+                documentation</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="rv" style="display:grid;grid-template-columns:repeat(auto-fit, minmax(280px, 1fr));gap:1.5rem;">
+        <div>
+          <div
+            style="font-family:var(--font-mono);font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:var(--text-muted);margin-bottom:.5rem;">
+            REQUEST — POST /predict</div>
+          <div class="code-block">
+            <span class="cm">// Patient vitals payload</span><br>
+            {<br>
+            &nbsp;&nbsp;<span class="ck">"age"</span>: <span class="cv">55</span>,<br>
+            &nbsp;&nbsp;<span class="ck">"sex"</span>: <span class="cv">1</span>,<br>
+            &nbsp;&nbsp;<span class="ck">"cp"</span>: <span class="cv">4</span>,<br>
+            &nbsp;&nbsp;<span class="ck">"trestbps"</span>: <span class="cv">140</span>,<br>
+            &nbsp;&nbsp;<span class="ck">"chol"</span>: <span class="cv">250</span>,<br>
+            &nbsp;&nbsp;<span class="ck">"fbs"</span>: <span class="cv">0</span>,<br>
+            &nbsp;&nbsp;<span class="ck">"restecg"</span>: <span class="cv">1</span>,<br>
+            &nbsp;&nbsp;<span class="ck">"thalach"</span>: <span class="cv">130</span>,<br>
+            &nbsp;&nbsp;<span class="ck">"exang"</span>: <span class="cv">1</span>,<br>
+            &nbsp;&nbsp;<span class="ck">"oldpeak"</span>: <span class="cv">2.5</span>,<br>
+            &nbsp;&nbsp;<span class="ck">"slope"</span>: <span class="cv">2</span>,<br>
+            &nbsp;&nbsp;<span class="ck">"ca"</span>: <span class="cv">1</span>,<br>
+            &nbsp;&nbsp;<span class="ck">"thal"</span>: <span class="cv">7</span><br>
+            }
+          </div>
+        </div>
+        <div>
+          <div
+            style="font-family:var(--font-mono);font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:var(--text-muted);margin-bottom:.5rem;">
+            RESPONSE — 200 OK</div>
+          <div class="code-block">
+            {<br>
+            &nbsp;&nbsp;<span class="ck">"prediction"</span>: <span class="cv">1</span>,<br>
+            &nbsp;&nbsp;<span class="ck">"risk_probability"</span>: <span class="cv">0.9234</span>,<br>
+            &nbsp;&nbsp;<span class="ck">"status"</span>: <span class="cs">"Positive (High Risk)"</span>,<br>
+            &nbsp;&nbsp;<span class="ck">"model_version"</span>: <span class="cs">"2.4.0"</span>,<br>
+            &nbsp;&nbsp;<span class="ck">"request_id"</span>: <span class="cs">"550e8400-e2..."</span><br>
+            }<br>
+            <br>
+            <span class="cm">// /monitoring/status excerpt</span><br>
+            {<br>
+            &nbsp;&nbsp;<span class="ck">"drift_share"</span>: <span class="cv">0.0</span>,<br>
+            &nbsp;&nbsp;<span class="ck">"dataset_drift"</span>: <span class="cn">false</span>,<br>
+            &nbsp;&nbsp;<span class="ck">"current_recall"</span>: <span class="cv">0.881</span>,<br>
+            &nbsp;&nbsp;<span class="ck">"recall_drop"</span>: <span class="cv">0.0119</span>,<br>
+            &nbsp;&nbsp;<span class="ck">"concept_drift"</span>: <span class="cn">false</span><br>
+            }
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ═══ MONITORING ═══ -->
+  <section>
+    <div class="si">
+      <div class="sec-label">§10 — Monitoring &amp; Sustainability</div>
+      <h2 class="sec-title">Adaptive <em>Monitoring Gateway</em></h2>
+      <p class="sec-lead">A medical CDSS must remain accurate as the underlying patient population evolves. CardioSense
+        AI integrates adaptive monitoring that detects both distributional drift and predictive performance decay in
+        real time.</p>
+
+      <div class="mon-cards">
+        <div class="mc rv">
+          <div class="mc-icon">📊</div>
+          <div class="mc-title">Data Drift (Evidently AI)</div>
+          <div class="mc-desc">Kolmogorov-Smirnov tests on all 25 monitored clinical feature distributions. Drift Share
+            reports the percentage of features showing statistically significant deviation from the validated training
+            baseline.</div>
+        </div>
+        <div class="mc rv d1">
+          <div class="mc-icon">🎯</div>
+          <div class="mc-title">Concept Drift (Recall Stability)</div>
+          <div class="mc-desc">Tracks real-world Recall via clinician ground-truth feedback loops (/feedback/{id}).
+            Baseline Recall = 92.86%. Alert triggered when decay exceeds acceptable clinical safety thresholds.</div>
+        </div>
+        <div class="mc rv d2">
+          <div class="mc-icon">🗄️</div>
+          <div class="mc-title">Persistent Telemetry (SQLite)</div>
+          <div class="mc-desc">All inference events — probability, vitals, audit hash, timestamp — logged to local
+            SQLite database. Powers longitudinal drift analysis and performance audit dashboards.</div>
+        </div>
+        <div class="mc rv d3">
+          <div class="mc-icon">📝</div>
+          <div class="mc-title">Structured JSON Logging</div>
+          <div class="mc-desc">Rotating file-based JSON logger (5MB per file, max 3 backups) at logs/cardiosense.log.
+            Contains API access logs, inference probability distributions, and internal trace IDs.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ═══ CONCLUSIONS / FUTURE ═══ -->
+  <section class="sec-ivory">
+    <div class="si">
+      <div class="sec-label">§11–12 — Discussion &amp; Future</div>
+      <h2 class="sec-title">Conclusions &amp; <em>Future Roadmap</em></h2>
+      <p class="sec-lead">CardioSense AI demonstrates that the perceived tradeoff between accuracy and interpretability
+        is a false dichotomy. Post-hoc attribution (SHAP) alongside a high-capacity model (XGBoost) achieves
+        state-of-the-art accuracy with full clinical transparency.</p>
+
+      <div class="callout rv">
+        <p><strong>§11.1 Interpretability-Accuracy Tradeoff:</strong> By using SHAP as a post-hoc attribution layer over
+          XGBoost, we achieve clinical transparency without sacrificing predictive capacity. The LIME sensitivity
+          analysis further ensures that boundary-case patients are flagged — not silently misclassified.</p>
+      </div>
+
+      <div class="future-grid rv">
+        <div class="fg">
+          <div class="fg-icon">🌐</div>
+          <div class="fg-title">Federated Learning</div>
+          <div class="fg-desc">Training across multiple institutions without compromising PHI (Protected Health
+            Information) — enabling larger, more representative cohorts without centralising sensitive patient data.
+          </div>
+        </div>
+        <div class="fg">
+          <div class="fg-icon">🏥</div>
+          <div class="fg-title">FHIR-Compliant API</div>
+          <div class="fg-desc">Seamless integration into Electronic Health Record systems (Epic, Cerner) via HL7
+            FHIR-compliant API endpoints — eliminating manual data entry from clinical workflows.</div>
+        </div>
+        <div class="fg">
+          <div class="fg-icon">⌚</div>
+          <div class="fg-title">Real-Time ECG Analysis</div>
+          <div class="fg-desc">Incorporating deep temporal features from wearable sensors — moving from a static
+            snapshot of 13 vitals to a continuous, longitudinal risk assessment framework.</div>
+        </div>
+      </div>
+
+      <!-- Summary stat row -->
+      <div class="stat-row rv">
+        <div class="sc">
+          <div class="sc-val" style="color:var(--crimson);" data-count="88.52" data-suf="%">0%</div>
+          <div class="sc-lbl">Accuracy</div>
+        </div>
+        <div class="sc">
+          <div class="sc-val" style="color:var(--green);" data-count="92.86" data-suf="%">0%</div>
+          <div class="sc-lbl">Recall</div>
+        </div>
+        <div class="sc">
+          <div class="sc-val" style="color:var(--green);">0.9621</div>
+          <div class="sc-lbl">ROC-AUC</div>
+        </div>
+        <div class="sc">
+          <div class="sc-val" style="color:var(--blue);">13</div>
+          <div class="sc-lbl">Clinical Features</div>
+        </div>
+        <div class="sc">
+          <div class="sc-val" style="color:var(--amber);">6</div>
+          <div class="sc-lbl">Safety Layers</div>
+        </div>
+        <div class="sc">
+          <div class="sc-val" style="color:var(--crimson);">40</div>
+          <div class="sc-lbl">Clinical Tests</div>
+        </div>
+      </div>
+
+      <!-- References -->
+      <h3 class="rv"
+        style="font-family:var(--font-disp);font-size:1.3rem;font-weight:700;color:var(--text-ink);margin-bottom:1.25rem;">
+        References &amp; Technical Bibliography</h3>
+      <div class="refs-list rv">
+        <div class="ref-item">
+          <div class="ref-num">[1]</div>
+          <div class="ref-cite"><strong>Chen, T., &amp; Guestrin, C.</strong> (2016). <em>XGBoost: A Scalable Tree
+              Boosting System.</em> Proceedings of the 22nd ACM SIGKDD International Conference on Knowledge Discovery
+            and Data Mining.</div>
+        </div>
+        <div class="ref-item">
+          <div class="ref-num">[2]</div>
+          <div class="ref-cite"><strong>Lundberg, S. M., &amp; Lee, S. I.</strong> (2017). <em>A Unified Approach to
+              Interpreting Model Predictions.</em> Advances in Neural Information Processing Systems (NeurIPS).</div>
+        </div>
+        <div class="ref-item">
+          <div class="ref-num">[3]</div>
+          <div class="ref-cite"><strong>Ribeiro, M. T., Singh, S., &amp; Guestrin, C.</strong> (2016). <em>"Why Should I
+              Trust You?": Explaining the Predictions of Any Classifier.</em> Proceedings of the 22nd ACM SIGKDD (KDD
+            '16).</div>
+        </div>
+        <div class="ref-item">
+          <div class="ref-num">[4]</div>
+          <div class="ref-cite"><strong>ACC/AHA Task Force.</strong> (2017). <em>Guidelines for the Prevention,
+              Detection, Evaluation, and Management of High Blood Pressure in Adults.</em> Journal of the American
+            College of Cardiology.</div>
+        </div>
+        <div class="ref-item">
+          <div class="ref-num">[5]</div>
+          <div class="ref-cite"><strong>Dua, D. and Graff, C.</strong> (2019). <em>UCI Machine Learning Repository.</em>
+            Irvine, CA: University of California, School of Information and Computer Science. [Cleveland Heart Disease
+            Dataset, N=303].</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ FOOTER ═══ -->
+  <footer class="site-footer">
+    <div class="footer-content">
+      <div class="footer-main">
+        <div class="footer-left">
+          <p class="copyright">&copy; 2025 Shahid Ul Islam</p>
+          <p class="footer-meta">Data Scientist & AI Developer</p>
+        </div>
+        <div class="footer-right">
+          <div class="footer-links">
+            <a href="#" class="back-to-top">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="12" y1="19" x2="12" y2="5"></line>
+                <polyline points="5 12 12 5 19 12"></polyline>
+              </svg>
+              <span>Back to Top</span>
+            </a>
+            <div class="social-links11">
+              <a href="https://github.com/Khanz9664" target="_blank" class="social-link11">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path
+                    d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22" />
+                </svg>
+              </a>
+              <a href="https://linkedin.com/in/shahid-ul-islam-13650998" target="_blank" class="social-link11">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" />
+                  <rect x="2" y="9" width="4" height="12" />
+                  <circle cx="4" cy="4" r="2" />
+                </svg>
+              </a>
+              <a href="mailto:shahid9664@gmail.com" class="social-link11">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
+                  <polyline points="22,6 12,13 2,6" />
+                </svg>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="made-with">
+      <p>Crafted with <span class="heart-icon">❤️</span> By Shahid</p>
+    </div>
+  </footer>
+
+  <script>
+    // Progress
+    window.addEventListener('scroll', () => {
+      const d = document.documentElement;
+      document.getElementById('prog').style.width = (d.scrollTop / (d.scrollHeight - d.clientHeight) * 100) + '%';
+    });
+
+    // Reveal
+    const obs = new IntersectionObserver(e => {
+      e.forEach(x => { if (x.isIntersecting) { x.target.classList.add('vis'); obs.unobserve(x.target); } });
+    }, { threshold: .08 });
+    document.querySelectorAll('.rv').forEach(el => obs.observe(el));
+
+    // Counters
+    function animVal(el) {
+      const t = parseFloat(el.dataset.count), s = el.dataset.suf || '';
+      const isF = String(t).includes('.');
+      const dur = 1300, st = performance.now();
+      function step(now) {
+        const p = Math.min((now - st) / dur, 1), ease = 1 - Math.pow(1 - p, 3);
+        el.textContent = (isF ? (t * ease).toFixed(2) : Math.round(t * ease)) + s;
+        if (p < 1) requestAnimationFrame(step);
+      }
+      requestAnimationFrame(step);
+    }
+    const cobs = new IntersectionObserver(e => {
+      e.forEach(x => { if (x.isIntersecting && x.target.dataset.count) { animVal(x.target); cobs.unobserve(x.target); } });
+    }, { threshold: .5 });
+    document.querySelectorAll('[data-count]').forEach(el => cobs.observe(el));
+
+    // Performance bars
+    const barObs = new IntersectionObserver(e => {
+      e.forEach(x => {
+        if (x.isIntersecting) {
+          x.target.querySelectorAll('.pb-fill').forEach(b => b.style.width = b.dataset.w + '%');
+          barObs.unobserve(x.target);
+        }
+      });
+    }, { threshold: .3 });
+    document.querySelectorAll('.perf-bars').forEach(el => barObs.observe(el));
+
+    // ECG line animation
+    const ecgLine = document.getElementById('ecgLine');
+    if (ecgLine) {
+      const len = ecgLine.getTotalLength ? ecgLine.getTotalLength() : 1200;
+      ecgLine.style.strokeDasharray = len;
+      ecgLine.style.strokeDashoffset = len;
+      ecgLine.style.animation = 'ecgDraw 3s linear 0.5s forwards';
+      const style = document.createElement('style');
+      style.textContent = `@keyframes ecgDraw{to{stroke-dashoffset:0;}}`;
+      document.head.appendChild(style);
+    }
+  </script>
+</body>
+
+</html>

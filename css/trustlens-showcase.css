@@ -1,0 +1,547 @@
+/* TrustLens Showcase Section - Premium Engineering Aesthetic */
+
+.trustlens-section {
+    padding: 100px 0;
+    padding-bottom: 20px;
+    position: relative;
+    overflow: hidden;
+}
+
+.trustlens-container {
+    max-width: var(--container-width);
+    margin: 0 auto;
+    padding: 0 24px;
+    position: relative;
+    z-index: 2;
+}
+
+/* 1. Section Header */
+.trustlens-header {
+    margin-bottom: 80px;
+    text-align: center;
+}
+
+.trustlens-title {
+    font-family: Outfit, sans-serif;
+    font-size: clamp(2.5rem, 8vw, 5rem);
+    font-weight: 900;
+    margin-bottom: 1rem;
+    letter-spacing: -0.04em;
+    background: linear-gradient(180deg, #fff 0%, rgb(255 255 255 / 0.7) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.trustlens-subtitle {
+    font-size: clamp(1.1rem, 3vw, 1.75rem);
+    color: var(--accent-cyan);
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.trustlens-tagline {
+    font-size: 1.125rem;
+    color: var(--text-muted);
+    max-width: 650px;
+    margin: 0 auto 2rem;
+    line-height: 1.6;
+}
+
+/* 2. Featured Product Card (Hero Card) */
+.trustlens-hero-card {
+    background: var(--bg-card);
+    border-radius: 24px;
+    border: 1px solid rgb(255 255 255 / 0.05);
+    padding: 48px;
+    backdrop-filter: var(--glass-blur);
+    display: grid;
+    grid-template-columns: 1.2fr 0.8fr;
+    gap: 48px;
+    margin-bottom: 80px;
+    position: relative;
+    box-shadow: 0 20px 50px rgb(0 0 0 / 0.5);
+    transition:
+        transform 0.4s cubic-bezier(0.23, 1, 0.32, 1),
+        box-shadow 0.4s ease;
+}
+
+.trustlens-hero-card::before {
+    content: "";
+    position: absolute;
+    inset: -1px;
+    border-radius: 25px;
+    padding: 1px;
+    background: linear-gradient(135deg, rgb(0 242 255 / 0.2), transparent, rgb(189 0 255 / 0.2));
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+}
+
+.trustlens-hero-card:hover {
+    transform: translateY(-5px);
+    box-shadow:
+        0 30px 60px rgb(0 0 0 / 0.6),
+        0 0 20px rgb(0 242 255 / 0.05);
+}
+
+/* Left Side: Visuals */
+.trustlens-visuals {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+}
+
+.trust-score-visual {
+    background: rgb(255 255 255 / 0.03);
+    border-radius: 16px;
+    padding: 24px;
+    border: 1px solid rgb(255 255 255 / 0.05);
+}
+
+.score-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.score-label {
+    font-size: 0.875rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--text-muted);
+}
+
+.score-value {
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: var(--accent-cyan);
+    font-family: "Space Grotesk", sans-serif;
+}
+
+.score-bar-container {
+    height: 8px;
+    background: rgb(255 255 255 / 0.1);
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.score-bar-fill {
+    height: 100%;
+    background: var(--accent-gradient);
+    width: 0; /* Animated via JS */
+    transition: width 1.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.mini-stats-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+}
+
+.mini-stat-item {
+    background: rgb(255 255 255 / 0.02);
+    padding: 16px;
+    border-radius: 12px;
+    text-align: center;
+    border: 1px solid rgb(255 255 255 / 0.03);
+}
+
+.mini-stat-value {
+    display: block;
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 4px;
+}
+
+.mini-stat-label {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+}
+
+/* Right Side: Content */
+.trustlens-card-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.trustlens-card-desc {
+    font-size: 1.125rem;
+    color: var(--text-main);
+    margin-bottom: 24px;
+    line-height: 1.7;
+}
+
+.trustlens-badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 32px;
+}
+
+.badge {
+    padding: 6px 12px;
+    background: rgb(255 255 255 / 0.05);
+    border: 1px solid rgb(255 255 255 / 0.1);
+    border-radius: 100px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    transition: all 0.3s ease;
+}
+
+.badge:hover {
+    background: rgb(0 242 255 / 0.1);
+    border-color: var(--accent-cyan);
+    color: var(--accent-cyan);
+}
+
+.trustlens-stats-list {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+}
+
+.trustlens-stat {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: var(--text-muted);
+    font-size: 0.9rem;
+}
+
+.trustlens-stat i {
+    color: var(--accent-cyan);
+}
+
+/* 4. Architecture Visualization */
+.architecture-section {
+    margin-bottom: 120px;
+    text-align: center;
+}
+
+.architecture-viz-container {
+    background: rgb(0 0 0 / 0.3);
+    border: 1px solid rgb(255 255 255 / 0.05);
+    border-radius: 24px;
+    padding: 60px 20px;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 400px;
+    overflow: hidden;
+}
+
+.architecture-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 40px;
+    width: 100%;
+    max-width: 1000px;
+    position: relative;
+    z-index: 2;
+}
+
+.arch-node {
+    background: var(--bg-card);
+    border: 1px solid rgb(255 255 255 / 0.1);
+    border-radius: 12px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+.arch-node i {
+    font-size: 1.5rem;
+    color: var(--accent-cyan);
+}
+
+.arch-node span {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: #fff;
+}
+
+.arch-node.core {
+    background: rgb(0 242 255 / 0.05);
+    border-color: var(--accent-cyan);
+    box-shadow: 0 0 20px rgb(0 242 255 / 0.1);
+}
+
+/* Animated Connectors - Simple CSS implementation */
+.arch-connector {
+    position: absolute;
+    height: 2px;
+    background: linear-gradient(90deg, var(--accent-cyan), transparent);
+    z-index: 1;
+    opacity: 0.3;
+}
+
+/* 5. Code Showcase */
+.code-showcase-container {
+    margin-bottom: 100px;
+}
+
+.terminal-window {
+    background: #0d0d0d;
+    border-radius: 12px;
+    border: 1px solid rgb(255 255 255 / 0.1);
+    overflow: hidden;
+    box-shadow: 0 30px 60px rgb(0 0 0 / 0.5);
+}
+
+.terminal-header {
+    background: #1a1a1a;
+    padding: 12px 20px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+}
+
+.dot.red {
+    background: #ff5f56;
+}
+
+.dot.yellow {
+    background: #ffbd2e;
+}
+
+.dot.green {
+    background: #27c93f;
+}
+
+.terminal-title {
+    margin-left: 12px;
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    font-family: monospace;
+}
+
+.terminal-body {
+    padding: 24px;
+    font-family: "Space Mono", "Fira Code", monospace;
+    font-size: 0.95rem;
+    line-height: 1.5;
+    color: #e0e0e0;
+}
+
+.code-line {
+    margin-bottom: 4px;
+    opacity: 0; /* Animated */
+}
+
+.code-keyword {
+    color: #c678dd;
+}
+
+.code-func {
+    color: #61afef;
+}
+
+.code-param {
+    color: #d19a66;
+}
+
+.code-string {
+    color: #98c379;
+}
+
+.code-comment {
+    color: #5c6370;
+    font-style: italic;
+}
+
+.terminal-output {
+    margin-top: 24px;
+    padding-top: 16px;
+    border-top: 1px solid rgb(255 255 255 / 0.05);
+    color: var(--accent-cyan);
+    font-weight: 700;
+}
+
+/* 6. OSS Strip */
+.oss-strip {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgb(255 255 255 / 0.02);
+    border: 1px solid rgb(255 255 255 / 0.05);
+    border-radius: 16px;
+    padding: 24px 40px;
+    margin-bottom: 60px;
+}
+
+.oss-info {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.oss-info i {
+    font-size: 2rem;
+    color: #fff;
+}
+
+.oss-text h4 {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #fff;
+}
+
+.oss-text p {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+}
+
+.oss-badges {
+    display: flex;
+    gap: 12px;
+}
+
+/* 7. CTA Buttons */
+.trustlens-actions {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-bottom: 100px;
+}
+
+.btn-premium {
+    padding: 16px 32px;
+    border-radius: 12px;
+    font-weight: 700;
+    font-size: 1rem;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.btn-premium.primary {
+    background: #fff;
+    color: #000;
+}
+
+.btn-premium.primary:hover {
+    background: var(--accent-cyan);
+    box-shadow: 0 0 30px rgb(0 242 255 / 0.3);
+    transform: translateY(-3px);
+}
+
+.btn-premium.secondary {
+    background: rgb(255 255 255 / 0.05);
+    color: #fff;
+    border: 1px solid rgb(255 255 255 / 0.1);
+}
+
+.btn-premium.secondary:hover {
+    background: rgb(255 255 255 / 0.1);
+    border-color: rgb(255 255 255 / 0.2);
+    transform: translateY(-3px);
+}
+
+/* Mobile Responsive */
+@media (width <= 1024px) {
+    .trustlens-hero-card {
+        grid-template-columns: 1fr;
+        padding: 32px;
+    }
+
+    .architecture-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 24px;
+    }
+}
+
+@media (width <= 768px) {
+    .trustlens-section {
+        padding: 60px 0;
+    }
+
+    .trustlens-header {
+        margin-bottom: 40px;
+    }
+
+    .trustlens-hero-card {
+        padding: 24px;
+        gap: 32px;
+    }
+
+    .score-value {
+        font-size: 2rem;
+    }
+
+    .mini-stats-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .trustlens-stats-list {
+        grid-template-columns: 1fr;
+    }
+
+    .architecture-viz-container {
+        padding: 40px 16px;
+        min-height: auto;
+    }
+
+    .architecture-grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+
+    .trustlens-actions {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .btn-premium {
+        justify-content: center;
+    }
+
+    .oss-strip {
+        flex-direction: column;
+        gap: 20px;
+        text-align: center;
+        padding: 24px;
+    }
+
+    .oss-info {
+        flex-direction: column;
+    }
+
+    .oss-badges {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+}
+
+@media (width <= 480px) {
+    .trustlens-title {
+        font-size: 2.25rem;
+    }
+
+    .terminal-body {
+        padding: 16px;
+        font-size: 0.85rem;
+    }
+}

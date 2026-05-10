@@ -19,9 +19,17 @@
     href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400;1,600;1,700&family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=IBM+Plex+Mono:wght@400;500;600&display=swap"
     rel="stylesheet" />
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
   <script src="../js/common.js" defer></script>
 </head>
 <body>
+
+  <div class="tl-energy-orbs">
+    <div class="tl-orb tl-orb-1"></div>
+    <div class="tl-orb tl-orb-2"></div>
+    <div class="tl-orb tl-orb-3"></div>
+  </div>
 
   <div class="top-bar">
     <div class="logo">
@@ -103,6 +111,129 @@
         <span class="tl-meta-val g">MIT</span>
         <span class="tl-meta-lbl">License</span>
       </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════
+         FAILURE DEEP DIVE
+    ═══════════════════════════════════════ -->
+    <div class="tl-failure-dive rv" style="margin-top:4rem;">
+      <div class="tl-label" style="margin-bottom:1.5rem;">Failure Deep Dive: show_failures()</div>
+      <h3 style="font-size:1.5rem;font-weight:700;color:var(--white);margin-bottom:1rem;">Confidently Wrong: The dangerous mistakes.</h3>
+      
+      <div class="tl-two-col">
+        <div>
+          <p style="font-size:1rem;color:var(--subtle);line-height:1.8;margin-bottom:1.5rem;">Accuracy hides the <em>danger</em> of failures. TrustLens isolates "Confidently Wrong" samples where the model is 95%+ certain but incorrect. These are the samples most likely to bypass human review and cause production disasters.</p>
+          
+          <div class="tl-fail-stats">
+            <div class="tl-fs-item">
+              <span class="tl-fs-val r">96.4%</span>
+              <span class="tl-fs-lbl">Mean confidence on top failures</span>
+            </div>
+            <div class="tl-fs-item">
+              <span class="tl-fs-val">20.1%</span>
+              <span class="tl-fs-lbl">Total error rate</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="tl-terminal">
+          <div class="tl-term-bar">
+            <div class="tl-dot r"></div><div class="tl-dot y"></div><div class="tl-dot g"></div>
+            <span class="tl-term-title">Model A | Worst Offenders</span>
+          </div>
+          <div class="tl-term-body" style="font-size:.72rem;">
+<code>#    Sample     True   Pred   Confidence   Danger 
+1    234           1      0       96.7%    CRITICAL 
+2    659           1      0       96.7%    CRITICAL 
+3    740           1      0       95.7%    CRITICAL 
+
+[Insight]: High-confidence mistakes detected. 
+The model is certain it is right, but it is wrong. 
+Overconfidence detected — consider calibration.</code>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════
+     BENCHMARKING
+═══════════════════════════════════════ -->
+<section class="tl-section tl-section-dark" id="benchmarking">
+  <div class="tl-section-inner">
+    <div class="tl-label">Multi-Model Benchmarking</div>
+    <h2 class="tl-title rv">Compare candidates.<br/><span class="tl-g">Pick the safest.</span></h2>
+    <p class="tl-lead rv">Accuracy is a shallow metric. TrustLens allows you to benchmark multiple models across calibration, failure risk, and bias — ensuring you ship the most reliable candidate, not just the one with the highest accuracy.</p>
+
+    <div class="tl-comparison-grid rv">
+      <!-- Model A -->
+      <div class="tl-comp-card">
+        <div class="tl-comp-header">
+          <span class="tl-comp-name">Model A</span>
+          <span class="tl-comp-status blocked">BLOCKED</span>
+        </div>
+        <div class="tl-comp-metrics">
+          <div class="tl-cm-row"><span>Accuracy</span><span class="tl-cm-val">79.88%</span></div>
+          <div class="tl-cm-row"><span>Trust Score</span><span class="tl-cm-val r">28/100</span></div>
+          <div class="tl-cm-row"><span>Grade</span><span class="tl-cm-val r">[D]</span></div>
+        </div>
+        <div class="tl-comp-causes">
+          <div class="tl-label-mini">Primary Risks</div>
+          <div class="tl-risk-tags">
+            <span class="tl-risk-tag r">Fairness violation</span>
+            <span class="tl-risk-tag r">High failure risk</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Model B -->
+      <div class="tl-comp-card">
+        <div class="tl-comp-header">
+          <span class="tl-comp-name">Model B</span>
+          <span class="tl-comp-status blocked">BLOCKED</span>
+        </div>
+        <div class="tl-comp-metrics">
+          <div class="tl-cm-row"><span>Accuracy</span><span class="tl-cm-val">73.38%</span></div>
+          <div class="tl-cm-row"><span>Trust Score</span><span class="tl-cm-val r">27/100</span></div>
+          <div class="tl-cm-row"><span>Grade</span><span class="tl-cm-val r">[D]</span></div>
+        </div>
+        <div class="tl-comp-causes">
+          <div class="tl-label-mini">Primary Risks</div>
+          <div class="tl-risk-tags">
+            <span class="tl-risk-tag r">Failure risk</span>
+            <span class="tl-risk-tag a">Calibration error</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Model C -->
+      <div class="tl-comp-card">
+        <div class="tl-comp-header">
+          <span class="tl-comp-name">Model C</span>
+          <span class="tl-comp-status blocked">BLOCKED</span>
+        </div>
+        <div class="tl-comp-metrics">
+          <div class="tl-cm-row"><span>Accuracy</span><span class="tl-cm-val">78.62%</span></div>
+          <div class="tl-cm-row"><span>Trust Score</span><span class="tl-cm-val a">42/100</span></div>
+          <div class="tl-cm-row"><span>Grade</span><span class="tl-cm-val r">[D]</span></div>
+        </div>
+        <div class="tl-comp-causes">
+          <div class="tl-label-mini">Primary Risks</div>
+          <div class="tl-risk-tags">
+            <span class="tl-risk-tag r">Failure risk</span>
+            <span class="tl-risk-tag r">Fairness violation</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tl-verdict-box rv">
+      <div class="tl-verdict-header">
+        <span class="tl-v-icon">⚠</span>
+        <span>BENCHMARK VERDICT: <span class="tl-red">DO NOT DEPLOY</span></span>
+      </div>
+      <p class="tl-v-desc">All candidates triggered critical diagnostic blocks. While Model C has the highest trust score, its fairness violations exceed safety thresholds. Recommendation: Retrain with class-weighted loss and bias mitigation.</p>
     </div>
   </div>
 </section>
@@ -490,7 +621,7 @@ report.<span class="tf">save</span>(<span class="ts">"report.txt"</span>)   <spa
     </div>
 
     <!-- Visualization note -->
-    <div style="padding:1.75rem 2rem;background:var(--surface);border:1px solid var(--border);border-radius:8px;" class="rv">
+    <div style="padding:1.75rem 2rem;background:var(--surface);border:1px solid var(--border);border-radius:8px;margin-bottom:3rem;" class="rv">
       <div class="tl-label" style="margin-bottom:.75rem;">Fairness Visualization — Multi-Feature</div>
       <div class="tl-two-col">
         <div>
@@ -508,6 +639,66 @@ report.<span class="tf">save</span>(<span class="ts">"report.txt"</span>)   <spa
 
 <span class="tc"># Or via report object</span>
 report.<span class="tf">plot_bias</span>(mode=<span class="ts">"all"</span>)</code>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Summary Plot Showcase -->
+    <div class="tl-summary-showcase rv">
+      <div class="tl-label" style="margin-bottom:1.5rem;">Visual Intelligence: Summary Plot</div>
+      <div class="tl-summary-card">
+        <div class="tl-sc-header">
+          <div class="tl-sc-title">TrustLens Report - Model A</div>
+          <div class="tl-sc-subtitle r">Trust Score 28/100 | Grade D | Low Trust - Blocked by diagnostic risk</div>
+        </div>
+        <div class="tl-sc-grid">
+          <div class="tl-sc-plot">
+            <div class="tl-sc-p-label">Trust Score</div>
+            <div class="tl-sc-p-gauge"><div class="tl-gauge-fill" style="--p:28"></div><div class="tl-gauge-val">28</div></div>
+          </div>
+          <div class="tl-sc-plot">
+            <div class="tl-sc-p-label">Calibration</div>
+            <div class="tl-sc-p-viz cal">
+              <div class="tl-viz-line"></div>
+              <div class="tl-viz-dots">
+                <span style="left:10%;bottom:20%;"></span>
+                <span style="left:30%;bottom:40%;"></span>
+                <span style="left:50%;bottom:60%;"></span>
+                <span style="left:70%;bottom:50%;"></span>
+                <span style="left:90%;bottom:90%;"></span>
+              </div>
+            </div>
+          </div>
+          <div class="tl-sc-plot">
+            <div class="tl-sc-p-label">Confidence Gap</div>
+            <div class="tl-sc-p-viz gap">
+              <div class="tl-gap-bar red" style="height:80%;left:20%;"></div>
+              <div class="tl-gap-bar green" style="height:60%;left:40%;"></div>
+              <div class="tl-gap-bar red" style="height:90%;left:60%;"></div>
+              <div class="tl-gap-bar green" style="height:40%;left:80%;"></div>
+            </div>
+          </div>
+          <div class="tl-sc-plot">
+            <div class="tl-sc-p-label">Error Rate by Class</div>
+            <div class="tl-sc-p-viz err">
+              <div class="tl-err-bar" style="width:40%;background:var(--green);"></div>
+              <div class="tl-err-bar" style="width:85%;background:var(--red);"></div>
+            </div>
+          </div>
+          <div class="tl-sc-plot">
+            <div class="tl-sc-p-label">Class Distribution</div>
+            <div class="tl-sc-p-viz dist">
+              <div class="tl-dist-pie"></div>
+            </div>
+          </div>
+          <div class="tl-sc-plot">
+            <div class="tl-sc-p-label">Sub-score Breakdown</div>
+            <div class="tl-sc-p-viz sub">
+              <div class="tl-sub-row" style="width:90%;background:var(--blue);"></div>
+              <div class="tl-sub-row" style="width:40%;background:var(--red);"></div>
+              <div class="tl-sub-row" style="width:70%;background:var(--amber);"></div>
+            </div>
           </div>
         </div>
       </div>

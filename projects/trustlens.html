@@ -1,0 +1,972 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>TrustLens — Debug your ML models beyond accuracy | Shahid Ul Islam</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet"/>
+  <meta name="author" content="Shahid Ul Islam" />
+  <link rel="icon" type="image/png" href="../img/plogo.png" />
+  <link rel="stylesheet" href="css/trustlens.css" />
+  <link rel="stylesheet" href="../css/variables.css">
+  <link rel="stylesheet" href="../css/animations.css">
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/navigation.css">
+  <link rel="stylesheet" href="../css/footer.css">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400;1,600;1,700&family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=IBM+Plex+Mono:wght@400;500;600&display=swap"
+    rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="../js/common.js" defer></script>
+</head>
+<body>
+
+  <div class="top-bar">
+    <div class="logo">
+      <img src="../img/plogo.png" alt="Personal Logo" class="logo-icon">
+      <span class="logo-text">SHAHID<span class="logo-accent">||</span>Portfolio</span>
+    </div>
+    <nav class="nav-container">
+      <ul class="nav-links">
+        <li><a href="../index.html" class="nav-link">.Home</a></li>
+        <li><a href="../about.html" class="nav-link">.About</a></li>
+        <li><a href="../skills.html" class="nav-link">.Skills</a></li>
+        <li><a href="../projects.html" class="nav-link">.Projects</a></li>
+        <li><a href="../contact.html" class="nav-link">.Contact</a></li>
+        <li><a href="../articles.html" class="nav-link">.Articles</a></li>
+      </ul>
+      <div class="menu-toggle">
+        <div class="hamburger"></div>
+      </div>
+    </nav>
+  </div>
+
+<div id="tl-progress"></div>
+
+<!-- ═══════════════════════════════════════
+     HERO
+═══════════════════════════════════════ -->
+<section class="tl-hero">
+  <div class="tl-hero-bg-num" aria-hidden="true">92</div>
+  <div class="tl-hero-inner">
+
+    <div class="tl-eyebrow">
+      <span class="tl-eyebrow-pip"></span>
+      Open-source Python library · v0.3.0 · pip install trustlens
+    </div>
+
+    <h1>
+      Your model has <span class="tl-accent">92%</span> accuracy.<br/>
+      <span class="tl-dim">That may still be unsafe.</span>
+    </h1>
+
+    <p class="tl-hero-deck">
+      TrustLens evaluates model reliability beyond accuracy — and produces a deployment decision backed by evidence, not instinct.
+    </p>
+
+    <div class="tl-hero-cta">
+      <a href="https://pypi.org/project/trustlens/" target="_blank" class="tl-btn-primary">
+        ↓ Install on PyPI
+      </a>
+      <a href="https://github.com/Khanz9664/TrustLens" target="_blank" class="tl-btn-ghost">
+        ★ GitHub
+      </a>
+      <a href="https://youtu.be/lZo7aWg6efI" target="_blank" class="tl-btn-ghost">
+        ▶ Watch Demo
+      </a>
+    </div>
+
+    <div class="tl-hero-meta">
+      <div class="tl-meta-item">
+        <span class="tl-meta-val g" data-count="10130" data-suf="">~10K</span>
+        <span class="tl-meta-lbl">Lines of Code</span>
+      </div>
+      <div class="tl-meta-item">
+        <span class="tl-meta-val">25</span>
+        <span class="tl-meta-lbl">Source Files</span>
+      </div>
+      <div class="tl-meta-item">
+        <span class="tl-meta-val">16</span>
+        <span class="tl-meta-lbl">Test Files</span>
+      </div>
+      <div class="tl-meta-item">
+        <span class="tl-meta-val g">7</span>
+        <span class="tl-meta-lbl">Contributors</span>
+      </div>
+      <div class="tl-meta-item">
+        <span class="tl-meta-val">4</span>
+        <span class="tl-meta-lbl">Diagnostic Modules</span>
+      </div>
+      <div class="tl-meta-item">
+        <span class="tl-meta-val g">MIT</span>
+        <span class="tl-meta-lbl">License</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Install strip -->
+<div class="tl-install-strip">
+  <div class="tl-install-inner">
+    <div class="tl-install-cmd">
+      <span class="prompt">$</span>
+      <span>pip install trustlens</span>
+    </div>
+    <div class="tl-badges">
+      <span class="tl-badge tl-badge-green">v0.3.0 Latest</span>
+      <span class="tl-badge tl-badge-green">Python ≥ 3.9</span>
+      <span class="tl-badge tl-badge-gray">MIT License</span>
+      <span class="tl-badge tl-badge-gray">CI Passing</span>
+      <span class="tl-badge tl-badge-gray">4 - Beta</span>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════
+     THE PROBLEM
+═══════════════════════════════════════ -->
+<section class="tl-section tl-section-dark" id="problem">
+  <div class="tl-section-inner">
+    <div class="tl-label">The Problem</div>
+    <h2 class="tl-title rv">Three ways your<br/><span class="tl-g">metrics lie to you.</span></h2>
+    <p class="tl-lead rv">You trained a model. It hits 92% accuracy. You ship it. Three months later — a minority-class user gets consistently wrong predictions, the model is 90% confident on its worst mistakes, and a regulator asks "why did it make that decision?" and you have no answer.</p>
+
+    <div class="tl-crimes rv">
+      <div class="tl-crime c1">
+        <div class="tl-crime-n">01</div>
+        <div class="tl-crime-tag">⚠ Miscalibration</div>
+        <div class="tl-crime-title">Confident on the Wrong Answers</div>
+        <div class="tl-crime-desc">A model saying "I'm 99% sure" when it's right only 60% of the time. ECE &gt; 0.05 is a deployment red flag. You cannot set thresholds if the probabilities are wrong.</div>
+      </div>
+      <div class="tl-crime c2">
+        <div class="tl-crime-n">02</div>
+        <div class="tl-crime-tag">⚠ Silent Bias</div>
+        <div class="tl-crime-title">High Overall, Broken for Some</div>
+        <div class="tl-crime-desc">High overall accuracy that masks significant performance drops for minority classes. The aggregate hides systematic subgroup failure — until it's too late and someone notices in production.</div>
+      </div>
+      <div class="tl-crime c3">
+        <div class="tl-crime-n">03</div>
+        <div class="tl-crime-tag">⚠ Fragile Representations</div>
+        <div class="tl-crime-title">Classes Too Close to Each Other</div>
+        <div class="tl-crime-desc">Latent spaces where classes are so closely packed that slight input noise causes classification flips. Silhouette score reveals this. Accuracy never will.</div>
+      </div>
+    </div>
+
+    <div class="tl-manifesto rv">
+      <p><strong>Accuracy tells you how often your model is right.</strong><br/>
+      It tells you nothing about <em>when</em> it fails, <em>why</em> it fails, or <em>who</em> it fails. TrustLens makes those failures visible before they reach production — and turns raw diagnostics into a deployment decision.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════
+     QUICKSTART CODE
+═══════════════════════════════════════ -->
+<section class="tl-section tl-section-surface" id="quickstart">
+  <div class="tl-section-inner">
+    <div class="tl-label">Quickstart</div>
+    <h2 class="tl-title rv">From pip install to<br/><span class="tl-g">verdict in 30 seconds.</span></h2>
+    <p class="tl-lead rv">TrustLens is zero-friction. If your model has <span class="tl-inline-code">.predict()</span> and <span class="tl-inline-code">.predict_proba()</span>, you're ready to go. One function call. One report.</p>
+
+    <div class="tl-two-col">
+      <div class="rv">
+        <div class="tl-terminal">
+          <div class="tl-term-bar">
+            <div class="tl-dot r"></div>
+            <div class="tl-dot y"></div>
+            <div class="tl-dot g"></div>
+            <span class="tl-term-title">trustlens_demo.py</span>
+          </div>
+          <div class="tl-term-body">
+<code><span class="tc"># Install once, run anywhere</span>
+<span class="tp">$</span> pip install trustlens
+
+<span class="tk">from</span> trustlens <span class="tk">import</span> analyze
+
+<span class="tc"># 1. Run the audit — that's it.</span>
+report = <span class="tf">analyze</span>(
+    model,
+    X_test,
+    y_test,
+    y_prob = model.<span class="tf">predict_proba</span>(X_test),
+    sensitive_features = {
+        <span class="ts">"gender"</span>: gender_test,
+        <span class="ts">"age_group"</span>: age_test,
+    }
+)
+
+<span class="tc"># 2. Inspect the verdict.</span>
+report.<span class="tf">show</span>()
+
+<span class="tc"># 3. Compare candidates.</span>
+<span class="tk">from</span> trustlens <span class="tk">import</span> compare
+<span class="tf">compare</span>([report_a, report_b, report_c])
+
+<span class="tc"># 4. Export artifacts.</span>
+report.<span class="tf">save</span>(<span class="ts">"trust_report"</span>)  <span class="tc"># JSON+plots</span>
+report.<span class="tf">save</span>(<span class="ts">"report.txt"</span>)   <span class="tc"># human-readable</span></code>
+          </div>
+          <div class="tl-term-output">
+            <div class="tl-out-line"><span class="tl-out-key">TRUST SCORE:</span><span class="tl-out-val g">88 / 100</span></div>
+            <div class="tl-out-line"><span class="tl-out-key">Grade:</span><span class="tl-out-val g">[B]</span></div>
+            <div class="tl-out-line"><span class="tl-out-key">Assessment:</span><span class="tl-out-val">Good Trust — minor issues to address</span></div>
+            <div class="tl-out-sep"></div>
+            <div class="tl-out-line"><span class="tl-out-key">Base Score:</span><span class="tl-out-val">92</span></div>
+            <div class="tl-out-line"><span class="tl-out-key">Penalties:</span><span class="tl-out-val r">−4.0 [Calibration]</span></div>
+            <div class="tl-out-line"><span class="tl-out-key">Final Score:</span><span class="tl-out-val g">88</span></div>
+            <div class="tl-out-sep"></div>
+            <div class="tl-out-verdict">APPROVED FOR DEPLOYMENT — review calibration before release</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="rv d1">
+        <div class="tl-label" style="margin-bottom:1.25rem;">What this one call does</div>
+
+        <div class="tl-pipeline-v">
+          <div class="tl-pipe-step">
+            <div class="tl-pipe-num">1</div>
+            <div><div class="tl-ps-name">Resolves probabilities</div><div class="tl-ps-desc">Calls predict_proba if not supplied. Falls back gracefully.</div></div>
+          </div>
+          <div class="tl-pipe-step">
+            <div class="tl-pipe-num">2</div>
+            <div><div class="tl-ps-name">Dispatches modules</div><div class="tl-ps-desc">Calibration, Failure, Bias, Representation — in parallel.</div></div>
+          </div>
+          <div class="tl-pipe-step">
+            <div class="tl-pipe-num">3</div>
+            <div><div class="tl-ps-name">Scores & penalizes</div><div class="tl-ps-desc">Weighted composite score with penalties and blockers applied.</div></div>
+          </div>
+          <div class="tl-pipe-step">
+            <div class="tl-pipe-num">4</div>
+            <div><div class="tl-ps-name">Returns TrustReport</div><div class="tl-ps-desc">Score, grade, verdict, insights, plots, exportable artifacts.</div></div>
+          </div>
+        </div>
+
+        <div class="tl-demo-card">
+          <div style="font-family:var(--font-mono);font-size:.68rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:.75rem;">One-line demo</div>
+          <div class="tl-terminal" style="box-shadow:none;">
+            <div class="tl-term-body" style="padding:1rem 1.25rem;">
+<code><span class="tk">from</span> trustlens <span class="tk">import</span> quick_analyze
+<span class="tf">quick_analyze</span>(dataset=<span class="ts">"breast_cancer"</span>)</code>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════
+     TRUST SCORE ENGINE
+═══════════════════════════════════════ -->
+<section class="tl-section" id="trust-score">
+  <div class="tl-section-inner">
+    <div class="tl-label">Trust Score Engine</div>
+    <h2 class="tl-title rv">One score. <span class="tl-g">Traceable rules.</span><br/><span class="tl-d">No black boxes.</span></h2>
+    <p class="tl-lead rv">The Trust Score combines diagnostic modules with explicit, auditable logic. Weights, penalties, and blockers are all visible — you can trace every deduction back to a specific metric failure.</p>
+
+    <div class="tl-score-showcase">
+
+      <!-- Left: Score meter -->
+      <div class="tl-score-meter rv">
+        <div class="tl-meter-label">// Trust Score Output</div>
+        <div class="tl-score-display">
+          <div class="tl-score-num" id="scoreNum">0</div>
+          <div class="tl-score-denom">/100</div>
+        </div>
+        <div class="tl-score-grade">[B] · Good Trust</div>
+
+        <!-- Grade bar -->
+        <div class="tl-grade-bar" style="width:100%;margin-bottom:1.5rem;">
+          <div class="tl-gb-seg tl-gb-a"></div>
+          <div class="tl-gb-seg tl-gb-b active"></div>
+          <div class="tl-gb-seg tl-gb-c"></div>
+          <div class="tl-gb-seg tl-gb-d"></div>
+        </div>
+
+        <div class="tl-score-breakdown" style="width:100%;">
+          <div class="tl-sb-row">
+            <span class="tl-sb-key">Calibration Sub-score</span>
+            <span class="tl-sb-val">84</span>
+          </div>
+          <div class="tl-sb-row">
+            <span class="tl-sb-key">Failure Sub-score</span>
+            <span class="tl-sb-val">91</span>
+          </div>
+          <div class="tl-sb-row">
+            <span class="tl-sb-key">Bias Sub-score</span>
+            <span class="tl-sb-val">95</span>
+          </div>
+          <div class="tl-sb-row">
+            <span class="tl-sb-key">Weighted Base Score</span>
+            <span class="tl-sb-val">92</span>
+          </div>
+          <div class="tl-sb-row">
+            <span class="tl-sb-key">Penalties Applied</span>
+            <span class="tl-sb-val pen">−4.0</span>
+          </div>
+          <div class="tl-sb-row" style="border-bottom:none;">
+            <span class="tl-sb-key" style="color:var(--white);font-weight:600;">Final Trust Score</span>
+            <span class="tl-sb-val final">88</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right: Weights -->
+      <div class="rv d1">
+        <div class="tl-weights-panel">
+          <div class="tl-weights-title">// Dimension Weights</div>
+          <div class="tl-weight-rows">
+            <div class="tl-wrow">
+              <div class="tl-wrow-name">Calibration</div>
+              <div class="tl-wrow-track"><div class="tl-wrow-fill wf-cal" data-w="35"><span class="tl-wrow-fill-lbl">35%</span></div></div>
+              <div class="tl-wrow-pct">0.35</div>
+            </div>
+            <div class="tl-wrow">
+              <div class="tl-wrow-name">Failure</div>
+              <div class="tl-wrow-track"><div class="tl-wrow-fill wf-fail" data-w="30"><span class="tl-wrow-fill-lbl">30%</span></div></div>
+              <div class="tl-wrow-pct">0.30</div>
+            </div>
+            <div class="tl-wrow">
+              <div class="tl-wrow-name">Bias</div>
+              <div class="tl-wrow-track"><div class="tl-wrow-fill wf-bias" data-w="25"><span class="tl-wrow-fill-lbl">25%</span></div></div>
+              <div class="tl-wrow-pct">0.25</div>
+            </div>
+            <div class="tl-wrow">
+              <div class="tl-wrow-name">Representation</div>
+              <div class="tl-wrow-track"><div class="tl-wrow-fill wf-rep" data-w="10"><span class="tl-wrow-fill-lbl">10%</span></div></div>
+              <div class="tl-wrow-pct">0.10</div>
+            </div>
+          </div>
+          <p style="font-size:.78rem;color:var(--muted);margin-top:.75rem;font-style:italic;">When Representation is unavailable, remaining weights are renormalized to sum to 1.0.</p>
+        </div>
+
+        <div class="tl-penalties" style="margin-top:2rem;">
+          <div class="tl-pen-title">// Penalty Triggers</div>
+          <div class="tl-pen-items">
+            <div class="tl-pen-item">
+              <span class="tl-pen-name">Failure sub-score &lt; safety threshold</span>
+              <span class="tl-pen-val">up to −20</span>
+              <span class="tl-pen-trig">trigger: failure_score &lt; 60</span>
+            </div>
+            <div class="tl-pen-item">
+              <span class="tl-pen-name">ECE exceeds calibration tolerance</span>
+              <span class="tl-pen-val">up to −15</span>
+              <span class="tl-pen-trig">trigger: ECE &gt; 0.05</span>
+            </div>
+            <div class="tl-pen-item">
+              <span class="tl-pen-name">Severe fairness violations</span>
+              <span class="tl-pen-val">up to −15</span>
+              <span class="tl-pen-trig">trigger: subgroup disparity &gt; limit</span>
+            </div>
+            <div class="tl-pen-item" style="padding-top:.5rem;border-top:1px solid var(--border);">
+              <span class="tl-pen-name" style="color:var(--white);font-weight:600;">Total penalty cap</span>
+              <span class="tl-pen-val" style="font-size:.88rem;">−35 max</span>
+              <span class="tl-pen-trig">preserves score interpretability</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Grade bands -->
+        <div style="margin-top:2rem;">
+          <div class="tl-weights-title" style="margin-bottom:1rem;">// Grade Bands</div>
+          <div class="tl-grades">
+            <div class="tl-grade ga">
+              <div class="tl-grade-letter">A</div>
+              <div class="tl-grade-range">90–100</div>
+              <div class="tl-grade-verdict">Production ready</div>
+            </div>
+            <div class="tl-grade gb">
+              <div class="tl-grade-letter">B</div>
+              <div class="tl-grade-range">75–89</div>
+              <div class="tl-grade-verdict">Good, address issues</div>
+            </div>
+            <div class="tl-grade gc">
+              <div class="tl-grade-letter">C</div>
+              <div class="tl-grade-range">55–74</div>
+              <div class="tl-grade-verdict">Investigate first</div>
+            </div>
+            <div class="tl-grade gd">
+              <div class="tl-grade-letter">D</div>
+              <div class="tl-grade-range">0–54</div>
+              <div class="tl-grade-verdict">Block deployment</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Blockers -->
+    <h3 class="rv" style="font-size:1.1rem;font-weight:700;color:var(--white);margin:3rem 0 1.25rem;">Deployment Blockers — Override the Score</h3>
+    <div class="tl-blocker-grid rv">
+      <div class="tl-blocker">
+        <div class="tl-blocker-icon">🚫</div>
+        <div><div class="tl-blocker-title">Confidently Wrong</div><div class="tl-blocker-desc">Strong confidently-wrong behavior detected. Model is systematically overconfident on misclassified samples. Forces Grade D regardless of overall score.</div></div>
+      </div>
+      <div class="tl-blocker">
+        <div class="tl-blocker-icon">🚫</div>
+        <div><div class="tl-blocker-title">Failure Below Critical</div><div class="tl-blocker-desc">Failure sub-score &lt; 40. Error concentration in high-confidence regions is too severe to ship. Verdict forced to do-not-deploy.</div></div>
+      </div>
+      <div class="tl-blocker">
+        <div class="tl-blocker-icon">🚫</div>
+        <div><div class="tl-blocker-title">Severe Fairness Violation</div><div class="tl-blocker-desc">A protected subgroup sees catastrophic performance gaps that exceed safety thresholds. Deployment would cause discriminatory outcomes.</div></div>
+      </div>
+      <div class="tl-blocker">
+        <div class="tl-blocker-icon">🚫</div>
+        <div><div class="tl-blocker-title">Very Poor Calibration</div><div class="tl-blocker-desc">ECE &gt; 0.10. Predicted probabilities are so miscalibrated that downstream threshold-based decisions are unreliable. Blocks deployment.</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════
+     MODULES
+═══════════════════════════════════════ -->
+<section class="tl-section tl-section-alt" id="modules">
+  <div class="tl-section-inner">
+    <div class="tl-label">Diagnostic Modules</div>
+    <h2 class="tl-title rv">Four lenses on<br/><span class="tl-g">model reliability.</span></h2>
+    <p class="tl-lead rv">Each module diagnoses a different failure mode. Together they produce one deployment-oriented verdict while preserving full diagnostic detail for root-cause analysis.</p>
+
+    <div class="tl-modules">
+      <div class="tl-mod m-cal rv">
+        <div class="tl-mod-header">
+          <span class="tl-mod-tag">Calibration</span>
+          <span class="tl-mod-weight">w = 0.35</span>
+        </div>
+        <div class="tl-mod-title">Are probabilities trustworthy?</div>
+        <div class="tl-mod-desc">Checks whether predicted probabilities match real-world frequencies. A model saying "95% confident" should be right 95% of the time. ECE &gt; 0.05 triggers a penalty. Essential for any downstream decision that depends on threshold quality.</div>
+        <div class="tl-mod-metrics">
+          <span class="tl-mod-metric">Brier Score</span>
+          <span class="tl-mod-metric">ECE</span>
+          <span class="tl-mod-metric">Reliability Curve</span>
+        </div>
+      </div>
+
+      <div class="tl-mod m-fail rv d1">
+        <div class="tl-mod-header">
+          <span class="tl-mod-tag">Failure Analysis</span>
+          <span class="tl-mod-weight">w = 0.30</span>
+        </div>
+        <div class="tl-mod-title">Where are mistakes concentrated?</div>
+        <div class="tl-mod-desc">Focuses on risk concentration, not total error rate. Identifies "Confidently Wrong" behavior — where misclassifications occur in high-confidence regions. This is the most dangerous failure mode for production models and the second-highest weighted dimension.</div>
+        <div class="tl-mod-metrics">
+          <span class="tl-mod-metric">Confidence Gap</span>
+          <span class="tl-mod-metric">Misclassification Summary</span>
+          <span class="tl-mod-metric">High-Conf Error Rate</span>
+        </div>
+      </div>
+
+      <div class="tl-mod m-bias rv d2">
+        <div class="tl-mod-header">
+          <span class="tl-mod-tag">Bias & Fairness</span>
+          <span class="tl-mod-weight">w = 0.25</span>
+        </div>
+        <div class="tl-mod-title">Does it fail some groups more?</div>
+        <div class="tl-mod-desc">Detects performance disparity across subgroups. Pass multiple sensitive features — gender, age, income — and TrustLens generates per-feature plots automatically. Equalized-odds checks expose group-wise TPR/FPR disparity. Supports EU AI Act transparency requirements.</div>
+        <div class="tl-mod-metrics">
+          <span class="tl-mod-metric">Class Imbalance</span>
+          <span class="tl-mod-metric">Subgroup Performance</span>
+          <span class="tl-mod-metric">Equalized Odds</span>
+          <span class="tl-mod-metric">Multi-Feature Plots</span>
+        </div>
+      </div>
+
+      <div class="tl-mod m-rep rv d3">
+        <div class="tl-mod-header">
+          <span class="tl-mod-tag">Representation</span>
+          <span class="tl-mod-weight">w = 0.10</span>
+        </div>
+        <div class="tl-mod-title">Are embeddings geometrically sound?</div>
+        <div class="tl-mod-desc">Evaluates the geometry of latent spaces when embeddings are provided. Silhouette-based separability estimates how well-separated classes are. CKA utility enables representation similarity studies across architectures. Optional — only runs when embeddings are supplied.</div>
+        <div class="tl-mod-metrics">
+          <span class="tl-mod-metric">Silhouette Score</span>
+          <span class="tl-mod-metric">Within/Between Distance</span>
+          <span class="tl-mod-metric">CKA Utility</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Visualization note -->
+    <div style="padding:1.75rem 2rem;background:var(--surface);border:1px solid var(--border);border-radius:8px;" class="rv">
+      <div class="tl-label" style="margin-bottom:.75rem;">Fairness Visualization — Multi-Feature</div>
+      <div class="tl-two-col">
+        <div>
+          <p style="font-size:.9rem;color:var(--subtle);line-height:1.8;margin-bottom:1rem;">Pass multiple sensitive features and TrustLens generates per-feature plots for every visualization type — no feature is silently dropped. Filenames are automatically sanitized. Features processed in sorted order for deterministic output.</p>
+        </div>
+        <div class="tl-terminal" style="box-shadow:none;">
+          <div class="tl-term-body">
+<code><span class="tc"># Batch save — one call, all per-feature files</span>
+<span class="tk">from</span> trustlens.visualization <span class="tk">import</span> plot_module
+<span class="tf">plot_module</span>(
+    <span class="ts">"bias"</span>,
+    report.results[<span class="ts">"bias"</span>],
+    save_dir=<span class="ts">"plots/"</span>
+)
+
+<span class="tc"># Or via report object</span>
+report.<span class="tf">plot_bias</span>(mode=<span class="ts">"all"</span>)</code>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════
+     FOR WHO
+═══════════════════════════════════════ -->
+<section class="tl-section" id="audience">
+  <div class="tl-section-inner">
+    <div class="tl-label">Who It's For</div>
+    <h2 class="tl-title rv">Built for practitioners<br/><span class="tl-g">who ship.</span></h2>
+    <p class="tl-lead rv">Zero-friction by design. If your model has <span class="tl-inline-code">.predict()</span>, you're already ready. No TrustLens-specific concepts to learn before getting results.</p>
+
+    <div class="tl-audience rv">
+      <div class="tl-aud-card">
+        <div class="tl-aud-icon"></div>
+        <div class="tl-aud-role">ML Engineers</div>
+        <div class="tl-aud-title">CI/CD Release Gating</div>
+        <div class="tl-aud-desc">Building mission-critical production systems where a high-confidence mistake has real consequences. Use TrustLens as a CI gate — block deploys when calibration regresses or bias spikes between model versions.</div>
+      </div>
+      <div class="tl-aud-card">
+        <div class="tl-aud-icon"></div>
+        <div class="tl-aud-role">Data Scientists</div>
+        <div class="tl-aud-title">Stakeholder Evidence</div>
+        <div class="tl-aud-desc">When you need to justify model decisions to stakeholders or regulators. TrustLens provides the visual and quantitative evidence needed — reliability diagrams, subgroup tables, confidence gap plots — not just a number.</div>
+      </div>
+      <div class="tl-aud-card">
+        <div class="tl-aud-icon"></div>
+        <div class="tl-aud-role">Researchers</div>
+        <div class="tl-aud-title">Beyond-Leaderboard Benchmarking</div>
+        <div class="tl-aud-desc">Benchmarking reliability of new architectures. Go beyond accuracy leaderboards — compare how different models represent classes geometrically or handle difficult edge cases in high-confidence regions.</div>
+      </div>
+      <div class="tl-aud-card">
+        <div class="tl-aud-icon"></div>
+        <div class="tl-aud-role">AI Governance</div>
+        <div class="tl-aud-title">Regulatory Transparency</div>
+        <div class="tl-aud-desc">Focused on safety, fairness, and regulatory compliance (EU AI Act, NIST AI RMF). Subgroup performance and bias reports provide the demographic transparency required for auditing and accountability documentation.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════
+     ARCHITECTURE
+═══════════════════════════════════════ -->
+<section class="tl-section tl-section-surface" id="architecture">
+  <div class="tl-section-inner">
+    <div class="tl-label">Architecture</div>
+    <h2 class="tl-title rv">Layered. Decoupled.<br/><span class="tl-g">Extensible.</span></h2>
+    <p class="tl-lead rv">Each layer has a single responsibility. Metric computation, scoring logic, and report interpretation are decoupled — independently testable and swappable. The plugin system means new capabilities never touch core files.</p>
+
+    <div class="tl-arch-layers rv">
+      <div class="tl-arch-layer">
+        <div>
+          <div class="tl-arch-lname">Orchestration Layer</div>
+          <div class="tl-arch-lfile">api.py · 307 lines</div>
+        </div>
+        <div>
+          <div class="tl-arch-desc">Validates inputs, resolves probabilities, dispatches enabled modules, assembles the final results payload. Single entry point: <span class="tl-inline-code">analyze()</span>. No configuration classes or builder patterns required.</div>
+          <div class="tl-arch-tags">
+            <span class="tl-at">analyze()</span>
+            <span class="tl-at">compare()</span>
+            <span class="tl-at">quick_analyze()</span>
+            <span class="tl-at">Plugin dispatch</span>
+          </div>
+        </div>
+      </div>
+      <div class="tl-arch-layer">
+        <div>
+          <div class="tl-arch-lname">Metrics Layer</div>
+          <div class="tl-arch-lfile">metrics/ · 4 modules</div>
+        </div>
+        <div>
+          <div class="tl-arch-desc">Independent, testable compute nodes. Calibration, Failure, Bias, Representation — each a self-contained module with no cross-module imports. Returns structured dicts for scoring and visualization.</div>
+          <div class="tl-arch-tags">
+            <span class="tl-at">calibration.py ~200</span>
+            <span class="tl-at">failure.py ~140</span>
+            <span class="tl-at">bias.py ~340</span>
+            <span class="tl-at">representation.py ~180</span>
+            <span class="tl-at">faithfulness.py</span>
+          </div>
+        </div>
+      </div>
+      <div class="tl-arch-layer">
+        <div>
+          <div class="tl-arch-lname">Scoring Layer</div>
+          <div class="tl-arch-lfile">trust_score.py · 485 lines</div>
+        </div>
+        <div>
+          <div class="tl-arch-desc">Computes sub-scores and weighted composite. Redistributes weights for missing dimensions. Applies risk penalties and deployment blockers. All rules are explicit, traceable, and documented.</div>
+          <div class="tl-arch-tags">
+            <span class="tl-at">TrustScoreResult</span>
+            <span class="tl-at">Penalty engine</span>
+            <span class="tl-at">Blocker hierarchy</span>
+            <span class="tl-at">Weight redistribution</span>
+          </div>
+        </div>
+      </div>
+      <div class="tl-arch-layer">
+        <div>
+          <div class="tl-arch-lname">Reporting Layer</div>
+          <div class="tl-arch-lfile">report.py · 1,263 lines</div>
+        </div>
+        <div>
+          <div class="tl-arch-desc">The central result container. Packages run metadata, module outputs, generates textual summaries, surfaces detected risk patterns, and renders visualizations. Also handles JSON/TXT serialization and artifact export.</div>
+          <div class="tl-arch-tags">
+            <span class="tl-at">show()</span>
+            <span class="tl-at">plot_bias()</span>
+            <span class="tl-at">summary_plot()</span>
+            <span class="tl-at">save()</span>
+            <span class="tl-at">to_dict()</span>
+          </div>
+        </div>
+      </div>
+      <div class="tl-arch-layer">
+        <div>
+          <div class="tl-arch-lname">Plugin Layer</div>
+          <div class="tl-arch-lfile">plugins/ · Extensible</div>
+        </div>
+        <div>
+          <div class="tl-arch-desc">Singleton registry pattern. New capabilities extend the core without modifying it. Implement <span class="tl-inline-code">BasePlugin</span> ABC, register with the registry — no changes to <span class="tl-inline-code">analyze()</span> signature required. Entry-point ready for third-party distribution.</div>
+          <div class="tl-arch-tags">
+            <span class="tl-at">BasePlugin ABC</span>
+            <span class="tl-at">PluginRegistry</span>
+            <span class="tl-at">register()</span>
+            <span class="tl-at">list_plugins()</span>
+          </div>
+        </div>
+      </div>
+      <div class="tl-arch-layer">
+        <div>
+          <div class="tl-arch-lname">Visualization Layer</div>
+          <div class="tl-arch-lfile">visualization/ · 7 modules</div>
+        </div>
+        <div>
+          <div class="tl-arch-desc">Accepts dicts — not TrustReport objects. Fully decoupled from the report class. Every metric has a corresponding visualization. Plots annotated with metric values. Matplotlib Agg backend for CI/server compatibility. 150 DPI minimum.</div>
+          <div class="tl-arch-tags">
+            <span class="tl-at">plot_module()</span>
+            <span class="tl-at">fairness.py ~400</span>
+            <span class="tl-at">summary_plot ~400</span>
+            <span class="tl-at">bias_plots</span>
+            <span class="tl-at">calibration_plots</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════
+     DESIGN PRINCIPLES
+═══════════════════════════════════════ -->
+<section class="tl-section" id="principles">
+  <div class="tl-section-inner">
+    <div class="tl-label">Design Principles</div>
+    <h2 class="tl-title rv">Every decision in this library<br/><span class="tl-g">was made on purpose.</span></h2>
+    <p class="tl-lead rv">New contributors read this before writing any code. These principles guide every API decision, every tradeoff, every line.</p>
+
+    <div class="tl-principles rv">
+      <div class="tl-principle">
+        <div class="tl-pr-num">1</div>
+        <div>
+          <div class="tl-pr-name">Simplicity &gt; Complexity</div>
+          <div class="tl-pr-desc">A correct library that is never used has zero impact. TrustLens competes with the user's time. The primary API is a single function — no configuration classes, no session objects, no builders. Default parameters produce a useful result for 80% of users. Errors must be actionable, not cryptic.</div>
+          <span class="tl-pr-note">// rules out: overengineered abstractions, TrustLens-specific concepts users must learn first</span>
+        </div>
+      </div>
+      <div class="tl-principle">
+        <div class="tl-pr-num">2</div>
+        <div>
+          <div class="tl-pr-name">Modular by Design</div>
+          <div class="tl-pr-desc">Users who only want Brier Score should not pay the import cost of Grad-CAM. Each analysis area lives in its own module. No circular imports. Deep learning dependencies are optional extras. The plugin system ensures new capabilities extend — not couple — the core.</div>
+          <span class="tl-pr-note">// rules out: monolithic files, mandatory heavy dependencies for lightweight features</span>
+        </div>
+      </div>
+      <div class="tl-principle">
+        <div class="tl-pr-num">3</div>
+        <div>
+          <div class="tl-pr-name">Visual-First Outputs</div>
+          <div class="tl-pr-desc">An ECE of 0.042 means nothing until you see the reliability diagram and notice overconfidence specifically at high confidence. Every metric has a corresponding visualization. Every plot answers a specific question, not just displays data. Plots are self-contained with annotated metric values.</div>
+          <span class="tl-pr-note">// rules out: raw number dumps, non-informative plots that don't annotate the metric they convey</span>
+        </div>
+      </div>
+      <div class="tl-principle">
+        <div class="tl-pr-num">4</div>
+        <div>
+          <div class="tl-pr-name">Research + Practical Balance</div>
+          <div class="tl-pr-desc">A library used only in papers or only in production is half a library. TrustLens sits at the intersection — rigorous enough for researchers (correct math, citations, edge-case handling), accessible enough for practitioners (sklearn API, sensible defaults, fast runtimes).</div>
+          <span class="tl-pr-note">// every metric links to its original paper in module docstring</span>
+        </div>
+      </div>
+      <div class="tl-principle">
+        <div class="tl-pr-num">5</div>
+        <div>
+          <div class="tl-pr-name">Extensibility Without Fragility</div>
+          <div class="tl-pr-desc">New capabilities should not break existing ones. The plugin system is the primary extension mechanism. <span class="tl-inline-code">analyze()</span> dispatches to modules by name string — adding a new module never changes the function signature. Backward compatibility is maintained within a major version.</div>
+          <span class="tl-pr-note">// rules out: tight coupling, hardcoded module lists that must be updated on every addition</span>
+        </div>
+      </div>
+      <div class="tl-principle">
+        <div class="tl-pr-num">6</div>
+        <div>
+          <div class="tl-pr-name">Test Everything</div>
+          <div class="tl-pr-desc">TrustLens is a trust tool — it must itself be trustworthy. Minimum 80% branch coverage. Every metric tested for perfect predictor and random predictor cases. Edge cases (empty input, single class, NaN, infinite values) are explicitly tested. 16 test files, end-to-end integration coverage.</div>
+          <span class="tl-pr-note">// rules out: merging untested code, skipping tests for "obviously correct" functions</span>
+        </div>
+      </div>
+      <div class="tl-principle">
+        <div class="tl-pr-num">7</div>
+        <div>
+          <div class="tl-pr-name">Performance is Not Optional</div>
+          <div class="tl-pr-desc">A tool that takes 10 minutes to run won't be run. Silhouette score uses subsampling for n &gt; 5000. Faithfulness tests support configurable n_steps. Expensive operations are lazy — only run when the module is requested. Matplotlib Agg backend for CI/server compatibility.</div>
+          <span class="tl-pr-note">// no unnecessary computation, no display requirement in CI environments</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════
+     VS. COMPARISON
+═══════════════════════════════════════ -->
+<section class="tl-section tl-section-dark">
+  <div class="tl-section-inner">
+    <div class="tl-label">Why TrustLens</div>
+    <h2 class="tl-title rv">What standard tools<br/><span class="tl-g">don't give you.</span></h2>
+    <p class="tl-lead rv">Most evaluation pipelines stop at one or two dimensions. TrustLens combines them all into a single deployment decision with traceable reasoning.</p>
+
+    <div class="rv" style="overflow-x:auto;border-radius:8px;border:1px solid var(--border);">
+      <table class="tl-compare-table">
+        <thead>
+          <tr>
+            <th>Capability</th>
+            <th>sklearn metrics</th>
+            <th>fairlearn</th>
+            <th style="color:var(--green);">TrustLens</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="tl-tc-feature">Calibration (ECE, Brier)</td>
+            <td class="tl-tc-yes">✓ partial</td>
+            <td class="tl-tc-no">✗</td>
+            <td class="tl-tc-hl">✓ Full + penalties</td>
+          </tr>
+          <tr>
+            <td class="tl-tc-feature">Failure / confidence gap analysis</td>
+            <td class="tl-tc-no">✗</td>
+            <td class="tl-tc-no">✗</td>
+            <td class="tl-tc-hl">✓ Core module</td>
+          </tr>
+          <tr>
+            <td class="tl-tc-feature">Subgroup fairness + equalized odds</td>
+            <td class="tl-tc-no">✗</td>
+            <td class="tl-tc-yes">✓</td>
+            <td class="tl-tc-hl">✓ + multi-feature</td>
+          </tr>
+          <tr>
+            <td class="tl-tc-feature">Embedding representation analysis</td>
+            <td class="tl-tc-no">✗</td>
+            <td class="tl-tc-no">✗</td>
+            <td class="tl-tc-hl">✓ Optional module</td>
+          </tr>
+          <tr>
+            <td class="tl-tc-feature">Composite Trust Score + verdict</td>
+            <td class="tl-tc-no">✗</td>
+            <td class="tl-tc-no">✗</td>
+            <td class="tl-tc-hl">✓ 0–100 with grade</td>
+          </tr>
+          <tr>
+            <td class="tl-tc-feature">Deployment blockers</td>
+            <td class="tl-tc-no">✗</td>
+            <td class="tl-tc-no">✗</td>
+            <td class="tl-tc-hl">✓ Hard-stop rules</td>
+          </tr>
+          <tr>
+            <td class="tl-tc-feature">Multi-candidate model comparison</td>
+            <td class="tl-tc-no">✗</td>
+            <td class="tl-tc-no">✗</td>
+            <td class="tl-tc-hl">✓ compare()</td>
+          </tr>
+          <tr>
+            <td class="tl-tc-feature">Plugin extensibility</td>
+            <td class="tl-tc-no">✗</td>
+            <td class="tl-tc-no">✗</td>
+            <td class="tl-tc-hl">✓ BasePlugin ABC</td>
+          </tr>
+          <tr>
+            <td class="tl-tc-feature">Exportable reports (JSON, TXT, plots)</td>
+            <td class="tl-tc-no">✗</td>
+            <td class="tl-tc-no">✗</td>
+            <td class="tl-tc-hl">✓ report.save()</td>
+          </tr>
+          <tr>
+            <td class="tl-tc-feature">CI/CD gate integration</td>
+            <td class="tl-tc-no">✗</td>
+            <td class="tl-tc-no">✗</td>
+            <td class="tl-tc-hl">✓ is_blocked flag</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════
+     STATS + CONTRIBUTORS
+═══════════════════════════════════════ -->
+<section class="tl-section tl-section-surface">
+  <div class="tl-section-inner">
+    <div class="tl-label">By the Numbers</div>
+    <h2 class="tl-title rv">Built seriously.<br/><span class="tl-g">Open source.</span></h2>
+
+    <div class="tl-stats rv tl-spacer">
+      <div class="tl-stat"><div class="tl-stat-val g" data-count="10130" data-suf="">~10K</div><div class="tl-stat-lbl">Lines of Code</div></div>
+      <div class="tl-stat"><div class="tl-stat-val" data-count="25" data-suf="">0</div><div class="tl-stat-lbl">Source Files</div></div>
+      <div class="tl-stat"><div class="tl-stat-val" data-count="16" data-suf="">0</div><div class="tl-stat-lbl">Test Files</div></div>
+      <div class="tl-stat"><div class="tl-stat-val g" data-count="7" data-suf="">0</div><div class="tl-stat-lbl">Contributors</div></div>
+      <div class="tl-stat"><div class="tl-stat-val" data-count="4" data-suf="">0</div><div class="tl-stat-lbl">Core Modules</div></div>
+      <div class="tl-stat"><div class="tl-stat-val g">0.3.0</div><div class="tl-stat-lbl">Current Version</div></div>
+    </div>
+
+    <div class="tl-label" style="margin-bottom:1.25rem;">Contributors</div>
+    <div class="tl-contributors rv">
+      <a href="https://github.com/Khanz9664" target="_blank" class="tl-contrib">
+        <img src="https://github.com/Khanz9664.png" alt="Khanz9664" loading="lazy" onerror="this.style.background='#1e1e1e';this.src=''"/>
+        <span class="tl-contrib-name">Khanz9664</span>
+      </a>
+      <a href="https://github.com/jayssSmm" target="_blank" class="tl-contrib">
+        <img src="https://github.com/jayssSmm.png" alt="jayssSmm" loading="lazy" onerror="this.style.background='#1e1e1e'"/>
+        <span class="tl-contrib-name">jayssSmm</span>
+      </a>
+      <a href="https://github.com/WeiGuang-2099" target="_blank" class="tl-contrib">
+        <img src="https://github.com/WeiGuang-2099.png" alt="WeiGuang-2099" loading="lazy" onerror="this.style.background='#1e1e1e'"/>
+        <span class="tl-contrib-name">WeiGuang-2099</span>
+      </a>
+      <a href="https://github.com/CrepuscularIRIS" target="_blank" class="tl-contrib">
+        <img src="https://github.com/CrepuscularIRIS.png" alt="CrepuscularIRIS" loading="lazy" onerror="this.style.background='#1e1e1e'"/>
+        <span class="tl-contrib-name">CrepuscularIRIS</span>
+      </a>
+      <a href="https://github.com/komoike-oss28-ui" target="_blank" class="tl-contrib">
+        <img src="https://github.com/komoike-oss28-ui.png" alt="komoike-oss28-ui" loading="lazy" onerror="this.style.background='#1e1e1e'"/>
+        <span class="tl-contrib-name">komoike-oss28-ui</span>
+      </a>
+      <a href="https://github.com/sidharth-vijayan" target="_blank" class="tl-contrib">
+        <img src="https://github.com/sidharth-vijayan.png" alt="sidharth-vijayan" loading="lazy" onerror="this.style.background='#1e1e1e'"/>
+        <span class="tl-contrib-name">sidharth-vijayan</span>
+      </a>
+      <a href="https://github.com/MustansirNisar" target="_blank" class="tl-contrib">
+        <img src="https://github.com/MustansirNisar.png" alt="MustansirNisar" loading="lazy" onerror="this.style.background='#1e1e1e'"/>
+        <span class="tl-contrib-name">MustansirNisar</span>
+      </a>
+      <a href="https://github.com/Khanz9664/TrustLens/issues?q=label%3A%22good+first+issue%22" target="_blank" class="tl-contrib">
+        <div style="width:56px;height:56px;border-radius:50%;border:2px dashed var(--border);display:flex;align-items:center;justify-content:center;font-size:1.2rem;background:var(--surface);">+</div>
+        <span class="tl-contrib-name">You?</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════
+     CITATION + FINAL CTA
+═══════════════════════════════════════ -->
+<section class="tl-section tl-section-alt">
+  <div class="tl-section-inner">
+    <div class="tl-two-col">
+      <div class="rv">
+        <div class="tl-label" style="margin-bottom:1rem;">Citation</div>
+        <h3 class="tl-section-h3">Using TrustLens in research?</h3>
+        <p class="tl-section-p">If TrustLens contributed to your work, cite it so others can find it. Even a GitHub star helps with discovery.</p>
+        <div class="tl-cite-box">
+@software{<span class="ck">trustlens2026</span>,
+  <span class="cv">author</span> = {<span class="cs">Shahid Ul Islam</span>},
+  <span class="cv">title</span>  = {<span class="cs">TrustLens: Debug your ML models beyond accuracy</span>},
+  <span class="cv">year</span>   = {<span class="cs">2026</span>},
+  <span class="cv">url</span>    = {<span class="cs">https://github.com/Khanz9664/TrustLens</span>},
+}
+        </div>
+      </div>
+
+      <div class="rv d1">
+        <div class="tl-label" style="margin-bottom:1rem;">Get Started</div>
+        <h3 class="tl-section-h3">Three ways to start</h3>
+        <div class="tl-terminal" style="margin-bottom:1.5rem;">
+          <div class="tl-term-bar">
+            <div class="tl-dot r"></div><div class="tl-dot y"></div><div class="tl-dot g"></div>
+            <span class="tl-term-title">shell</span>
+          </div>
+          <div class="tl-term-body">
+<code><span class="tc"># Option 1: Install and audit</span>
+<span class="tp">$</span> pip install trustlens
+
+<span class="tc"># Option 2: Full demo</span>
+<span class="tp">$</span> python demo.py
+
+<span class="tc"># Option 3: Comprehensive audit</span>
+<span class="tp">$</span> python examples/comprehensive_audit.py</code>
+          </div>
+        </div>
+        <div class="tl-btn-group">
+          <a href="https://pypi.org/project/trustlens/" target="_blank" class="tl-btn-primary">↓ Install on PyPI</a>
+          <a href="https://github.com/Khanz9664/TrustLens" target="_blank" class="tl-btn-ghost">★ Star on GitHub</a>
+          <a href="https://youtu.be/lZo7aWg6efI" target="_blank" class="tl-btn-ghost">▶ Watch Demo</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+  <!-- ═══ FOOTER ═══ -->
+  <footer class="site-footer">
+    <div class="footer-content">
+      <div class="footer-left">
+        <p class="copyright">&copy; 2025 Shahid Ul Islam</p>
+        <p class="footer-meta">Data Scientist & AI Developer</p>
+      </div>
+      <div class="footer-right">
+        <div class="footer-links">
+          <a href="#home" class="back-to-top">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="12" y1="19" x2="12" y2="5"></line>
+              <polyline points="5 12 12 5 19 12"></polyline>
+            </svg>
+            <span>Back to Top</span>
+          </a>
+          <div class="social-links11">
+            <a href="https://github.com/Khanz9664" target="_blank" class="social-link11">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path
+                  d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22" />
+              </svg>
+            </a>
+            <a href="https://linkedin.com/in/shahid-ul-islam-13650998" target="_blank" class="social-link11">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" />
+                <rect x="2" y="9" width="4" height="12" />
+                <circle cx="4" cy="4" r="2" />
+              </svg>
+            </a>
+            <a href="mailto:shahid9664@gmail.com" class="social-link11">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
+                <polyline points="22,6 12,13 2,6" />
+              </svg>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="made-with">
+      <p>Crafted with <span class="heart-icon">❤️</span> By Shahid</p>
+    </div>
+  </footer>
+<script src="js/trustlens.js"></script>
+</body>
+</html>

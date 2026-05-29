@@ -1,10 +1,10 @@
 /* About Section CSS - Redesigned for Premium Professionalism */
 
 :root {
-    --about-card-bg: rgb(15 15 25 / 0.4);
-    --about-border: rgb(255 255 255 / 0.05);
+    --about-card-bg: rgb(15 15 25 / 40%);
+    --about-border: rgb(255 255 255 / 5%);
     --about-accent: var(--accent-cyan);
-    --about-glow: rgb(0 242 255 / 0.1);
+    --about-glow: rgb(0 242 255 / 10%);
     --section-spacing: clamp(4rem, 10vw, 10rem);
 }
 
@@ -31,8 +31,8 @@
     font-size: clamp(4rem, 18vw, 18rem); /* Slightly reduced max vw for mobile safety */
     font-family: Outfit, sans-serif;
     font-weight: 900;
-    color: rgb(255 255 255 / 0.03);
-    -webkit-text-stroke: 1px rgb(255 255 255 / 0.05);
+    color: rgb(255 255 255 / 3%);
+    -webkit-text-stroke: 1px rgb(255 255 255 / 5%);
     z-index: -1;
     pointer-events: none;
     letter-spacing: 0.1em;
@@ -56,14 +56,14 @@
     background: linear-gradient(135deg, #fff 0%, #cbd5e1 100%);
     background-clip: text;
     -webkit-text-fill-color: transparent;
-    filter: drop-shadow(0 5px 15px rgb(255 255 255 / 0.1));
+    filter: drop-shadow(0 5px 15px rgb(255 255 255 / 10%));
 }
 
 .title-part-2 {
     background: linear-gradient(135deg, var(--accent-cyan) 0%, #bd00ff 100%);
     background-clip: text;
     -webkit-text-fill-color: transparent;
-    filter: drop-shadow(0 10px 20px rgb(189 0 255 / 0.2));
+    filter: drop-shadow(0 10px 20px rgb(189 0 255 / 20%));
     margin-top: 0.1em;
 }
 
@@ -80,7 +80,7 @@
     left: -150%;
     width: 50%;
     height: 100%;
-    background: linear-gradient(to right, transparent, rgb(255 255 255 / 0.1), transparent);
+    background: linear-gradient(to right, transparent, rgb(255 255 255 / 10%), transparent);
     transform: skewX(-25deg);
     animation: shimmer 6s infinite;
 }
@@ -123,7 +123,7 @@
     max-width: 1000px;
     margin: 0 auto clamp(5rem, 15vw, 10rem);
     padding: 0 1.5rem;
-    border-left: 2px solid rgb(0 242 255 / 0.1);
+    border-left: 2px solid rgb(0 242 255 / 10%);
 }
 
 .intro-headline-premium {
@@ -232,8 +232,8 @@
 }
 
 .expertise-card {
-    background: rgb(20 20 35 / 0.3);
-    border: 1px solid rgb(255 255 255 / 0.05);
+    background: rgb(20 20 35 / 30%);
+    border: 1px solid rgb(255 255 255 / 5%);
     backdrop-filter: blur(20px);
     padding: clamp(2rem, 5vw, 3.5rem) clamp(1.5rem, 4vw, 2.5rem);
     border-radius: 24px;
@@ -276,7 +276,7 @@
 .timeline-container {
     position: relative;
     padding-left: 2.5rem;
-    border-left: 1px solid rgb(255 255 255 / 0.05);
+    border-left: 1px solid rgb(255 255 255 / 5%);
 }
 
 .timeline-block {
@@ -293,7 +293,7 @@
     background: #050505;
     border: 2px solid var(--accent-cyan);
     border-radius: 50%;
-    box-shadow: 0 0 15px rgb(0 242 255 / 0.4);
+    box-shadow: 0 0 15px rgb(0 242 255 / 40%);
     z-index: 2;
 }
 
@@ -330,7 +330,7 @@
 
 .time-badge {
     font-family: 'Space Grotesk', sans-serif;
-    background: rgb(255 255 255 / 0.03);
+    background: rgb(255 255 255 / 3%);
     padding: 0.5rem 1rem;
     border-radius: 10px;
     font-size: 0.85rem;
@@ -397,12 +397,12 @@
     .expertise-card:hover {
         transform: translateY(-12px);
         border-color: var(--card-accent, var(--accent-cyan));
-        box-shadow: 0 40px 80px rgb(0 0 0 / 0.5), 0 0 30px rgb(var(--card-accent-rgb) 0.15);
+        box-shadow: 0 40px 80px rgb(0 0 0 / 50%), 0 0 30px rgb(var(--card-accent-rgb) 0.15);
     }
 
     .timeline-content-card:hover {
         transform: translateX(15px);
-        border-color: rgb(0 242 255 / 0.2);
+        border-color: rgb(0 242 255 / 20%);
     }
 
     .header-separator-line {
@@ -445,7 +445,7 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background: radial-gradient(circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgb(255 255 255 / 0.08) 0%, transparent 70%);
+    background: radial-gradient(circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgb(255 255 255 / 8%) 0%, transparent 70%);
     opacity: 0;
     transition: opacity 0.5s ease;
     pointer-events: none;

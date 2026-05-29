@@ -75,8 +75,8 @@ canvas {
 }
 
 .cta-button:hover {
-    background: rgb(0 242 255 / 0.1);
-    box-shadow: 0 0 20px rgb(0 242 255 / 0.3);
+    background: rgb(0 242 255 / 10%);
+    box-shadow: 0 0 20px rgb(0 242 255 / 30%);
     transform: translateY(-2px);
     color: var(--accent-cyan);
 }

@@ -104,7 +104,7 @@
     transition: all 0.3s ease;
     padding: 8px 16px;
     border-radius: 8px;
-    background: rgb(255 255 255 / 0.03);
+    background: rgb(255 255 255 / 3%);
     border: 1px solid var(--border-light);
 }
 
@@ -112,7 +112,7 @@
     color: var(--accent-cyan);
     border-color: var(--accent-cyan);
     transform: translateY(-2px);
-    background: rgb(0 242 255 / 0.05);
+    background: rgb(0 242 255 / 5%);
 }
 
 .social-links11 {
@@ -127,7 +127,7 @@
     width: 40px;
     height: 40px;
     border-radius: 50%;
-    background: rgb(255 255 255 / 0.03);
+    background: rgb(255 255 255 / 3%);
     color: var(--text-muted);
     border: 1px solid var(--border-light);
     transition: all 0.3s ease;
@@ -137,9 +137,9 @@
 .social-link11:hover {
     color: var(--accent-cyan);
     border-color: var(--accent-cyan);
-    background: rgb(0 242 255 / 0.1);
+    background: rgb(0 242 255 / 10%);
     transform: translateY(-3px);
-    box-shadow: 0 0 15px rgb(0 242 255 / 0.2);
+    box-shadow: 0 0 15px rgb(0 242 255 / 20%);
 }
 
 .social-link11 svg {

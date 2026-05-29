@@ -28,8 +28,8 @@
     font-weight: 900;
     margin-bottom: 1rem;
     letter-spacing: -0.04em;
-    background: linear-gradient(180deg, #fff 0%, rgb(255 255 255 / 0.7) 100%);
-    -webkit-background-clip: text;
+    background: linear-gradient(180deg, #fff 0%, rgb(255 255 255 / 70%) 100%);
+    background-clip: text;
     -webkit-text-fill-color: transparent;
 }
 
@@ -55,7 +55,7 @@
 .trustlens-hero-card {
     background: var(--bg-card);
     border-radius: 24px;
-    border: 1px solid rgb(255 255 255 / 0.05);
+    border: 1px solid rgb(255 255 255 / 5%);
     padding: 48px;
     backdrop-filter: var(--glass-blur);
     display: grid;
@@ -63,7 +63,7 @@
     gap: 48px;
     margin-bottom: 80px;
     position: relative;
-    box-shadow: 0 20px 50px rgb(0 0 0 / 0.5);
+    box-shadow: 0 20px 50px rgb(0 0 0 / 50%);
     transition:
         transform 0.4s cubic-bezier(0.23, 1, 0.32, 1),
         box-shadow 0.4s ease;
@@ -75,10 +75,9 @@
     inset: -1px;
     border-radius: 25px;
     padding: 1px;
-    background: linear-gradient(135deg, rgb(0 242 255 / 0.2), transparent, rgb(189 0 255 / 0.2));
-    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    background: linear-gradient(135deg, rgb(0 242 255 / 20%), transparent, rgb(189 0 255 / 20%));
     mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-    -webkit-mask-composite: xor;
+    mask-composite: xor;
     mask-composite: exclude;
     pointer-events: none;
 }
@@ -86,8 +85,8 @@
 .trustlens-hero-card:hover {
     transform: translateY(-5px);
     box-shadow:
-        0 30px 60px rgb(0 0 0 / 0.6),
-        0 0 20px rgb(0 242 255 / 0.05);
+        0 30px 60px rgb(0 0 0 / 60%),
+        0 0 20px rgb(0 242 255 / 5%);
 }
 
 /* Left Side: Visuals */
@@ -98,10 +97,10 @@
 }
 
 .trust-score-visual {
-    background: rgb(255 255 255 / 0.03);
+    background: rgb(255 255 255 / 3%);
     border-radius: 16px;
     padding: 24px;
-    border: 1px solid rgb(255 255 255 / 0.05);
+    border: 1px solid rgb(255 255 255 / 5%);
 }
 
 .score-header {
@@ -127,7 +126,7 @@
 
 .score-bar-container {
     height: 8px;
-    background: rgb(255 255 255 / 0.1);
+    background: rgb(255 255 255 / 10%);
     border-radius: 4px;
     overflow: hidden;
 }
@@ -146,11 +145,11 @@
 }
 
 .mini-stat-item {
-    background: rgb(255 255 255 / 0.02);
+    background: rgb(255 255 255 / 2%);
     padding: 16px;
     border-radius: 12px;
     text-align: center;
-    border: 1px solid rgb(255 255 255 / 0.03);
+    border: 1px solid rgb(255 255 255 / 3%);
 }
 
 .mini-stat-value {
@@ -190,8 +189,8 @@
 
 .badge {
     padding: 6px 12px;
-    background: rgb(255 255 255 / 0.05);
-    border: 1px solid rgb(255 255 255 / 0.1);
+    background: rgb(255 255 255 / 5%);
+    border: 1px solid rgb(255 255 255 / 10%);
     border-radius: 100px;
     font-size: 0.75rem;
     font-weight: 600;
@@ -200,7 +199,7 @@
 }
 
 .badge:hover {
-    background: rgb(0 242 255 / 0.1);
+    background: rgb(0 242 255 / 10%);
     border-color: var(--accent-cyan);
     color: var(--accent-cyan);
 }
@@ -223,74 +222,6 @@
     color: var(--accent-cyan);
 }
 
-/* 4. Architecture Visualization */
-.architecture-section {
-    margin-bottom: 120px;
-    text-align: center;
-}
-
-.architecture-viz-container {
-    background: rgb(0 0 0 / 0.3);
-    border: 1px solid rgb(255 255 255 / 0.05);
-    border-radius: 24px;
-    padding: 60px 20px;
-    position: relative;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 400px;
-    overflow: hidden;
-}
-
-.architecture-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 40px;
-    width: 100%;
-    max-width: 1000px;
-    position: relative;
-    z-index: 2;
-}
-
-.arch-node {
-    background: var(--bg-card);
-    border: 1px solid rgb(255 255 255 / 0.1);
-    border-radius: 12px;
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 12px;
-    position: relative;
-    transition: all 0.3s ease;
-}
-
-.arch-node i {
-    font-size: 1.5rem;
-    color: var(--accent-cyan);
-}
-
-.arch-node span {
-    font-size: 0.875rem;
-    font-weight: 600;
-    color: #fff;
-}
-
-.arch-node.core {
-    background: rgb(0 242 255 / 0.05);
-    border-color: var(--accent-cyan);
-    box-shadow: 0 0 20px rgb(0 242 255 / 0.1);
-}
-
-/* Animated Connectors - Simple CSS implementation */
-.arch-connector {
-    position: absolute;
-    height: 2px;
-    background: linear-gradient(90deg, var(--accent-cyan), transparent);
-    z-index: 1;
-    opacity: 0.3;
-}
-
 /* 5. Code Showcase */
 .code-showcase-container {
     margin-bottom: 100px;
@@ -299,9 +230,9 @@
 .terminal-window {
     background: #0d0d0d;
     border-radius: 12px;
-    border: 1px solid rgb(255 255 255 / 0.1);
+    border: 1px solid rgb(255 255 255 / 10%);
     overflow: hidden;
-    box-shadow: 0 30px 60px rgb(0 0 0 / 0.5);
+    box-shadow: 0 30px 60px rgb(0 0 0 / 50%);
 }
 
 .terminal-header {
@@ -374,7 +305,7 @@
 .terminal-output {
     margin-top: 24px;
     padding-top: 16px;
-    border-top: 1px solid rgb(255 255 255 / 0.05);
+    border-top: 1px solid rgb(255 255 255 / 5%);
     color: var(--accent-cyan);
     font-weight: 700;
 }
@@ -384,8 +315,8 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background: rgb(255 255 255 / 0.02);
-    border: 1px solid rgb(255 255 255 / 0.05);
+    background: rgb(255 255 255 / 2%);
+    border: 1px solid rgb(255 255 255 / 5%);
     border-radius: 16px;
     padding: 24px 40px;
     margin-bottom: 60px;
@@ -445,19 +376,19 @@
 
 .btn-premium.primary:hover {
     background: var(--accent-cyan);
-    box-shadow: 0 0 30px rgb(0 242 255 / 0.3);
+    box-shadow: 0 0 30px rgb(0 242 255 / 30%);
     transform: translateY(-3px);
 }
 
 .btn-premium.secondary {
-    background: rgb(255 255 255 / 0.05);
+    background: rgb(255 255 255 / 5%);
     color: #fff;
-    border: 1px solid rgb(255 255 255 / 0.1);
+    border: 1px solid rgb(255 255 255 / 10%);
 }
 
 .btn-premium.secondary:hover {
-    background: rgb(255 255 255 / 0.1);
-    border-color: rgb(255 255 255 / 0.2);
+    background: rgb(255 255 255 / 10%);
+    border-color: rgb(255 255 255 / 20%);
     transform: translateY(-3px);
 }
 
@@ -551,7 +482,7 @@
 .trustlens-separator {
     width: 100%;
     height: 1px;
-    background: linear-gradient(90deg, transparent 0%, rgb(255 255 255 / 0.1) 50%, transparent 100%);
+    background: linear-gradient(90deg, transparent 0%, rgb(255 255 255 / 10%) 50%, transparent 100%);
     position: relative;
     margin: 40px 0;
     display: flex;

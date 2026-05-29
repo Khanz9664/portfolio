@@ -7,14 +7,14 @@
     left: 0;
     width: 100%;
     height: 60px;
-    background: rgb(10 10 10 / 0.4);
+    background: rgb(10 10 10 / 40%);
     backdrop-filter: blur(20px);
     z-index: 1000;
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 0 1.5rem;
-    border-bottom: 1px solid rgb(255 255 255 / 0.08); /* Replaces border-radius and shadow for default mobile state */
+    border-bottom: 1px solid rgb(255 255 255 / 8%); /* Replaces border-radius and shadow for default mobile state */
     transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
@@ -29,8 +29,8 @@
         height: 70px;
         padding: 0 2.5rem;
         border-radius: 20px;
-        border: 1px solid rgb(255 255 255 / 0.08);
-        box-shadow: 0 10px 40px rgb(0 0 0 / 0.3);
+        border: 1px solid rgb(255 255 255 / 8%);
+        box-shadow: 0 10px 40px rgb(0 0 0 / 30%);
     }
 }
 
@@ -38,8 +38,8 @@
     top: 0;
     width: 100%;
     border-radius: 0;
-    background: rgb(5 5 5 / 0.85);
-    border-bottom: 1px solid rgb(0 242 255 / 0.1);
+    background: rgb(5 5 5 / 85%);
+    border-bottom: 1px solid rgb(0 242 255 / 10%);
 }
 
 /* Logo */
@@ -81,7 +81,7 @@
     flex-direction: column;
     justify-content: flex-start;
     align-items: flex-start;
-    background: rgb(5 5 5 / 0.98);
+    background: rgb(5 5 5 / 98%);
     backdrop-filter: blur(30px);
     width: 100%;
     height: 100dvh;
@@ -100,7 +100,7 @@
 }
 
 .nav-link {
-    color: rgb(255 255 255 / 0.6);
+    color: rgb(255 255 255 / 60%);
     text-decoration: none;
     font-size: 1.4rem; /* Slightly smaller for density */
     font-weight: 600;
@@ -127,7 +127,7 @@
     transform: translate(-50%, -50%) scale(0.8);
     width: 100%;
     height: 100%;
-    background: rgb(0 242 255 / 0.05);
+    background: rgb(0 242 255 / 5%);
     border-radius: 8px;
     opacity: 0;
     transition: all 0.3s ease;

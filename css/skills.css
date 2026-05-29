@@ -26,8 +26,8 @@
     /* Slightly reduced max vw */
     font-family: Outfit, sans-serif;
     font-weight: 900;
-    color: rgb(255 255 255 / 0.02);
-    -webkit-text-stroke: 1px rgb(255 255 255 / 0.04);
+    color: rgb(255 255 255 / 2%);
+    -webkit-text-stroke: 1px rgb(255 255 255 / 4%);
     z-index: -1;
     pointer-events: none;
     letter-spacing: 0.1em;
@@ -51,14 +51,14 @@
     background: linear-gradient(135deg, #fff 0%, #cbd5e1 100%);
     background-clip: text;
     -webkit-text-fill-color: transparent;
-    filter: drop-shadow(0 5px 15px rgb(255 255 255 / 0.1));
+    filter: drop-shadow(0 5px 15px rgb(255 255 255 / 10%));
 }
 
 .title-part-2 {
     background: linear-gradient(135deg, var(--accent-cyan) 0%, #bd00ff 100%);
     background-clip: text;
     -webkit-text-fill-color: transparent;
-    filter: drop-shadow(0 10px 20px rgb(189 0 255 / 0.2));
+    filter: drop-shadow(0 10px 20px rgb(189 0 255 / 20%));
     margin-top: 0.1em;
 }
 
@@ -85,8 +85,8 @@
     align-items: center;
     gap: 0.8rem;
     padding: 0.8rem 2rem;
-    background: rgb(255 255 255 / 0.05);
-    border: 1px solid rgb(255 255 255 / 0.1);
+    background: rgb(255 255 255 / 5%);
+    border: 1px solid rgb(255 255 255 / 10%);
     color: #fff;
     border-radius: 100px;
     font-family: Outfit, sans-serif;
@@ -101,7 +101,7 @@
     background: var(--accent-cyan);
     color: #050505;
     transform: translateY(-5px);
-    box-shadow: 0 15px 30px rgb(0 242 255 / 0.3);
+    box-shadow: 0 15px 30px rgb(0 242 255 / 30%);
 }
 
 /* Skills Grid */
@@ -113,8 +113,8 @@
 }
 
 .skill-card {
-    background: rgb(20 20 35 / 0.3);
-    border: 1px solid rgb(255 255 255 / 0.05);
+    background: rgb(20 20 35 / 30%);
+    border: 1px solid rgb(255 255 255 / 5%);
     backdrop-filter: blur(20px);
     padding: 3.5rem;
     border-radius: 28px;
@@ -129,7 +129,7 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background: radial-gradient(circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgb(255 255 255 / 0.08) 0%, transparent 70%);
+    background: radial-gradient(circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgb(255 255 255 / 8%) 0%, transparent 70%);
     opacity: 0;
     transition: opacity 0.5s ease;
     pointer-events: none;
@@ -142,7 +142,7 @@
 .skill-card:hover {
     transform: translateY(-10px);
     border-color: var(--card-accent, var(--accent-cyan));
-    box-shadow: 0 40px 80px rgb(0 0 0 / 0.4);
+    box-shadow: 0 40px 80px rgb(0 0 0 / 40%);
 }
 
 .card-tech {
@@ -194,7 +194,7 @@
 
 .skill-bar-container {
     height: 6px;
-    background: rgb(255 255 255 / 0.05);
+    background: rgb(255 255 255 / 5%);
     border-radius: 100px;
     overflow: hidden;
     margin-bottom: 1rem;
@@ -225,8 +225,8 @@
 
 .skill-tag {
     padding: 0.8rem 1.6rem;
-    background: rgb(255 255 255 / 0.03);
-    border: 1px solid rgb(255 255 255 / 0.1);
+    background: rgb(255 255 255 / 3%);
+    border: 1px solid rgb(255 255 255 / 10%);
     border-radius: 100px;
     color: #cbd5e1;
     font-family: 'Space Grotesk', sans-serif;
@@ -240,7 +240,7 @@
     color: #050505;
     border-color: var(--card-accent);
     transform: translateY(-3px) scale(1.05);
-    box-shadow: 0 10px 20px rgb(189 0 255 / 0.2);
+    box-shadow: 0 10px 20px rgb(189 0 255 / 20%);
 }
 
 /* Tools Section */
@@ -271,8 +271,8 @@
 }
 
 .tool-item {
-    background: rgb(30 30 50 / 0.4);
-    border: 1px solid rgb(255 255 255 / 0.05);
+    background: rgb(30 30 50 / 40%);
+    border: 1px solid rgb(255 255 255 / 5%);
     backdrop-filter: blur(20px);
     padding: 3rem 2rem;
     border-radius: 24px;
@@ -289,7 +289,7 @@
 .tool-item:hover {
     transform: translateY(-8px);
     border-color: #bd00ff;
-    background: rgb(189 0 255 / 0.05);
+    background: rgb(189 0 255 / 5%);
 }
 
 .tool-icon {

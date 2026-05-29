@@ -1,9 +1,9 @@
 /* Resume Section Variables */
 :root {
     --resume-accent: var(--accent-cyan);
-    --resume-glow: rgb(0 242 255 / 0.15);
-    --card-bg: rgb(20 20 30 / 0.6);
-    --card-border: rgb(255 255 255 / 0.08);
+    --resume-glow: rgb(0 242 255 / 15%);
+    --card-bg: rgb(20 20 30 / 60%);
+    --card-border: rgb(255 255 255 / 8%);
 }
 
 .container {
@@ -33,7 +33,7 @@
     position: sticky;
     top: 6rem;
     text-align: center;
-    box-shadow: 0 20px 40px rgb(0 0 0 / 0.3);
+    box-shadow: 0 20px 40px rgb(0 0 0 / 30%);
 }
 
 .profile-img-wrapper {
@@ -118,22 +118,22 @@
 .btn-primary {
     background: linear-gradient(135deg, var(--resume-accent) 0%, #2563eb 100%);
     color: #fff;
-    box-shadow: 0 4px 15px rgb(37 99 235 / 0.3);
+    box-shadow: 0 4px 15px rgb(37 99 235 / 30%);
 }
 
 .btn-primary:hover {
     transform: translateY(-2px);
-    box-shadow: 0 8px 25px rgb(37 99 235 / 0.4);
+    box-shadow: 0 8px 25px rgb(37 99 235 / 40%);
 }
 
 .btn-secondary {
-    background: rgb(255 255 255 / 0.05);
+    background: rgb(255 255 255 / 5%);
     color: #fff;
     border: 1px solid var(--card-border);
 }
 
 .btn-secondary:hover {
-    background: rgb(255 255 255 / 0.1);
+    background: rgb(255 255 255 / 10%);
     transform: translateY(-2px);
 }
 
@@ -163,7 +163,7 @@
 .timeline {
     position: relative;
     padding-left: 2rem;
-    border-left: 2px solid rgb(255 255 255 / 0.1);
+    border-left: 2px solid rgb(255 255 255 / 10%);
 }
 
 .timeline-item {
@@ -276,7 +276,7 @@
 }
 
 .skill-tag {
-    background: rgb(255 255 255 / 0.05);
+    background: rgb(255 255 255 / 5%);
     padding: 0.4rem 1rem;
     border-radius: 20px;
     font-size: 0.85rem;
@@ -286,10 +286,10 @@
 }
 
 .skill-tag:hover {
-    background: rgb(0 242 255 / 0.1);
+    background: rgb(0 242 255 / 10%);
     color: var(--resume-accent);
-    border-color: rgb(0 242 255 / 0.3);
-    box-shadow: 0 0 10px rgb(0 242 255 / 0.1);
+    border-color: rgb(0 242 255 / 30%);
+    box-shadow: 0 0 10px rgb(0 242 255 / 10%);
 }
 
 /* Certifications */
@@ -319,7 +319,7 @@
     flex-shrink: 0;
     width: 40px;
     height: 40px;
-    background: rgb(0 242 255 / 0.1);
+    background: rgb(0 242 255 / 10%);
     border-radius: 8px;
     display: flex;
     align-items: center;

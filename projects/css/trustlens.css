@@ -1,11 +1,11 @@
 :root {
   --black: #020202;
   --near-black: #050505;
-  --surface: rgb(10 10 10 / 0.7);
-  --surface-2: rgb(20 20 20 / 0.8);
-  --surface-3: rgb(30 30 30 / 0.9);
-  --border: rgb(255 255 255 / 0.08);
-  --border-2: rgb(255 255 255 / 0.15);
+  --surface: rgb(10 10 10 / 70%);
+  --surface-2: rgb(20 20 20 / 80%);
+  --surface-3: rgb(30 30 30 / 90%);
+  --border: rgb(255 255 255 / 8%);
+  --border-2: rgb(255 255 255 / 15%);
   --muted: #4a4a4a;
   --subtle: #888;
   --body: #b0b0b0;
@@ -14,16 +14,16 @@
 
   /* Brand - Neon Core */
   --green: #00ffa3;
-  --green-glow: rgb(0 255 163 / 0.4);
-  --green-dim: rgb(0 255 163 / 0.05);
+  --green-glow: rgb(0 255 163 / 40%);
+  --green-dim: rgb(0 255 163 / 5%);
   --red: #ff3e3e;
-  --red-glow: rgb(255 62 62 / 0.4);
+  --red-glow: rgb(255 62 62 / 40%);
   --amber: #fa0;
   --blue: #00d1ff;
   --font-body: "Space Grotesk", system-ui, sans-serif;
   --font-mono: "Space Mono", monospace;
   --glass: blur(12px);
-  --card-shadow: 0 20px 40px rgb(0 0 0 / 0.4);
+  --card-shadow: 0 20px 40px rgb(0 0 0 / 40%);
 }
 
 /* ── ADVANCED BACKGROUND ── */
@@ -32,8 +32,8 @@ body::before {
   position: fixed;
   inset: 0;
   background: 
-    radial-gradient(circle at 20% 30%, rgb(0 255 163 / 0.03) 0%, transparent 40%),
-    radial-gradient(circle at 80% 70%, rgb(0 209 255 / 0.03) 0%, transparent 40%);
+    radial-gradient(circle at 20% 30%, rgb(0 255 163 / 3%) 0%, transparent 40%),
+    radial-gradient(circle at 80% 70%, rgb(0 209 255 / 3%) 0%, transparent 40%);
   z-index: -1;
   pointer-events: none;
 }
@@ -43,8 +43,8 @@ body::after {
   position: fixed;
   inset: 0;
   background-image: 
-    linear-gradient(rgb(255 255 255 / 0.02) 1px, transparent 1px),
-    linear-gradient(90deg, rgb(255 255 255 / 0.02) 1px, transparent 1px);
+    linear-gradient(rgb(255 255 255 / 2%) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(255 255 255 / 2%) 1px, transparent 1px);
   background-size: 50px 50px;
   z-index: -1;
   pointer-events: none;
@@ -143,10 +143,9 @@ body::after {
   inset: 0;
   border-radius: inherit;
   padding: 1px;
-  background: linear-gradient(135deg, rgb(255 255 255 / 0.1), transparent, rgb(255 255 255 / 0.05));
-  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  background: linear-gradient(135deg, rgb(255 255 255 / 10%), transparent, rgb(255 255 255 / 5%));
   mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-  -webkit-mask-composite: xor;
+  mask-composite: xor;
   mask-composite: exclude;
   pointer-events: none;
 }
@@ -247,7 +246,7 @@ body {
   font-size: clamp(180px, 28vw, 420px);
   font-weight: 700;
   color: transparent;
-  -webkit-text-stroke: 1px rgb(0 232 122 / 0.07);
+  -webkit-text-stroke: 1px rgb(0 232 122 / 7%);
   line-height: 1;
   pointer-events: none;
   user-select: none;
@@ -282,7 +281,7 @@ body {
   letter-spacing: -0.05em;
   color: var(--white);
   margin-bottom: 1.5rem;
-  text-shadow: 0 0 30px rgb(255 255 255 / 0.1);
+  text-shadow: 0 0 30px rgb(255 255 255 / 10%);
 }
 
 .tl-hero h1 .tl-accent {
@@ -452,7 +451,7 @@ body {
 }
 
 .tl-badge-green {
-  border-color: rgb(0 232 122 / 0.3);
+  border-color: rgb(0 232 122 / 30%);
   color: var(--green);
   background: var(--green-dim);
 }
@@ -640,7 +639,7 @@ h2.tl-title .tl-d {
 }
 
 .tl-crime:hover {
-  background: rgb(255 255 255 / 0.02);
+  background: rgb(255 255 255 / 2%);
 }
 
 .tl-crime-n {
@@ -652,15 +651,15 @@ h2.tl-title .tl-d {
 }
 
 .c1 .tl-crime-n {
-  color: rgb(255 68 68 / 0.12);
+  color: rgb(255 68 68 / 12%);
 }
 
 .c2 .tl-crime-n {
-  color: rgb(255 179 64 / 0.12);
+  color: rgb(255 179 64 / 12%);
 }
 
 .c3 .tl-crime-n {
-  color: rgb(77 159 255 / 0.12);
+  color: rgb(77 159 255 / 12%);
 }
 
 .tl-crime-tag {
@@ -704,7 +703,7 @@ h2.tl-title .tl-d {
   border-left: 3px solid var(--green);
   padding: 1.5rem 2rem;
   margin-bottom: 4rem;
-  background: rgb(0 232 122 / 0.04);
+  background: rgb(0 232 122 / 4%);
   border-radius: 0 6px 6px 0;
 }
 
@@ -960,7 +959,7 @@ h2.tl-title .tl-d {
 .tl-wrow-fill-lbl {
   font-family: var(--font-mono);
   font-size: 0.62rem;
-  color: rgb(0 0 0 / 0.8);
+  color: rgb(0 0 0 / 80%);
   font-weight: 700;
 }
 
@@ -1171,7 +1170,7 @@ h2.tl-title .tl-d {
 .tl-mod:hover {
   border-color: var(--green);
   transform: translateY(-10px) scale(1.02);
-  box-shadow: 0 30px 60px rgb(0 0 0 / 0.5), 0 0 20px var(--green-dim);
+  box-shadow: 0 30px 60px rgb(0 0 0 / 50%), 0 0 20px var(--green-dim);
 }
 
 .tl-mod::before {
@@ -1224,25 +1223,25 @@ h2.tl-title .tl-d {
 
 .m-cal .tl-mod-tag {
   color: var(--green);
-  border-color: rgb(0 232 122 / 0.3);
+  border-color: rgb(0 232 122 / 30%);
   background: var(--green-dim);
 }
 
 .m-fail .tl-mod-tag {
   color: var(--red);
-  border-color: rgb(255 68 68 / 0.3);
+  border-color: rgb(255 68 68 / 30%);
   background: var(--red-dim);
 }
 
 .m-bias .tl-mod-tag {
   color: var(--blue);
-  border-color: rgb(77 159 255 / 0.3);
+  border-color: rgb(77 159 255 / 30%);
   background: var(--blue-dim);
 }
 
 .m-rep .tl-mod-tag {
   color: var(--amber);
-  border-color: rgb(255 179 64 / 0.3);
+  border-color: rgb(255 179 64 / 30%);
   background: var(--amber-dim);
 }
 
@@ -1289,7 +1288,7 @@ h2.tl-title .tl-d {
    CODE TERMINAL
 ══════════════════════════════════ */
 .tl-terminal {
-  background: rgb(5 5 5 / 0.8);
+  background: rgb(5 5 5 / 80%);
   backdrop-filter: var(--glass);
   border: 1px solid var(--border-2);
   border-radius: 16px;
@@ -1305,7 +1304,7 @@ h2.tl-title .tl-d {
   content: "";
   position: absolute;
   inset: 0;
-  background: linear-gradient(rgb(255 255 255 / 0.02) 1px, transparent 1px);
+  background: linear-gradient(rgb(255 255 255 / 2%) 1px, transparent 1px);
   background-size: 100% 4px;
   pointer-events: none;
   z-index: 5;
@@ -1560,7 +1559,7 @@ h2.tl-title .tl-d {
 }
 
 .tl-principle:hover {
-  background: rgb(0 232 122 / 0.02);
+  background: rgb(0 232 122 / 2%);
 }
 
 .tl-pr-num {
@@ -1786,8 +1785,8 @@ h2.tl-title .tl-d {
 .tl-blocker {
   padding: 1.25rem 1.5rem;
   border-radius: 6px;
-  border: 1px solid rgb(255 68 68 / 0.2);
-  background: rgb(255 68 68 / 0.04);
+  border: 1px solid rgb(255 68 68 / 20%);
+  background: rgb(255 68 68 / 4%);
   display: flex;
   gap: 0.75rem;
   align-items: flex-start;
@@ -2197,7 +2196,7 @@ h2.tl-title .tl-d {
 .tl-comp-card:hover {
   border-color: var(--green);
   transform: translateY(-8px);
-  box-shadow: 0 20px 40px rgb(0 0 0 / 0.6);
+  box-shadow: 0 20px 40px rgb(0 0 0 / 60%);
 }
 
 .tl-comp-header {
@@ -2225,7 +2224,7 @@ h2.tl-title .tl-d {
 .tl-comp-status.blocked {
   background: var(--red-dim);
   color: var(--red);
-  border: 1px solid rgb(255 68 68 / 0.2);
+  border: 1px solid rgb(255 68 68 / 20%);
 }
 
 .tl-comp-metrics {
@@ -2281,12 +2280,12 @@ h2.tl-title .tl-d {
 
 .tl-risk-tag.r {
   color: var(--red);
-  border-color: rgb(255 68 68 / 0.1);
+  border-color: rgb(255 68 68 / 10%);
 }
 
 .tl-risk-tag.a {
   color: var(--amber);
-  border-color: rgb(255 179 64 / 0.1);
+  border-color: rgb(255 179 64 / 10%);
 }
 
 .tl-verdict-box {
@@ -2354,12 +2353,12 @@ h2.tl-title .tl-d {
 
 /* ── SUMMARY SHOWCASE ── */
 .tl-summary-card {
-  background: rgb(255 255 255 / 0.95);
+  background: rgb(255 255 255 / 95%);
   border-radius: 12px;
   padding: 3rem;
   color: #111;
-  box-shadow: 0 40px 100px rgb(0 0 0 / 0.8);
-  border: 1px solid rgb(255 255 255 / 0.2);
+  box-shadow: 0 40px 100px rgb(0 0 0 / 80%);
+  border: 1px solid rgb(255 255 255 / 20%);
 }
 
 .tl-sc-header {
@@ -2430,7 +2429,6 @@ h2.tl-title .tl-d {
   inset: 0;
   border-radius: 50%;
   background: conic-gradient(#f44 calc(var(--p) * 1%), transparent 0);
-  -webkit-mask: radial-gradient(transparent 35px, #000 36px);
   mask: radial-gradient(transparent 35px, #000 36px);
 }
 

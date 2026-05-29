@@ -11,23 +11,23 @@
 
   /* Product colours */
   --iphone: #0071e3;
-  --iphone-d: rgb(0 113 227 / 0.12);
+  --iphone-d: rgb(0 113 227 / 12%);
   --ipad: #30d158;
-  --ipad-d: rgb(48 209 88 / 0.12);
+  --ipad-d: rgb(48 209 88 / 12%);
   --mac: #ff9f0a;
-  --mac-d: rgb(255 159 10 / 0.12);
+  --mac-d: rgb(255 159 10 / 12%);
   --wear: #bf5af2;
-  --wear-d: rgb(191 90 242 / 0.12);
+  --wear-d: rgb(191 90 242 / 12%);
   --svc: #00c7be;
-  --svc-d: rgb(0 199 190 / 0.12);
+  --svc-d: rgb(0 199 190 / 12%);
   --danger: #ff3b30;
-  --danger-d: rgb(255 59 48 / 0.1);
+  --danger-d: rgb(255 59 48 / 10%);
   --font-disp: "Cormorant Garamond", georgia, serif;
   --font-body: "Plus Jakarta Sans", system-ui, sans-serif;
   --font-mono: "IBM Plex Mono", monospace;
-  --shadow-sm: 0 1px 3px rgb(0 0 0 / 0.06), 0 1px 2px rgb(0 0 0 / 0.04);
-  --shadow-md: 0 4px 16px rgb(0 0 0 / 0.07), 0 1px 4px rgb(0 0 0 / 0.05);
-  --shadow-lg: 0 12px 40px rgb(0 0 0 / 0.1), 0 2px 8px rgb(0 0 0 / 0.06);
+  --shadow-sm: 0 1px 3px rgb(0 0 0 / 6%), 0 1px 2px rgb(0 0 0 / 4%);
+  --shadow-md: 0 4px 16px rgb(0 0 0 / 7%), 0 1px 4px rgb(0 0 0 / 5%);
+  --shadow-lg: 0 12px 40px rgb(0 0 0 / 10%), 0 2px 8px rgb(0 0 0 / 6%);
 }
 
 *,
@@ -127,7 +127,7 @@ nav{
   border-radius: 50%;
   background: radial-gradient(
     circle,
-    rgb(0 113 227 / 0.06) 0%,
+    rgb(0 113 227 / 6%) 0%,
     transparent 70%
   );
   top: -100px;
@@ -142,7 +142,7 @@ nav{
   border-radius: 50%;
   background: radial-gradient(
     circle,
-    rgb(255 159 10 / 0.07) 0%,
+    rgb(255 159 10 / 7%) 0%,
     transparent 70%
   );
   bottom: -100px;
@@ -253,23 +253,23 @@ nav{
 }
 
 .pb-iphone {
-  border-color: rgb(0 113 227 / 0.3);
+  border-color: rgb(0 113 227 / 30%);
 }
 
 .pb-ipad {
-  border-color: rgb(48 209 88 / 0.3);
+  border-color: rgb(48 209 88 / 30%);
 }
 
 .pb-mac {
-  border-color: rgb(255 159 10 / 0.3);
+  border-color: rgb(255 159 10 / 30%);
 }
 
 .pb-wear {
-  border-color: rgb(191 90 242 / 0.3);
+  border-color: rgb(191 90 242 / 30%);
 }
 
 .pb-svc {
-  border-color: rgb(0 199 190 / 0.3);
+  border-color: rgb(0 199 190 / 30%);
 }
 
 .pb-dot {
@@ -549,7 +549,7 @@ h2.sec-title strong {
 }
 
 .goals-table tr:hover td {
-  background: rgb(255 255 255 / 0.02);
+  background: rgb(255 255 255 / 2%);
 }
 
 .gt-goal {
@@ -564,7 +564,7 @@ h2.sec-title strong {
 .gt-impl code {
   font-family: var(--font-mono);
   font-size: 0.78rem;
-  background: rgb(255 255 255 / 0.05);
+  background: rgb(255 255 255 / 5%);
   padding: 0.1rem 0.35rem;
   border-radius: 3px;
   color: var(--iphone);
@@ -733,13 +733,13 @@ h2.sec-title strong {
 }
 
 .al-card.app {
-  border-color: rgb(0 113 227 / 0.2);
-  background: rgb(0 113 227 / 0.04);
+  border-color: rgb(0 113 227 / 20%);
+  background: rgb(0 113 227 / 4%);
 }
 
 .al-card.src {
-  border-color: rgb(0 199 190 / 0.2);
-  background: rgb(0 199 190 / 0.04);
+  border-color: rgb(0 199 190 / 20%);
+  background: rgb(0 199 190 / 4%);
 }
 
 .al-layer-name {
@@ -1198,23 +1198,23 @@ h2.sec-title strong {
 }
 
 .sc-c1 {
-  border-color: rgb(0 113 227 / 0.25);
-  background: rgb(0 113 227 / 0.05);
+  border-color: rgb(0 113 227 / 25%);
+  background: rgb(0 113 227 / 5%);
 }
 
 .sc-c2 {
-  border-color: rgb(48 209 88 / 0.25);
-  background: rgb(48 209 88 / 0.05);
+  border-color: rgb(48 209 88 / 25%);
+  background: rgb(48 209 88 / 5%);
 }
 
 .sc-c3 {
-  border-color: rgb(255 159 10 / 0.25);
-  background: rgb(255 159 10 / 0.05);
+  border-color: rgb(255 159 10 / 25%);
+  background: rgb(255 159 10 / 5%);
 }
 
 .sc-c4 {
-  border-color: rgb(191 90 242 / 0.25);
-  background: rgb(191 90 242 / 0.05);
+  border-color: rgb(191 90 242 / 25%);
+  background: rgb(191 90 242 / 5%);
 }
 
 .sc-num {
@@ -1265,8 +1265,8 @@ h2.sec-title strong {
 .opt-box {
   border-radius: 14px;
   padding: 2rem;
-  border: 1px solid rgb(0 199 190 / 0.25);
-  background: rgb(0 199 190 / 0.04);
+  border: 1px solid rgb(0 199 190 / 25%);
+  background: rgb(0 199 190 / 4%);
   box-shadow: var(--shadow-sm);
   margin-bottom: 2.5rem;
 }

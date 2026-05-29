@@ -1,8 +1,8 @@
 :root {
   --crimson: #c0152a;
   --crimson-dk: #8b0f1e;
-  --crimson-dim: rgb(192 21 42 / 0.1);
-  --crimson-glow: rgb(192 21 42 / 0.2);
+  --crimson-dim: rgb(192 21 42 / 10%);
+  --crimson-glow: rgb(192 21 42 / 20%);
   --pulse: #e63950;
   --white: #fff;
   --off-white: #fafaf9;
@@ -14,18 +14,18 @@
   --text-body: #3d3730;
   --text-ink: #1a1510;
   --green: #16803c;
-  --green-dim: rgb(22 128 60 / 0.1);
+  --green-dim: rgb(22 128 60 / 10%);
   --amber: #b45309;
-  --amber-dim: rgb(180 83 9 / 0.1);
+  --amber-dim: rgb(180 83 9 / 10%);
   --blue: #1d4ed8;
-  --blue-dim: rgb(29 78 216 / 0.1);
+  --blue-dim: rgb(29 78 216 / 10%);
   --violet: #6d28d9;
   --font-disp: "Bitter", georgia, serif;
   --font-body: "Nunito Sans", system-ui, sans-serif;
   --font-mono: "Roboto Mono", monospace;
-  --sh-sm: 0 1px 3px rgb(0 0 0 / 0.07), 0 1px 2px rgb(0 0 0 / 0.04);
-  --sh-md: 0 4px 16px rgb(0 0 0 / 0.09), 0 1px 4px rgb(0 0 0 / 0.05);
-  --sh-lg: 0 12px 40px rgb(0 0 0 / 0.12), 0 2px 8px rgb(0 0 0 / 0.06);
+  --sh-sm: 0 1px 3px rgb(0 0 0 / 7%), 0 1px 2px rgb(0 0 0 / 4%);
+  --sh-md: 0 4px 16px rgb(0 0 0 / 9%), 0 1px 4px rgb(0 0 0 / 5%);
+  --sh-lg: 0 12px 40px rgb(0 0 0 / 12%), 0 2px 8px rgb(0 0 0 / 6%);
 }
 
 *,
@@ -80,8 +80,8 @@ body {
   inset: 0;
   pointer-events: none;
   background-image:
-    linear-gradient(rgb(255 255 255 / 0.03) 1px, transparent 1px),
-    linear-gradient(90deg, rgb(255 255 255 / 0.03) 1px, transparent 1px);
+    linear-gradient(rgb(255 255 255 / 3%) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(255 255 255 / 3%) 1px, transparent 1px);
   background-size: 32px 32px;
 }
 
@@ -90,7 +90,7 @@ body {
   width: 800px;
   height: 800px;
   border-radius: 50%;
-  background: radial-gradient(circle, rgb(230 57 80 / 0.25) 0%, transparent 65%);
+  background: radial-gradient(circle, rgb(230 57 80 / 25%) 0%, transparent 65%);
   top: -200px;
   right: -200px;
   pointer-events: none;
@@ -121,7 +121,7 @@ body {
   font-size: 0.7rem;
   letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: rgb(255 180 180 / 0.8);
+  color: rgb(255 180 180 / 80%);
   margin-bottom: 1.25rem;
   display: flex;
   align-items: center;
@@ -134,7 +134,7 @@ body {
   content: "";
   width: 32px;
   height: 1px;
-  background: rgb(255 150 150 / 0.5);
+  background: rgb(255 150 150 / 50%);
 }
 
 .hero h1 {
@@ -163,7 +163,7 @@ body {
   font-size: clamp(1rem, 2.5vw, 1.5rem);
   font-weight: 300;
   font-style: italic;
-  color: rgb(255 200 200 / 0.7);
+  color: rgb(255 200 200 / 70%);
   margin-bottom: 1.75rem;
   opacity: 0;
   animation: fu 0.75s 0.4s forwards;
@@ -171,11 +171,11 @@ body {
 
 .hero-abstract {
   font-size: 0.95rem;
-  color: rgb(255 220 220 / 0.75);
+  color: rgb(255 220 220 / 75%);
   max-width: 640px;
   line-height: 1.85;
   margin-bottom: 2.5rem;
-  border-left: 2px solid rgb(255 100 100 / 0.4);
+  border-left: 2px solid rgb(255 100 100 / 40%);
   padding-left: 1.25rem;
   font-style: italic;
   opacity: 0;
@@ -186,8 +186,8 @@ body {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
   gap: 1px;
-  background: rgb(255 255 255 / 0.1);
-  border: 1px solid rgb(255 255 255 / 0.15);
+  background: rgb(255 255 255 / 10%);
+  border: 1px solid rgb(255 255 255 / 15%);
   border-radius: 12px;
   overflow: hidden;
   max-width: 760px;
@@ -196,7 +196,7 @@ body {
 }
 
 .hk {
-  background: rgb(0 0 0 / 0.25);
+  background: rgb(0 0 0 / 25%);
   padding: 1.25rem 1.5rem;
   text-align: center;
 }
@@ -227,21 +227,21 @@ body {
   font-size: 0.62rem;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: rgb(255 200 200 / 0.6);
+  color: rgb(255 200 200 / 60%);
 }
 
 .hero-author {
   margin-top: 2rem;
   font-family: var(--font-mono);
   font-size: 0.75rem;
-  color: rgb(255 180 180 / 0.6);
+  color: rgb(255 180 180 / 60%);
   letter-spacing: 0.05em;
   opacity: 0;
   animation: fu 0.75s 0.85s forwards;
 }
 
 .hero-author strong {
-  color: rgb(255 200 200 / 0.9);
+  color: rgb(255 200 200 / 90%);
 }
 
 .hero-scroll {
@@ -259,14 +259,14 @@ body {
 .hs-line {
   width: 1px;
   height: 36px;
-  background: linear-gradient(to bottom, rgb(255 160 160 / 0.5), transparent);
+  background: linear-gradient(to bottom, rgb(255 160 160 / 50%), transparent);
 }
 
 .hs-lbl {
   font-family: var(--font-mono);
   font-size: 0.62rem;
   letter-spacing: 0.15em;
-  color: rgb(255 160 160 / 0.5);
+  color: rgb(255 160 160 / 50%);
 }
 
 @keyframes fu {
@@ -355,7 +355,7 @@ h2.sec-title em {
 
 .sec-dark {
   background: var(--crimson-dk);
-  color: rgb(255 220 220 / 0.85);
+  color: rgb(255 220 220 / 85%);
 }
 
 .sec-dark h2.sec-title {
@@ -363,7 +363,7 @@ h2.sec-title em {
 }
 
 .sec-dark .sec-lead {
-  color: rgb(255 180 180 / 0.7);
+  color: rgb(255 180 180 / 70%);
 }
 
 .sec-dark .sec-label {
@@ -417,7 +417,7 @@ h2.sec-title em {
   border-radius: 12px;
   padding: 1.75rem 2rem;
   margin: 1.5rem 0;
-  border: 1px solid rgb(255 255 255 / 0.08);
+  border: 1px solid rgb(255 255 255 / 8%);
   box-shadow: var(--sh-md);
   overflow-x: auto;
 }
@@ -427,13 +427,13 @@ h2.sec-title em {
   font-size: 0.65rem;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: rgb(255 150 150 / 0.7);
+  color: rgb(255 150 150 / 70%);
   margin-bottom: 0.75rem;
 }
 
 .math-box .math-desc {
   font-size: 0.85rem;
-  color: rgb(220 220 220 / 0.75);
+  color: rgb(220 220 220 / 75%);
   line-height: 1.8;
   margin-top: 0.75rem;
   font-style: italic;
@@ -509,15 +509,15 @@ h2.sec-title em {
 }
 
 .c1 .cc-num {
-  color: rgb(192 21 42 / 0.15);
+  color: rgb(192 21 42 / 15%);
 }
 
 .c2 .cc-num {
-  color: rgb(22 128 60 / 0.15);
+  color: rgb(22 128 60 / 15%);
 }
 
 .c3 .cc-num {
-  color: rgb(29 78 216 / 0.15);
+  color: rgb(29 78 216 / 15%);
 }
 
 .cc-title {
@@ -744,25 +744,25 @@ h2.sec-title em {
 .sl-b-red {
   background: var(--crimson-dim);
   color: var(--crimson);
-  border: 1px solid rgb(192 21 42 / 0.2);
+  border: 1px solid rgb(192 21 42 / 20%);
 }
 
 .sl-b-grn {
   background: var(--green-dim);
   color: var(--green);
-  border: 1px solid rgb(22 128 60 / 0.2);
+  border: 1px solid rgb(22 128 60 / 20%);
 }
 
 .sl-b-blue {
   background: var(--blue-dim);
   color: var(--blue);
-  border: 1px solid rgb(29 78 216 / 0.2);
+  border: 1px solid rgb(29 78 216 / 20%);
 }
 
 .sl-b-amb {
   background: var(--amber-dim);
   color: var(--amber);
-  border: 1px solid rgb(180 83 9 / 0.2);
+  border: 1px solid rgb(180 83 9 / 20%);
 }
 
 @media (width <= 560px) {
@@ -987,13 +987,13 @@ h2.sec-title em {
 .xai-shap .xai-tag {
   background: var(--crimson-dim);
   color: var(--crimson);
-  border: 1px solid rgb(192 21 42 / 0.2);
+  border: 1px solid rgb(192 21 42 / 20%);
 }
 
 .xai-lime .xai-tag {
   background: var(--blue-dim);
   color: var(--blue);
-  border: 1px solid rgb(29 78 216 / 0.2);
+  border: 1px solid rgb(29 78 216 / 20%);
 }
 
 .xai-title {
@@ -1033,7 +1033,7 @@ mjx-container[display="true"] {
   font-size: 0.65rem;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: rgb(255 160 160 / 0.6);
+  color: rgb(255 160 160 / 60%);
   margin-bottom: 1rem;
 }
 

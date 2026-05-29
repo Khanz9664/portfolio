@@ -45,21 +45,6 @@ document.addEventListener('DOMContentLoaded', () => {
         ease: 'power4.out'
     });
 
-    // 3. Architecture Node Animations
-    const archNodes = document.querySelectorAll('.arch-node');
-    archNodes.forEach((node, index) => {
-        gsap.from(node, {
-            scrollTrigger: {
-                trigger: '.architecture-viz-container',
-                start: 'top 70%',
-            },
-            scale: 0.8,
-            opacity: 0,
-            duration: 0.6,
-            delay: index * 0.1,
-            ease: 'back.out(1.7)'
-        });
-    });
 
     // 4. Code Terminal Typing Animation
     const codeLines = document.querySelectorAll('.code-line');

@@ -9,17 +9,17 @@
     --muted:    #456070;
     --dim:      #1e2e3a;
     --gold:     #f0b429;
-    --gold-bg:  rgb(240 180 41 / 0.07);
+    --gold-bg:  rgb(240 180 41 / 7%);
     --emerald:  #34d399;
-    --em-bg:    rgb(52 211 153 / 0.07);
+    --em-bg:    rgb(52 211 153 / 7%);
     --coral:    #f87171;
-    --cor-bg:   rgb(248 113 113 / 0.07);
+    --cor-bg:   rgb(248 113 113 / 7%);
     --sky:      #60a5fa;
-    --sky-bg:   rgb(96 165 250 / 0.07);
+    --sky-bg:   rgb(96 165 250 / 7%);
     --violet:   #c084fc;
-    --vio-bg:   rgb(192 132 252 / 0.07);
+    --vio-bg:   rgb(192 132 252 / 7%);
     --peach:    #fb923c;
-    --pch-bg:   rgb(251 146 60 / 0.07);
+    --pch-bg:   rgb(251 146 60 / 7%);
   }
 
   /* ─── UTILITIES ─── */
@@ -112,7 +112,7 @@
     background: repeating-linear-gradient(
       -55deg,
       transparent 0, transparent 38px,
-      rgb(240 180 41 / 0.025) 38px, rgb(240 180 41 / 0.025) 39px
+      rgb(240 180 41 / 2.5%) 38px, rgb(240 180 41 / 2.5%) 39px
     );
   }
 
@@ -122,14 +122,14 @@
     position: absolute;
     width: 70%; height: 70%;
     top: -20%; left: -10%;
-    background: radial-gradient(ellipse, rgb(52 211 153 / 0.05) 0%, transparent 65%);
+    background: radial-gradient(ellipse, rgb(52 211 153 / 5%) 0%, transparent 65%);
   }
 
   .hero-orb2 {
     position: absolute;
     width: 50%; height: 60%;
     bottom: -20%; right: -5%;
-    background: radial-gradient(ellipse, rgb(240 180 41 / 0.06) 0%, transparent 65%);
+    background: radial-gradient(ellipse, rgb(240 180 41 / 6%) 0%, transparent 65%);
     pointer-events: none;
   }
 
@@ -184,8 +184,8 @@
   }
 
   .pill {
-    background: rgb(240 180 41 / 0.08);
-    border: 1px solid rgb(240 180 41 / 0.22);
+    background: rgb(240 180 41 / 8%);
+    border: 1px solid rgb(240 180 41 / 22%);
     color: var(--gold);
     font-family: Inconsolata, monospace;
     font-size: clamp(9px, 1.4vw, 10.5px);
@@ -347,37 +347,37 @@
     border-left-width: 4px;
     -webkit-overflow-scrolling: touch;
     background: var(--gold-bg);
-    border-color: rgb(240 180 41 / 0.22);
+    border-color: rgb(240 180 41 / 22%);
     border-left-color: var(--gold);
   }
 
   .math-block.emerald {
     background: var(--em-bg);
-    border-color: rgb(52 211 153 / 0.22);
+    border-color: rgb(52 211 153 / 22%);
     border-left-color: var(--emerald);
   }
 
   .math-block.coral {
     background: var(--cor-bg);
-    border-color: rgb(248 113 113 / 0.22);
+    border-color: rgb(248 113 113 / 22%);
     border-left-color: var(--coral);
   }
 
   .math-block.sky {
     background: var(--sky-bg);
-    border-color: rgb(96 165 250 / 0.22);
+    border-color: rgb(96 165 250 / 22%);
     border-left-color: var(--sky);
   }
 
   .math-block.violet {
     background: var(--vio-bg);
-    border-color: rgb(192 132 252 / 0.22);
+    border-color: rgb(192 132 252 / 22%);
     border-left-color: var(--violet);
   }
 
   .math-block.peach {
     background: var(--pch-bg);
-    border-color: rgb(251 146 60 / 0.22);
+    border-color: rgb(251 146 60 / 22%);
     border-left-color: var(--peach);
   }
 
@@ -451,37 +451,37 @@
     border: 1px solid;
     border-left-width: 4px;
     background: var(--gold-bg);
-    border-color: rgb(240 180 41 / 0.22);
+    border-color: rgb(240 180 41 / 22%);
     border-left-color: var(--gold);
   }
 
   .callout.emerald {
     background: var(--em-bg);
-    border-color: rgb(52 211 153 / 0.22);
+    border-color: rgb(52 211 153 / 22%);
     border-left-color: var(--emerald);
   }
 
   .callout.coral {
     background: var(--cor-bg);
-    border-color: rgb(248 113 113 / 0.22);
+    border-color: rgb(248 113 113 / 22%);
     border-left-color: var(--coral);
   }
 
   .callout.sky {
     background: var(--sky-bg);
-    border-color: rgb(96 165 250 / 0.22);
+    border-color: rgb(96 165 250 / 22%);
     border-left-color: var(--sky);
   }
 
   .callout.violet {
     background: var(--vio-bg);
-    border-color: rgb(192 132 252 / 0.22);
+    border-color: rgb(192 132 252 / 22%);
     border-left-color: var(--violet);
   }
 
   .callout.peach {
     background: var(--pch-bg);
-    border-color: rgb(251 146 60 / 0.22);
+    border-color: rgb(251 146 60 / 22%);
     border-left-color: var(--peach);
   }
 

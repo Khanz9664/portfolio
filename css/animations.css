@@ -18,15 +18,15 @@
 /* Pulse/Glow Effect */
 @keyframes neonPulse {
     0% {
-        box-shadow: 0 0 5px rgb(0 242 255 / 0.2);
+        box-shadow: 0 0 5px rgb(0 242 255 / 20%);
     }
 
     50% {
-        box-shadow: 0 0 20px rgb(0 242 255 / 0.5);
+        box-shadow: 0 0 20px rgb(0 242 255 / 50%);
     }
 
     100% {
-        box-shadow: 0 0 5px rgb(0 242 255 / 0.2);
+        box-shadow: 0 0 5px rgb(0 242 255 / 20%);
     }
 }
 

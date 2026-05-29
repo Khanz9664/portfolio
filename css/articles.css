@@ -3,10 +3,10 @@
    ============================================================ */
 
 :root {
-    --article-card-bg: rgb(15 15 25 / 0.4);
-    --article-border: rgb(255 255 255 / 0.05);
+    --article-card-bg: rgb(15 15 25 / 40%);
+    --article-border: rgb(255 255 255 / 5%);
     --article-accent: var(--accent-cyan);
-    --article-glow: rgb(0 242 255 / 0.1);
+    --article-glow: rgb(0 242 255 / 10%);
 }
 
 .hub-content {
@@ -34,8 +34,8 @@
     /* Reduced for mobile safety */
     font-family: Outfit, sans-serif;
     font-weight: 900;
-    color: rgb(255 255 255 / 0.03);
-    -webkit-text-stroke: 1px rgb(255 255 255 / 0.05);
+    color: rgb(255 255 255 / 3%);
+    -webkit-text-stroke: 1px rgb(255 255 255 / 5%);
     z-index: -1;
     pointer-events: none;
     letter-spacing: 0.05em;
@@ -60,14 +60,14 @@
     background: linear-gradient(135deg, #fff 0%, #cbd5e1 100%);
     background-clip: text;
     -webkit-text-fill-color: transparent;
-    filter: drop-shadow(0 5px 15px rgb(255 255 255 / 0.1));
+    filter: drop-shadow(0 5px 15px rgb(255 255 255 / 10%));
 }
 
 .title-part-2 {
     background: linear-gradient(135deg, var(--accent-cyan) 0%, #bd00ff 100%);
     background-clip: text;
     -webkit-text-fill-color: transparent;
-    filter: drop-shadow(0 10px 20px rgb(189 0 255 / 0.2));
+    filter: drop-shadow(0 10px 20px rgb(189 0 255 / 20%));
     margin-top: 0.2em;
 }
 
@@ -117,8 +117,8 @@
 
 #article-search {
     width: 100%;
-    background: rgb(20 20 35 / 0.4);
-    border: 1px solid rgb(255 255 255 / 0.1);
+    background: rgb(20 20 35 / 40%);
+    border: 1px solid rgb(255 255 255 / 10%);
     padding: 1.2rem 1.5rem 1.2rem 3.5rem;
     border-radius: 100px;
     color: #fff;
@@ -131,8 +131,8 @@
 #article-search:focus {
     outline: none;
     border-color: var(--accent-cyan);
-    background: rgb(20 20 35 / 0.6);
-    box-shadow: 0 0 20px rgb(0 242 255 / 0.15);
+    background: rgb(20 20 35 / 60%);
+    box-shadow: 0 0 20px rgb(0 242 255 / 15%);
 }
 
 .filter-pills {
@@ -142,8 +142,8 @@
 }
 
 .pill {
-    background: rgb(255 255 255 / 0.05);
-    border: 1px solid rgb(255 255 255 / 0.1);
+    background: rgb(255 255 255 / 5%);
+    border: 1px solid rgb(255 255 255 / 10%);
     padding: 0.8rem 1.5rem;
     border-radius: 100px;
     color: #94a3b8;
@@ -166,7 +166,7 @@
     background: var(--accent-cyan);
     color: #050505;
     border-color: var(--accent-cyan);
-    box-shadow: 0 5px 15px rgb(0 242 255 / 0.2);
+    box-shadow: 0 5px 15px rgb(0 242 255 / 20%);
 }
 
 /* --- Articles Grid --- */
@@ -185,7 +185,7 @@
 
     /* Slightly shorter for better spacing */
     background: #08080c;
-    border: 1px solid rgb(255 255 255 / 0.08);
+    border: 1px solid rgb(255 255 255 / 8%);
     border-radius: 24px;
     overflow: hidden;
     text-decoration: none;
@@ -202,7 +202,7 @@
     right: 30px;
     font-family: 'Fira Code', monospace;
     font-size: 0.9rem;
-    color: rgb(255 255 255 / 0.2);
+    color: rgb(255 255 255 / 20%);
     font-weight: 500;
     z-index: 10;
     letter-spacing: 0.1em;
@@ -217,7 +217,7 @@
     height: 100%;
     z-index: 1;
     overflow: hidden;
-    background: radial-gradient(circle at 50% 40%, rgb(var(--card-accent-rgb, 0 242 255) / 0.1) 0%, #000 70%);
+    background: radial-gradient(circle at 50% 40%, rgb(var(--card-accent-rgb, 0 242 255) / 10%) 0%, #000 70%);
 }
 
 .card-visual-header {
@@ -235,7 +235,7 @@
 /* Gradient Descent Visual */
 .visual-gradient-descent .v-ring {
     position: absolute;
-    border: 1.5px solid rgb(0 242 255 / 0.1);
+    border: 1.5px solid rgb(0 242 255 / 10%);
     border-radius: 50%;
 }
 
@@ -290,7 +290,7 @@
 /* Lagrange Visual */
 .visual-lagrange .v-circle {
     position: absolute;
-    border: 2px solid rgb(0 242 255 / 0.15);
+    border: 2px solid rgb(0 242 255 / 15%);
     border-radius: 50%;
 }
 
@@ -326,7 +326,7 @@
 /* Bias-Variance Visual */
 .visual-bias-variance .v-target-ring {
     position: absolute;
-    border: 1px solid rgb(0 242 255 / 0.1);
+    border: 1px solid rgb(0 242 255 / 10%);
     border-radius: 50%;
     animation: targetPulse 4s infinite ease-in-out;
 }
@@ -379,8 +379,8 @@
 }
 
 @keyframes targetPulse {
-    0%, 100% { border-color: rgb(0 242 255 / 0.05); }
-    50% { border-color: rgb(0 242 255 / 0.15); }
+    0%, 100% { border-color: rgb(0 242 255 / 5%); }
+    50% { border-color: rgb(0 242 255 / 15%); }
 }
 
 @keyframes shiftCluster {
@@ -456,8 +456,8 @@
     width: 100%;
     height: 100%;
     background-image:
-        linear-gradient(rgb(189 0 255 / 0.05) 1px, transparent 1px),
-        linear-gradient(90deg, rgb(189 0 255 / 0.05) 1px, transparent 1px);
+        linear-gradient(rgb(189 0 255 / 5%) 1px, transparent 1px),
+        linear-gradient(90deg, rgb(189 0 255 / 5%) 1px, transparent 1px);
     background-size: 30px 30px;
     opacity: 0.5;
 }
@@ -510,7 +510,7 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background: linear-gradient(to bottom, transparent 20%, rgb(0 0 0 / 0.9) 100%);
+    background: linear-gradient(to bottom, transparent 20%, rgb(0 0 0 / 90%) 100%);
     z-index: 3;
 }
 
@@ -518,7 +518,7 @@
 .card-glare {
     position: absolute;
     inset: 0;
-    background: radial-gradient(circle at var(--glare-x, 50%) var(--glare-y, 50%), rgb(255 255 255 / 0.05) 0%, transparent 60%);
+    background: radial-gradient(circle at var(--glare-x, 50%) var(--glare-y, 50%), rgb(255 255 255 / 5%) 0%, transparent 60%);
     z-index: 15;
     pointer-events: none;
     opacity: 0;
@@ -547,16 +547,16 @@
     width: 100%;
     padding: 2.5rem;
     z-index: 8;
-    background: linear-gradient(to top, rgb(0 0 0 / 0.98) 0%, rgb(0 0 0 / 0.6) 100%);
+    background: linear-gradient(to top, rgb(0 0 0 / 98%) 0%, rgb(0 0 0 / 60%) 100%);
     backdrop-filter: blur(30px);
-    border-top: 1px solid rgb(255 255 255 / 0.1);
-    box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.05);
+    border-top: 1px solid rgb(255 255 255 / 10%);
+    box-shadow: inset 0 1px 0 rgb(255 255 255 / 5%);
 }
 
 .article-card:hover {
     transform: translateY(-10px);
     border-color: var(--card-accent, var(--accent-cyan));
-    box-shadow: 0 40px 80px rgb(0 0 0 / 0.6), 0 0 30px rgb(var(--card-accent-rgb, 0 242 255) / 0.2);
+    box-shadow: 0 40px 80px rgb(0 0 0 / 60%), 0 0 30px rgb(var(--card-accent-rgb, 0 242 255) / 20%);
 }
 
 /* Category & Tech Spec */
@@ -574,16 +574,16 @@
     text-transform: uppercase;
     letter-spacing: 0.25em;
     font-weight: 700;
-    background: rgb(var(--card-accent-rgb, 0 242 255) / 0.12);
+    background: rgb(var(--card-accent-rgb, 0 242 255) / 12%);
     padding: 5px 12px;
     border-radius: 4px;
-    border: 1px solid rgb(var(--card-accent-rgb, 0 242, 255) / 0.25);
+    border: 1px solid rgb(var(--card-accent-rgb, 0 242, 255) / 25%);
 }
 
 .tech-spec {
     font-family: 'Fira Code', monospace;
     font-size: 0.6rem;
-    color: rgb(255 255 255 / 0.3);
+    color: rgb(255 255 255 / 30%);
     letter-spacing: 0.1em;
 }
 
@@ -600,7 +600,7 @@
 
 .article-card p {
     font-family: 'Space Grotesk', sans-serif;
-    color: rgb(255 255 255 / 0.6);
+    color: rgb(255 255 255 / 60%);
     line-height: 1.5;
     font-size: 0.9rem;
     font-weight: 300;
@@ -619,13 +619,13 @@
     align-items: center;
     margin-top: 1.8rem;
     padding-top: 1.5rem;
-    border-top: 1px solid rgb(255 255 255 / 0.05);
+    border-top: 1px solid rgb(255 255 255 / 5%);
 }
 
 .read-time {
     font-family: 'Space Grotesk', sans-serif;
     font-size: 0.8rem;
-    color: rgb(255 255 255 / 0.4);
+    color: rgb(255 255 255 / 40%);
     display: flex;
     align-items: center;
     gap: 8px;

@@ -1,0 +1,2007 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Neural Networks | Shahid Ul Islam</title>
+  <meta name="description" content="A complete masterclass on Neural Networks." />
+  <meta name="author" content="Shahid Ul Islam" />
+  <link rel="icon" type="image/png" href="../img/plogo.png" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.min.js"></script>
+  <link
+    href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=JetBrains+Mono:wght@300;400;600;700&family=Lora:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="css/neuralnets.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <link rel="stylesheet" href="../css/variables.css" />
+  <link rel="stylesheet" href="../css/navigation.css" />
+  <link rel="stylesheet" href="../css/footer.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <script defer src="../js/common.js"></script>
+
+</head>
+
+<body>
+  <div class="top-bar">
+    <div class="logo">
+      <img src="../img/plogo.png" alt="Personal Logo" class="logo-icon">
+      <span class="logo-text">SHAHID<span class="logo-accent">||</span>Portfolio</span>
+    </div>
+    <nav class="nav-container">
+      <ul class="nav-links">
+        <li><a href="../index.html" class="nav-link">.Home</a></li>
+        <li><a href="../about.html" class="nav-link">.About</a></li>
+        <li><a href="../skills.html" class="nav-link">.Skills</a></li>
+        <li><a href="../projects.html" class="nav-link">.Projects</a></li>
+        <li><a href="../contact.html" class="nav-link">.Contact</a></li>
+        <li><a href="../articles.html" class="nav-link">.Articles</a></li>
+      </ul>
+      <div class="menu-toggle">
+        <div class="hamburger"></div>
+      </div>
+    </nav>
+  </div>
+
+  <!-- ══ HERO ══════════════════════════════════════════════════ -->
+  <div class="hero">
+    <div class="hero-bg-num">NN</div>
+    <div class="hero-inner">
+      <div class="hero-eyebrow">
+        <div class="hero-eyebrow-line"></div>
+        <span class="hero-eyebrow-text">Machine Learning // Deep Learning Foundations</span>
+      </div>
+      <h1>
+        Neural<br>
+        <span class="italic">Networks</span><br>
+        <span class="outline">Mathematical Foundations</span>
+      </h1>
+      <div class="hero-meta">
+        <p class="hero-desc">
+          From biological neurons to backpropagation through time —<br>
+          complete mathematical derivations, geometric intuitions,<br>
+          and every connection to the models you've already built.
+        </p>
+        <div class="hero-stats">
+          <div class="hero-stat">
+            <div class="hero-stat-num">16</div>
+            <div class="hero-stat-label">Sections</div>
+          </div>
+          <div class="hero-stat">
+            <div class="hero-stat-num">∞</div>
+            <div class="hero-stat-label">Depth</div>
+          </div>
+        </div>
+      </div>
+      <div class="hero-pills">
+        <span class="pill">Biological Neuron</span><span class="pill">McCulloch-Pitts</span>
+        <span class="pill">Perceptron</span><span class="pill">Activation Functions</span>
+        <span class="pill">Forward Pass</span><span class="pill">Loss Functions</span>
+        <span class="pill">Computational Graph</span><span class="pill">Chain Rule</span>
+        <span class="pill">Backpropagation</span><span class="pill">Vanishing Gradient</span>
+        <span class="pill">Adam Optimizer</span><span class="pill">Xavier / He Init</span>
+        <span class="pill">Universal Approximation</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ TOC ══════════════════════════════════════════════════ -->
+  <div class="toc-outer">
+    <div class="toc-wrap">
+      <div class="toc-label">// Table of Contents</div>
+      <ol class="toc-list">
+        <li><a href="#s1"><span class="toc-num">01</span>The Biological Neuron</a></li>
+        <li><a href="#s2"><span class="toc-num">02</span>The Mathematical Neuron</a></li>
+        <li><a href="#s3"><span class="toc-num">03</span>Activation Functions</a></li>
+        <li><a href="#s4"><span class="toc-num">04</span>Network Architecture & Layers</a></li>
+        <li><a href="#s5"><span class="toc-num">05</span>Forward Propagation — Full Math</a></li>
+        <li><a href="#s6"><span class="toc-num">06</span>Loss Functions</a></li>
+        <li><a href="#s7"><span class="toc-num">07</span>The Computational Graph</a></li>
+        <li><a href="#s8"><span class="toc-num">08</span>Backpropagation — Chain Rule Derivation</a></li>
+        <li><a href="#s9"><span class="toc-num">09</span>Gradient Flow Through a Full Network</a></li>
+        <li><a href="#s10"><span class="toc-num">10</span>Vanishing & Exploding Gradients</a></li>
+        <li><a href="#s11"><span class="toc-num">11</span>Weight Initialization</a></li>
+        <li><a href="#s12"><span class="toc-num">12</span>Optimization for Neural Networks</a></li>
+        <li><a href="#s13"><span class="toc-num">13</span>Universal Approximation Theorem</a></li>
+        <li><a href="#s14"><span class="toc-num">14</span>Putting It All Together — Full Pass</a></li>
+        <li><a href="#s15"><span class="toc-num">15</span>Connection to Modern Architectures</a></li>
+        <li><a href="#s16"><span class="toc-num">16</span>The Complete Mental Model</a></li>
+      </ol>
+    </div>
+  </div>
+
+  <div class="content">
+
+    <!-- ══ §01 ══════════════════════════════════════════════════ -->
+    <div class="section" id="s1">
+      <div class="section-header">
+        <div class="sec-num-block">
+          <div class="sec-num-big">01</div>
+          <div class="sec-num-label">§ Sec</div>
+        </div>
+        <div class="sec-title-block">
+          <h2>The Biological Neuron</h2>
+          <div class="sec-sub">// inspiration · structure · signal processing · why it matters</div>
+        </div>
+      </div>
+
+      <p>Neural networks borrow their structure — and their name — from the biological neurons in the human brain.
+        Understanding the biology isn't just historical context; the parallels reveal <em>why</em> the mathematical
+        structure of artificial networks works.</p>
+
+      <div class="subsection">
+        <div class="sh">Anatomy of a Biological Neuron</div>
+
+        <div class="fig">
+          <div class="fig-inner">
+            <svg viewBox="0 0 680 180" xmlns="http://www.w3.org/2000/svg" style="max-width:680px;width:100%;">
+              <rect width="680" height="180" fill="#131720" />
+              <!-- Dendrites -->
+              <g stroke="#67d4f8" stroke-width="1.5" fill="none" opacity="0.8">
+                <path d="M30,90 C55,70 80,60 105,80" />
+                <path d="M30,90 C50,90 75,90 105,90" />
+                <path d="M30,90 C55,110 80,120 105,100" />
+                <path d="M10,60 C40,65 65,70 105,80" />
+                <path d="M10,120 C40,115 65,110 105,100" />
+              </g>
+              <!-- Dendrite label -->
+              <text x="12" y="42" font-family="JetBrains Mono" font-size="10" fill="#67d4f8">Dendrites</text>
+              <text x="10" y="56" font-family="JetBrains Mono" font-size="9" fill="#4a5f78">(receive signals)</text>
+              <!-- Cell body (soma) -->
+              <circle cx="150" cy="90" r="36" fill="#1e2535" stroke="#c8f135" stroke-width="2" />
+              <text x="150" y="86" text-anchor="middle" font-family="JetBrains Mono" font-size="9"
+                fill="#c8f135">Soma</text>
+              <text x="150" y="99" text-anchor="middle" font-family="JetBrains Mono" font-size="8" fill="#4a5f78">(cell
+                body)</text>
+              <!-- Nucleus dot -->
+              <circle cx="150" cy="90" r="9" fill="#c8f135" opacity="0.2" />
+              <text x="150" y="118" text-anchor="middle" font-family="JetBrains Mono" font-size="8"
+                fill="#4a5f78">integrates</text>
+              <!-- Axon -->
+              <rect x="186" y="86" width="180" height="8" fill="#ffb347" opacity="0.7" rx="4" />
+              <text x="268" y="80" text-anchor="middle" font-family="JetBrains Mono" font-size="10"
+                fill="#ffb347">Axon</text>
+              <text x="268" y="115" text-anchor="middle" font-family="JetBrains Mono" font-size="9"
+                fill="#4a5f78">(transmits signal)</text>
+              <!-- Myelin sheaths -->
+              <g fill="#2a3850">
+                <rect x="200" y="83" width="20" height="14" rx="7" />
+                <rect x="238" y="83" width="20" height="14" rx="7" />
+                <rect x="276" y="83" width="20" height="14" rx="7" />
+                <rect x="316" y="83" width="20" height="14" rx="7" />
+              </g>
+              <text x="268" y="148" text-anchor="middle" font-family="JetBrains Mono" font-size="8"
+                fill="#2a3850">myelin sheaths</text>
+              <!-- Axon terminals -->
+              <g stroke="#3dffc0" stroke-width="1.5" fill="none" opacity="0.85">
+                <path d="M366,90 C390,70 415,60 440,55" />
+                <path d="M366,90 C390,90 415,90 440,90" />
+                <path d="M366,90 C390,110 415,120 440,125" />
+              </g>
+              <text x="445" y="42" font-family="JetBrains Mono" font-size="10" fill="#3dffc0">Axon Terminals</text>
+              <text x="448" y="56" font-family="JetBrains Mono" font-size="9" fill="#4a5f78">(output synapses)</text>
+              <!-- Synapse dots -->
+              <circle cx="440" cy="55" r="5" fill="#3dffc0" opacity="0.8" />
+              <circle cx="440" cy="90" r="5" fill="#3dffc0" opacity="0.8" />
+              <circle cx="440" cy="125" r="5" fill="#3dffc0" opacity="0.8" />
+              <!-- Next neurons (faint) -->
+              <circle cx="500" cy="50" r="18" fill="none" stroke="#2a3850" stroke-width="1.5" stroke-dasharray="4,3" />
+              <circle cx="500" cy="90" r="18" fill="none" stroke="#2a3850" stroke-width="1.5" stroke-dasharray="4,3" />
+              <circle cx="500" cy="130" r="18" fill="none" stroke="#2a3850" stroke-width="1.5" stroke-dasharray="4,3" />
+              <!-- Arrows -->
+              <defs>
+                <marker id="yw" markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto">
+                  <path d="M0,0 L0,5 L7,2.5z" fill="#3dffc0" />
+                </marker>
+              </defs>
+              <line x1="445" y1="55" x2="480" y2="52" stroke="#3dffc0" stroke-width="1.2" marker-end="url(#yw)" />
+              <line x1="445" y1="90" x2="480" y2="90" stroke="#3dffc0" stroke-width="1.2" marker-end="url(#yw)" />
+              <line x1="445" y1="125" x2="480" y2="128" stroke="#3dffc0" stroke-width="1.2" marker-end="url(#yw)" />
+              <!-- AP label -->
+              <text x="545" y="90" text-anchor="middle" font-family="JetBrains Mono" font-size="9"
+                fill="#4a5f78">next</text>
+              <text x="545" y="103" text-anchor="middle" font-family="JetBrains Mono" font-size="9"
+                fill="#4a5f78">neurons</text>
+            </svg>
+          </div>
+          <div class="fig-cap">Fig 1. Biological neuron anatomy. Dendrites receive signals → Soma integrates them → Axon
+            fires if threshold exceeded → Terminals pass signal to downstream neurons.</div>
+        </div>
+
+        <ul class="flist">
+          <li><strong>Dendrites</strong> — branch-like extensions that receive electrical/chemical signals from upstream
+            neurons. Each connection (synapse) has a variable <em>strength</em> — analogous to weights \(w_i\).</li>
+          <li><strong>Soma (cell body)</strong> — integrates all incoming signals from all dendrites. Performs a
+            weighted summation. If the total exceeds a threshold, it fires.</li>
+          <li><strong>Axon</strong> — transmits the output signal (action potential) to downstream neurons. A neuron
+            either fires or doesn't — it's a binary threshold event.</li>
+          <li><strong>Synapse</strong> — the junction between two neurons. Strength is modifiable through learning
+            (Hebbian plasticity: "neurons that fire together, wire together").</li>
+        </ul>
+      </div>
+
+      <div class="subsection">
+        <div class="sh sky">The McCulloch-Pitts Neuron (1943)</div>
+        <p>Warren McCulloch and Walter Pitts built the first mathematical model of a neuron. Their insight: <em>the
+            neuron is a threshold logic unit</em>.</p>
+
+        <div class="eq sky">
+          <div class="eq-bar">
+            <div class="eq-dots">
+              <div class="eq-dot" style="background:#ff5f57"></div>
+              <div class="eq-dot" style="background:#febc2e"></div>
+              <div class="eq-dot" style="background:#28c840"></div>
+            </div><span class="eq-label">McCulloch-Pitts Model (1943)</span>
+          </div>
+          <div class="eq-body">
+            \[
+            \text{output} = \begin{cases} 1 & \text{if } \displaystyle\sum_{i=1}^n w_i x_i \geq \theta \\ 0 &
+            \text{otherwise} \end{cases}
+            \]
+            <p style="font-family:'JetBrains Mono',monospace;font-size:0.82em;color:var(--muted);margin-top:10px;">where
+              xᵢ ∈ {0,1} are binary inputs, wᵢ ∈ {-1,+1} are fixed weights, θ is the threshold</p>
+          </div>
+        </div>
+
+        <p>Limitations: weights are fixed (no learning), inputs must be binary, threshold must be hand-set. Rosenblatt's
+          <strong>Perceptron</strong> (1958) fixed the first problem by introducing a learning rule. Modern neural
+          networks fix all three.</p>
+      </div>
+
+      <div class="note sky">
+        <div class="note-icon">Insight</div>
+        <div class="note-body">
+          <p>The brain has ~86 billion neurons, each connected to ~7,000 others — approximately 600 trillion synaptic
+            connections. A GPT-4-scale model has ~1.8 trillion parameters. The brain still wins by several orders of
+            magnitude in connection density, but artificial networks compensate with precise floating-point computation,
+            gradient-based learning, and perfect memory.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ §02 ══════════════════════════════════════════════════ -->
+    <div class="section" id="s2">
+      <div class="section-header">
+        <div class="sec-num-block">
+          <div class="sec-num-big">02</div>
+          <div class="sec-num-label">§ Sec</div>
+        </div>
+        <div class="sec-title-block">
+          <h2>The Mathematical Neuron</h2>
+          <div class="sec-sub">// weighted sum · bias · pre-activation · post-activation</div>
+        </div>
+      </div>
+
+      <p>The modern artificial neuron generalizes the McCulloch-Pitts unit with continuous weights, a learnable bias,
+        and a differentiable activation function. This is the atom from which all neural networks are built.</p>
+
+      <div class="subsection">
+        <div class="sh">Anatomy of a Single Artificial Neuron</div>
+
+        <div class="fig">
+          <div class="fig-inner">
+            <svg viewBox="0 0 620 220" xmlns="http://www.w3.org/2000/svg" style="max-width:620px;width:100%;">
+              <rect width="620" height="220" fill="#131720" />
+              <defs>
+                <marker id="la" markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto">
+                  <path d="M0,0 L0,5 L7,2.5z" fill="#4a5f78" />
+                </marker>
+                <marker id="lim" markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto">
+                  <path d="M0,0 L0,5 L7,2.5z" fill="#c8f135" />
+                </marker>
+                <marker id="lsk" markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto">
+                  <path d="M0,0 L0,5 L7,2.5z" fill="#67d4f8" />
+                </marker>
+                <marker id="lam" markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto">
+                  <path d="M0,0 L0,5 L7,2.5z" fill="#ffb347" />
+                </marker>
+                <marker id="lmt" markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto">
+                  <path d="M0,0 L0,5 L7,2.5z" fill="#3dffc0" />
+                </marker>
+              </defs>
+
+              <!-- Inputs -->
+              <text x="12" y="62" font-family="JetBrains Mono" font-size="11" fill="#67d4f8">x₁</text>
+              <text x="12" y="112" font-family="JetBrains Mono" font-size="11" fill="#67d4f8">x₂</text>
+              <text x="12" y="162" font-family="JetBrains Mono" font-size="11" fill="#67d4f8">xₙ</text>
+              <text x="12" y="195" font-family="JetBrains Mono" font-size="9" fill="#4a5f78">inputs</text>
+
+              <!-- Input arrows with weight labels -->
+              <line x1="35" y1="58" x2="148" y2="95" stroke="#67d4f8" stroke-width="1.6" marker-end="url(#lsk)" />
+              <line x1="35" y1="108" x2="148" y2="108" stroke="#67d4f8" stroke-width="1.6" marker-end="url(#lsk)" />
+              <line x1="35" y1="158" x2="148" y2="122" stroke="#67d4f8" stroke-width="1.6" marker-end="url(#lsk)" />
+              <!-- Dots between x2 and xn -->
+              <text x="14" y="137" font-family="JetBrains Mono" font-size="12" fill="#4a5f78">⋮</text>
+
+              <!-- Weight labels on arrows -->
+              <text x="72" y="70" font-family="JetBrains Mono" font-size="10" fill="#ffb347">w₁</text>
+              <text x="72" y="102" font-family="JetBrains Mono" font-size="10" fill="#ffb347">w₂</text>
+              <text x="72" y="148" font-family="JetBrains Mono" font-size="10" fill="#ffb347">wₙ</text>
+
+              <!-- Bias arrow from above -->
+              <text x="168" y="28" font-family="JetBrains Mono" font-size="11" fill="#ff6b8a">b</text>
+              <line x1="175" y1="32" x2="175" y2="72" stroke="#ff6b8a" stroke-width="1.6" stroke-dasharray="5,3"
+                marker-end="url(#la)" />
+              <text x="182" y="58" font-family="JetBrains Mono" font-size="9" fill="#ff6b8a">bias</text>
+
+              <!-- Summation node -->
+              <circle cx="175" cy="108" r="28" fill="#1e2535" stroke="#c8f135" stroke-width="2" />
+              <text x="175" y="104" text-anchor="middle" font-family="JetBrains Mono" font-size="16"
+                fill="#c8f135">Σ</text>
+              <text x="175" y="122" text-anchor="middle" font-family="JetBrains Mono" font-size="8" fill="#4a5f78">z =
+                Σwᵢxᵢ+b</text>
+
+              <!-- z arrow -->
+              <line x1="203" y1="108" x2="268" y2="108" stroke="#c8f135" stroke-width="1.8" marker-end="url(#lim)" />
+              <text x="225" y="100" font-family="JetBrains Mono" font-size="10" fill="#c8f135">z</text>
+              <text x="215" y="122" font-family="JetBrains Mono" font-size="9" fill="#4a5f78">pre-activation</text>
+
+              <!-- Activation node -->
+              <rect x="270" y="80" width="70" height="56" rx="8" fill="#1e2535" stroke="#3dffc0" stroke-width="2" />
+              <text x="305" y="103" text-anchor="middle" font-family="JetBrains Mono" font-size="11"
+                fill="#3dffc0">σ(z)</text>
+              <text x="305" y="120" text-anchor="middle" font-family="JetBrains Mono" font-size="9"
+                fill="#4a5f78">activation</text>
+
+              <!-- Output arrow -->
+              <line x1="340" y1="108" x2="420" y2="108" stroke="#3dffc0" stroke-width="1.8" marker-end="url(#lmt)" />
+              <text x="375" y="100" font-family="JetBrains Mono" font-size="10" fill="#3dffc0">a = σ(z)</text>
+              <text x="370" y="122" font-family="JetBrains Mono" font-size="9" fill="#4a5f78">output</text>
+
+              <!-- Output label -->
+              <text x="425" y="112" font-family="JetBrains Mono" font-size="12" fill="#3dffc0">ŷ</text>
+
+              <!-- Annotations at right -->
+              <text x="480" y="75" font-family="JetBrains Mono" font-size="9" fill="#c8f135">z = w·x + b</text>
+              <text x="480" y="93" font-family="JetBrains Mono" font-size="9" fill="#4a5f78">linear combination</text>
+              <text x="480" y="118" font-family="JetBrains Mono" font-size="9" fill="#3dffc0">a = σ(z)</text>
+              <text x="480" y="136" font-family="JetBrains Mono" font-size="9" fill="#4a5f78">nonlinear transform</text>
+            </svg>
+          </div>
+          <div class="fig-cap">Fig 2. A single artificial neuron. Inputs {xᵢ} are weighted (wᵢ), summed with bias b to
+            form pre-activation z. An activation function σ squashes z to output a.</div>
+        </div>
+      </div>
+
+      <div class="subsection">
+        <div class="sh amber">The Two Operations</div>
+
+        <div class="eq amber">
+          <div class="eq-bar">
+            <div class="eq-dots">
+              <div class="eq-dot" style="background:#ff5f57"></div>
+              <div class="eq-dot" style="background:#febc2e"></div>
+              <div class="eq-dot" style="background:#28c840"></div>
+            </div><span class="eq-label">Single Neuron — Full Computation</span>
+          </div>
+          <div class="eq-body">
+            \[
+            z = \mathbf{w}^T\mathbf{x} + b = \sum_{i=1}^n w_i x_i + b \qquad \text{(pre-activation / linear
+            combination)}
+            \]
+            \[
+            a = \sigma(z) \qquad \text{(post-activation / output)}
+            \]
+          </div>
+        </div>
+
+        <ul class="flist">
+          <li><strong>Pre-activation \(z\)</strong> — the raw linear combination. Identical to a linear regression
+            output. By itself, it's just linear. This is the "integrate" step.</li>
+          <li><strong>Bias \(b\)</strong> — a learnable offset. Allows the decision boundary to shift away from the
+            origin. Without bias, the hyperplane \(\mathbf{w}^T\mathbf{x} = 0\) is constrained to pass through the
+            origin.</li>
+          <li><strong>Activation \(\sigma(z)\)</strong> — the crucial nonlinearity. Without it, stacking multiple linear
+            layers is still just a single linear layer (linear functions compose to linear). Activations are what allow
+            neural networks to approximate nonlinear functions.</li>
+        </ul>
+
+        <div class="note lime">
+          <div class="note-icon">Key Fact</div>
+          <div class="note-body">
+            <p>A neural network with no activation functions is identically a linear model, regardless of how many
+              layers it has. If every layer is \(\mathbf{y} = \mathbf{W}\mathbf{x} + \mathbf{b}\), then composing \(L\)
+              layers gives \(\mathbf{y} = \mathbf{W}_L\cdots\mathbf{W}_1\mathbf{x} + \text{const} =
+              \tilde{\mathbf{W}}\mathbf{x} + \tilde{\mathbf{b}}\) — still linear. Activation functions are not optional
+              decorations. They are the entire reason deep networks work.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ §03 ══════════════════════════════════════════════════ -->
+    <div class="section" id="s3">
+      <div class="section-header">
+        <div class="sec-num-block">
+          <div class="sec-num-big">03</div>
+          <div class="sec-num-label">§ Sec</div>
+        </div>
+        <div class="sec-title-block">
+          <h2>Activation Functions</h2>
+          <div class="sec-sub">// sigmoid · tanh · ReLU · Leaky ReLU · GELU · Softmax</div>
+        </div>
+      </div>
+
+      <p>Activation functions are the nonlinearities that give neural networks their expressive power. Their
+        mathematical properties — differentiability, range, gradient behavior — directly determine training dynamics.
+      </p>
+
+      <div class="act-grid">
+        <div class="act-card" style="border-top-color:var(--sky)">
+          <div class="act-name" style="color:var(--sky)">Sigmoid σ</div>
+          <div class="act-formula">\(\sigma(z) = \frac{1}{1+e^{-z}}\)</div>
+          <div class="act-formula">\(\sigma'(z) = \sigma(z)(1-\sigma(z))\)</div>
+          <p>Range (0,1). Probabilistic output. Saturates for large |z| — gradient → 0 causes vanishing gradients. Max
+            gradient 0.25 at z=0. Use only in output layer for binary classification.</p>
+        </div>
+        <div class="act-card" style="border-top-color:var(--violet)">
+          <div class="act-name" style="color:var(--violet)">Tanh</div>
+          <div class="act-formula">\(\tanh(z) = \frac{e^z - e^{-z}}{e^z + e^{-z}}\)</div>
+          <div class="act-formula">\(\tanh'(z) = 1 - \tanh^2(z)\)</div>
+          <p>Range (−1,1). Zero-centered — better gradient flow than sigmoid. Still saturates. Note: \(\tanh(z) =
+            2\sigma(2z) - 1\). Preferred over sigmoid for hidden layers in RNNs.</p>
+        </div>
+        <div class="act-card" style="border-top-color:var(--lime)">
+          <div class="act-name" style="color:var(--lime)">ReLU</div>
+          <div class="act-formula">\(\text{ReLU}(z) = \max(0, z)\)</div>
+          <div class="act-formula">\(\text{ReLU}'(z) = \mathbf{1}[z &gt; 0]\)</div>
+          <p>Range [0,∞). Not differentiable at 0 (use subgradient = 0). Sparse activation. No vanishing gradient for z
+            &gt; 0. Risk: "dying ReLU" — neurons stuck at 0 when gradient is always 0. Default for hidden layers in
+            CNNs/MLPs.</p>
+        </div>
+        <div class="act-card" style="border-top-color:var(--amber)">
+          <div class="act-name" style="color:var(--amber)">Leaky ReLU</div>
+          <div class="act-formula">\(\text{LReLU}(z) = \max(\alpha z, z)\)</div>
+          <div class="act-formula">\(\alpha \approx 0.01\) (small slope for z &lt; 0)</div>
+          <p>Fixes dying ReLU: negative inputs have small gradient α instead of 0. PReLU learns α as a parameter. ELU
+            uses exp for negative region. Generally preferred over ReLU in deeper networks.</p>
+        </div>
+        <div class="act-card" style="border-top-color:var(--mint)">
+          <div class="act-name" style="color:var(--mint)">GELU</div>
+          <div class="act-formula">\(\text{GELU}(z) = z \cdot \Phi(z)\)</div>
+          <div class="act-formula">\(\approx 0.5z(1 + \tanh[\sqrt{2/\pi}(z + 0.044715z^3)])\)</div>
+          <p>Gaussian Error Linear Unit. Φ(z) = CDF of standard Gaussian. Smooth everywhere; stochastic interpretation
+            (randomly zeroes inputs based on magnitude). Default in BERT, GPT, ViT — including your chest X-ray ViT.</p>
+        </div>
+        <div class="act-card" style="border-top-color:var(--rose)">
+          <div class="act-name" style="color:var(--rose)">Softmax</div>
+          <div class="act-formula">\(\text{softmax}(\mathbf{z})_k = \frac{e^{z_k}}{\sum_{j=1}^K e^{z_j}}\)</div>
+          <div class="act-formula">outputs sum to 1</div>
+          <p>Multi-class probability output. Range (0,1) per component, sums to 1. Generalizes sigmoid to K classes.
+            Numerically stable: subtract max(z) before exponentiating. Used only in output layer for classification.</p>
+        </div>
+      </div>
+
+      <div class="subsection">
+        <div class="sh rose">Derivatives — Why They Matter for Training</div>
+        <p>The derivative of the activation function appears directly in the backpropagation chain rule. If the
+          derivative saturates (→ 0), gradients vanish and early layers stop learning. This is the fundamental reason
+          ReLU variants replaced sigmoid/tanh in deep networks.</p>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Activation</th>
+                <th>Derivative Range</th>
+                <th>Saturates?</th>
+                <th>Sparse?</th>
+                <th>Zero-Centered?</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Sigmoid</td>
+                <td>(0, 0.25]</td>
+                <td>Yes — strongly</td>
+                <td>No</td>
+                <td>No (outputs 0.5 bias)</td>
+              </tr>
+              <tr>
+                <td>Tanh</td>
+                <td>(0, 1]</td>
+                <td>Yes</td>
+                <td>No</td>
+                <td>Yes</td>
+              </tr>
+              <tr>
+                <td>ReLU</td>
+                <td>{0, 1}</td>
+                <td>Half-saturates (z&lt;0)</td>
+                <td>Yes ≈50%</td>
+                <td>No</td>
+              </tr>
+              <tr>
+                <td>Leaky ReLU</td>
+                <td>{α, 1} α≈0.01</td>
+                <td>No</td>
+                <td>Weak</td>
+                <td>No</td>
+              </tr>
+              <tr>
+                <td>GELU</td>
+                <td>~(−0.17, 1.13)</td>
+                <td>Barely</td>
+                <td>Soft</td>
+                <td>Nearly</td>
+              </tr>
+              <tr>
+                <td>Softmax</td>
+                <td>Jacobian matrix</td>
+                <td>Somewhat</td>
+                <td>No</td>
+                <td>N/A</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ §04 ══════════════════════════════════════════════════ -->
+    <div class="section" id="s4">
+      <div class="section-header">
+        <div class="sec-num-block">
+          <div class="sec-num-big">04</div>
+          <div class="sec-num-label">§ Sec</div>
+        </div>
+        <div class="sec-title-block">
+          <h2>Network Architecture &amp; Layers</h2>
+          <div class="sec-sub">// depth · width · dense layers · feature hierarchies</div>
+        </div>
+      </div>
+
+      <p>A neural network is a composition of layers, each containing multiple neurons. The <span
+          class="hi">depth</span> (number of layers) and <span class="ha">width</span> (neurons per layer) are the two
+        primary architectural choices. Notation: \(L\) total layers, layer \(\ell\) has \(n^{[\ell]}\) neurons.</p>
+
+      <div class="eq dark">
+        <div class="eq-bar">
+          <div class="eq-dots">
+            <div class="eq-dot" style="background:#ff5f57"></div>
+            <div class="eq-dot" style="background:#febc2e"></div>
+            <div class="eq-dot" style="background:#28c840"></div>
+          </div><span class="eq-label">Network Notation</span>
+        </div>
+        <div class="eq-body">
+          \[
+          \mathbf{W}^{[\ell]} \in \mathbb{R}^{n^{[\ell]} \times n^{[\ell-1]}}, \quad \mathbf{b}^{[\ell]} \in
+          \mathbb{R}^{n^{[\ell]}}
+          \]
+          \[
+          \text{Layer } \ell: \quad \mathbf{z}^{[\ell]} = \mathbf{W}^{[\ell]}\mathbf{a}^{[\ell-1]} +
+          \mathbf{b}^{[\ell]}, \quad \mathbf{a}^{[\ell]} = \sigma^{[\ell]}(\mathbf{z}^{[\ell]})
+          \]
+          <p style="font-family:'JetBrains Mono',monospace;font-size:0.82em;color:var(--muted);margin-top:10px;">a⁽⁰⁾ =
+            x (input). Each W[ℓ] row is one neuron's weight vector. Matrix multiply broadcasts across all neurons in the
+            layer simultaneously.</p>
+        </div>
+      </div>
+
+      <div class="subsection">
+        <div class="sh">The Three Layer Types</div>
+        <div class="two-col">
+          <div class="col-box">
+            <div class="col-box-title" style="color:var(--sky)">Input Layer</div>
+            <p>Not a computational layer — it's just the raw feature vector \(\mathbf{x} = \mathbf{a}^{[0]}\). No
+              weights, no activation. Its size \(n^{[0]}\) equals the number of input features. For images: \(n^{[0]}\)
+              = H×W×C pixels.</p>
+          </div>
+          <div class="col-box">
+            <div class="col-box-title" style="color:var(--lime)">Hidden Layers</div>
+            <p>Layers 1 through \(L-1\). Where all nonlinear feature learning happens. Intermediate representations
+              build hierarchically — early layers detect edges, later layers detect objects. Use ReLU/GELU activations.
+            </p>
+          </div>
+          <div class="col-box" style="margin-top:0">
+            <div class="col-box-title" style="color:var(--rose)">Output Layer</div>
+            <p>Layer \(L\). Size matches the task: 1 neuron + sigmoid (binary), K neurons + softmax (K-class), 1 neuron
+              + linear (regression). Activation is determined by the loss function, not architecture preference.</p>
+          </div>
+          <div class="col-box">
+            <div class="col-box-title" style="color:var(--amber)">Parameter Count</div>
+            <p>Total parameters = \(\sum_{\ell=1}^{L}(n^{[\ell-1]} \cdot n^{[\ell]} + n^{[\ell]})\). For a
+              [784→256→128→10] network: (784·256+256) + (256·128+128) + (128·10+10) = 234,378 parameters.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="subsection">
+        <div class="sh amber">Depth vs Width — The Key Trade-off</div>
+        <ul class="flist">
+          <li><strong>Width</strong> (more neurons per layer) increases the number of features learned at each level.
+            Diminishing returns beyond a point — wider doesn't always mean better.</li>
+          <li><strong>Depth</strong> (more layers) enables hierarchical feature composition — each layer builds on
+            abstractions from the previous. Exponentially more expressive than width for representing compositional
+            functions.</li>
+          <li><strong>Universal approximation</strong> (§13): one hidden layer + enough neurons can approximate any
+            continuous function. But depth achieves the same accuracy with exponentially fewer neurons.</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- ══ §05 ══════════════════════════════════════════════════ -->
+    <div class="section" id="s5">
+      <div class="section-header">
+        <div class="sec-num-block">
+          <div class="sec-num-big">05</div>
+          <div class="sec-num-label">§ Sec</div>
+        </div>
+        <div class="sec-title-block">
+          <h2>Forward Propagation — Full Math</h2>
+          <div class="sec-sub">// vectorized pass · matrix operations · mini-batch · complete example</div>
+        </div>
+      </div>
+
+      <p>Forward propagation computes the network output from input to prediction, layer by layer. Every computation is
+        a matrix multiply + bias add + elementwise activation. On a GPU, this is massively parallel.</p>
+
+      <div class="subsection">
+        <div class="sh">Single Sample Forward Pass — Explicit</div>
+
+        <div class="eq lime">
+          <div class="eq-bar">
+            <div class="eq-dots">
+              <div class="eq-dot" style="background:#ff5f57"></div>
+              <div class="eq-dot" style="background:#febc2e"></div>
+              <div class="eq-dot" style="background:#28c840"></div>
+            </div><span class="eq-label">Layer-by-Layer Forward Pass (L layers)</span>
+          </div>
+          <div class="eq-body">
+            \[
+            \mathbf{a}^{[0]} = \mathbf{x} \in \mathbb{R}^{n^{[0]}}
+            \]
+            \[
+            \text{For } \ell = 1, 2, \ldots, L:
+            \]
+            \[
+            \mathbf{z}^{[\ell]} = \mathbf{W}^{[\ell]}\mathbf{a}^{[\ell-1]} + \mathbf{b}^{[\ell]} \quad \in
+            \mathbb{R}^{n^{[\ell]}}
+            \]
+            \[
+            \mathbf{a}^{[\ell]} = \sigma^{[\ell]}\!\left(\mathbf{z}^{[\ell]}\right) \quad \in \mathbb{R}^{n^{[\ell]}}
+            \]
+            \[
+            \hat{\mathbf{y}} = \mathbf{a}^{[L]} \quad \text{(final prediction)}
+            \]
+          </div>
+        </div>
+      </div>
+
+      <div class="subsection">
+        <div class="sh sky">Mini-Batch Forward Pass — Vectorized</div>
+        <p>For a mini-batch of \(m\) samples stacked as columns: \(\mathbf{X} \in \mathbb{R}^{n^{[0]} \times m}\). All
+          operations broadcast across the batch simultaneously:</p>
+
+        <div class="eq sky">
+          <div class="eq-bar">
+            <div class="eq-dots">
+              <div class="eq-dot" style="background:#ff5f57"></div>
+              <div class="eq-dot" style="background:#febc2e"></div>
+              <div class="eq-dot" style="background:#28c840"></div>
+            </div><span class="eq-label">Vectorized Batch Forward Pass</span>
+          </div>
+          <div class="eq-body">
+            \[
+            \mathbf{A}^{[0]} = \mathbf{X} \in \mathbb{R}^{n^{[0]} \times m}
+            \]
+            \[
+            \mathbf{Z}^{[\ell]} = \mathbf{W}^{[\ell]}\mathbf{A}^{[\ell-1]} + \mathbf{b}^{[\ell]} \in
+            \mathbb{R}^{n^{[\ell]} \times m}
+            \]
+            \[
+            \mathbf{A}^{[\ell]} = \sigma^{[\ell]}\!\left(\mathbf{Z}^{[\ell]}\right) \in \mathbb{R}^{n^{[\ell]} \times m}
+            \]
+            <p style="font-family:'JetBrains Mono',monospace;font-size:0.82em;color:var(--muted);margin-top:10px;">b[ℓ]
+              is broadcast across all m columns. σ is applied elementwise. Each column of A[L] is one sample's
+              prediction.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="subsection">
+        <div class="sh amber">Worked Example — 2-Layer Network</div>
+        <p>Network: [2 → 3 → 1], input \(\mathbf{x} = [0.5, -0.2]^T\), hidden layer uses ReLU, output uses sigmoid.</p>
+
+        <div class="deriv">
+          <div class="deriv-hdr">// Explicit numerical forward pass through a 2-layer network</div>
+          <div class="deriv-step">
+            <span class="dn">1</span>
+            <div>
+              Layer 1 pre-activation: \(\mathbf{z}^{[1]} = \mathbf{W}^{[1]}\mathbf{x} + \mathbf{b}^{[1]}\)
+              \[\text{e.g. } \mathbf{W}^{[1]} = \begin{bmatrix}0.5 & -0.3 \\ 0.8 & 0.1 \\ -0.4 & 0.7\end{bmatrix},
+              \mathbf{b}^{[1]} = \begin{bmatrix}0\\0\\0\end{bmatrix} \Rightarrow \mathbf{z}^{[1]} = \begin{bmatrix}0.31
+              \\ 0.38 \\ -0.34\end{bmatrix}\]
+            </div>
+          </div>
+          <div class="deriv-step">
+            <span class="dn">2</span>
+            <div>
+              Layer 1 activation (ReLU): \(\mathbf{a}^{[1]} = \text{ReLU}(\mathbf{z}^{[1]}) = \begin{bmatrix}0.31 \\
+              0.38 \\ 0\end{bmatrix}\)
+              <div class="dnote">Third neuron is dead (z &lt; 0 → output 0). Its weight contributes nothing to the
+                forward pass.</div>
+            </div>
+          </div>
+          <div class="deriv-step">
+            <span class="dn">3</span>
+            <div>
+              Layer 2 pre-activation: \(z^{[2]} = \mathbf{w}^{[2]T}\mathbf{a}^{[1]} + b^{[2]}\)
+              \[\mathbf{w}^{[2]} = \begin{bmatrix}0.6 \\ -0.5 \\ 0.9\end{bmatrix}, b^{[2]} = 0.1 \Rightarrow z^{[2]} =
+              0.186 - 0.190 + 0 + 0.1 = 0.096\]
+            </div>
+          </div>
+          <div class="deriv-step">
+            <span class="dn">4</span>
+            <div>
+              Output (sigmoid): \(\hat{y} = \sigma(0.096) = \frac{1}{1+e^{-0.096}} \approx 0.524\)
+              <div class="dnote">The network predicts ≈52.4% probability for class 1. Random initialization usually
+                gives predictions near 0.5.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="note lime">
+          <div class="note-icon">Cache!</div>
+          <div class="note-body">
+            <p>During forward propagation, <strong>cache every \(\mathbf{Z}^{[\ell]}\) and
+                \(\mathbf{A}^{[\ell]}\)</strong> — you'll need them during backpropagation. This is memory vs compute
+              trade-off: gradient checkpointing recomputes some activations to save memory at the cost of compute.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ §06 ══════════════════════════════════════════════════ -->
+    <div class="section" id="s6">
+      <div class="section-header">
+        <div class="sec-num-block">
+          <div class="sec-num-big">06</div>
+          <div class="sec-num-label">§ Sec</div>
+        </div>
+        <div class="sec-title-block">
+          <h2>Loss Functions</h2>
+          <div class="sec-sub">// MSE · cross-entropy · MLE connection · practical choices</div>
+        </div>
+      </div>
+
+      <p>The loss function \(\mathcal{L}(\hat{y}, y)\) measures how wrong the network's prediction is. It must be
+        differentiable with respect to the network parameters so that backpropagation can compute gradients. The choice
+        of loss is not arbitrary — it follows from the statistical model of the output.</p>
+
+      <div class="subsection">
+        <div class="sh">Binary Cross-Entropy (BCE)</div>
+        <div class="eq rose">
+          <div class="eq-bar">
+            <div class="eq-dots">
+              <div class="eq-dot" style="background:#ff5f57"></div>
+              <div class="eq-dot" style="background:#febc2e"></div>
+              <div class="eq-dot" style="background:#28c840"></div>
+            </div><span class="eq-label">Binary Cross-Entropy</span>
+          </div>
+          <div class="eq-body">
+            \[
+            \mathcal{L}_{\text{BCE}} = -\frac{1}{m}\sum_{i=1}^{m}\left[y^{(i)}\log\hat{y}^{(i)} +
+            (1-y^{(i)})\log(1-\hat{y}^{(i)})\right]
+            \]
+            <p style="font-family:'JetBrains Mono',monospace;font-size:0.82em;color:var(--muted);margin-top:10px;">Use
+              with sigmoid output. Derived from MLE under Bernoulli assumption. Penalizes confident wrong predictions
+              exponentially.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="subsection">
+        <div class="sh">Categorical Cross-Entropy (CCE)</div>
+        <div class="eq violet">
+          <div class="eq-bar">
+            <div class="eq-dots">
+              <div class="eq-dot" style="background:#ff5f57"></div>
+              <div class="eq-dot" style="background:#febc2e"></div>
+              <div class="eq-dot" style="background:#28c840"></div>
+            </div><span class="eq-label">Categorical Cross-Entropy</span>
+          </div>
+          <div class="eq-body">
+            \[
+            \mathcal{L}_{\text{CCE}} = -\frac{1}{m}\sum_{i=1}^{m}\sum_{k=1}^{K} y_k^{(i)}\log\hat{y}_k^{(i)}
+            \]
+            <p style="font-family:'JetBrains Mono',monospace;font-size:0.82em;color:var(--muted);margin-top:10px;">For
+              one-hot labels: reduces to −log(p̂_true_class). Use with softmax output. Your chest X-ray classifier used
+              this.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="subsection">
+        <div class="sh amber">Mean Squared Error (MSE)</div>
+        <div class="eq amber">
+          <div class="eq-bar">
+            <div class="eq-dots">
+              <div class="eq-dot" style="background:#ff5f57"></div>
+              <div class="eq-dot" style="background:#febc2e"></div>
+              <div class="eq-dot" style="background:#28c840"></div>
+            </div><span class="eq-label">MSE</span>
+          </div>
+          <div class="eq-body">
+            \[
+            \mathcal{L}_{\text{MSE}} = \frac{1}{2m}\sum_{i=1}^{m}\left(\hat{y}^{(i)} - y^{(i)}\right)^2 =
+            \frac{1}{2m}\|\hat{\mathbf{y}} - \mathbf{y}\|^2
+            \]
+            <p style="font-family:'JetBrains Mono',monospace;font-size:0.82em;color:var(--muted);margin-top:10px;">Use
+              with linear output for regression. Equivalent to MLE under Gaussian noise. The 1/2 makes the gradient
+              cleaner: ∂L/∂ŷ = (ŷ−y)/m.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="subsection">
+        <div class="sh mint">Softmax + CCE — The Beautiful Cancellation</div>
+        <p>The gradient of CCE loss w.r.t. the logits \(\mathbf{z}^{[L]}\) (before softmax) is perhaps the most elegant
+          result in neural network training:</p>
+        <div class="eq mint">
+          <div class="eq-bar">
+            <div class="eq-dots">
+              <div class="eq-dot" style="background:#ff5f57"></div>
+              <div class="eq-dot" style="background:#febc2e"></div>
+              <div class="eq-dot" style="background:#28c840"></div>
+            </div><span class="eq-label">Softmax + CCE Gradient — Elegant Cancellation</span>
+          </div>
+          <div class="eq-body">
+            \[
+            \frac{\partial \mathcal{L}_{\text{CCE}}}{\partial z_k^{[L]}} = \hat{y}_k - y_k \quad \text{(prediction minus
+            true label)}
+            \]
+            <p style="font-family:'JetBrains Mono',monospace;font-size:0.82em;color:var(--muted);margin-top:10px;">The
+              softmax Jacobian and cross-entropy gradient cancel exactly — just like sigmoid + BCE. The error signal is
+              simply the residual. In vector form: ∂L/∂z[L] = (ŷ − y)</p>
+          </div>
+        </div>
+        <p>This isn't coincidence — it's a consequence of the sigmoid/softmax being the <em>canonical link function</em>
+          for Bernoulli/Categorical distributions (generalized linear models). The MLE gradient always has this residual
+          form.</p>
+      </div>
+    </div>
+
+    <!-- ══ §07 ══════════════════════════════════════════════════ -->
+    <div class="section" id="s7">
+      <div class="section-header">
+        <div class="sec-num-block">
+          <div class="sec-num-big">07</div>
+          <div class="sec-num-label">§ Sec</div>
+        </div>
+        <div class="sec-title-block">
+          <h2>The Computational Graph</h2>
+          <div class="sec-sub">// DAG representation · nodes · edges · automatic differentiation</div>
+        </div>
+      </div>
+
+      <p>A computational graph is a Directed Acyclic Graph (DAG) where nodes are operations (or values) and edges are
+        data dependencies. It's the data structure that makes automatic differentiation — and therefore backpropagation
+        — mechanical and exact.</p>
+
+      <div class="fig">
+        <div class="fig-inner">
+          <svg viewBox="0 0 680 220" xmlns="http://www.w3.org/2000/svg" style="max-width:680px;width:100%;">
+            <rect width="680" height="220" fill="#131720" />
+            <defs>
+              <marker id="fa" markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto">
+                <path d="M0,0 L0,5 L7,2.5z" fill="#4a5f78" />
+              </marker>
+              <marker id="fal" markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto">
+                <path d="M0,0 L0,5 L7,2.5z" fill="#c8f135" />
+              </marker>
+              <marker id="fab" markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto">
+                <path d="M0,0 L0,5 L7,2.5z" fill="#ff6b8a" />
+              </marker>
+            </defs>
+
+            <!-- Forward arrows (left to right) -->
+            <!-- x, w, b inputs -->
+            <circle cx="42" cy="80" r="16" fill="#1e2535" stroke="#67d4f8" stroke-width="1.5" />
+            <text x="42" y="84" text-anchor="middle" font-family="JetBrains Mono" font-size="10" fill="#67d4f8">x</text>
+            <circle cx="42" cy="130" r="16" fill="#1e2535" stroke="#ffb347" stroke-width="1.5" />
+            <text x="42" y="134" text-anchor="middle" font-family="JetBrains Mono" font-size="10"
+              fill="#ffb347">w</text>
+            <circle cx="42" cy="180" r="16" fill="#1e2535" stroke="#ff6b8a" stroke-width="1.5" />
+            <text x="42" y="184" text-anchor="middle" font-family="JetBrains Mono" font-size="10"
+              fill="#ff6b8a">b</text>
+
+            <!-- multiply node -->
+            <rect x="110" y="90" width="40" height="30" rx="4" fill="#1e2535" stroke="#ffb347" stroke-width="1.5" />
+            <text x="130" y="110" text-anchor="middle" font-family="JetBrains Mono" font-size="13"
+              fill="#ffb347">×</text>
+            <line x1="58" y1="80" x2="108" y2="100" stroke="#4a5f78" stroke-width="1.3" marker-end="url(#fa)" />
+            <line x1="58" y1="130" x2="108" y2="115" stroke="#4a5f78" stroke-width="1.3" marker-end="url(#fa)" />
+
+            <!-- product label -->
+            <text x="130" y="82" text-anchor="middle" font-family="JetBrains Mono" font-size="9"
+              fill="#ffb347">wx</text>
+
+            <!-- add node -->
+            <rect x="210" y="90" width="40" height="30" rx="4" fill="#1e2535" stroke="#c8f135" stroke-width="1.5" />
+            <text x="230" y="110" text-anchor="middle" font-family="JetBrains Mono" font-size="13"
+              fill="#c8f135">+</text>
+            <line x1="150" y1="105" x2="208" y2="105" stroke="#4a5f78" stroke-width="1.3" marker-end="url(#fa)" />
+            <line x1="58" y1="175" x2="208" y2="118" stroke="#4a5f78" stroke-width="1.3" marker-end="url(#fa)" />
+            <text x="230" y="82" text-anchor="middle" font-family="JetBrains Mono" font-size="9"
+              fill="#c8f135">z=wx+b</text>
+
+            <!-- σ node -->
+            <rect x="310" y="90" width="48" height="30" rx="4" fill="#1e2535" stroke="#3dffc0" stroke-width="1.5" />
+            <text x="334" y="110" text-anchor="middle" font-family="JetBrains Mono" font-size="12"
+              fill="#3dffc0">σ(z)</text>
+            <line x1="250" y1="105" x2="308" y2="105" stroke="#4a5f78" stroke-width="1.3" marker-end="url(#fa)" />
+            <text x="334" y="82" text-anchor="middle" font-family="JetBrains Mono" font-size="9"
+              fill="#3dffc0">a=σ(z)</text>
+
+            <!-- Loss node -->
+            <rect x="415" y="90" width="56" height="30" rx="4" fill="#1e2535" stroke="#ff6b8a" stroke-width="1.5" />
+            <text x="443" y="110" text-anchor="middle" font-family="JetBrains Mono" font-size="11"
+              fill="#ff6b8a">Loss</text>
+            <line x1="358" y1="105" x2="413" y2="105" stroke="#4a5f78" stroke-width="1.3" marker-end="url(#fa)" />
+            <!-- y input to loss -->
+            <circle cx="415" cy="155" r="14" fill="#1e2535" stroke="#4a5f78" stroke-width="1" />
+            <text x="415" y="159" text-anchor="middle" font-family="JetBrains Mono" font-size="10"
+              fill="#4a5f78">y</text>
+            <line x1="415" y1="141" x2="443" y2="122" stroke="#4a5f78" stroke-width="1.3" marker-end="url(#fa)" />
+
+            <!-- L label -->
+            <text x="443" y="82" text-anchor="middle" font-family="JetBrains Mono" font-size="9"
+              fill="#ff6b8a">L(a,y)</text>
+
+            <!-- Backprop arrows (red dashed, right to left) -->
+            <path d="M413,105 C400,145 380,155 358,130" fill="none" stroke="#ff6b8a" stroke-width="1.5"
+              stroke-dasharray="5,3" marker-end="url(#fab)" />
+            <path d="M308,105 C295,145 275,155 250,130" fill="none" stroke="#ff6b8a" stroke-width="1.5"
+              stroke-dasharray="5,3" marker-end="url(#fab)" />
+            <path d="M208,105 C195,145 175,155 150,130" fill="none" stroke="#ff6b8a" stroke-width="1.5"
+              stroke-dasharray="5,3" marker-end="url(#fab)" />
+            <path d="M108,105 C95,145 75,155 58,145" fill="none" stroke="#ff6b8a" stroke-width="1.5"
+              stroke-dasharray="5,3" marker-end="url(#fab)" />
+
+            <!-- Backprop labels -->
+            <text x="390" y="152" font-family="JetBrains Mono" font-size="8" fill="#ff6b8a">∂L/∂a</text>
+            <text x="288" y="156" font-family="JetBrains Mono" font-size="8" fill="#ff6b8a">∂L/∂z</text>
+            <text x="188" y="156" font-family="JetBrains Mono" font-size="8" fill="#ff6b8a">∂L/∂(wx+b)</text>
+            <text x="75" y="163" font-family="JetBrains Mono" font-size="8" fill="#ff6b8a">∂L/∂w</text>
+
+            <!-- Direction labels -->
+            <text x="340" y="22" text-anchor="middle" font-family="JetBrains Mono" font-size="9" fill="#4a5f78">→
+              FORWARD PASS (compute values) →</text>
+            <text x="340" y="200" text-anchor="middle" font-family="JetBrains Mono" font-size="9" fill="#ff6b8a">←
+              BACKWARD PASS (compute gradients) ←</text>
+          </svg>
+        </div>
+        <div class="fig-cap">Fig 3. Computational graph for a single neuron. Forward pass (grey arrows) computes values
+          left→right. Backward pass (red dashed) propagates gradients right→left via the chain rule.</div>
+      </div>
+
+      <div class="subsection">
+        <div class="sh sky">Why the Graph Formalism Matters</div>
+        <p>Every modern deep learning framework (PyTorch, JAX, TensorFlow) represents computation as a graph and uses
+          <em>automatic differentiation (autograd)</em> to backpropagate through it. You never hand-code gradients. The
+          rules are:</p>
+        <ul class="flist">
+          <li><strong>Forward pass</strong>: Evaluate every node in topological order, caching all intermediate values.
+          </li>
+          <li><strong>Backward pass</strong>: Traverse the graph in reverse topological order, multiplying local
+            gradients using the chain rule.</li>
+          <li><strong>Local gradient</strong>: Each node knows its own derivative (e.g., <code>+</code> passes gradient
+            through unchanged; <code>×</code> flips operands as gradients; <code>max</code> routes gradient to the
+            winning branch).</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- ══ §08 ══════════════════════════════════════════════════ -->
+    <div class="section" id="s8">
+      <div class="section-header">
+        <div class="sec-num-block">
+          <div class="sec-num-big">08</div>
+          <div class="sec-num-label">§ Sec</div>
+        </div>
+        <div class="sec-title-block">
+          <h2>Backpropagation — Chain Rule Derivation</h2>
+          <div class="sec-sub">// the chain rule · delta notation · full derivation · matrix form</div>
+        </div>
+      </div>
+
+      <p>Backpropagation (Rumelhart, Hinton, Williams 1986) is the algorithm for computing \(\frac{\partial
+        \mathcal{L}}{\partial \mathbf{W}^{[\ell]}}\) and \(\frac{\partial \mathcal{L}}{\partial \mathbf{b}^{[\ell]}}\)
+        for every layer \(\ell\) simultaneously. It's pure chain rule applied to the computational graph — nothing more.
+      </p>
+
+      <div class="subsection">
+        <div class="sh">The Multivariate Chain Rule</div>
+        <div class="eq">
+          <div class="eq-bar">
+            <div class="eq-dots">
+              <div class="eq-dot" style="background:#ff5f57"></div>
+              <div class="eq-dot" style="background:#febc2e"></div>
+              <div class="eq-dot" style="background:#28c840"></div>
+            </div><span class="eq-label">Chain Rule (scalar → vector)</span>
+          </div>
+          <div class="eq-body">
+            \[
+            \frac{\partial \mathcal{L}}{\partial x} = \frac{\partial \mathcal{L}}{\partial y} \cdot \frac{\partial
+            y}{\partial x}
+            \qquad \text{(scalar case)}
+            \]
+            \[
+            \frac{\partial \mathcal{L}}{\partial \mathbf{x}} = \left(\frac{\partial \mathbf{y}}{\partial
+            \mathbf{x}}\right)^T \frac{\partial \mathcal{L}}{\partial \mathbf{y}}
+            \qquad \text{(vector case — Jacobian transpose)}
+            \]
+          </div>
+        </div>
+      </div>
+
+      <div class="subsection">
+        <div class="sh amber">Deriving the Backprop Equations — Layer by Layer</div>
+        <p>Define the <strong>error signal</strong> (delta) for layer \(\ell\):</p>
+        <div class="eq amber">
+          <div class="eq-bar">
+            <div class="eq-dots">
+              <div class="eq-dot" style="background:#ff5f57"></div>
+              <div class="eq-dot" style="background:#febc2e"></div>
+              <div class="eq-dot" style="background:#28c840"></div>
+            </div><span class="eq-label">Delta (Error Signal) Definition</span>
+          </div>
+          <div class="eq-body">
+            \[
+            \boldsymbol{\delta}^{[\ell]} \triangleq \frac{\partial \mathcal{L}}{\partial \mathbf{z}^{[\ell]}} \in
+            \mathbb{R}^{n^{[\ell]}}
+            \]
+            <p style="font-family:'JetBrains Mono',monospace;font-size:0.82em;color:var(--muted);margin-top:10px;">How
+              much the loss changes per unit change in the pre-activations of layer ℓ. This is the central quantity in
+              backpropagation.</p>
+          </div>
+        </div>
+
+        <div class="deriv">
+          <div class="deriv-hdr">// Deriving the four fundamental equations of backpropagation</div>
+
+          <div class="deriv-step">
+            <span class="dn">BP1</span>
+            <div>
+              <strong>Error in output layer</strong> (layer \(L\)):
+              \[\boldsymbol{\delta}^{[L]} = \frac{\partial \mathcal{L}}{\partial \mathbf{z}^{[L]}} = \frac{\partial
+              \mathcal{L}}{\partial \mathbf{a}^{[L]}} \odot \sigma'^{[L]}\!\left(\mathbf{z}^{[L]}\right)\]
+              For softmax + CCE: \(\boldsymbol{\delta}^{[L]} = \hat{\mathbf{y}} - \mathbf{y}\) (the elegant cancellation
+              from §06).
+              <div class="dnote">⊙ = elementwise product (Hadamard). ∂L/∂a[L] is the derivative of the loss w.r.t. the
+                output — depends on which loss function you use.</div>
+            </div>
+          </div>
+
+          <div class="deriv-step">
+            <span class="dn">BP2</span>
+            <div>
+              <strong>Error propagation backward</strong> (layer \(\ell = L-1, \ldots, 1\)):
+              \[\boldsymbol{\delta}^{[\ell]} = \left(\mathbf{W}^{[\ell+1]T}\boldsymbol{\delta}^{[\ell+1]}\right) \odot
+              \sigma'^{[\ell]}\!\left(\mathbf{z}^{[\ell]}\right)\]
+              <div class="dnote">W[ℓ+1]ᵀ δ[ℓ+1]: backpropagate error through the weight matrix (transpose!). Then scale
+                by local derivative σ'(z[ℓ]). This is the chain rule applied to the layered composition.</div>
+            </div>
+          </div>
+
+          <div class="deriv-step">
+            <span class="dn">BP3</span>
+            <div>
+              <strong>Gradient of weights</strong>:
+              \[\frac{\partial \mathcal{L}}{\partial \mathbf{W}^{[\ell]}} =
+              \boldsymbol{\delta}^{[\ell]}\left(\mathbf{a}^{[\ell-1]}\right)^T\]
+              <div class="dnote">Outer product of the error δ[ℓ] (column) and the previous layer activation a[ℓ-1]
+                (row). Shape: n[ℓ] × n[ℓ-1] — matches W[ℓ]. Every weight gradient is error times its input.</div>
+            </div>
+          </div>
+
+          <div class="deriv-step">
+            <span class="dn">BP4</span>
+            <div>
+              <strong>Gradient of biases</strong>:
+              \[\frac{\partial \mathcal{L}}{\partial \mathbf{b}^{[\ell]}} = \boldsymbol{\delta}^{[\ell]}\]
+              <div class="dnote">The bias gradient equals the error signal directly. Since b has derivative 1 w.r.t. z =
+                Wa + b, the chain rule gives ∂L/∂b = δ · 1 = δ.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="theorem-box">
+          <div class="theorem-title">The Four Fundamental Equations of Backpropagation</div>
+          <p><strong>BP1:</strong> \(\boldsymbol{\delta}^{[L]} = \nabla_{\mathbf{a}^{[L]}}\mathcal{L} \odot
+            \sigma'^{[L]}(\mathbf{z}^{[L]})\) — output layer error &nbsp;|&nbsp; <strong>BP2:</strong>
+            \(\boldsymbol{\delta}^{[\ell]} = (\mathbf{W}^{[\ell+1]T}\boldsymbol{\delta}^{[\ell+1]}) \odot
+            \sigma'^{[\ell]}(\mathbf{z}^{[\ell]})\) — error backpropagation &nbsp;|&nbsp; <strong>BP3:</strong>
+            \(\partial\mathcal{L}/\partial\mathbf{W}^{[\ell]} = \boldsymbol{\delta}^{[\ell]}(\mathbf{a}^{[\ell-1]})^T\)
+            &nbsp;|&nbsp; <strong>BP4:</strong> \(\partial\mathcal{L}/\partial\mathbf{b}^{[\ell]} =
+            \boldsymbol{\delta}^{[\ell]}\).</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ §09 ══════════════════════════════════════════════════ -->
+    <div class="section" id="s9">
+      <div class="section-header">
+        <div class="sec-num-block">
+          <div class="sec-num-big">09</div>
+          <div class="sec-num-label">§ Sec</div>
+        </div>
+        <div class="sec-title-block">
+          <h2>Gradient Flow Through a Full Network</h2>
+          <div class="sec-sub">// vectorized backprop · mini-batch · full algorithm · complexity</div>
+        </div>
+      </div>
+
+      <div class="subsection">
+        <div class="sh">Mini-Batch Backpropagation — Vectorized</div>
+        <p>With a batch of \(m\) samples stacked as columns in \(\mathbf{A}^{[\ell]} \in \mathbb{R}^{n^{[\ell]} \times
+          m}\):</p>
+
+        <div class="eq mint">
+          <div class="eq-bar">
+            <div class="eq-dots">
+              <div class="eq-dot" style="background:#ff5f57"></div>
+              <div class="eq-dot" style="background:#febc2e"></div>
+              <div class="eq-dot" style="background:#28c840"></div>
+            </div><span class="eq-label">Vectorized Backpropagation (Batch)</span>
+          </div>
+          <div class="eq-body">
+            \[
+            \boldsymbol{\Delta}^{[L]} = \hat{\mathbf{Y}} - \mathbf{Y} \in \mathbb{R}^{n^{[L]} \times m} \quad \text{(for
+            softmax+CCE)}
+            \]
+            \[
+            \boldsymbol{\Delta}^{[\ell]} = \left(\mathbf{W}^{[\ell+1]T}\boldsymbol{\Delta}^{[\ell+1]}\right) \odot
+            \sigma'^{[\ell]}\!\left(\mathbf{Z}^{[\ell]}\right)
+            \]
+            \[
+            \frac{\partial \mathcal{L}}{\partial \mathbf{W}^{[\ell]}} =
+            \frac{1}{m}\boldsymbol{\Delta}^{[\ell]}\left(\mathbf{A}^{[\ell-1]}\right)^T \in \mathbb{R}^{n^{[\ell]}
+            \times n^{[\ell-1]}}
+            \]
+            \[
+            \frac{\partial \mathcal{L}}{\partial \mathbf{b}^{[\ell]}} =
+            \frac{1}{m}\sum_{i=1}^{m}\boldsymbol{\Delta}^{[\ell]}_{:,i} =
+            \frac{1}{m}\boldsymbol{\Delta}^{[\ell]}\mathbf{1} \in \mathbb{R}^{n^{[\ell]}}
+            \]
+          </div>
+        </div>
+      </div>
+
+      <div class="subsection">
+        <div class="sh sky">Full Training Algorithm</div>
+        <div class="code-block">
+          <div class="code-header">
+            <div class="code-title">// Neural Network Training — Complete Loop</div>
+          </div>
+          <div class="code-body">
+            <span class="cmt"># Initialize weights (Xavier/He — see §11)</span><br>
+            <span class="fn">initialize_weights</span>(model)<br><br>
+            <span class="kw">for</span> epoch <span class="kw">in</span> range(num_epochs):<br>
+            &nbsp;&nbsp;<span class="kw">for</span> X_batch, y_batch <span class="kw">in</span> <span
+              class="fn">dataloader</span>(train_data, batch_size):<br><br>
+            &nbsp;&nbsp;&nbsp;&nbsp;<span class="cmt"># ─── FORWARD PASS ───────────────────────────────</span><br>
+            &nbsp;&nbsp;&nbsp;&nbsp;cache = {} <span class="cmt"># store Z[ℓ], A[ℓ] for backprop</span><br>
+            &nbsp;&nbsp;&nbsp;&nbsp;A = X_batch<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;<span class="kw">for</span> l <span class="kw">in</span> range(<span
+              class="num">1</span>, L+<span class="num">1</span>):<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Z = W[l] @ A + b[l]<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;A = <span class="fn">activation</span>[l](Z)<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cache[l] = (Z, A) <span class="cmt"># ← critical!</span><br>
+            &nbsp;&nbsp;&nbsp;&nbsp;y_hat = A<br><br>
+            &nbsp;&nbsp;&nbsp;&nbsp;<span class="cmt"># ─── COMPUTE LOSS ───────────────────────────────</span><br>
+            &nbsp;&nbsp;&nbsp;&nbsp;loss = <span class="fn">cross_entropy</span>(y_hat, y_batch)<br><br>
+            &nbsp;&nbsp;&nbsp;&nbsp;<span class="cmt"># ─── BACKWARD PASS (BP1 → BP4) ──────────────────</span><br>
+            &nbsp;&nbsp;&nbsp;&nbsp;Delta = y_hat <span class="op">−</span> y_batch <span class="cmt"># BP1: output
+              error</span><br>
+            &nbsp;&nbsp;&nbsp;&nbsp;<span class="kw">for</span> l <span class="kw">in</span> range(L, <span
+              class="num">0</span>, <span class="op">-</span><span class="num">1</span>):<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Z_l, A_prev = cache[l][<span class="num">0</span>], cache[l<span
+              class="op">-</span><span class="num">1</span>][<span class="num">1</span>]<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dW[l] = (Delta @ A_prev.T) / m <span class="cmt"># BP3</span><br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;db[l] = Delta.<span class="fn">sum</span>(axis=<span
+              class="num">1</span>) / m <span class="cmt"># BP4</span><br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="kw">if</span> l &gt; <span class="num">1</span>: <span
+              class="cmt"># BP2: propagate error</span><br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Delta = (W[l].T @ Delta) * <span
+              class="fn">sigma_prime</span>(Z_l)<br><br>
+            &nbsp;&nbsp;&nbsp;&nbsp;<span class="cmt"># ─── OPTIMIZER STEP ─────────────────────────────</span><br>
+            &nbsp;&nbsp;&nbsp;&nbsp;<span class="fn">optimizer.step</span>(W, b, dW, db) <span class="cmt"># Adam /
+              SGD</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="subsection">
+        <div class="sh violet">Computational Complexity</div>
+        <ul class="flist">
+          <li><strong>Forward pass per layer:</strong> \(O(n^{[\ell-1]} \cdot n^{[\ell]} \cdot m)\) — dominated by the
+            matrix multiply \(\mathbf{W}^{[\ell]}\mathbf{A}^{[\ell-1]}\).</li>
+          <li><strong>Backward pass per layer:</strong> Also \(O(n^{[\ell-1]} \cdot n^{[\ell]} \cdot m)\) — same cost as
+            forward. So total training is ≈2× inference cost.</li>
+          <li><strong>Memory:</strong> Must store all cached activations \(\mathbf{A}^{[\ell]}\) — \(O(m \cdot \sum_\ell
+            n^{[\ell]})\). This is why batch size and model depth are the primary memory constraints.</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- ══ §10 ══════════════════════════════════════════════════ -->
+    <div class="section" id="s10">
+      <div class="section-header">
+        <div class="sec-num-block">
+          <div class="sec-num-big">10</div>
+          <div class="sec-num-label">§ Sec</div>
+        </div>
+        <div class="sec-title-block">
+          <h2>Vanishing &amp; Exploding Gradients</h2>
+          <div class="sec-sub">// the pathology · geometric explanation · remedies</div>
+        </div>
+      </div>
+
+      <p>The backpropagation recurrence \(\boldsymbol{\delta}^{[\ell]} =
+        (\mathbf{W}^{[\ell+1]T}\boldsymbol{\delta}^{[\ell+1]}) \odot \sigma'(\mathbf{z}^{[\ell]})\) multiplies together
+        many matrices and activation derivatives. In deep networks, this product either collapses to zero or explodes to
+        infinity.</p>
+
+      <div class="subsection">
+        <div class="sh rose">The Mathematics of Vanishing Gradients</div>
+        <p>For a simplified network with scalar weights \(w\) and sigmoid activations:</p>
+        <div class="eq rose">
+          <div class="eq-bar">
+            <div class="eq-dots">
+              <div class="eq-dot" style="background:#ff5f57"></div>
+              <div class="eq-dot" style="background:#febc2e"></div>
+              <div class="eq-dot" style="background:#28c840"></div>
+            </div><span class="eq-label">Gradient at Layer ℓ — Product Form</span>
+          </div>
+          <div class="eq-body">
+            \[
+            \frac{\partial \mathcal{L}}{\partial \mathbf{z}^{[1]}} = \left(\prod_{\ell=2}^{L} \mathbf{W}^{[\ell]T}
+            \operatorname{diag}(\sigma'(\mathbf{z}^{[\ell]}))\right) \cdot \frac{\partial \mathcal{L}}{\partial
+            \mathbf{z}^{[L]}}
+            \]
+            <p style="font-family:'JetBrains Mono',monospace;font-size:0.82em;color:var(--muted);margin-top:10px;">Each
+              factor contains σ'(z[ℓ]) ≤ 0.25 for sigmoid. L=20 layers: 0.25²⁰ ≈ 10⁻¹² — effectively zero.</p>
+          </div>
+        </div>
+
+        <div class="two-col">
+          <div class="col-box">
+            <div class="col-box-title" style="color:var(--rose)">Vanishing Gradients</div>
+            <p><strong>Cause:</strong> \(|\sigma'(z)| \ll 1\) at every layer (sigmoid: max 0.25) or weights
+              \(|\mathbf{W}| \ll 1\).</p>
+            <p><strong>Effect:</strong> Early layers receive near-zero gradient — they barely update. Later layers
+              learn; earlier layers stay near initialization. The network behaves as if it has far fewer effective
+              layers.</p>
+            <p><strong>Symptom:</strong> Training loss stagnates after early epochs. Gradients in early layers orders of
+              magnitude smaller than late layers.</p>
+          </div>
+          <div class="col-box">
+            <div class="col-box-title" style="color:var(--amber)">Exploding Gradients</div>
+            <p><strong>Cause:</strong> Weights \(|\mathbf{W}| \gg 1\) compound exponentially. Particularly severe in
+              RNNs where the same weight matrix is multiplied many times.</p>
+            <p><strong>Effect:</strong> Gradients grow to NaN. Parameters update by enormous amounts; training diverges.
+              Loss goes to infinity.</p>
+            <p><strong>Symptom:</strong> NaN in loss after first few iterations. Gradient norm plot shows explosive
+              growth.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="subsection">
+        <div class="sh mint">Remedies</div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Problem</th>
+                <th>Remedy</th>
+                <th>Mechanism</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Vanishing (activations)</td>
+                <td>Replace sigmoid/tanh with ReLU/GELU</td>
+                <td>ReLU has gradient 1 for z&gt;0 — doesn't compress gradient magnitude</td>
+              </tr>
+              <tr>
+                <td>Vanishing (architecture)</td>
+                <td>Residual connections (ResNets, §15)</td>
+                <td>Skip connections provide gradient highway: ∂(x+F(x))/∂x = 1 + ∂F/∂x</td>
+              </tr>
+              <tr>
+                <td>Vanishing/Exploding</td>
+                <td>Batch Normalization</td>
+                <td>Normalizes pre-activations to unit Gaussian, stabilizing gradient magnitude</td>
+              </tr>
+              <tr>
+                <td>Exploding</td>
+                <td>Gradient clipping</td>
+                <td>Cap gradient norm: if ‖g‖ &gt; threshold, g ← g·threshold/‖g‖</td>
+              </tr>
+              <tr>
+                <td>Both</td>
+                <td>Careful initialization (§11)</td>
+                <td>Xavier/He keeps gradient variance ≈1 at every layer at initialization</td>
+              </tr>
+              <tr>
+                <td>Both (RNNs)</td>
+                <td>LSTM/GRU gates</td>
+                <td>Learned gates control gradient flow, preventing compounding</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ §11 ══════════════════════════════════════════════════ -->
+    <div class="section" id="s11">
+      <div class="section-header">
+        <div class="sec-num-block">
+          <div class="sec-num-big">11</div>
+          <div class="sec-num-label">§ Sec</div>
+        </div>
+        <div class="sec-title-block">
+          <h2>Weight Initialization</h2>
+          <div class="sec-sub">// why it matters · Xavier / Glorot · He · analysis</div>
+        </div>
+      </div>
+
+      <p>Initialization determines the starting point of gradient descent and, more critically, the variance of
+        activations and gradients at the start of training. Poor initialization → vanishing or exploding gradients from
+        iteration one.</p>
+
+      <div class="subsection">
+        <div class="sh">The Variance Propagation Analysis</div>
+        <p>For a layer with \(n\) inputs and weight \(w_{ij} \sim (0, \sigma_w^2)\), input \(a_j \sim (0, \sigma_a^2)\),
+          the output variance is:</p>
+        <div class="eq">
+          <div class="eq-bar">
+            <div class="eq-dots">
+              <div class="eq-dot" style="background:#ff5f57"></div>
+              <div class="eq-dot" style="background:#febc2e"></div>
+              <div class="eq-dot" style="background:#28c840"></div>
+            </div><span class="eq-label">Forward Variance Propagation</span>
+          </div>
+          <div class="eq-body">
+            \[
+            \text{Var}(z) = n \cdot \sigma_w^2 \cdot \sigma_a^2
+            \]
+            <p style="font-family:'JetBrains Mono',monospace;font-size:0.82em;color:var(--muted);margin-top:10px;">For
+              activations to stay unit-variance: σ_w² = 1/n. But we also need backward stability: σ_w² = 1/n_out. Xavier
+              compromises between both.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="subsection">
+        <div class="sh sky">Xavier / Glorot Initialization (for tanh/sigmoid)</div>
+        <div class="eq sky">
+          <div class="eq-bar">
+            <div class="eq-dots">
+              <div class="eq-dot" style="background:#ff5f57"></div>
+              <div class="eq-dot" style="background:#febc2e"></div>
+              <div class="eq-dot" style="background:#28c840"></div>
+            </div><span class="eq-label">Xavier Initialization</span>
+          </div>
+          <div class="eq-body">
+            \[
+            w_{ij} \sim \mathcal{U}\!\left[-\frac{\sqrt{6}}{\sqrt{n^{[\ell-1]} + n^{[\ell]}}},\;
+            \frac{\sqrt{6}}{\sqrt{n^{[\ell-1]} + n^{[\ell]}}}\right]
+            \]
+            \[
+            \text{or equivalently: } w_{ij} \sim \mathcal{N}\!\left(0, \frac{2}{n^{[\ell-1]} + n^{[\ell]}}\right)
+            \]
+            <p style="font-family:'JetBrains Mono',monospace;font-size:0.82em;color:var(--muted);margin-top:10px;">
+              Compromises between forward (÷n_in) and backward (÷n_out) variance stability. Optimal for tanh — its
+              derivative ≈1 near zero satisfies the linear assumption.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="subsection">
+        <div class="sh amber">He Initialization (for ReLU)</div>
+        <div class="eq amber">
+          <div class="eq-bar">
+            <div class="eq-dots">
+              <div class="eq-dot" style="background:#ff5f57"></div>
+              <div class="eq-dot" style="background:#febc2e"></div>
+              <div class="eq-dot" style="background:#28c840"></div>
+            </div><span class="eq-label">He Initialization (Kaiming)</span>
+          </div>
+          <div class="eq-body">
+            \[
+            w_{ij} \sim \mathcal{N}\!\left(0, \frac{2}{n^{[\ell-1]}}\right)
+            \]
+            <p style="font-family:'JetBrains Mono',monospace;font-size:0.82em;color:var(--muted);margin-top:10px;">
+              Factor 2 accounts for ReLU killing half the neurons (E[max(0,z)²] = σ²/2 for Gaussian z). Scales by 2/n_in
+              instead of 1/n_in. Default for any ReLU network.</p>
+          </div>
+        </div>
+
+        <div class="note amber">
+          <div class="note-icon">Rule</div>
+          <div class="note-body">
+            <p><strong>Rule of thumb:</strong> sigmoid/tanh → Xavier (Glorot). ReLU/Leaky ReLU → He (Kaiming). GELU → He
+              works well in practice. Never initialize all weights to zero — symmetric weights produce identical
+              gradients and the network fails to break symmetry. Always add small random noise.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ §12 ══════════════════════════════════════════════════ -->
+    <div class="section" id="s12">
+      <div class="section-header">
+        <div class="sec-num-block">
+          <div class="sec-num-big">12</div>
+          <div class="sec-num-label">§ Sec</div>
+        </div>
+        <div class="sec-title-block">
+          <h2>Optimization for Neural Networks</h2>
+          <div class="sec-sub">// SGD · momentum · Adam · learning rate schedules · BatchNorm</div>
+        </div>
+      </div>
+
+      <p>Neural network optimization is gradient descent with modifications to handle the non-convex loss landscape of
+        deep networks. The core algorithm is SGD; Adam is the practical standard. Full mathematical treatment is in the
+        Gradient Descent masterclass — here we focus on the NN-specific aspects.</p>
+
+      <div class="subsection">
+        <div class="sh">SGD + Momentum — The Baseline</div>
+        <div class="eq">
+          <div class="eq-bar">
+            <div class="eq-dots">
+              <div class="eq-dot" style="background:#ff5f57"></div>
+              <div class="eq-dot" style="background:#febc2e"></div>
+              <div class="eq-dot" style="background:#28c840"></div>
+            </div><span class="eq-label">SGD with Momentum</span>
+          </div>
+          <div class="eq-body">
+            \[
+            \mathbf{v}^{(t)} = \beta\mathbf{v}^{(t-1)} + (1-\beta)\nabla_{\boldsymbol{\theta}}\mathcal{L}^{(t)}
+            \]
+            \[
+            \boldsymbol{\theta}^{(t+1)} = \boldsymbol{\theta}^{(t)} - \alpha \mathbf{v}^{(t)}
+            \]
+          </div>
+        </div>
+      </div>
+
+      <div class="subsection">
+        <div class="sh lime">Adam — The Standard</div>
+        <div class="eq lime">
+          <div class="eq-bar">
+            <div class="eq-dots">
+              <div class="eq-dot" style="background:#ff5f57"></div>
+              <div class="eq-dot" style="background:#febc2e"></div>
+              <div class="eq-dot" style="background:#28c840"></div>
+            </div><span class="eq-label">Adam Optimizer</span>
+          </div>
+          <div class="eq-body">
+            \[
+            \mathbf{m}^{(t)} = \beta_1\mathbf{m}^{(t-1)} + (1-\beta_1)\mathbf{g}^{(t)}, \quad \hat{\mathbf{m}} =
+            \frac{\mathbf{m}^{(t)}}{1-\beta_1^t}
+            \]
+            \[
+            \mathbf{v}^{(t)} = \beta_2\mathbf{v}^{(t-1)} + (1-\beta_2)(\mathbf{g}^{(t)})^2, \quad \hat{\mathbf{v}} =
+            \frac{\mathbf{v}^{(t)}}{1-\beta_2^t}
+            \]
+            \[
+            \boldsymbol{\theta}^{(t+1)} = \boldsymbol{\theta}^{(t)} - \frac{\alpha}{\sqrt{\hat{\mathbf{v}}} +
+            \epsilon}\hat{\mathbf{m}}
+            \]
+            <p style="font-family:'JetBrains Mono',monospace;font-size:0.82em;color:var(--muted);margin-top:10px;">
+              Defaults: β₁=0.9, β₂=0.999, ε=1e-8, α=1e-3. AdamW (decoupled weight decay) is preferred for transformers.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="subsection">
+        <div class="sh sky">Batch Normalization — Stabilizing Training</div>
+        <p>BatchNorm normalizes the pre-activations within each mini-batch to zero mean and unit variance, then applies
+          a learnable scale and shift:</p>
+        <div class="eq sky">
+          <div class="eq-bar">
+            <div class="eq-dots">
+              <div class="eq-dot" style="background:#ff5f57"></div>
+              <div class="eq-dot" style="background:#febc2e"></div>
+              <div class="eq-dot" style="background:#28c840"></div>
+            </div><span class="eq-label">Batch Normalization</span>
+          </div>
+          <div class="eq-body">
+            \[
+            \hat{z}^{(i)} = \frac{z^{(i)} - \mu_\mathcal{B}}{\sqrt{\sigma_\mathcal{B}^2 + \epsilon}}, \quad
+            \tilde{z}^{(i)} = \gamma\hat{z}^{(i)} + \beta
+            \]
+            <p style="font-family:'JetBrains Mono',monospace;font-size:0.82em;color:var(--muted);margin-top:10px;">γ and
+              β are learnable per-feature. μ_𝓑 and σ_𝓑 computed per mini-batch during training; running stats used at
+              inference. Allows higher LR, reduces sensitivity to initialization, provides mild regularization.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ §13 ══════════════════════════════════════════════════ -->
+    <div class="section" id="s13">
+      <div class="section-header">
+        <div class="sec-num-block">
+          <div class="sec-num-big">13</div>
+          <div class="sec-num-label">§ Sec</div>
+        </div>
+        <div class="sec-title-block">
+          <h2>Universal Approximation Theorem</h2>
+          <div class="sec-sub">// statement · what it guarantees · what it doesn't · depth advantage</div>
+        </div>
+      </div>
+
+      <div class="theorem-box">
+        <div class="theorem-title">Universal Approximation Theorem (Cybenko 1989, Hornik 1991)</div>
+        <p>A feedforward neural network with <strong>one hidden layer</strong> of a sufficient number of neurons using a
+          <em>non-polynomial</em> activation function can approximate any continuous function \(f: [0,1]^n \to
+          \mathbb{R}\) to arbitrary precision \(\epsilon &gt; 0\):</p>
+        <div style="margin-top:12px; overflow-x: auto; overflow-y: hidden; padding-bottom: 8px; -webkit-overflow-scrolling: touch;">
+          \[\forall\epsilon &gt; 0,\; \exists N: \quad \sup_{\mathbf{x}\in[0,1]^n}\left|f(\mathbf{x}) -
+          \sum_{j=1}^{N}v_j\sigma(\mathbf{w}_j^T\mathbf{x}+b_j)\right| &lt; \epsilon\]
+        </div>
+      </div>
+
+      <div class="subsection">
+        <div class="sh amber">What the Theorem Does NOT Guarantee</div>
+        <ul class="flist">
+          <li><strong>It doesn't say how many neurons \(N\) are needed</strong> — it may be exponential in the input
+            dimension. A single wide layer is theoretically sufficient but practically infeasible.</li>
+          <li><strong>It doesn't say gradient descent will find the parameters</strong> — the optimization landscape may
+            prevent learning the right function even if it exists.</li>
+          <li><strong>It doesn't say the network will generalize</strong> — approximating training data ≠ learning the
+            true function. A depth-1 network that memorizes is a valid approximator but useless.</li>
+        </ul>
+      </div>
+
+      <div class="subsection">
+        <div class="sh lime">Why Depth is Exponentially More Efficient</div>
+        <p>Telgarsky (2016) and others showed: functions that require exponentially many neurons in a shallow network
+          can be represented with polynomially many neurons by adding depth. Deep networks exploit <em>hierarchical
+            compositionality</em> — each layer reuses computations from the previous, combinatorially building complex
+          representations from simpler ones.</p>
+        <div class="note lime">
+          <div class="note-icon">Intuition</div>
+          <div class="note-body">
+            <p>To detect a face: pixel intensities → edges → corners → eyes/nose/mouth → face. A single hidden layer
+              must detect "face" from raw pixels directly — no intermediate concepts. A deep network builds intermediate
+              representations that are reused across many faces. This is why depth, not just width, is what makes deep
+              learning work.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ §14 ══════════════════════════════════════════════════ -->
+    <div class="section" id="s14">
+      <div class="section-header">
+        <div class="sec-num-block">
+          <div class="sec-num-big">14</div>
+          <div class="sec-num-label">§ Sec</div>
+        </div>
+        <div class="sec-title-block">
+          <h2>Putting It All Together — Full Worked Pass</h2>
+          <div class="sec-sub">// 3-layer network · forward · loss · backward · update</div>
+        </div>
+      </div>
+
+      <p>A complete end-to-end example: network [2 → 4 → 4 → 1] for binary classification. We trace one full iteration —
+        forward, loss, backward, update — with full matrix notation.</p>
+
+      <div class="subsection">
+        <div class="sh">Architecture Setup</div>
+        <div class="eq dark">
+          <div class="eq-bar">
+            <div class="eq-dots">
+              <div class="eq-dot" style="background:#ff5f57"></div>
+              <div class="eq-dot" style="background:#febc2e"></div>
+              <div class="eq-dot" style="background:#28c840"></div>
+            </div><span class="eq-label">Network: [2 → 4 → 4 → 1]</span>
+          </div>
+          <div class="eq-body">
+            \[
+            \mathbf{W}^{[1]} \in \mathbb{R}^{4\times 2}, \; \mathbf{b}^{[1]} \in \mathbb{R}^4 \qquad \text{(Layer 1:
+            ReLU)}
+            \]
+            \[
+            \mathbf{W}^{[2]} \in \mathbb{R}^{4\times 4}, \; \mathbf{b}^{[2]} \in \mathbb{R}^4 \qquad \text{(Layer 2:
+            ReLU)}
+            \]
+            \[
+            \mathbf{w}^{[3]} \in \mathbb{R}^{1\times 4}, \; b^{[3]} \in \mathbb{R} \qquad \text{(Layer 3: Sigmoid)}
+            \]
+            \[
+            \text{Parameters: }4\times 2+4 + 4\times 4+4 + 1\times 4+1 = 8+4+16+4+4+1 = 37
+            \]
+          </div>
+        </div>
+      </div>
+
+      <div class="subsection">
+        <div class="sh mint">Complete Forward → Loss → Backward → Update Flow</div>
+
+        <div class="deriv">
+          <div class="deriv-hdr">// Full training step for one mini-batch</div>
+          <div class="deriv-step">
+            <span class="dn">F1</span>
+            <div>
+              <strong>Layer 1 forward:</strong> \(\mathbf{Z}^{[1]} = \mathbf{W}^{[1]}\mathbf{X} + \mathbf{b}^{[1]}\),
+              \(\mathbf{A}^{[1]} = \text{ReLU}(\mathbf{Z}^{[1]})\) &nbsp;→ cache \((\mathbf{Z}^{[1]},
+              \mathbf{A}^{[1]})\)
+            </div>
+          </div>
+          <div class="deriv-step">
+            <span class="dn">F2</span>
+            <div>
+              <strong>Layer 2 forward:</strong> \(\mathbf{Z}^{[2]} = \mathbf{W}^{[2]}\mathbf{A}^{[1]} +
+              \mathbf{b}^{[2]}\), \(\mathbf{A}^{[2]} = \text{ReLU}(\mathbf{Z}^{[2]})\) &nbsp;→ cache
+              \((\mathbf{Z}^{[2]}, \mathbf{A}^{[2]})\)
+            </div>
+          </div>
+          <div class="deriv-step">
+            <span class="dn">F3</span>
+            <div>
+              <strong>Layer 3 forward:</strong> \(Z^{[3]} = \mathbf{w}^{[3]}\mathbf{A}^{[2]} + b^{[3]}\), \(\hat{Y} =
+              \sigma(Z^{[3]})\) &nbsp;→ cache \((Z^{[3]}, \hat{Y})\)
+            </div>
+          </div>
+          <div class="deriv-step">
+            <span class="dn">Loss</span>
+            <div>
+              \(\mathcal{L} = -\frac{1}{m}\sum_i\left[y^{(i)}\log\hat{y}^{(i)} +
+              (1-y^{(i)})\log(1-\hat{y}^{(i)})\right]\)
+            </div>
+          </div>
+          <div class="deriv-step">
+            <span class="dn">B3</span>
+            <div>
+              <strong>Backprop Layer 3 (BP1 + BP3 + BP4):</strong>
+              \[\boldsymbol{\Delta}^{[3]} = \hat{Y} - Y \quad \text{(sigmoid+BCE cancellation)}\]
+              \[d\mathbf{w}^{[3]} = \frac{1}{m}\boldsymbol{\Delta}^{[3]}(\mathbf{A}^{[2]})^T, \quad db^{[3]} =
+              \frac{1}{m}\sum\boldsymbol{\Delta}^{[3]}\]
+            </div>
+          </div>
+          <div class="deriv-step">
+            <span class="dn">B2</span>
+            <div>
+              <strong>Backprop Layer 2 (BP2 + BP3 + BP4):</strong>
+              \[\boldsymbol{\Delta}^{[2]} = (\mathbf{w}^{[3]T}\boldsymbol{\Delta}^{[3]}) \odot
+              \mathbf{1}[\mathbf{Z}^{[2]} &gt; 0]\]
+              \[d\mathbf{W}^{[2]} = \frac{1}{m}\boldsymbol{\Delta}^{[2]}(\mathbf{A}^{[1]})^T, \quad d\mathbf{b}^{[2]} =
+              \frac{1}{m}\boldsymbol{\Delta}^{[2]}\mathbf{1}\]
+              <div class="dnote">ReLU derivative = 1[Z&gt;0] elementwise — 1 where activated, 0 where dead.</div>
+            </div>
+          </div>
+          <div class="deriv-step">
+            <span class="dn">B1</span>
+            <div>
+              <strong>Backprop Layer 1 (BP2 + BP3 + BP4):</strong>
+              \[\boldsymbol{\Delta}^{[1]} = (\mathbf{W}^{[2]T}\boldsymbol{\Delta}^{[2]}) \odot
+              \mathbf{1}[\mathbf{Z}^{[1]} &gt; 0]\]
+              \[d\mathbf{W}^{[1]} = \frac{1}{m}\boldsymbol{\Delta}^{[1]}\mathbf{X}^T, \quad d\mathbf{b}^{[1]} =
+              \frac{1}{m}\boldsymbol{\Delta}^{[1]}\mathbf{1}\]
+            </div>
+          </div>
+          <div class="deriv-step">
+            <span class="dn">Upd</span>
+            <div>
+              <strong>Update all parameters</strong> (using Adam or SGD):
+              \[\mathbf{W}^{[\ell]} \leftarrow \mathbf{W}^{[\ell]} - \alpha \cdot
+              \text{optimizer}(d\mathbf{W}^{[\ell]}), \quad \mathbf{b}^{[\ell]} \leftarrow \mathbf{b}^{[\ell]} - \alpha
+              \cdot \text{optimizer}(d\mathbf{b}^{[\ell]})\]
+              <div class="dnote">Repeat for all epochs. The network converges when gradient norms are small or
+                validation loss plateaus.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ §15 ══════════════════════════════════════════════════ -->
+    <div class="section" id="s15">
+      <div class="section-header">
+        <div class="sec-num-block">
+          <div class="sec-num-big">15</div>
+          <div class="sec-num-label">§ Sec</div>
+        </div>
+        <div class="sec-title-block">
+          <h2>Connection to Modern Architectures</h2>
+          <div class="sec-sub">// CNNs · Transformers · ResNets · your XAI project</div>
+        </div>
+      </div>
+
+      <p>Every modern architecture is an MLP with structural modifications that exploit domain knowledge to reduce
+        parameters, improve gradient flow, and capture spatial/sequential structure.</p>
+
+      <div class="act-grid">
+        <div class="act-card" style="border-top-color:var(--sky)">
+          <div class="act-name" style="color:var(--sky)">CNN</div>
+          <div class="act-formula">z[ℓ] = W[ℓ] ★ a[ℓ-1] + b[ℓ]</div>
+          <p>Replace matrix multiply with convolution (★). Weights are shared spatially — a single filter applied at
+            every location. Dramatically fewer parameters than dense. Backprop through convolution = convolution with
+            flipped filter (cross-correlation).</p>
+        </div>
+        <div class="act-card" style="border-top-color:var(--lime)">
+          <div class="act-name" style="color:var(--lime)">ResNet</div>
+          <div class="act-formula">a[ℓ+1] = σ(F(a[ℓ]) + a[ℓ])</div>
+          <p>Residual (skip) connection adds input directly to output. Gradient flows back through the identity path:
+            ∂/∂a[ℓ] = 1 + ∂F/∂a[ℓ]. Eliminates vanishing gradient even for 1000+ layers. Your VGG16 transfer learning
+            used this principle.</p>
+        </div>
+        <div class="act-card" style="border-top-color:var(--violet)">
+          <div class="act-name" style="color:var(--violet)">Transformer / ViT</div>
+          <div class="act-formula">Attn(Q,K,V) = softmax(QKᵀ/√d)V</div>
+          <p>Self-attention replaces spatial inductive bias with learned pairwise relationships. Your ViT-B/16 for chest
+            X-ray classification: image divided into 16×16 patches → projected to embeddings → attention layers → MLP
+            head → softmax. All governed by BP1–BP4.</p>
+        </div>
+        <div class="act-card" style="border-top-color:var(--amber)">
+          <div class="act-name" style="color:var(--amber)">XAI / GradCAM</div>
+          <div class="act-formula">L_c^{GradCAM} = ReLU(Σ_k α_k^c A^k)</div>
+          <p>Your XAI work used GradCAM: gradients of the class score w.r.t. final conv feature maps identify
+            discriminative regions. α_k^c = (1/Z)∑∑∂y^c/∂A^k. This is backprop stopped at the last conv layer — same BP
+            equations, different stopping point.</p>
+        </div>
+      </div>
+
+      <div class="note violet">
+        <div class="note-icon">Your Work</div>
+        <div class="note-body">
+          <p>Your respiratory disease chest X-ray classification with custom CNN, VGG16, and ViT-B/16: all three used
+            the same BP1–BP4 equations during training. VGG16 transfer learning froze early layers (no gradient update)
+            and fine-tuned late layers — demonstrating that the gradient highway through residuals/convolutions can be
+            selectively enabled. The XAI explanations were literally gradient flows visualized spatially.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ §16 ══════════════════════════════════════════════════ -->
+    <div class="section" id="s16">
+      <div class="section-header">
+        <div class="sec-num-block">
+          <div class="sec-num-big">16</div>
+          <div class="sec-num-label">§ Sec</div>
+        </div>
+        <div class="sec-title-block">
+          <h2>The Complete Mental Model</h2>
+          <div class="sec-sub">// everything connected · one diagram · one thread</div>
+        </div>
+      </div>
+
+      <div class="fig">
+        <div class="fig-inner">
+          <svg viewBox="0 0 700 600" xmlns="http://www.w3.org/2000/svg" style="max-width:700px;width:100%;">
+            <rect width="700" height="600" fill="#0e1118" />
+            <text x="350" y="26" text-anchor="middle" font-family="JetBrains Mono" font-size="9" fill="#1e2535"
+              letter-spacing="0.24em">NEURAL NETWORK — COMPLETE MENTAL MAP</text>
+
+            <!-- ─── NEURON ─── -->
+            <rect x="250" y="44" width="200" height="58" rx="4" fill="#131720" stroke="#c8f135" stroke-width="2" />
+            <text x="350" y="66" text-anchor="middle" font-family="JetBrains Mono" font-size="11" fill="#c8f135"
+              font-weight="700">THE NEURON</text>
+            <text x="350" y="84" text-anchor="middle" font-family="JetBrains Mono" font-size="9.5" fill="#4a5f78">a =
+              σ(Wx + b) = σ(z)</text>
+
+            <!-- ─── LAYER ─── -->
+            <rect x="50" y="152" width="180" height="54" rx="4" fill="#131720" stroke="#67d4f8" stroke-width="1.8" />
+            <text x="140" y="173" text-anchor="middle" font-family="JetBrains Mono" font-size="10" fill="#67d4f8"
+              font-weight="700">LAYERS</text>
+            <text x="140" y="190" text-anchor="middle" font-family="JetBrains Mono" font-size="9"
+              fill="#4a5f78">Z[ℓ]=W[ℓ]A[ℓ-1]+b[ℓ]</text>
+
+            <!-- ─── ACTIVATION ─── -->
+            <rect x="260" y="152" width="180" height="54" rx="4" fill="#131720" stroke="#3dffc0" stroke-width="1.8" />
+            <text x="350" y="173" text-anchor="middle" font-family="JetBrains Mono" font-size="10" fill="#3dffc0"
+              font-weight="700">ACTIVATION</text>
+            <text x="350" y="190" text-anchor="middle" font-family="JetBrains Mono" font-size="9" fill="#4a5f78">ReLU /
+              GELU / Softmax</text>
+
+            <!-- ─── INIT ─── -->
+            <rect x="470" y="152" width="180" height="54" rx="4" fill="#131720" stroke="#ffb347" stroke-width="1.8" />
+            <text x="560" y="173" text-anchor="middle" font-family="JetBrains Mono" font-size="10" fill="#ffb347"
+              font-weight="700">INITIALIZATION</text>
+            <text x="560" y="190" text-anchor="middle" font-family="JetBrains Mono" font-size="9" fill="#4a5f78">Xavier
+              / He — stable σ</text>
+
+            <!-- Arrows from neuron -->
+            <defs>
+              <marker id="ma" markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto">
+                <path d="M0,0 L0,5 L7,2.5z" fill="#4a5f78" />
+              </marker>
+              <marker id="ml" markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto">
+                <path d="M0,0 L0,5 L7,2.5z" fill="#c8f135" />
+              </marker>
+              <marker id="mr" markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto">
+                <path d="M0,0 L0,5 L7,2.5z" fill="#ff6b8a" />
+              </marker>
+            </defs>
+            <line x1="300" y1="102" x2="185" y2="150" stroke="#4a5f78" stroke-width="1.2" stroke-dasharray="4,3"
+              marker-end="url(#ma)" />
+            <line x1="350" y1="102" x2="350" y2="150" stroke="#4a5f78" stroke-width="1.2" stroke-dasharray="4,3"
+              marker-end="url(#ma)" />
+            <line x1="400" y1="102" x2="515" y2="150" stroke="#4a5f78" stroke-width="1.2" stroke-dasharray="4,3"
+              marker-end="url(#ma)" />
+
+            <!-- ─── FORWARD PASS ─── -->
+            <rect x="150" y="258" width="220" height="54" rx="4" fill="#131720" stroke="#c8f135" stroke-width="2" />
+            <text x="260" y="279" text-anchor="middle" font-family="JetBrains Mono" font-size="11" fill="#c8f135"
+              font-weight="700">FORWARD PASS</text>
+            <text x="260" y="296" text-anchor="middle" font-family="JetBrains Mono" font-size="9" fill="#4a5f78">ŷ =
+              σ(W[L]···σ(W[1]x))</text>
+
+            <!-- ─── LOSS ─── -->
+            <rect x="400" y="258" width="200" height="54" rx="4" fill="#131720" stroke="#ff6b8a" stroke-width="1.8" />
+            <text x="500" y="279" text-anchor="middle" font-family="JetBrains Mono" font-size="11" fill="#ff6b8a"
+              font-weight="700">LOSS FUNCTION</text>
+            <text x="500" y="296" text-anchor="middle" font-family="JetBrains Mono" font-size="9" fill="#4a5f78">L(ŷ, y)
+              — MLE derived</text>
+
+            <line x1="350" y1="206" x2="280" y2="256" stroke="#4a5f78" stroke-width="1.2" stroke-dasharray="4,3"
+              marker-end="url(#ma)" />
+            <line x1="350" y1="206" x2="460" y2="256" stroke="#4a5f78" stroke-width="1.2" stroke-dasharray="4,3"
+              marker-end="url(#ma)" />
+
+            <!-- ─── COMP GRAPH ─── -->
+            <rect x="50" y="366" width="200" height="54" rx="4" fill="#131720" stroke="#67d4f8" stroke-width="1.8" />
+            <text x="150" y="387" text-anchor="middle" font-family="JetBrains Mono" font-size="10" fill="#67d4f8"
+              font-weight="700">COMP. GRAPH</text>
+            <text x="150" y="404" text-anchor="middle" font-family="JetBrains Mono" font-size="9" fill="#4a5f78">DAG of
+              operations</text>
+
+            <!-- ─── BACKPROP ─── -->
+            <rect x="270" y="366" width="200" height="54" rx="4" fill="#131720" stroke="#ff6b8a" stroke-width="2" />
+            <text x="370" y="387" text-anchor="middle" font-family="JetBrains Mono" font-size="11" fill="#ff6b8a"
+              font-weight="700">BACKPROPAGATION</text>
+            <text x="370" y="404" text-anchor="middle" font-family="JetBrains Mono" font-size="9" fill="#4a5f78">BP1–BP4
+              · δ[ℓ] equations</text>
+
+            <!-- ─── OPTIMIZER ─── -->
+            <rect x="490" y="366" width="185" height="54" rx="4" fill="#131720" stroke="#c07cf0" stroke-width="1.8" />
+            <text x="582" y="387" text-anchor="middle" font-family="JetBrains Mono" font-size="10" fill="#c07cf0"
+              font-weight="700">OPTIMIZER</text>
+            <text x="582" y="404" text-anchor="middle" font-family="JetBrains Mono" font-size="9" fill="#4a5f78">Adam ·
+              SGD · momentum</text>
+
+            <line x1="260" y1="312" x2="170" y2="364" stroke="#4a5f78" stroke-width="1.2" stroke-dasharray="4,3"
+              marker-end="url(#ma)" />
+            <line x1="310" y1="312" x2="350" y2="364" stroke="#ff6b8a" stroke-width="1.2" stroke-dasharray="4,3"
+              marker-end="url(#mr)" />
+            <line x1="500" y1="312" x2="560" y2="364" stroke="#4a5f78" stroke-width="1.2" stroke-dasharray="4,3"
+              marker-end="url(#ma)" />
+
+            <!-- Training loop arrow -->
+            <path d="M370,420 C370,460 600,460 640,285 C670,140 450,80 450,102" fill="none" stroke="#c8f135"
+              stroke-width="1.5" stroke-dasharray="6,3" marker-end="url(#ml)" />
+            <text x="638" y="280" font-family="JetBrains Mono" font-size="9" fill="#c8f135">training</text>
+            <text x="638" y="294" font-family="JetBrains Mono" font-size="9" fill="#c8f135">loop</text>
+
+            <!-- Bottom summary -->
+            <rect x="30" y="462" width="640" height="120" rx="4" fill="#0c0f14" stroke="#1e2535" stroke-width="1" />
+            <text x="350" y="483" text-anchor="middle" font-family="JetBrains Mono" font-size="9" fill="#1e2535"
+              letter-spacing="0.2em">THE ONE UNIFIED PRINCIPLE</text>
+            <text x="50" y="504" font-family="JetBrains Mono" font-size="9" fill="#4a5f78">1. Model: compose neurons →
+              layers → network. Each layer: Z = WA+b, A = σ(Z).</text>
+            <text x="50" y="522" font-family="JetBrains Mono" font-size="9" fill="#4a5f78">2. Loss: MLE under output
+              distribution → BCE (binary), CCE (multiclass), MSE (regression).</text>
+            <text x="50" y="540" font-family="JetBrains Mono" font-size="9" fill="#c8f135">3. Backprop: BP1 δ[L]=ŷ-y,
+              BP2 δ[ℓ]=W[ℓ+1]ᵀδ[ℓ+1]⊙σ'(z[ℓ]), BP3 dW=δA^T, BP4 db=δ.</text>
+            <text x="50" y="558" font-family="JetBrains Mono" font-size="9" fill="#4a5f78">4. Optimize: Adam (momentum +
+              adaptive LR per param). Init: He for ReLU, Xavier for tanh.</text>
+            <text x="50" y="576" font-family="JetBrains Mono" font-size="9" fill="#3dffc0">5. Architecture shapes the
+              graph. Convolution, attention, residuals all use the same BP equations.</text>
+          </svg>
+        </div>
+        <div class="fig-cap">Fig 4. Complete neural network mental map — from biological inspiration through the four
+          backprop equations to the training loop that closes everything together.</div>
+      </div>
+
+      <p style="margin-top: clamp(22px, 4vw, 36px);">The complete story in one coherent thread:</p>
+
+      <ol style="padding-left: clamp(16px, 3vw, 24px); line-height: 2.6; font-size: clamp(14px, 1.9vw, 16px);">
+        <li><strong>Biological origin:</strong> A neuron integrates weighted inputs, adds a bias, and fires if the total
+          crosses a threshold. The mathematical neuron generalizes this: \(z = \mathbf{w}^T\mathbf{x} + b\), \(a =
+          \sigma(z)\), with continuous weights and a differentiable activation.</li>
+        <li><strong>Why nonlinearity is mandatory:</strong> Linear layers compose to a single linear map. Activation
+          functions \(\sigma\) introduce the nonlinearity that makes deep networks exponentially more expressive than
+          their shallow counterparts.</li>
+        <li><strong>Forward propagation:</strong> Layer by layer, \(\mathbf{Z}^{[\ell]} =
+          \mathbf{W}^{[\ell]}\mathbf{A}^{[\ell-1]} + \mathbf{b}^{[\ell]}\), \(\mathbf{A}^{[\ell]} =
+          \sigma(\mathbf{Z}^{[\ell]})\). Cache everything — you'll need it for backprop.</li>
+        <li><strong>Loss functions are not arbitrary:</strong> MLE under Gaussian noise → MSE. MLE under Bernoulli →
+          BCE. MLE under Categorical → CCE. The output activation and loss are a matched pair from probability theory.
+        </li>
+        <li><strong>Backpropagation is four equations (BP1–BP4):</strong> Output error \(\boldsymbol{\delta}^{[L]} =
+          \hat{\mathbf{y}}-\mathbf{y}\), then propagate backward as \(\boldsymbol{\delta}^{[\ell]} =
+          (\mathbf{W}^{[\ell+1]T}\boldsymbol{\delta}^{[\ell+1]}) \odot \sigma'(\mathbf{z}^{[\ell]})\), then
+          \(d\mathbf{W}^{[\ell]} = \boldsymbol{\delta}^{[\ell]}(\mathbf{A}^{[\ell-1]})^T\) and \(d\mathbf{b}^{[\ell]} =
+          \boldsymbol{\delta}^{[\ell]}\). That's it.</li>
+        <li><strong>Vanishing gradients</strong> arise because \(\sigma'(z)\) compounds across layers — use ReLU/GELU,
+          residual connections, and He initialization to keep gradient magnitude ≈1 throughout the network.</li>
+        <li><strong>Initialization matters critically</strong> at the start: He initialization keeps activation variance
+          ≈1 for ReLU; Xavier for sigmoid/tanh. Poor init → vanishing/exploding gradients before training even begins.
+        </li>
+        <li><strong>All modern architectures</strong> — CNNs, Transformers, ViTs, ResNets — run the same BP1–BP4
+          equations. Convolution shares weights spatially. Residual connections add gradient highways. Attention learns
+          pairwise relationships. The equations are unchanged; only the graph topology differs.</li>
+      </ol>
+
+
+    </div>
+
+  </div><!-- /content -->
+
+  <!-- ═══ FOOTER ═══ -->
+  <footer class="site-footer">
+    <div class="footer-content">
+      <div class="footer-main">
+        <div class="footer-left">
+          <p class="copyright">&copy; 2025 Shahid Ul Islam</p>
+          <p class="footer-meta">Data Scientist & AI Developer</p>
+        </div>
+        <div class="footer-right">
+          <div class="footer-links">
+            <a href="#" class="back-to-top">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="12" y1="19" x2="12" y2="5"></line>
+                <polyline points="5 12 12 5 19 12"></polyline>
+              </svg>
+              <span>Back to Top</span>
+            </a>
+            <div class="social-links11">
+              <a href="https://github.com/Khanz9664" target="_blank" class="social-link11">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path
+                    d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22" />
+                </svg>
+              </a>
+              <a href="https://linkedin.com/in/shahid-ul-islam-13650998" target="_blank" class="social-link11">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" />
+                  <rect x="2" y="9" width="4" height="12" />
+                  <circle cx="4" cy="4" r="2" />
+                </svg>
+              </a>
+              <a href="mailto:shahid9664@gmail.com" class="social-link11">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
+                  <polyline points="22,6 12,13 2,6" />
+                </svg>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="made-with">
+      <p>Crafted with <span class="heart-icon">❤️</span> By Shahid</p>
+    </div>
+  </footer>
+
+
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['\\(', '\\)'], ['$', '$']],
+        displayMath: [['\\[', '\\]']]
+      },
+      options: { skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre'] }
+    };
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js"></script>
+  <canvas id="bg-canvas"></canvas>
+</body>
+
+</html>

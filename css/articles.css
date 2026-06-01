@@ -504,6 +504,47 @@
     }
 }
 
+/* Neural Networks Visual */
+.visual-neural-networks .v-grid-nn {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-image:
+        linear-gradient(rgb(200 241 53 / 5%) 1px, transparent 1px),
+        linear-gradient(90deg, rgb(200 241 53 / 5%) 1px, transparent 1px);
+    background-size: 30px 30px;
+    opacity: 0.5;
+}
+
+.visual-neural-networks .v-network-wrapper {
+    position: absolute;
+    width: 250px;
+    height: 120px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.visual-neural-networks .v-network-svg {
+    width: 100%;
+    height: 100%;
+    color: #c8f135;
+    filter: drop-shadow(0 0 10px #c8f135);
+    animation: pulseNetwork 4s infinite alternate ease-in-out;
+}
+
+@keyframes pulseNetwork {
+    0% {
+        opacity: 0.5;
+        filter: drop-shadow(0 0 5px #c8f135);
+    }
+
+    100% {
+        opacity: 1;
+        filter: drop-shadow(0 0 20px #c8f135);
+    }
+}
+
 .card-image-overlay {
     position: absolute;
     top: 0;
@@ -656,6 +697,11 @@
 .article-card[data-category="models"] {
     --card-accent: var(--accent-violet);
     --card-accent-rgb: 189, 0, 255;
+}
+
+.article-card[data-category="deep-learning"] {
+    --card-accent: #c8f135;
+    --card-accent-rgb: 200, 241, 53;
 }
 
 /* --- Mobile Responsiveness --- */

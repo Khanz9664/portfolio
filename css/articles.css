@@ -545,6 +545,38 @@
     }
 }
 
+/* PCA Visual */
+.visual-pca .v-pca-wrapper {
+    position: absolute;
+    width: 250px;
+    height: 150px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.visual-pca .v-pca-svg {
+    width: 100%;
+    height: 100%;
+    color: var(--accent-violet);
+    filter: drop-shadow(0 0 10px var(--accent-violet));
+}
+
+.visual-pca .v-pc1 {
+    stroke-dasharray: 200;
+    animation: drawPCAxis 4s infinite alternate ease-in-out;
+}
+
+.visual-pca .v-pc2 {
+    stroke-dasharray: 100;
+    animation: drawPCAxis 4s infinite alternate-reverse ease-in-out;
+}
+
+@keyframes drawPCAxis {
+    0% { stroke-dashoffset: 200; }
+    100% { stroke-dashoffset: 0; }
+}
+
 .card-image-overlay {
     position: absolute;
     top: 0;

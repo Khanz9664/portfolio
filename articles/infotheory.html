@@ -1,0 +1,1075 @@
+<!DOCTYPE html>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Information Theory | Shahid Ul Islam</title>
+  <meta name="description" content="The Mathematics behind Uncertainty and Learning." />
+  <meta name="author" content="Shahid Ul Islam" />
+  <link rel="icon" type="image/png" href="../img/plogo.png" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.min.js"></script>
+  <link
+    href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=JetBrains+Mono:wght@300;400;600;700&family=Lora:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="css/infotheory.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <link rel="stylesheet" href="../css/variables.css" />
+  <link rel="stylesheet" href="../css/navigation.css" />
+  <link rel="stylesheet" href="../css/footer.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <script defer src="../js/common.js"></script>
+
+</head>
+
+<body>
+  <div class="top-bar">
+    <div class="logo">
+      <img src="../img/plogo.png" alt="Personal Logo" class="logo-icon">
+      <span class="logo-text">SHAHID<span class="logo-accent">||</span>Portfolio</span>
+    </div>
+    <nav class="nav-container">
+      <ul class="nav-links">
+        <li><a href="../index.html" class="nav-link">.Home</a></li>
+        <li><a href="../about.html" class="nav-link">.About</a></li>
+        <li><a href="../skills.html" class="nav-link">.Skills</a></li>
+        <li><a href="../projects.html" class="nav-link">.Projects</a></li>
+        <li><a href="../contact.html" class="nav-link">.Contact</a></li>
+        <li><a href="../articles.html" class="nav-link">.Articles</a></li>
+      </ul>
+      <div class="menu-toggle">
+        <div class="hamburger"></div>
+      </div>
+    </nav>
+  </div>
+<!-- ══ HERO ══════════════════════════════════════════════════ -->
+<div class="hero">
+  <div class="hero-inner">
+    <div class="hero-overline">
+      <span class="hero-pill hi">Information Theory</span>
+      <span class="hero-pill">Machine Learning</span>
+      <span class="hero-pill">Shannon · Kullback · Leibler</span>
+    </div>
+
+    <div class="hero-title">
+      <span class="t1">Information</span>
+      <span class="t2">the mathematics of</span>
+      <span class="t3">uncertainty &amp; learning</span>
+    </div>
+
+    <div class="hero-meta">
+      <p class="hero-sub">
+        Every loss function, every neural network, every<br>
+        generalization bound — all grounded in a single question:<br>
+        <em>how do we measure what we don't know?</em>
+      </p>
+      <div class="hero-number">H(X)</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ TOC STRIP ═════════════════════════════════════════════ -->
+<div class="toc-strip">
+  <div class="toc-inner">
+    <div class="toc-item"><a href="#c1"><span class="toc-n">01 /</span> What Is Information?</a></div>
+    <div class="toc-item"><a href="#c2"><span class="toc-n">02 /</span> Entropy</a></div>
+    <div class="toc-item"><a href="#c3"><span class="toc-n">03 /</span> Joint &amp; Conditional Entropy</a></div>
+    <div class="toc-item"><a href="#c4"><span class="toc-n">04 /</span> Chain Rules</a></div>
+    <div class="toc-item"><a href="#c5"><span class="toc-n">05 /</span> Mutual Information</a></div>
+    <div class="toc-item"><a href="#c6"><span class="toc-n">06 /</span> Cross-Entropy</a></div>
+    <div class="toc-item"><a href="#c7"><span class="toc-n">07 /</span> KL Divergence</a></div>
+    <div class="toc-item"><a href="#c8"><span class="toc-n">08 /</span> Jensen's Inequality</a></div>
+    <div class="toc-item"><a href="#c9"><span class="toc-n">09 /</span> Maximum Entropy</a></div>
+    <div class="toc-item"><a href="#c10"><span class="toc-n">10 /</span> Fisher Information</a></div>
+    <div class="toc-item"><a href="#c11"><span class="toc-n">11 /</span> Data Processing Inequality</a></div>
+    <div class="toc-item"><a href="#c12"><span class="toc-n">12 /</span> Why Cross-Entropy in NNs</a></div>
+    <div class="toc-item"><a href="#c13"><span class="toc-n">13 /</span> Info-Theoretic View of Learning</a></div>
+    <div class="toc-item"><a href="#c14"><span class="toc-n">14 /</span> Information in Modern ML</a></div>
+    <div class="toc-item"><a href="#c15"><span class="toc-n">15 /</span> Mental Model</a></div>
+  </div>
+</div>
+
+<div class="page">
+
+<!-- ══ §01 ══════════════════════════════════════════════════ -->
+<div class="ch" id="c1">
+  <div class="ch-wrap">
+    <div class="ch-ghost">01</div>
+    <div class="ch-num">Section 01</div>
+    <h2>What Is Information? — Self-Information</h2>
+    <div class="ch-sub">// surprise · log probability · bits vs nats · the fundamental unit</div>
+  </div>
+
+  <p>Information theory was invented by Claude Shannon in 1948 to answer a practical question: how many bits are needed to transmit a message over a noisy channel? But the answer revealed something profound about the nature of knowledge itself.</p>
+
+  <div class="sub">
+    <div class="sh v">The Surprise Principle</div>
+    <p>Information content is measured by <em>surprise</em>. An event you were certain would happen carries no information. An impossible event carrying infinite information. The function must satisfy three axioms:</p>
+
+    <ul class="flist v">
+      <li><strong>Monotone decreasing in probability:</strong> More probable events carry less information. If \(p_1 &gt; p_2\), then \(I(p_1) &lt; I(p_2)\).</li>
+      <li><strong>Non-negative:</strong> \(I(p) \geq 0\) for all \(p \in [0,1]\). We gain, never lose, information.</li>
+      <li><strong>Additive for independent events:</strong> \(I(p_1 \cdot p_2) = I(p_1) + I(p_2)\). Learning two independent facts gives the sum of their information contents.</li>
+    </ul>
+
+    <p>These three axioms uniquely determine the form of the information function:</p>
+
+    <div class="eq-box v">
+      <div class="eq-tab">Self-Info</div>
+      <div class="eq-content">
+        <div class="eq-label">Self-Information (Surprisal)</div>
+        \[I(x) = -\log_b P(X=x) = \log_b \frac{1}{P(X=x)}\]
+        <div class="eq-note">Base b=2 → units of bits. Base b=e → nats. Base b=10 → hartleys. ML uses nats (natural log) for mathematical convenience. The three axioms above uniquely determine this logarithmic form — no other function works.</div>
+      </div>
+    </div>
+
+    <div class="bit-row">
+      <div class="bit-card">
+        <div class="bit-val" style="color:var(--violet-b)">∞</div>
+        <div class="bit-name">P = 0</div>
+        <div class="bit-desc">Impossible event. Infinite surprise if it occurs.</div>
+      </div>
+      <div class="bit-card">
+        <div class="bit-val" style="color:var(--blue-b)">1 bit</div>
+        <div class="bit-name">P = ½</div>
+        <div class="bit-desc">Fair coin flip. One binary question answered.</div>
+      </div>
+      <div class="bit-card">
+        <div class="bit-val" style="color:var(--emerald-b)">3.32 bits</div>
+        <div class="bit-name">P = 1/10</div>
+        <div class="bit-desc">One of ten equally likely outcomes.</div>
+      </div>
+      <div class="bit-card">
+        <div class="bit-val" style="color:var(--amber-b)">0 bits</div>
+        <div class="bit-name">P = 1</div>
+        <div class="bit-desc">Certain event. No surprise, no information.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ §02 ══════════════════════════════════════════════════ -->
+<div class="ch" id="c2">
+  <div class="ch-wrap">
+    <div class="ch-ghost">02</div>
+    <div class="ch-num">Section 02</div>
+    <h2>Entropy — Measuring Average Uncertainty</h2>
+    <div class="ch-sub">// Shannon entropy · binary entropy · axiomatic derivation · properties</div>
+  </div>
+
+  <p>Self-information measures the surprise of a single outcome. <span class="hv">Entropy</span> generalizes this to an entire probability distribution — it is the <em>expected</em> self-information, or the average surprise of a random variable.</p>
+
+  <div class="sub">
+    <div class="sh v">Shannon Entropy — Definition</div>
+    <div class="eq-box v">
+      <div class="eq-tab">Entropy</div>
+      <div class="eq-content">
+        <div class="eq-label">Shannon Entropy H(X)</div>
+        \[H(X) = \mathbb{E}_{x \sim P}\left[I(x)\right] = -\sum_{x \in \mathcal{X}} P(x)\log P(x) = \mathbb{E}\left[-\log P(X)\right]\]
+        <div class="eq-note">Convention: 0 log 0 = 0 (by L'Hôpital's rule: lim_{p→0} p log p = 0). For continuous distributions: H(X) = −∫p(x)log p(x)dx (differential entropy — can be negative).</div>
+      </div>
+    </div>
+
+    <p>Entropy answers: "If I sample from this distribution repeatedly, how many bits on average do I need to encode each outcome?" It is the minimum average code length achievable (Shannon's source coding theorem).</p>
+  </div>
+
+  <div class="sub">
+    <div class="sh b">The Binary Entropy Function</div>
+    <p>For a Bernoulli(\(p\)) variable (coin with bias \(p\)):</p>
+    <div class="eq-box b">
+      <div class="eq-tab">Binary H</div>
+      <div class="eq-content">
+        \[H(p) = -p\log_2 p - (1-p)\log_2(1-p)\]
+        <div class="eq-note">H(0) = H(1) = 0 (certain outcome, no uncertainty). H(0.5) = 1 bit (maximum — fully uncertain). H is concave: mixing distributions increases entropy.</div>
+      </div>
+    </div>
+
+    <div class="fig">
+      <div class="fig-wrap">
+        <svg viewBox="0 0 600 200" xmlns="http://www.w3.org/2000/svg" style="max-width:600px;width:100%;">
+          <rect width="600" height="200" fill="#f4f3ef"/>
+          <defs>
+            <marker id="axh" markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto">
+              <path d="M0,0 L0,5 L7,2.5z" fill="#888882"/>
+            </marker>
+          </defs>
+          <!-- Axes -->
+          <line x1="60" y1="165" x2="555" y2="165" stroke="#ccccc6" stroke-width="1.5" marker-end="url(#axh)"/>
+          <line x1="60" y1="165" x2="60" y2="20" stroke="#ccccc6" stroke-width="1.5" marker-end="url(#axh)"/>
+          <!-- H=1 line -->
+          <line x1="60" y1="40" x2="552" y2="40" stroke="#e2e1dc" stroke-width="1" stroke-dasharray="4,4"/>
+          <text x="48" y="44" font-family="JetBrains Mono" font-size="11" fill="#888882" text-anchor="end">1</text>
+          <!-- H=0.5 line -->
+          <line x1="60" y1="102" x2="552" y2="102" stroke="#e2e1dc" stroke-width="1" stroke-dasharray="4,4"/>
+          <text x="48" y="106" font-family="JetBrains Mono" font-size="11" fill="#888882" text-anchor="end">.5</text>
+          <!-- Binary entropy curve -->
+          <path d="M60,165 C90,163 120,145 150,125 C180,105 200,68 220,52 C240,38 260,33 308,32 C356,33 370,38 390,52 C410,68 430,105 460,125 C490,145 520,163 550,165" fill="none" stroke="#5b21b6" stroke-width="2.5"/>
+          <!-- Fill under curve -->
+          <path d="M60,165 C90,163 120,145 150,125 C180,105 200,68 220,52 C240,38 260,33 308,32 C356,33 370,38 390,52 C410,68 430,105 460,125 C490,145 520,163 550,165 Z" fill="rgba(91,33,182,0.06)"/>
+          <!-- Max point marker -->
+          <circle cx="308" cy="32" r="5" fill="var(--violet-b)" stroke="white" stroke-width="2"/>
+          <line x1="308" y1="32" x2="308" y2="165" stroke="var(--violet-b)" stroke-width="1.2" stroke-dasharray="4,3"/>
+          <!-- Axis labels -->
+          <text x="558" y="169" font-family="JetBrains Mono" font-size="11" fill="#888882">p</text>
+          <text x="42" y="18" font-family="JetBrains Mono" font-size="11" fill="#888882">H(p)</text>
+          <text x="60" y="180" font-family="JetBrains Mono" font-size="10" fill="#888882">0</text>
+          <text x="300" y="180" font-family="JetBrains Mono" font-size="10" fill="#5b21b6">0.5 — max</text>
+          <text x="540" y="180" font-family="JetBrains Mono" font-size="10" fill="#888882">1</text>
+          <text x="320" y="28" font-family="JetBrains Mono" font-size="10" fill="#5b21b6">H=1 bit</text>
+        </svg>
+      </div>
+      <div class="fig-cap">Fig 1. Binary entropy H(p). Maximum entropy (1 bit) at p=0.5 — maximum uncertainty. Zero entropy at p=0 and p=1 — complete certainty.</div>
+    </div>
+  </div>
+
+  <div class="sub">
+    <div class="sh e">Properties of Entropy</div>
+    <ul class="flist e">
+      <li><strong>Non-negative:</strong> \(H(X) \geq 0\), with equality iff \(X\) is deterministic (one outcome has probability 1).</li>
+      <li><strong>Maximum at uniform:</strong> For \(|\mathcal{X}| = n\), \(H(X) \leq \log n\), with equality iff \(P(x) = 1/n\) for all \(x\). The uniform distribution is maximally uncertain.</li>
+      <li><strong>Concavity:</strong> Mixing distributions always increases entropy.
+        <div style="overflow-x: auto; overflow-y: hidden; padding: 4px 0;">
+          \[H(\lambda P + (1-\lambda)Q) \geq \lambda H(P) + (1-\lambda)H(Q)\]
+        </div>
+      </li>
+      <li><strong>Invariant to relabeling:</strong> Renaming outcomes doesn't change entropy — it depends only on probabilities, not their identities.</li>
+      <li><strong>Continuous and symmetric</strong> in the probabilities.</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ══ §03 ══════════════════════════════════════════════════ -->
+<div class="ch" id="c3">
+  <div class="ch-wrap">
+    <div class="ch-ghost">03</div>
+    <div class="ch-num">Section 03</div>
+    <h2>Joint &amp; Conditional Entropy</h2>
+    <div class="ch-sub">// two variables · what remains unknown · the information Venn diagram</div>
+  </div>
+
+  <div class="sub">
+    <div class="sh v">Joint Entropy H(X, Y)</div>
+    <p>The entropy of two variables together — how many bits to describe both simultaneously:</p>
+    <div class="eq-box v">
+      <div class="eq-tab">Joint</div>
+      <div class="eq-content">
+        <div class="eq-label">Joint Entropy</div>
+        \[H(X, Y) = -\sum_{x,y} P(x,y)\log P(x,y) = \mathbb{E}_{(x,y)\sim P}[-\log P(X,Y)]\]
+        <div class="eq-note">If X and Y are independent: H(X,Y) = H(X) + H(Y). If Y is a deterministic function of X: H(X,Y) = H(X). In general: max(H(X),H(Y)) ≤ H(X,Y) ≤ H(X) + H(Y).</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sub">
+    <div class="sh b">Conditional Entropy H(Y|X)</div>
+    <p>How much uncertainty remains about \(Y\) after observing \(X\)?</p>
+    <div class="eq-box b">
+      <div class="eq-tab">Conditional</div>
+      <div class="eq-content">
+        <div class="eq-label">Conditional Entropy</div>
+        \[H(Y \mid X) = \sum_{x} P(x)\,H(Y \mid X=x) = -\sum_{x,y}P(x,y)\log P(y \mid x)\]
+        \[= \mathbb{E}_{x\sim P_X}\left[H(Y \mid X=x)\right] = H(X,Y) - H(X)\]
+        <div class="eq-note">H(Y|X) ≥ 0. H(Y|X) = 0 iff Y is fully determined by X. H(Y|X) = H(Y) iff X and Y are independent — knowing X tells you nothing about Y. Conditioning never increases entropy: H(Y|X) ≤ H(Y).</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="fig">
+    <div class="fig-wrap">
+      <svg viewBox="0 0 600 200" xmlns="http://www.w3.org/2000/svg" style="max-width:600px;width:100%;">
+        <rect width="600" height="200" fill="#f4f3ef"/>
+        <!-- Entropy Venn Diagram -->
+        <!-- Left circle: H(X) -->
+        <circle cx="230" cy="100" r="78" fill="rgba(29,78,216,0.08)" stroke="#1d4ed8" stroke-width="1.8"/>
+        <!-- Right circle: H(Y) -->
+        <circle cx="370" cy="100" r="78" fill="rgba(91,33,182,0.08)" stroke="#5b21b6" stroke-width="1.8"/>
+        <!-- Overlap -->
+        <clipPath id="xclip"><circle cx="230" cy="100" r="78"/></clipPath>
+        <circle cx="370" cy="100" r="78" fill="rgba(109,40,217,0.15)" clip-path="url(#xclip)"/>
+        <!-- Labels -->
+        <text x="175" y="96" text-anchor="middle" font-family="JetBrains Mono" font-size="11" fill="#1d4ed8">H(X|Y)</text>
+        <text x="300" y="90" text-anchor="middle" font-family="JetBrains Mono" font-size="10" fill="#6d28d9">I(X;Y)</text>
+        <text x="300" y="106" text-anchor="middle" font-family="JetBrains Mono" font-size="9" fill="#6d28d9">mutual</text>
+        <text x="300" y="120" text-anchor="middle" font-family="JetBrains Mono" font-size="9" fill="#6d28d9">information</text>
+        <text x="425" y="96" text-anchor="middle" font-family="JetBrains Mono" font-size="11" fill="#5b21b6">H(Y|X)</text>
+        <!-- Brace: H(X,Y) -->
+        <text x="300" y="178" text-anchor="middle" font-family="JetBrains Mono" font-size="10" fill="#888882" letter-spacing="0.1em">◄──────── H(X,Y) ────────►</text>
+        <!-- H(X) brace -->
+        <text x="172" y="22" text-anchor="middle" font-family="JetBrains Mono" font-size="10" fill="#1d4ed8">◄── H(X) ──►</text>
+        <!-- H(Y) brace -->
+        <text x="428" y="22" text-anchor="middle" font-family="JetBrains Mono" font-size="10" fill="#5b21b6">◄── H(Y) ──►</text>
+      </svg>
+    </div>
+    <div class="fig-cap">Fig 2. Information Venn diagram. H(X,Y) = H(X) + H(Y|X) = H(Y) + H(X|Y). The overlap I(X;Y) is mutual information — the shared information between X and Y.</div>
+  </div>
+</div>
+
+<!-- ══ §04 ══════════════════════════════════════════════════ -->
+<div class="ch" id="c4">
+  <div class="ch-wrap">
+    <div class="ch-ghost">04</div>
+    <div class="ch-num">Section 04</div>
+    <h2>The Chain Rules of Information Theory</h2>
+    <div class="ch-sub">// entropy chain rule · mutual information chain rule · modularity</div>
+  </div>
+
+  <div class="sub">
+    <div class="sh v">Chain Rule for Entropy</div>
+    <div class="eq-box v">
+      <div class="eq-tab">Chain Rule</div>
+      <div class="eq-content">
+        <div class="eq-label">Chain Rule — Entropy</div>
+        \[H(X_1, X_2, \ldots, X_n) = \sum_{i=1}^n H(X_i \mid X_1, \ldots, X_{i-1})\]
+        \[\text{Special case: } H(X,Y) = H(X) + H(Y \mid X) = H(Y) + H(X \mid Y)\]
+        <div class="eq-note">Proof: expand log P(x₁,…,xₙ) = Σ log P(xᵢ|x₁,…,xᵢ₋₁) using the chain rule of probability. Take expectation. Each term is a conditional entropy.</div>
+      </div>
+    </div>
+
+    <div class="pull v">
+      <div class="pull-label">Interpretation</div>
+      <div class="pull-text">The total uncertainty about \(n\) variables equals the uncertainty about the first, plus the remaining uncertainty about the second given the first, plus the remaining uncertainty about the third given the first two, and so on. <strong>Each piece of knowledge reduces entropy.</strong></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ §05 ══════════════════════════════════════════════════ -->
+<div class="ch" id="c5">
+  <div class="ch-wrap">
+    <div class="ch-ghost">05</div>
+    <div class="ch-num">Section 05</div>
+    <h2>Mutual Information</h2>
+    <div class="ch-sub">// shared information · independence test · feature selection · channel capacity</div>
+  </div>
+
+  <p>Mutual information \(I(X;Y)\) quantifies how much knowing \(X\) tells you about \(Y\) — and vice versa. It is the single most important quantity for understanding statistical dependence.</p>
+
+  <div class="sub">
+    <div class="sh v">Definition and Equivalent Forms</div>
+    <div class="eq-box v">
+      <div class="eq-tab">MI</div>
+      <div class="eq-content">
+        <div class="eq-label">Mutual Information — Four Equivalent Definitions</div>
+        \[I(X;Y) = H(X) - H(X \mid Y) = H(Y) - H(Y \mid X)\]
+        \[\phantom{I(X;Y)} = H(X) + H(Y) - H(X,Y)\]
+        \[\phantom{I(X;Y)} = \sum_{x,y}P(x,y)\log\frac{P(x,y)}{P(x)P(y)} = D_{\text{KL}}\!\left(P_{XY} \,\|\, P_X \otimes P_Y\right)\]
+        <div class="eq-note">The last form is the KL divergence between the joint distribution and the product of marginals. I(X;Y) = 0 iff X and Y are independent (P(x,y) = P(x)P(y) everywhere). Always I(X;Y) ≥ 0.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sub">
+    <div class="sh b">Properties</div>
+    <ul class="flist b">
+      <li><strong>Non-negative:</strong> \(I(X;Y) \geq 0\) — observing \(X\) never increases our uncertainty about \(Y\) on average.</li>
+      <li><strong>Symmetric:</strong> \(I(X;Y) = I(Y;X)\) — information is shared equally both ways.</li>
+      <li><strong>Bounded:</strong> \(I(X;Y) \leq \min(H(X), H(Y))\) — can't learn more about \(X\) from \(Y\) than \(X\) itself contains.</li>
+      <li><strong>Zero iff independent:</strong> \(I(X;Y) = 0 \Leftrightarrow X \perp Y\) — MI is a general dependence measure, not just linear correlation.</li>
+    </ul>
+  </div>
+
+  <div class="sub">
+    <div class="sh e">MI in Machine Learning — Feature Selection</div>
+    <p>Mutual information is a principled criterion for selecting features: \(I(X_j; Y)\) measures how informative feature \(j\) is about the label \(Y\), regardless of the relationship form. Unlike correlation, it captures nonlinear dependence.</p>
+    <div class="eq-box e">
+      <div class="eq-tab">mRMR</div>
+      <div class="eq-content">
+        <div class="eq-label">Minimum Redundancy Maximum Relevance (mRMR)</div>
+        \[\max_{X_j}\;\underbrace{I(X_j;\, Y)}_{\text{relevance}} - \frac{1}{k}\sum_{X_i \in S}\underbrace{I(X_j;\, X_i)}_{\text{redundancy with selected}}\]
+        <div class="eq-note">Select features that are maximally informative about Y, while minimally redundant with already-selected features. Pure MI filter methods just rank by I(X_j; Y).</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ §06 ══════════════════════════════════════════════════ -->
+<div class="ch" id="c6">
+  <div class="ch-wrap">
+    <div class="ch-ghost">06</div>
+    <div class="ch-num">Section 06</div>
+    <h2>Cross-Entropy</h2>
+    <div class="ch-sub">// comparing distributions · encoding cost · H(P,Q) ≥ H(P)</div>
+  </div>
+
+  <p>Cross-entropy measures the cost of encoding events drawn from distribution \(P\) using a code optimized for distribution \(Q\). When our model \(Q\) matches reality \(P\) exactly, the cost is minimized at \(H(P)\).</p>
+
+  <div class="sub">
+    <div class="sh r">Definition</div>
+    <div class="eq-box r">
+      <div class="eq-tab">Cross-H</div>
+      <div class="eq-content">
+        <div class="eq-label">Cross-Entropy H(P, Q)</div>
+        \[H(P, Q) = -\sum_x P(x)\log Q(x) = \mathbb{E}_{x\sim P}[-\log Q(x)]\]
+        <div class="eq-note">This is the expected log-loss when the true distribution is P but we predict Q. The extra cost of using the wrong model is exactly KL divergence: H(P,Q) = H(P) + D_KL(P‖Q).</div>
+      </div>
+    </div>
+
+    <div class="eq-box r">
+      <div class="eq-tab">Decomp</div>
+      <div class="eq-content">
+        <div class="eq-label">Cross-Entropy = Entropy + KL Divergence</div>
+        \[H(P, Q) = H(P) + D_{\text{KL}}(P \,\|\, Q)\]
+        <div class="eq-note">Since D_KL ≥ 0: H(P,Q) ≥ H(P), with equality iff P = Q. Cross-entropy is minimized when Q perfectly matches P. This is the fundamental insight behind all ML loss functions.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sub">
+    <div class="sh a">Properties</div>
+    <ul class="flist a">
+      <li><strong>Not symmetric:</strong> \(H(P,Q) \neq H(Q,P)\) in general — encoding \(P\)-drawn events with a \(Q\)-code is different from encoding \(Q\)-events with a \(P\)-code.</li>
+      <li><strong>Not a distance:</strong> But it defines a loss — minimizing \(H(P,Q)\) over \(Q\) is equivalent to minimizing \(D_{\text{KL}}(P\|Q)\) (since \(H(P)\) is constant w.r.t. \(Q\)).</li>
+      <li><strong>Connection to MLE:</strong> Minimizing cross-entropy \(H(\hat{P}_{\text{data}}, Q_\theta)\) over model parameters \(\theta\) is exactly maximum likelihood estimation (§12).</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ══ §07 ══════════════════════════════════════════════════ -->
+<div class="ch" id="c7">
+  <div class="ch-wrap">
+    <div class="ch-ghost">07</div>
+    <div class="ch-num">Section 07</div>
+    <h2>KL Divergence — Relative Entropy</h2>
+    <div class="ch-sub">// Kullback-Leibler · non-symmetry · information gain · forward vs reverse</div>
+  </div>
+
+  <p>KL divergence is the extra information cost of using an approximate model \(Q\) instead of the true distribution \(P\). It is the single most important quantity in Bayesian statistics, variational inference, and information theory.</p>
+
+  <div class="sub">
+    <div class="sh v">Definition</div>
+    <div class="eq-box v">
+      <div class="eq-tab">KL Div</div>
+      <div class="eq-content">
+        <div class="eq-label">KL Divergence (Relative Entropy)</div>
+        \[D_{\text{KL}}(P \,\|\, Q) = \sum_x P(x)\log\frac{P(x)}{Q(x)} = \mathbb{E}_{x\sim P}\left[\log\frac{P(x)}{Q(x)}\right]\]
+        \[= H(P,Q) - H(P) \geq 0\]
+        <div class="eq-note">When Q(x) = 0 but P(x) &gt; 0: D_KL = +∞ (our model assigns zero probability to something that can happen — catastrophic). When P(x) = 0: the term contributes 0 (by convention). This asymmetry is crucial.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sub">
+    <div class="sh b">Forward vs Reverse KL — The Mode-Seeking vs Mean-Seeking Distinction</div>
+    <div class="two">
+      <div class="tcol">
+        <h4 style="color:var(--blue-b)">Forward KL: D_KL(P‖Q)</h4>
+        <p><strong>Used in:</strong> Maximum Likelihood, cross-entropy training.</p>
+        <p><strong>Behavior:</strong> Where \(P &gt; 0\), forces \(Q &gt; 0\). "Zero-avoiding" — penalizes \(Q\) for not covering all modes of \(P\). If \(P\) is bimodal, \(Q\) spreads to cover both modes.</p>
+        <p><strong>"Mean-seeking":</strong> \(Q\) tends to cover the average of \(P\).</p>
+      </div>
+      <div class="tcol">
+        <h4 style="color:var(--violet-b)">Reverse KL: D_KL(Q‖P)</h4>
+        <p><strong>Used in:</strong> Variational inference (ELBO), VAEs.</p>
+        <p><strong>Behavior:</strong> Where \(Q &gt; 0\), forces \(P &gt; 0\). "Zero-forcing" — if \(P\) is bimodal, \(Q\) concentrates on one mode and ignores the other.</p>
+        <p><strong>"Mode-seeking":</strong> \(Q\) commits to one mode of \(P\).</p>
+      </div>
+    </div>
+
+    <div class="pull b">
+      <div class="pull-label">Why This Matters for VAEs</div>
+      <div class="pull-text">In the VAE ELBO, the KL term is \(D_{\text{KL}}(q_\phi(\mathbf{z}|\mathbf{x}) \,\|\, p(\mathbf{z}))\) — reverse KL. This makes the approximate posterior \(q\) mode-seeking: it concentrates on the regions of the prior \(p\) that best explain the data, rather than covering all of it. <strong>This is why VAE posteriors are well-behaved Gaussians.</strong></div>
+    </div>
+  </div>
+
+  <div class="sub">
+    <div class="sh e">Properties of KL Divergence</div>
+    <ul class="flist e">
+      <li><strong>Non-negative:</strong> \(D_{\text{KL}}(P\|Q) \geq 0\), with equality iff \(P = Q\) almost everywhere.</li>
+      <li><strong>Asymmetric:</strong> \(D_{\text{KL}}(P\|Q) \neq D_{\text{KL}}(Q\|P)\) in general.</li>
+      <li><strong>Not a metric:</strong> No triangle inequality, not symmetric. The Jensen-Shannon divergence \(JSD = \frac{1}{2}[D_{\text{KL}}(P\|M) + D_{\text{KL}}(Q\|M)]\) where \(M = \frac{P+Q}{2}\) is symmetric, bounded in [0,1], and its square root is a metric.</li>
+      <li><strong>Invariant to bijective reparametrization:</strong> Unlike variance, KL divergence is preserved under invertible transformations.</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ══ §08 ══════════════════════════════════════════════════ -->
+<div class="ch" id="c8">
+  <div class="ch-wrap">
+    <div class="ch-ghost">08</div>
+    <div class="ch-num">Section 08</div>
+    <h2>Jensen's Inequality &amp; Why KL ≥ 0</h2>
+    <div class="ch-sub">// convex functions · Jensen · Gibbs inequality · information inequality</div>
+  </div>
+
+  <div class="sub">
+    <div class="sh v">Jensen's Inequality</div>
+    <div class="eq-box v">
+      <div class="eq-tab">Jensen</div>
+      <div class="eq-content">
+        <div class="eq-label">Jensen's Inequality (for convex f)</div>
+        \[f\!\left(\mathbb{E}[X]\right) \leq \mathbb{E}[f(X)] \quad \text{if } f \text{ is convex}\]
+        \[f\!\left(\mathbb{E}[X]\right) \geq \mathbb{E}[f(X)] \quad \text{if } f \text{ is concave}\]
+        <div class="eq-note">Proof sketch: a convex function lies above its tangent at any point. Since the tangent at E[X] satisfies f(x) ≥ f(E[X]) + f'(E[X])(x − E[X]), take expectations. The entropy function is concave (−p log p is concave), which is why H achieves its maximum at the uniform distribution.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sub">
+    <div class="sh r">Proof that KL Divergence ≥ 0 (Gibbs Inequality)</div>
+    <div class="drv">
+      <div class="drv-head">// Proof: D_KL(P‖Q) ≥ 0 using Jensen's inequality</div>
+      <div class="drv-row">
+        <span class="dn r">1</span>
+        <div>
+          \[D_{\text{KL}}(P\|Q) = \mathbb{E}_{x\sim P}\left[\log\frac{P(x)}{Q(x)}\right] = -\mathbb{E}_{x\sim P}\left[\log\frac{Q(x)}{P(x)}\right]\]
+        </div>
+      </div>
+      <div class="drv-row">
+        <span class="dn r">2</span>
+        <div>
+          Apply Jensen's inequality with \(f(t) = -\log t\) (convex since \(f''(t) = 1/t^2 &gt; 0\)):
+          \[\mathbb{E}\left[-\log\frac{Q(x)}{P(x)}\right] \geq -\log\mathbb{E}\left[\frac{Q(x)}{P(x)}\right]\]
+        </div>
+      </div>
+      <div class="drv-row">
+        <span class="dn r">3</span>
+        <div>
+          Evaluate the expectation:
+          \[\mathbb{E}_{x\sim P}\left[\frac{Q(x)}{P(x)}\right] = \sum_x P(x)\frac{Q(x)}{P(x)} = \sum_x Q(x) = 1\]
+        </div>
+      </div>
+      <div class="drv-row">
+        <span class="dn r">4</span>
+        <div>
+          Therefore: \(D_{\text{KL}}(P\|Q) \geq -\log(1) = 0\). Equality holds iff \(Q(x)/P(x)\) is constant — i.e., \(P = Q\). \(\blacksquare\)
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sub">
+    <div class="sh b">The Log-Sum Inequality</div>
+    <div class="eq-box b">
+      <div class="eq-tab">Log-Sum</div>
+      <div class="eq-content">
+        <div class="eq-label">Log-Sum Inequality</div>
+        \[\sum_{i=1}^n a_i \log\frac{a_i}{b_i} \geq \left(\sum_i a_i\right)\log\frac{\sum_i a_i}{\sum_i b_i}\]
+        <div class="eq-note">A generalization of Jensen's. Used to prove subadditivity of entropy: H(X,Y) ≤ H(X) + H(Y), and the data processing inequality.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ §09 ══════════════════════════════════════════════════ -->
+<div class="ch" id="c9">
+  <div class="ch-wrap">
+    <div class="ch-ghost">09</div>
+    <div class="ch-num">Section 09</div>
+    <h2>The Maximum Entropy Principle</h2>
+    <div class="ch-sub">// maximum entropy distribution · Lagrangian derivation · exponential family · softmax</div>
+  </div>
+
+  <p>Given only partial knowledge about a distribution (e.g., its mean), which distribution should we choose? The answer: the one with <em>maximum entropy</em> consistent with the known constraints. We should be maximally uncertain about what we don't know.</p>
+
+  <div class="sub">
+    <div class="sh v">Derivation via Lagrange Multipliers</div>
+    <p>Maximize \(H(P) = -\sum_x P(x)\log P(x)\) subject to \(\sum_x P(x) = 1\) (normalization) and \(\sum_x P(x)f_j(x) = \mu_j\) (known expected features).</p>
+
+    <div class="drv">
+      <div class="drv-head">// MaxEnt derivation — connects to exponential family and softmax</div>
+      <div class="drv-row">
+        <span class="dn v">1</span>
+        <div>
+          Lagrangian: \(\mathcal{L} = -\sum_x P(x)\log P(x) - \lambda_0\!\left(\sum_x P(x)-1\right) - \sum_j\lambda_j\!\left(\sum_x P(x)f_j(x)-\mu_j\right)\)
+        </div>
+      </div>
+      <div class="drv-row">
+        <span class="dn v">2</span>
+        <div>
+          Stationarity w.r.t. \(P(x)\): \(\frac{\partial\mathcal{L}}{\partial P(x)} = -\log P(x) - 1 - \lambda_0 - \sum_j\lambda_j f_j(x) = 0\)
+        </div>
+      </div>
+      <div class="drv-row">
+        <span class="dn v">3</span>
+        <div>
+          Solve: \(P(x) = \exp\!\left(-1 - \lambda_0 - \sum_j\lambda_j f_j(x)\right) = \frac{1}{Z}\exp\!\left(-\sum_j\lambda_j f_j(x)\right)\)
+          <div class="dnote">where Z = exp(1+λ₀) is the partition function, determined by the normalization constraint.</div>
+        </div>
+      </div>
+      <div class="drv-row">
+        <span class="dn v">4</span>
+        <div>
+          For classification with feature \(f_k(x) = \mathbf{1}[x=k]\) (indicator function per class):
+          \[P(y=k) = \frac{e^{\lambda_k}}{\sum_{j=1}^K e^{\lambda_j}} \quad\leftarrow\quad \text{the Softmax!}\]
+          <div class="dnote">Softmax is the maximum entropy distribution subject to constraints on expected class membership — not an arbitrary choice, but a principled probabilistic inference.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="thm">
+      <div class="thm-badge">★ Theorem — MaxEnt = Exponential Family</div>
+      <p>The maximum entropy distribution subject to \(n\) moment constraints \(\mathbb{E}[f_j(X)] = \mu_j\) is an <strong>exponential family distribution</strong>: \(P_{\boldsymbol{\lambda}}(x) = \frac{1}{Z(\boldsymbol{\lambda})}\exp(\boldsymbol{\lambda}^T\mathbf{f}(x))\). Every common distribution — Gaussian, Bernoulli, Poisson, Categorical — is a MaxEnt distribution under the appropriate constraints. This is why they appear everywhere.</p>
+    </div>
+  </div>
+
+  <div class="sub">
+    <div class="sh e">MaxEnt Implies Common Distributions</div>
+    <div class="t-wrap">
+      <table>
+        <thead><tr><th>Constraints</th><th>Support</th><th>MaxEnt Distribution</th></tr></thead>
+        <tbody>
+          <tr><td>Normalization only</td><td>Finite set \(\{1,\ldots,K\}\)</td><td>Uniform: \(P(k)=1/K\)</td></tr>
+          <tr><td>Known mean \(\mu\)</td><td>\([0,\infty)\)</td><td>Exponential: \(\text{Exp}(1/\mu)\)</td></tr>
+          <tr><td>Known mean and variance</td><td>\((-\infty,\infty)\)</td><td>Gaussian: \(\mathcal{N}(\mu, \sigma^2)\)</td></tr>
+          <tr><td>Known mean, binary outcomes</td><td>\(\{0,1\}\)</td><td>Bernoulli: \(\text{Bern}(p)\)</td></tr>
+          <tr><td>Feature expectations per class</td><td>\(\{1,\ldots,K\}\)</td><td>Softmax / Categorical</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ══ §10 ══════════════════════════════════════════════════ -->
+<div class="ch" id="c10">
+  <div class="ch-wrap">
+    <div class="ch-ghost">10</div>
+    <div class="ch-num">Section 10</div>
+    <h2>Fisher Information</h2>
+    <div class="ch-sub">// curvature of log-likelihood · Cramér-Rao bound · natural gradient</div>
+  </div>
+
+  <p>Fisher information measures how much information data carries about a model parameter \(\theta\). It is the variance of the score function — the gradient of the log-likelihood.</p>
+
+  <div class="sub">
+    <div class="sh a">Definition and Geometric Meaning</div>
+    <div class="eq-box a">
+      <div class="eq-tab">Fisher</div>
+      <div class="eq-content">
+        <div class="eq-label">Fisher Information</div>
+        \[\mathcal{I}(\theta) = \mathbb{E}_{x\sim p_\theta}\!\left[\left(\frac{\partial\log p(x;\theta)}{\partial\theta}\right)^2\right] = -\mathbb{E}_{x\sim p_\theta}\!\left[\frac{\partial^2\log p(x;\theta)}{\partial\theta^2}\right]\]
+        \[\text{For vector } \boldsymbol{\theta}: \quad \mathcal{I}(\boldsymbol{\theta})_{jk} = \mathbb{E}\!\left[\frac{\partial\log p}{\partial\theta_j}\frac{\partial\log p}{\partial\theta_k}\right]\]
+        <div class="eq-note">Geometrically: Fisher information is the curvature of the log-likelihood. High Fisher information → sharply peaked likelihood → parameter is precisely identifiable from data. Low Fisher information → flat likelihood → data is uninformative about θ.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sub">
+    <div class="sh s">Cramér-Rao Lower Bound</div>
+    <div class="eq-box s">
+      <div class="eq-tab">Cramér-Rao</div>
+      <div class="eq-content">
+        <div class="eq-label">Cramér-Rao Lower Bound (CRLB)</div>
+        \[\text{Var}(\hat{\theta}) \geq \frac{1}{\mathcal{I}(\theta)}\]
+        <div class="eq-note">No unbiased estimator can have variance smaller than the inverse Fisher information. Fisher information is the fundamental limit on statistical estimation precision. The MLE achieves this bound asymptotically (it is asymptotically efficient).</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sub">
+    <div class="sh v">Natural Gradient Descent</div>
+    <p>Standard gradient descent uses the Euclidean metric in parameter space. The <span class="hv">natural gradient</span> uses the Fisher information metric — the geometry of the distribution space:</p>
+    <div class="eq-box v">
+      <div class="eq-tab">Nat Grad</div>
+      <div class="eq-content">
+        <div class="eq-label">Natural Gradient</div>
+        \[\tilde{\nabla}_\theta \mathcal{L} = \mathcal{I}(\theta)^{-1}\nabla_\theta \mathcal{L}\]
+        <div class="eq-note">The natural gradient is invariant to reparametrization. It moves in the direction of steepest ascent in distribution space (KL geometry) rather than parameter space. Used in TRPO, PPO, and K-FAC for neural networks. Avoids the instability of parameter-space gradient descent when parameters are ill-conditioned.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ §11 ══════════════════════════════════════════════════ -->
+<div class="ch" id="c11">
+  <div class="ch-wrap">
+    <div class="ch-ghost">11</div>
+    <div class="ch-num">Section 11</div>
+    <h2>Data Processing Inequality</h2>
+    <div class="ch-sub">// information can only be lost · Markov chains · no free lunch in processing</div>
+  </div>
+
+  <p>One of the most important theorems in information theory: processing data cannot create new information. It can only preserve or destroy the information already present.</p>
+
+  <div class="thm">
+    <div class="thm-badge">★ Data Processing Inequality (DPI)</div>
+    <p>If \(X \to Y \to Z\) form a Markov chain (Z depends on X only through Y), then: \[I(X; Z) \leq I(X; Y)\] Any processing of Y to produce Z cannot increase the mutual information with X. Equivalently: \(I(X;Z) \leq I(X;Y) \leq H(X)\).</p>
+  </div>
+
+  <div class="sub">
+    <div class="sh b">Implications for Machine Learning</div>
+    <ul class="flist b">
+      <li><strong>Feature extraction:</strong> Any feature map \(\phi: \mathcal{X} \to \mathcal{Z}\) satisfies \(I(\phi(\mathbf{x}); Y) \leq I(\mathbf{x}; Y)\). A good feature extractor preserves label-relevant information; a bad one discards it. The DPI bounds how good any feature can be.</li>
+      <li><strong>Information bottleneck:</strong> Neural networks can be viewed as successive Markov chains \(\mathbf{x} \to \mathbf{h}^{[1]} \to \cdots \to \mathbf{h}^{[L]} \to \hat{y}\). DPI implies \(I(\mathbf{h}^{[L]}; y) \leq \cdots \leq I(\mathbf{h}^{[1]}; y) \leq I(\mathbf{x}; y)\).</li>
+      <li><strong>Compression:</strong> You can't recover information lost during compression. If an encoder throws away label-relevant bits, the decoder cannot recover them — no matter how powerful.</li>
+      <li><strong>Sufficient statistics:</strong> A statistic \(T(\mathbf{x})\) is <em>sufficient</em> iff \(I(T(\mathbf{x}); \theta) = I(\mathbf{x}; \theta)\) — it preserves all information about the parameter.</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ══ §12 ══════════════════════════════════════════════════ -->
+<div class="ch" id="c12">
+  <div class="ch-wrap">
+    <div class="ch-ghost">12</div>
+    <div class="ch-num">Section 12</div>
+    <h2>Why Neural Networks Use Cross-Entropy</h2>
+    <div class="ch-sub">// MLE = minimizing cross-entropy · empirical distribution · the direct proof</div>
+  </div>
+
+  <p>This is not a design choice — it is a theorem. Cross-entropy loss is the unique correct loss for probabilistic classification under the maximum likelihood principle.</p>
+
+  <div class="sub">
+    <div class="sh v">The MLE Connection — Full Derivation</div>
+    <p>Given training data \(\{(\mathbf{x}^{(i)}, y^{(i)})\}_{i=1}^m\), define the <span class="hv">empirical data distribution</span>:</p>
+    <div class="eq-box v">
+      <div class="eq-tab">Empirical</div>
+      <div class="eq-content">
+        \[\hat{P}_{\text{data}}(y \mid \mathbf{x}) = \frac{1}{m}\sum_{i=1}^m \mathbf{1}[(\mathbf{x}^{(i)}, y^{(i)}) = (\mathbf{x}, y)]\]
+      </div>
+    </div>
+
+    <div class="drv">
+      <div class="drv-head">// Proof: MLE ≡ Cross-Entropy Minimization</div>
+      <div class="drv-row">
+        <span class="dn v">1</span>
+        <div>
+          The log-likelihood of the data under model \(p_\theta(y|\mathbf{x})\):
+          \[\ell(\theta) = \sum_{i=1}^m\log p_\theta(y^{(i)} \mid \mathbf{x}^{(i)})\]
+        </div>
+      </div>
+      <div class="drv-row">
+        <span class="dn v">2</span>
+        <div>
+          Rewrite as an expectation over the empirical distribution:
+          \[\ell(\theta) = m\,\mathbb{E}_{(\mathbf{x},y)\sim\hat{P}}\!\left[\log p_\theta(y \mid \mathbf{x})\right]\]
+        </div>
+      </div>
+      <div class="drv-row">
+        <span class="dn v">3</span>
+        <div>
+          Maximizing \(\ell(\theta)\) is equivalent to minimizing \(-\mathbb{E}_{\hat{P}}\!\left[\log p_\theta(y|\mathbf{x})\right]\) = cross-entropy \(H(\hat{P},p_\theta)\). Since \(H(\hat{P})\) is fixed:
+          \[\arg\max_\theta\ell(\theta) = \arg\min_\theta H(\hat{P},p_\theta) = \arg\min_\theta D_{\text{KL}}(\hat{P}\,\|\,p_\theta)\]
+        </div>
+      </div>
+      <div class="drv-row">
+        <span class="dn v">4</span>
+        <div>
+          In practice, with softmax output: \(p_\theta(y=k|\mathbf{x}) = \text{softmax}(\mathbf{z})_k\), so:
+          \[-\mathbb{E}_{\hat{P}}[\log p_\theta] = -\frac{1}{m}\sum_{i=1}^m\sum_{k=1}^K y_k^{(i)}\log\hat{y}_k^{(i)} = \text{Categorical Cross-Entropy} \quad\blacksquare\]
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="pull v">
+    <div class="pull-label">The Core Insight</div>
+    <div class="pull-text">Training a neural network with cross-entropy loss is <strong>exactly equivalent to fitting the model distribution to the empirical data distribution by minimizing KL divergence</strong>. There is no heuristic here — it is the unique optimal loss function for probabilistic models under maximum likelihood. Any other loss (MSE, MAE) implicitly assumes a different noise model and is suboptimal for classification.</div>
+  </div>
+
+  <div class="sub">
+    <div class="sh r">Why Not MSE for Classification?</div>
+    <p>MSE assumes the residuals are Gaussian-distributed (MLE under Gaussian noise). For classification outputs in \([0,1]\), the noise is Bernoulli. Using the wrong noise model gives the wrong gradient signal — particularly near the decision boundary where sigmoid saturates, giving vanishingly small gradients with MSE but informative gradients with cross-entropy.</p>
+  </div>
+</div>
+
+<!-- ══ §13 ══════════════════════════════════════════════════ -->
+<div class="ch" id="c13">
+  <div class="ch-wrap">
+    <div class="ch-ghost">13</div>
+    <div class="ch-num">Section 13</div>
+    <h2>Information-Theoretic View of Learning</h2>
+    <div class="ch-sub">// generalization bounds · MDL · PAC learning · information bottleneck · ELBO</div>
+  </div>
+
+  <div class="sub">
+    <div class="sh v">Minimum Description Length (MDL)</div>
+    <p>MDL principle: the best model is the one that provides the shortest description of the data. A model that fits the data in \(L_{\text{data}}\) bits but requires \(L_{\text{model}}\) bits to describe, has total cost \(L = L_{\text{model}} + L_{\text{data}|\text{model}}\).</p>
+
+    <div class="eq-box v">
+      <div class="eq-tab">MDL</div>
+      <div class="eq-content">
+        \[L_{\text{data}|\text{model}} = -\log p_\theta(\mathbf{x}) = H(\hat{P}, p_\theta) \quad\text{(coding cost of data given model)}\]
+        \[\text{MDL selects: }\hat{\theta} = \arg\min_\theta\; [-\log p_\theta(\text{data}) + \text{description length of }\theta]\]
+        <div class="eq-note">MDL = MAP estimation in Bayesian terms: log P(data|θ) + log P(θ). The prior P(θ) encodes the model description length. More complex models have shorter data description but longer model description — MDL finds the optimal tradeoff.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sub">
+    <div class="sh b">The Information Bottleneck</div>
+    <p>Tishby et al. (2000) proposed viewing deep learning as finding a compressed representation \(T(\mathbf{x})\) that maximally preserves information about labels \(Y\) while minimally retaining information about inputs \(\mathbf{x}\):</p>
+    <div class="eq-box b">
+      <div class="eq-tab">IB</div>
+      <div class="eq-content">
+        <div class="eq-label">Information Bottleneck Objective</div>
+        \[\min_{p(t|x)}\; I(X; T) - \beta\, I(T; Y)\]
+        <div class="eq-note">β controls the tradeoff between compression (minimize I(X;T)) and predictive power (maximize I(T;Y)). For β → ∞: T retains all label information. For β → 0: T is maximally compressed. By DPI: I(T;Y) ≤ I(X;Y) — no representation can do better than the original data.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sub">
+    <div class="sh e">The ELBO — Variational Inference</div>
+    <div class="eq-box e">
+      <div class="eq-tab">ELBO</div>
+      <div class="eq-content">
+        <div class="eq-label">Evidence Lower Bound (VAE)</div>
+        \[\log p(\mathbf{x}) \geq \underbrace{\mathbb{E}_{q_\phi(\mathbf{z}|\mathbf{x})}[\log p_\theta(\mathbf{x}|\mathbf{z})]}_{\text{reconstruction: } -H(P_{\text{data}}, p_\theta)} - \underbrace{D_{\text{KL}}(q_\phi(\mathbf{z}|\mathbf{x}) \,\|\, p(\mathbf{z}))}_{\text{regularization: keeps posterior close to prior}}\]
+        <div class="eq-note">The ELBO is maximized when the KL term is zero (posterior = prior) and reconstruction is perfect. The tension between these two is the fundamental tradeoff in VAEs — and it is entirely an information-theoretic statement about the encoder-decoder channel.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sub">
+    <div class="sh a">PAC Learning and Generalization Bounds</div>
+    <div class="eq-box a">
+      <div class="eq-tab">PAC-Bayes</div>
+      <div class="eq-content">
+        <div class="eq-label">PAC-Bayes Generalization Bound</div>
+        \[R[h] \leq \hat{R}[h] + \sqrt{\frac{D_{\text{KL}}(Q \,\|\, P) + \log(m/\delta)}{2m}}\]
+        <div class="eq-note">With probability ≥ 1−δ over the training set. Q is the posterior over hypotheses, P is the prior. The generalization gap is bounded by the KL divergence between what we learned (Q) and what we assumed beforehand (P) — divided by sqrt(m). More data → tighter bound. KL(Q‖P) is a complexity measure: the more the data "surprises" our prior, the less we generalize.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ §14 ══════════════════════════════════════════════════ -->
+<div class="ch" id="c14">
+  <div class="ch-wrap">
+    <div class="ch-ghost">14</div>
+    <div class="ch-num">Section 14</div>
+    <h2>Information Theory in Modern ML</h2>
+    <div class="ch-sub">// contrastive learning · GANs · ICA · channel capacity · total correlation</div>
+  </div>
+
+  <div class="sub">
+    <div class="sh v">Contrastive Learning — InfoNCE</div>
+    <div class="eq-box v">
+      <div class="eq-tab">InfoNCE</div>
+      <div class="eq-content">
+        <div class="eq-label">InfoNCE Loss (Oord et al. 2018)</div>
+        \[\mathcal{L}_{\text{InfoNCE}} = -\mathbb{E}\left[\log\frac{e^{f(\mathbf{x},\mathbf{x}^+)/\tau}}{\sum_{j=0}^{N}e^{f(\mathbf{x},\mathbf{x}_j)/\tau}}\right]\]
+        <div class="eq-note">f(x, x⁺) is a similarity score between anchor and positive pair. Minimizing InfoNCE maximizes a lower bound on I(X; X⁺) — the mutual information between two views of the same data. SimCLR, MoCo, CLIP all use this principle: learn representations that maximize MI between augmented views while contrasting against negatives.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sub">
+    <div class="sh b">GANs — JS Divergence</div>
+    <p>The original GAN (Goodfellow 2014) minimizes the Jensen-Shannon divergence between the real data distribution \(p_{\text{data}}\) and the generator distribution \(p_g\):</p>
+    <div class="eq-box b">
+      <div class="eq-tab">GAN</div>
+      <div class="eq-content">
+        \[\min_G\max_D\; V(G,D) = \mathbb{E}_{\mathbf{x}\sim p_{\text{data}}}[\log D(\mathbf{x})] + \mathbb{E}_{\mathbf{z}\sim p_z}[\log(1-D(G(\mathbf{z})))]\]
+        \[\equiv -2\log 2 + 2\cdot JSD(p_{\text{data}} \,\|\, p_g)\]
+        <div class="eq-note">Wasserstein GAN replaces JSD with the Wasserstein distance (Earth Mover's distance), which provides meaningful gradients even when distributions have disjoint support — fixing the mode collapse problem in original GANs.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sub">
+    <div class="sh e">Disentanglement — Total Correlation</div>
+    <div class="eq-box e">
+      <div class="eq-tab">Total Corr</div>
+      <div class="eq-content">
+        \[TC(\mathbf{z}) = D_{\text{KL}}\!\left(p(\mathbf{z}) \,\Big\|\, \prod_{j=1}^d p(z_j)\right) = \sum_{j=1}^d H(z_j) - H(\mathbf{z})\]
+        <div class="eq-note">Total correlation measures the total dependence between all latent dimensions. β-VAE (Higgins 2017) adds β&gt;1 weight to the KL term, forcing higher compression and lower TC, encouraging disentangled representations where each latent captures an independent factor of variation.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sub">
+    <div class="sh r">Label Smoothing — Entropy Regularization</div>
+    <p>Label smoothing replaces one-hot targets \(y_k \in \{0,1\}\) with soft targets \(y_k' = (1-\epsilon)y_k + \epsilon/K\). This is equivalent to minimizing cross-entropy with a target that has higher entropy, preventing the model from becoming overconfident. The network cannot drive its predictions to 0 or 1 without large negative cross-entropy from the smoothed labels.</p>
+    <div class="eq-box r">
+      <div class="eq-tab">Smooth</div>
+      <div class="eq-content">
+        \[\mathcal{L}_{\text{smooth}} = (1-\epsilon)\,H(\mathbf{y},\hat{\mathbf{y}}) + \epsilon\,H(\mathbf{u},\hat{\mathbf{y}})\]
+        <div class="eq-note">Where u is the uniform distribution (1/K per class). Label smoothing improves calibration, reduces overfitting, and has an information-theoretic interpretation as penalizing low-entropy (overconfident) predictions.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ §15 ══════════════════════════════════════════════════ -->
+<div class="ch" id="c15">
+  <div class="ch-wrap">
+    <div class="ch-ghost">15</div>
+    <div class="ch-num">Section 15</div>
+    <h2>The Complete Mental Model</h2>
+    <div class="ch-sub">// every quantity connected · one unified picture</div>
+  </div>
+
+  <div class="fig">
+    <div class="fig-wrap">
+      <svg viewBox="0 0 720 540" xmlns="http://www.w3.org/2000/svg" style="max-width:720px;width:100%;">
+        <rect width="720" height="540" fill="#f4f3ef"/>
+        <defs>
+          <marker id="ma2" markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto"><path d="M0,0 L0,5 L7,2.5z" fill="#aaa"/></marker>
+          <marker id="mv" markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto"><path d="M0,0 L0,5 L7,2.5z" fill="#7c3aed"/></marker>
+          <marker id="mb" markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto"><path d="M0,0 L0,5 L7,2.5z" fill="#3b82f6"/></marker>
+          <marker id="me" markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto"><path d="M0,0 L0,5 L7,2.5z" fill="#10b981"/></marker>
+          <marker id="mr" markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto"><path d="M0,0 L0,5 L7,2.5z" fill="#f43f5e"/></marker>
+        </defs>
+        <!-- Self-information (top center) -->
+        <rect x="270" y="20" width="180" height="48" rx="6" fill="#0c0c0b" stroke="#0c0c0b"/>
+        <text x="360" y="41" text-anchor="middle" font-family="Plus Jakarta Sans" font-size="11" fill="#fff" font-weight="700">SELF-INFORMATION</text>
+        <text x="360" y="58" text-anchor="middle" font-family="JetBrains Mono" font-size="9" fill="rgba(255,255,255,0.5)">I(x) = −log P(x)</text>
+
+        <!-- Entropy -->
+        <rect x="140" y="128" width="160" height="48" rx="6" fill="#5b21b6" stroke="#5b21b6"/>
+        <text x="220" y="149" text-anchor="middle" font-family="Plus Jakarta Sans" font-size="11" fill="#fff" font-weight="700">ENTROPY</text>
+        <text x="220" y="166" text-anchor="middle" font-family="JetBrains Mono" font-size="9" fill="rgba(255,255,255,0.7)">H(X) = E[I(X)]</text>
+
+        <!-- Joint / Cond -->
+        <rect x="420" y="128" width="175" height="48" rx="6" fill="#1d4ed8" stroke="#1d4ed8"/>
+        <text x="507" y="149" text-anchor="middle" font-family="Plus Jakarta Sans" font-size="11" fill="#fff" font-weight="700">JOINT / COND</text>
+        <text x="507" y="166" text-anchor="middle" font-family="JetBrains Mono" font-size="9" fill="rgba(255,255,255,0.7)">H(X,Y) H(Y|X)</text>
+
+        <!-- Mutual Information -->
+        <rect x="270" y="240" width="180" height="48" rx="6" fill="#0c0c0b"/>
+        <text x="360" y="261" text-anchor="middle" font-family="Plus Jakarta Sans" font-size="11" fill="#c4b5fd" font-weight="700">MUTUAL INFO</text>
+        <text x="360" y="278" text-anchor="middle" font-family="JetBrains Mono" font-size="9" fill="rgba(255,255,255,0.5)">I(X;Y) = H(X)+H(Y)−H(X,Y)</text>
+
+        <!-- Arrows from self-info -->
+        <line x1="310" y1="68" x2="256" y2="126" stroke="#7c3aed" stroke-width="1.3" stroke-dasharray="4,3" marker-end="url(#mv)"/>
+        <line x1="410" y1="68" x2="464" y2="126" stroke="#3b82f6" stroke-width="1.3" stroke-dasharray="4,3" marker-end="url(#mb)"/>
+        <!-- Arrows to mutual info -->
+        <line x1="220" y1="176" x2="306" y2="238" stroke="#7c3aed" stroke-width="1.3" stroke-dasharray="4,3" marker-end="url(#mv)"/>
+        <line x1="507" y1="176" x2="414" y2="238" stroke="#3b82f6" stroke-width="1.3" stroke-dasharray="4,3" marker-end="url(#mb)"/>
+
+        <!-- Cross-Entropy -->
+        <rect x="50" y="350" width="160" height="48" rx="6" fill="#9f1239" stroke="#9f1239"/>
+        <text x="130" y="371" text-anchor="middle" font-family="Plus Jakarta Sans" font-size="11" fill="#fff" font-weight="700">CROSS-ENTROPY</text>
+        <text x="130" y="388" text-anchor="middle" font-family="JetBrains Mono" font-size="9" fill="rgba(255,255,255,0.7)">H(P,Q) = −E_P[log Q]</text>
+
+        <!-- KL Divergence -->
+        <rect x="270" y="350" width="180" height="48" rx="6" fill="#065f46" stroke="#065f46"/>
+        <text x="360" y="371" text-anchor="middle" font-family="Plus Jakarta Sans" font-size="11" fill="#fff" font-weight="700">KL DIVERGENCE</text>
+        <text x="360" y="388" text-anchor="middle" font-family="JetBrains Mono" font-size="9" fill="rgba(255,255,255,0.7)">D_KL(P‖Q) ≥ 0</text>
+
+        <!-- MaxEnt / Fisher -->
+        <rect x="510" y="350" width="175" height="48" rx="6" fill="#92400e" stroke="#92400e"/>
+        <text x="597" y="371" text-anchor="middle" font-family="Plus Jakarta Sans" font-size="11" fill="#fff" font-weight="700">MAXENT / FISHER</text>
+        <text x="597" y="388" text-anchor="middle" font-family="JetBrains Mono" font-size="9" fill="rgba(255,255,255,0.7)">ExpFamily · CRLB</text>
+
+        <!-- Arrows from MI to bottom row -->
+        <line x1="320" y1="288" x2="175" y2="348" stroke="#f43f5e" stroke-width="1.3" stroke-dasharray="4,3" marker-end="url(#mr)"/>
+        <line x1="360" y1="288" x2="360" y2="348" stroke="#10b981" stroke-width="1.3" stroke-dasharray="4,3" marker-end="url(#me)"/>
+        <line x1="400" y1="288" x2="545" y2="348" stroke="#aaa" stroke-width="1.3" stroke-dasharray="4,3" marker-end="url(#ma2)"/>
+
+        <!-- Connection: H(P,Q) = H(P) + KL -->
+        <line x1="210" y1="374" x2="268" y2="374" stroke="#f43f5e" stroke-width="1.5" marker-end="url(#mr)"/>
+        <text x="238" y="368" text-anchor="middle" font-family="JetBrains Mono" font-size="8" fill="#f43f5e">H+KL</text>
+
+        <!-- Bottom: ML Applications -->
+        <rect x="20" y="462" width="680" height="62" rx="6" fill="#0c0c0b"/>
+        <text x="360" y="483" text-anchor="middle" font-family="Plus Jakarta Sans" font-size="11" fill="rgba(255,255,255,0.4)" font-weight="700" letter-spacing="0.1em">ML APPLICATIONS</text>
+        <text x="80" y="503" font-family="JetBrains Mono" font-size="9" fill="#c084fc">CE Loss = MLE</text>
+        <text x="210" y="503" font-family="JetBrains Mono" font-size="9" fill="#67e8f9">KL → VAE ELBO</text>
+        <text x="345" y="503" font-family="JetBrains Mono" font-size="9" fill="#86efac">MI → InfoNCE</text>
+        <text x="465" y="503" font-family="JetBrains Mono" font-size="9" fill="#fbbf24">MaxEnt → Softmax</text>
+        <text x="600" y="503" font-family="JetBrains Mono" font-size="9" fill="#f97316">DPI → IB</text>
+
+        <line x1="130" y1="398" x2="200" y2="460" stroke="#aaa" stroke-width="1" stroke-dasharray="3,2" marker-end="url(#ma2)"/>
+        <line x1="360" y1="398" x2="360" y2="460" stroke="#aaa" stroke-width="1" stroke-dasharray="3,2" marker-end="url(#ma2)"/>
+        <line x1="597" y1="398" x2="560" y2="460" stroke="#aaa" stroke-width="1" stroke-dasharray="3,2" marker-end="url(#ma2)"/>
+      </svg>
+    </div>
+    <div class="fig-cap">Fig 3. Complete Information Theory mental map for ML — from self-information through entropy, MI, KL divergence, and their ML applications.</div>
+  </div>
+
+  <p style="margin-top:clamp(22px,4vw,36px);">The unified story, in one coherent thread:</p>
+
+  <div class="summary-grid">
+    <div class="sg-cell">
+      <div class="sg-num" style="color:var(--violet-b)">H</div>
+      <div class="sg-label" style="color:var(--violet-b)">Entropy</div>
+      <p>The expected surprise. How many bits needed to encode outcomes. Maximum at uniform distribution. Zero when deterministic. The foundation of everything.</p>
+    </div>
+    <div class="sg-cell">
+      <div class="sg-num" style="color:var(--blue-b)">I(X;Y)</div>
+      <div class="sg-label" style="color:var(--blue-b)">Mutual Information</div>
+      <p>Shared information between variables. Zero iff independent. The objective in contrastive learning, feature selection, and the information bottleneck.</p>
+    </div>
+    <div class="sg-cell">
+      <div class="sg-num" style="color:var(--rose-b)">H(P,Q)</div>
+      <div class="sg-label" style="color:var(--rose-b)">Cross-Entropy</div>
+      <p>Cost of encoding P-events with Q-code. H(P,Q) = H(P) + KL(P‖Q). Minimizing over Q equals MLE. This IS the neural network loss function.</p>
+    </div>
+    <div class="sg-cell">
+      <div class="sg-num" style="color:var(--emerald-b)">KL</div>
+      <div class="sg-label" style="color:var(--emerald-b)">KL Divergence</div>
+      <p>Extra bits from using Q instead of P. Always ≥ 0 (Jensen's). Not symmetric — forward and reverse KL have different mode-seeking behaviors.</p>
+    </div>
+    <div class="sg-cell">
+      <div class="sg-num" style="color:var(--amber-b)">MaxEnt</div>
+      <div class="sg-label" style="color:var(--amber-b)">Maximum Entropy</div>
+      <p>Given constraints, be maximally uncertain. Implies exponential family distributions. Softmax IS the MaxEnt categorical distribution.</p>
+    </div>
+    <div class="sg-cell">
+      <div class="sg-num" style="color:var(--sky-b)">DPI</div>
+      <div class="sg-label" style="color:var(--sky-b)">Data Processing</div>
+      <p>Processing cannot create information. I(X;Z) ≤ I(X;Y) for X→Y→Z. Every layer of a neural network can only preserve or lose information about the labels.</p>
+    </div>
+  </div>
+
+  <div class="thm" style="margin-top:clamp(22px,4vw,36px);">
+    <div class="thm-badge">★ The Unifying Principle</div>
+    <p>Every major concept in machine learning can be read as an information-theoretic statement. Training a neural network minimizes \(D_{\text{KL}}(\hat{P}_{\text{data}} \,\|\, p_\theta)\) — the divergence between empirical reality and our model. Regularization minimizes \(D_{\text{KL}}(q_\theta \,\|\, p_{\text{prior}})\) — how far we've moved from our initial beliefs. Generalization is bounded by how much the data surprised our prior. Feature learning maximizes \(I(\text{representation}; \text{labels})\). Compression minimizes \(I(\text{representation}; \text{inputs})\). Every objective, every bound, every architectural choice traces back to a single question Shannon asked in 1948: <em>how much do we not know?</em></p>
+  </div>
+</div>
+
+</div><!-- /page -->
+
+  <!-- ═══ FOOTER ═══ -->
+  <footer class="site-footer">
+    <div class="footer-content">
+      <div class="footer-main">
+        <div class="footer-left">
+          <p class="copyright">&copy; 2025 Shahid Ul Islam</p>
+          <p class="footer-meta">Data Scientist & AI Developer</p>
+        </div>
+        <div class="footer-right">
+          <div class="footer-links">
+            <a href="#" class="back-to-top">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="12" y1="19" x2="12" y2="5"></line>
+                <polyline points="5 12 12 5 19 12"></polyline>
+              </svg>
+              <span>Back to Top</span>
+            </a>
+            <div class="social-links11">
+              <a href="https://github.com/Khanz9664" target="_blank" class="social-link11">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path
+                    d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22" />
+                </svg>
+              </a>
+              <a href="https://linkedin.com/in/shahid-ul-islam-13650998" target="_blank" class="social-link11">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" />
+                  <rect x="2" y="9" width="4" height="12" />
+                  <circle cx="4" cy="4" r="2" />
+                </svg>
+              </a>
+              <a href="mailto:shahid9664@gmail.com" class="social-link11">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
+                  <polyline points="22,6 12,13 2,6" />
+                </svg>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="made-with">
+      <p>Crafted with <span class="heart-icon">❤️</span> By Shahid</p>
+    </div>
+  </footer>
+
+<script>
+window.MathJax = {
+  tex: { inlineMath:[['\\(','\\)'],['$','$']], displayMath:[['\\[','\\]']] },
+  options: { skipHtmlTags:['script','noscript','style','textarea','pre'] }
+};
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js"></script>
+</body>
+</html>

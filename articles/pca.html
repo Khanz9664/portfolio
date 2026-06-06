@@ -9,7 +9,7 @@
   <meta name="description" content="A complete guide to Math behind Principle Component Analysis." />
   <meta name="author" content="Shahid Ul Islam" />
   <link rel="icon" type="image/png" href="../img/plogo.png" />
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.min.js"></script>
+
   <link
     href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=JetBrains+Mono:wght@300;400;600;700&family=Lora:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap"
     rel="stylesheet">
@@ -46,1126 +46,1558 @@
     </nav>
   </div>
 
-<!-- ══ HERO ══════════════════════════════════════════════ -->
-<div class="hero">
-  <!-- Geometric SVG art — rotating ellipses / axes / loadings -->
-  <div class="hero-art">
-    <svg width="clamp(300px,45vw,540px)" height="clamp(300px,45vw,540px)" viewBox="0 0 480 480" xmlns="http://www.w3.org/2000/svg">
-      <circle cx="240" cy="240" r="200" fill="none" stroke="#a99cf5" stroke-width="0.6" opacity="0.5"/>
-      <circle cx="240" cy="240" r="140" fill="none" stroke="#e8c547" stroke-width="0.5" opacity="0.4"/>
-      <ellipse cx="240" cy="240" rx="200" ry="80" fill="none" stroke="#00e5cc" stroke-width="0.7" opacity="0.35" transform="rotate(35 240 240)"/>
-      <ellipse cx="240" cy="240" rx="170" ry="55" fill="none" stroke="#f07ea6" stroke-width="0.5" opacity="0.3" transform="rotate(35 240 240)"/>
-      <!-- PC1 axis -->
-      <line x1="80" y1="380" x2="400" y2="100" stroke="#e8c547" stroke-width="1.2" opacity="0.6"/>
-      <!-- PC2 axis -->
-      <line x1="80" y1="100" x2="400" y2="380" stroke="#a99cf5" stroke-width="0.8" opacity="0.4"/>
-      <!-- Scattered data points -->
-      <g opacity="0.55">
-        <circle cx="220" cy="210" r="3" fill="#00e5cc"/><circle cx="255" cy="185" r="3" fill="#00e5cc"/>
-        <circle cx="190" cy="240" r="3" fill="#00e5cc"/><circle cx="275" cy="165" r="3" fill="#00e5cc"/>
-        <circle cx="170" cy="260" r="3" fill="#00e5cc"/><circle cx="300" cy="145" r="3" fill="#00e5cc"/>
-        <circle cx="240" cy="200" r="3" fill="#00e5cc"/><circle cx="260" cy="220" r="3" fill="#00e5cc"/>
-        <circle cx="200" cy="270" r="3" fill="#00e5cc"/><circle cx="310" cy="175" r="3" fill="#00e5cc"/>
-        <circle cx="155" cy="295" r="3" fill="#e8c547" opacity="0.7"/><circle cx="330" cy="130" r="3" fill="#e8c547" opacity="0.7"/>
-      </g>
-      <!-- Loading arrows -->
-      <line x1="240" y1="240" x2="340" y2="155" stroke="#e8c547" stroke-width="1.5" opacity="0.8" marker-end="url(#yma)"/>
-      <line x1="240" y1="240" x2="148" y2="318" stroke="#a99cf5" stroke-width="1" opacity="0.6" marker-end="url(#pma)"/>
-      <defs>
-        <marker id="yma" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3z" fill="#e8c547"/></marker>
-        <marker id="pma" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3z" fill="#a99cf5"/></marker>
-      </defs>
-      <text x="348" y="150" font-family="Spectral" font-size="13" fill="#e8c547" font-style="italic">PC₁</text>
-      <text x="108" y="336" font-family="Spectral" font-size="12" fill="#a99cf5" font-style="italic">PC₂</text>
-    </svg>
-  </div>
-
-  <div class="hero-inner">
-    <div class="hero-tag">Mathematics · Statistics · Machine Learning</div>
-    <h1>
-      <span class="accent">PCA</span>
-      <span class="thin">Principal Component Analysis</span>
-    </h1>
-    <p class="hero-byline">
-      A complete derivation from first principles — curse of dimensionality,<br>
-      covariance geometry, Lagrangian optimization, eigenvalue theory,<br>
-      SVD connection, and every ML application. Nothing left out.
-    </p>
-    <div class="hero-chips">
-      <span class="chip g">Curse of Dimensionality</span>
-      <span class="chip l">Covariance Matrix</span>
-      <span class="chip g">Variance Maximization</span>
-      <span class="chip c">Lagrangian Derivation</span>
-      <span class="chip l">Eigenvalue Problem</span>
-      <span class="chip r">Principal Components</span>
-      <span class="chip m">SVD Connection</span>
-      <span class="chip g">Reconstruction Error</span>
-      <span class="chip c">Whitening</span>
-      <span class="chip l">Kernel PCA</span>
-      <span class="chip r">Power Iteration</span>
-      <span class="chip m">ML Applications</span>
-    </div>
-  </div>
-</div>
-
-<!-- ══ NAV ════════════════════════════════════════════════ -->
-<div class="nav-outer">
-  <div class="nav-box">
-    <div class="nav-sidebar">
-      <div class="nav-sidebar-label">Contents</div>
-      <div class="nav-dot"></div><div class="nav-dot" style="opacity:.5"></div><div class="nav-dot" style="opacity:.3"></div>
-    </div>
-    <div class="nav-main">
-      <div class="nav-grid">
-        <div class="nav-item"><a href="#c1"><span class="nav-rom">I</span>Curse of Dimensionality</a></div>
-        <div class="nav-item"><a href="#c2"><span class="nav-rom">II</span>What PCA Does — Intuition</a></div>
-        <div class="nav-item"><a href="#c3"><span class="nav-rom">III</span>Data Centering & Covariance</a></div>
-        <div class="nav-item"><a href="#c4"><span class="nav-rom">IV</span>Covariance Matrix Deep Dive</a></div>
-        <div class="nav-item"><a href="#c5"><span class="nav-rom">V</span>Variance Maximization</a></div>
-        <div class="nav-item"><a href="#c6"><span class="nav-rom">VI</span>Lagrangian Derivation</a></div>
-        <div class="nav-item"><a href="#c7"><span class="nav-rom">VII</span>The Eigenvalue Problem</a></div>
-        <div class="nav-item"><a href="#c8"><span class="nav-rom">VIII</span>Principal Components</a></div>
-        <div class="nav-item"><a href="#c9"><span class="nav-rom">IX</span>Explained Variance & Choosing k</a></div>
-        <div class="nav-item"><a href="#c10"><span class="nav-rom">X</span>Geometric Interpretation</a></div>
-        <div class="nav-item"><a href="#c11"><span class="nav-rom">XI</span>Reconstruction & Error</a></div>
-        <div class="nav-item"><a href="#c12"><span class="nav-rom">XII</span>Connection to SVD</a></div>
-        <div class="nav-item"><a href="#c13"><span class="nav-rom">XIII</span>Whitening & Standardization</a></div>
-        <div class="nav-item"><a href="#c14"><span class="nav-rom">XIV</span>Kernel PCA — Nonlinear Extension</a></div>
-        <div class="nav-item"><a href="#c15"><span class="nav-rom">XV</span>Randomized PCA & Algorithms</a></div>
-        <div class="nav-item"><a href="#c16"><span class="nav-rom">XVI</span>Applications in ML</a></div>
-        <div class="nav-item"><a href="#c17"><span class="nav-rom">XVII</span>PCA vs Other Methods</a></div>
-        <div class="nav-item"><a href="#c18"><span class="nav-rom">XVIII</span>Complete Mental Model</a></div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<div class="wrap">
-
-<!-- ══ I ═════════════════════════════════════════════════ -->
-<div class="ch" id="c1">
-  <div class="ch-head">
-    <div class="ch-rom">I</div>
-    <div class="ch-title-block">
-      <h2>The Curse of Dimensionality</h2>
-      <div class="ch-tag">// Hughes phenomenon · sparse data · geometry of high dimensions</div>
-    </div>
-  </div>
-
-  <p>Before understanding what PCA solves, we must understand the problem it addresses. High-dimensional data is not just computationally expensive — it is geometrically pathological in ways that break nearly every ML assumption.</p>
-
-  <div class="sub">
-    <div class="sh">Volume Concentration</div>
-    <p>Consider a unit hypercube \([0,1]^d\). The fraction of its volume within distance \(\epsilon\) of the boundary is \(1 - (1-2\epsilon)^d\). For \(d = 100\) and \(\epsilon = 0.01\):</p>
-    <div class="eq gd">
-      <div class="eq-head"><span>Volume Near Boundary</span></div>
-      <div class="eq-body">
-        \[1 - (1-0.02)^{100} = 1 - 0.98^{100} \approx 1 - 0.133 = 0.867\]
-        <div class="eq-note">87% of the hypercube's volume lies within 1% of the boundary. Nearly all data points are "near the edge" — the notion of a "typical interior point" vanishes.</div>
-      </div>
-    </div>
-  </div>
-
-  <div class="sub">
-    <div class="sh c">Distance Concentration</div>
-    <p>For \(m\) points drawn uniformly from \([0,1]^d\), the ratio of maximum to minimum pairwise distance converges to 1 as \(d \to \infty\):</p>
-    <div class="eq cd">
-      <div class="eq-head"><span>Distance Concentration</span></div>
-      <div class="eq-body">
-        \[\lim_{d\to\infty} \frac{\max\text{dist} - \min\text{dist}}{\min\text{dist}} \to 0\]
-        <div class="eq-note">All points become equidistant. k-NN becomes meaningless. Clustering loses discriminability. Any distance-based algorithm degrades catastrophically.</div>
-      </div>
-    </div>
-  </div>
-
-  <div class="sub">
-    <div class="sh r">Data Sparsity</div>
-    <p>To cover a \(d\)-dimensional unit hypercube with a coverage fraction \(r\) per axis, you need \(m = r^{-d}\) samples. For \(r = 0.1\) and \(d = 100\): \(m = 10^{100}\) — more than atoms in the observable universe.</p>
-    <div class="insight gd">
-      <div class="ins-mark">!</div>
-      <div class="ins-body">
-        <div class="ins-title">Why High Dimensions Are Mostly Empty</div>
-        <p>Real datasets with thousands of features have far fewer samples than dimensions. A 28×28 MNIST image lives in \(\mathbb{R}^{784}\) — but natural handwritten digits occupy a manifold of much lower intrinsic dimension. PCA finds this low-dimensional subspace. The <em>intrinsic dimensionality</em> is typically orders of magnitude smaller than the ambient dimension.</p>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- ══ II ════════════════════════════════════════════════ -->
-<div class="ch" id="c2">
-  <div class="ch-head">
-    <div class="ch-rom">II</div>
-    <div class="ch-title-block">
-      <h2>What PCA Does — Intuition First</h2>
-      <div class="ch-tag">// linear projection · maximum variance · orthogonal basis</div>
-    </div>
-  </div>
-
-  <p>PCA finds a new coordinate system for your data — one that is <em>aligned with the directions of maximum variance</em>. The first axis points in the direction where the data varies most. The second axis is orthogonal to the first and captures the next most variance. And so on.</p>
-
-  <div class="fig">
-    <div class="fig-box">
-      <svg viewBox="0 0 640 240" xmlns="http://www.w3.org/2000/svg" style="max-width:640px;width:100%;">
-        <rect width="640" height="240" fill="#100d1f"/>
+  <!-- ══ HERO ══════════════════════════════════════════════ -->
+  <div class="hero">
+    <!-- Geometric SVG art — rotating ellipses / axes / loadings -->
+    <div class="hero-art">
+      <svg width="clamp(300px,45vw,540px)" height="clamp(300px,45vw,540px)" viewBox="0 0 480 480"
+        xmlns="http://www.w3.org/2000/svg">
+        <circle cx="240" cy="240" r="200" fill="none" stroke="#a99cf5" stroke-width="0.6" opacity="0.5" />
+        <circle cx="240" cy="240" r="140" fill="none" stroke="#e8c547" stroke-width="0.5" opacity="0.4" />
+        <ellipse cx="240" cy="240" rx="200" ry="80" fill="none" stroke="#00e5cc" stroke-width="0.7" opacity="0.35"
+          transform="rotate(35 240 240)" />
+        <ellipse cx="240" cy="240" rx="170" ry="55" fill="none" stroke="#f07ea6" stroke-width="0.5" opacity="0.3"
+          transform="rotate(35 240 240)" />
+        <!-- PC1 axis -->
+        <line x1="80" y1="380" x2="400" y2="100" stroke="#e8c547" stroke-width="1.2" opacity="0.6" />
+        <!-- PC2 axis -->
+        <line x1="80" y1="100" x2="400" y2="380" stroke="#a99cf5" stroke-width="0.8" opacity="0.4" />
+        <!-- Scattered data points -->
+        <g opacity="0.55">
+          <circle cx="220" cy="210" r="3" fill="#00e5cc" />
+          <circle cx="255" cy="185" r="3" fill="#00e5cc" />
+          <circle cx="190" cy="240" r="3" fill="#00e5cc" />
+          <circle cx="275" cy="165" r="3" fill="#00e5cc" />
+          <circle cx="170" cy="260" r="3" fill="#00e5cc" />
+          <circle cx="300" cy="145" r="3" fill="#00e5cc" />
+          <circle cx="240" cy="200" r="3" fill="#00e5cc" />
+          <circle cx="260" cy="220" r="3" fill="#00e5cc" />
+          <circle cx="200" cy="270" r="3" fill="#00e5cc" />
+          <circle cx="310" cy="175" r="3" fill="#00e5cc" />
+          <circle cx="155" cy="295" r="3" fill="#e8c547" opacity="0.7" />
+          <circle cx="330" cy="130" r="3" fill="#e8c547" opacity="0.7" />
+        </g>
+        <!-- Loading arrows -->
+        <line x1="240" y1="240" x2="340" y2="155" stroke="#e8c547" stroke-width="1.5" opacity="0.8"
+          marker-end="url(#yma)" />
+        <line x1="240" y1="240" x2="148" y2="318" stroke="#a99cf5" stroke-width="1" opacity="0.6"
+          marker-end="url(#pma)" />
         <defs>
-          <marker id="ba" markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto"><path d="M0,0 L0,5 L7,2.5z" fill="#4a5070"/></marker>
-          <marker id="ya" markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto"><path d="M0,0 L0,5 L7,2.5z" fill="#e8c547"/></marker>
-          <marker id="la2" markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto"><path d="M0,0 L0,5 L7,2.5z" fill="#a99cf5"/></marker>
+          <marker id="yma" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+            <path d="M0,0 L0,6 L8,3z" fill="#e8c547" />
+          </marker>
+          <marker id="pma" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+            <path d="M0,0 L0,6 L8,3z" fill="#a99cf5" />
+          </marker>
         </defs>
-
-        <!-- Left panel: original basis -->
-        <text x="155" y="22" text-anchor="middle" font-family="Roboto Mono" font-size="10" fill="#4a5070" letter-spacing="0.12em">ORIGINAL BASIS (x₁, x₂)</text>
-        <line x1="55" y1="200" x2="265" y2="200" stroke="#201b38" stroke-width="1.2" marker-end="url(#ba)"/>
-        <line x1="55" y1="200" x2="55" y2="30" stroke="#201b38" stroke-width="1.2" marker-end="url(#ba)"/>
-        <text x="268" y="204" font-family="Roboto Mono" font-size="10" fill="#4a5070">x₁</text>
-        <text x="46" y="28" font-family="Roboto Mono" font-size="10" fill="#4a5070">x₂</text>
-        <!-- Data cloud (elongated ellipse rotated ~35°) -->
-        <g opacity="0.75">
-          <circle cx="115" cy="170" r="3.5" fill="#00e5cc"/><circle cx="130" cy="158" r="3.5" fill="#00e5cc"/>
-          <circle cx="145" cy="147" r="3.5" fill="#00e5cc"/><circle cx="158" cy="138" r="3.5" fill="#00e5cc"/>
-          <circle cx="170" cy="128" r="3.5" fill="#00e5cc"/><circle cx="183" cy="118" r="3.5" fill="#00e5cc"/>
-          <circle cx="197" cy="108" r="3.5" fill="#00e5cc"/><circle cx="120" cy="163" r="3.5" fill="#00e5cc"/>
-          <circle cx="138" cy="154" r="3.5" fill="#00e5cc"/><circle cx="150" cy="143" r="3.5" fill="#00e5cc"/>
-          <circle cx="165" cy="132" r="3.5" fill="#00e5cc"/><circle cx="179" cy="122" r="3.5" fill="#00e5cc"/>
-          <circle cx="192" cy="112" r="3.5" fill="#00e5cc"/>
-          <!-- noise in perpendicular direction -->
-          <circle cx="118" cy="160" r="2.5" fill="#a99cf5" opacity="0.6"/>
-          <circle cx="155" cy="150" r="2.5" fill="#a99cf5" opacity="0.6"/>
-          <circle cx="175" cy="133" r="2.5" fill="#a99cf5" opacity="0.6"/>
-          <circle cx="128" cy="168" r="2.5" fill="#a99cf5" opacity="0.6"/>
-        </g>
-        <!-- variance arrows in original basis — both needed -->
-        <line x1="155" y1="140" x2="220" y2="140" stroke="#4a5070" stroke-width="1" stroke-dasharray="4,3"/>
-        <line x1="155" y1="140" x2="155" y2="80" stroke="#4a5070" stroke-width="1" stroke-dasharray="4,3"/>
-
-        <!-- Right panel: PCA basis -->
-        <text x="475" y="22" text-anchor="middle" font-family="Roboto Mono" font-size="10" fill="#e8c547" letter-spacing="0.12em">PCA BASIS (PC₁, PC₂)</text>
-        <!-- PC1 axis (main direction) -->
-        <line x1="340" y1="210" x2="615" y2="55" stroke="#e8c547" stroke-width="1.8" marker-end="url(#ya)"/>
-        <!-- PC2 axis (perpendicular) -->
-        <line x1="380" y1="62" x2="575" y2="210" stroke="#a99cf5" stroke-width="1.2" marker-end="url(#la2)"/>
-        <text x="620" y="52" font-family="Spectral" font-size="13" fill="#e8c547" font-style="italic">PC₁</text>
-        <text x="580" y="216" font-family="Spectral" font-size="13" fill="#a99cf5" font-style="italic">PC₂</text>
-        <!-- Same data points, now projected onto PCA axes -->
-        <g opacity="0.75">
-          <circle cx="370" cy="195" r="3.5" fill="#00e5cc"/><circle cx="393" cy="177" r="3.5" fill="#00e5cc"/>
-          <circle cx="416" cy="160" r="3.5" fill="#00e5cc"/><circle cx="437" cy="144" r="3.5" fill="#00e5cc"/>
-          <circle cx="458" cy="127" r="3.5" fill="#00e5cc"/><circle cx="479" cy="110" r="3.5" fill="#00e5cc"/>
-          <circle cx="500" cy="93" r="3.5" fill="#00e5cc"/><circle cx="383" cy="186" r="3.5" fill="#00e5cc"/>
-          <circle cx="406" cy="169" r="3.5" fill="#00e5cc"/><circle cx="427" cy="152" r="3.5" fill="#00e5cc"/>
-          <circle cx="447" cy="136" r="3.5" fill="#00e5cc"/><circle cx="468" cy="119" r="3.5" fill="#00e5cc"/>
-          <circle cx="490" cy="101" r="3.5" fill="#00e5cc"/>
-          <circle cx="380" cy="190" r="2.5" fill="#a99cf5" opacity="0.6"/>
-          <circle cx="429" cy="148" r="2.5" fill="#a99cf5" opacity="0.6"/>
-          <circle cx="464" cy="122" r="2.5" fill="#a99cf5" opacity="0.6"/>
-          <circle cx="397" cy="172" r="2.5" fill="#a99cf5" opacity="0.6"/>
-        </g>
-        <!-- Projection lines to PC1 -->
-        <line x1="380" y1="190" x2="378" y2="194" stroke="#e8c547" stroke-width="0.7" stroke-dasharray="3,2" opacity="0.4"/>
-        <line x1="429" y1="148" x2="430" y2="144" stroke="#e8c547" stroke-width="0.7" stroke-dasharray="3,2" opacity="0.4"/>
+        <text x="348" y="150" font-family="Spectral" font-size="13" fill="#e8c547" font-style="italic">PC₁</text>
+        <text x="108" y="336" font-family="Spectral" font-size="12" fill="#a99cf5" font-style="italic">PC₂</text>
       </svg>
     </div>
-    <div class="fig-cap">Fig 1. Left: Data in original correlated basis — both axes needed to describe the cloud. Right: PCA basis — PC₁ (gold) aligns with maximum variance, PC₂ (lavender) captures residual variance. The description is now compact and uncorrelated.</div>
-  </div>
 
-  <div class="insight cd">
-    <div class="ins-mark">→</div>
-    <div class="ins-body">
-      <div class="ins-title">The Core Promise of PCA</div>
-      <p>PCA finds a rotation of the coordinate system such that (1) variance is maximized along each new axis in order, (2) the new axes are mutually orthogonal (uncorrelated), and (3) we can keep only the first \(k\) axes and lose the minimum possible information. It is the <em>optimal linear dimensionality reduction</em> under mean squared error.</p>
-    </div>
-  </div>
-</div>
-
-<!-- ══ III ═══════════════════════════════════════════════ -->
-<div class="ch" id="c3">
-  <div class="ch-head">
-    <div class="ch-rom">III</div>
-    <div class="ch-title-block">
-      <h2>Data Centering &amp; The Covariance Matrix</h2>
-      <div class="ch-tag">// mean subtraction · scatter matrix · statistical setup</div>
-    </div>
-  </div>
-
-  <p>PCA operates on <em>centered</em> data. The mean captures the location of the data cloud; the covariance matrix captures its shape. We must remove the mean first so that PCA describes shape, not position.</p>
-
-  <div class="sub">
-    <div class="sh">Step 1 — Center the Data</div>
-    <div class="eq gd">
-      <div class="eq-head"><span>Data Centering</span></div>
-      <div class="eq-body">
-        \[\boldsymbol{\mu} = \frac{1}{m}\sum_{i=1}^{m}\mathbf{x}^{(i)} \in \mathbb{R}^d\]
-        \[\tilde{\mathbf{x}}^{(i)} = \mathbf{x}^{(i)} - \boldsymbol{\mu} \quad\Rightarrow\quad \frac{1}{m}\sum_{i=1}^{m}\tilde{\mathbf{x}}^{(i)} = \mathbf{0}\]
-        <div class="eq-note">Let X̃ ∈ ℝ^{m×d} be the centered data matrix (each row is one centered sample). Everything from here uses X̃; we drop the tilde for brevity.</div>
+    <div class="hero-inner">
+      <div class="hero-tag">Mathematics · Statistics · Machine Learning</div>
+      <h1>
+        <span class="accent">PCA</span>
+        <span class="thin">Principal Component Analysis</span>
+      </h1>
+      <p class="hero-byline">
+        A complete derivation from first principles — curse of dimensionality,<br>
+        covariance geometry, Lagrangian optimization, eigenvalue theory,<br>
+        SVD connection, and every ML application. Nothing left out.
+      </p>
+      <div class="hero-chips">
+        <span class="chip g">Curse of Dimensionality</span>
+        <span class="chip l">Covariance Matrix</span>
+        <span class="chip g">Variance Maximization</span>
+        <span class="chip c">Lagrangian Derivation</span>
+        <span class="chip l">Eigenvalue Problem</span>
+        <span class="chip r">Principal Components</span>
+        <span class="chip m">SVD Connection</span>
+        <span class="chip g">Reconstruction Error</span>
+        <span class="chip c">Whitening</span>
+        <span class="chip l">Kernel PCA</span>
+        <span class="chip r">Power Iteration</span>
+        <span class="chip m">ML Applications</span>
       </div>
     </div>
   </div>
 
-  <div class="sub">
-    <div class="sh c">Step 2 — The Sample Covariance Matrix</div>
-    <div class="eq cd">
-      <div class="eq-head"><span>Sample Covariance Matrix</span></div>
-      <div class="eq-body">
-        \[\mathbf{S} = \frac{1}{m-1}\sum_{i=1}^{m}\tilde{\mathbf{x}}^{(i)}(\tilde{\mathbf{x}}^{(i)})^T = \frac{1}{m-1}\tilde{\mathbf{X}}^T\tilde{\mathbf{X}} \in \mathbb{R}^{d\times d}\]
-        <div class="eq-note">The (j,k) entry S_{jk} = Cov(x_j, x_k) = correlation structure between features j and k. The diagonal S_{jj} = Var(x_j). The 1/(m-1) gives an unbiased estimate of the population covariance; for PCA, 1/m gives the same eigenvectors.</div>
+  <!-- ══ NAV ════════════════════════════════════════════════ -->
+  <div class="nav-outer">
+    <div class="nav-box">
+      <div class="nav-sidebar">
+        <div class="nav-sidebar-label">Contents</div>
+        <div class="nav-dot"></div>
+        <div class="nav-dot" style="opacity:.5"></div>
+        <div class="nav-dot" style="opacity:.3"></div>
       </div>
-    </div>
-
-    <p>The covariance matrix is the central object of PCA. Its properties determine everything:</p>
-    <ul class="fl">
-      <li><strong>Symmetric:</strong> \(\mathbf{S} = \mathbf{S}^T\) — because \(\text{Cov}(x_j, x_k) = \text{Cov}(x_k, x_j)\).</li>
-      <li><strong>Positive semi-definite (PSD):</strong> \(\mathbf{v}^T\mathbf{S}\mathbf{v} \geq 0\) for all \(\mathbf{v}\) — because \(\mathbf{v}^T\mathbf{S}\mathbf{v} = \frac{1}{m-1}\|\tilde{\mathbf{X}}\mathbf{v}\|^2 \geq 0\). This guarantees all eigenvalues \(\geq 0\).</li>
-      <li><strong>Real eigenvalues:</strong> By the Spectral Theorem for symmetric matrices — guaranteed real, non-negative eigenvalues and orthogonal eigenvectors.</li>
-      <li><strong>Rank:</strong> \(\text{rank}(\mathbf{S}) \leq \min(m-1, d)\) — if \(m &lt; d\), the covariance matrix is singular and has at most \(m-1\) nonzero eigenvalues.</li>
-    </ul>
-  </div>
-</div>
-
-<!-- ══ IV ════════════════════════════════════════════════ -->
-<div class="ch" id="c4">
-  <div class="ch-head">
-    <div class="ch-rom">IV</div>
-    <div class="ch-title-block">
-      <h2>Covariance Matrix — Deep Dive</h2>
-      <div class="ch-tag">// geometric meaning · ellipsoid of concentration · spectral decomposition</div>
-    </div>
-  </div>
-
-  <div class="sub">
-    <div class="sh">The Covariance Ellipsoid</div>
-    <p>The covariance matrix \(\mathbf{S}\) defines an ellipsoid: \(\{\mathbf{v} : \mathbf{v}^T\mathbf{S}^{-1}\mathbf{v} = 1\}\). This is the set of points at Mahalanobis distance 1 from the origin. Its axes are aligned with the eigenvectors of \(\mathbf{S}\), and the length of each axis is proportional to \(\sqrt{\lambda_i}\) (the square root of the corresponding eigenvalue).</p>
-
-    <div class="fig">
-      <div class="fig-box">
-        <svg viewBox="0 0 580 220" xmlns="http://www.w3.org/2000/svg" style="max-width:580px;width:100%;">
-          <rect width="580" height="220" fill="#100d1f"/>
-          <!-- Left: correlation circle (identity cov) -->
-          <text x="120" y="20" text-anchor="middle" font-family="Roboto Mono" font-size="9" fill="#4a5070" letter-spacing="0.1em">S = I (uncorrelated)</text>
-          <circle cx="120" cy="120" r="75" fill="none" stroke="#a99cf5" stroke-width="1.5" stroke-dasharray="5,3" opacity="0.6"/>
-          <line x1="45" y1="120" x2="200" y2="120" stroke="#4a5070" stroke-width="1" opacity="0.4"/>
-          <line x1="120" y1="45" x2="120" y2="200" stroke="#4a5070" stroke-width="1" opacity="0.4"/>
-          <!-- axis labels -->
-          <text x="205" y="124" font-family="Roboto Mono" font-size="9" fill="#4a5070">x₁</text>
-          <text x="112" y="42" font-family="Roboto Mono" font-size="9" fill="#4a5070">x₂</text>
-          <!-- data points circle cloud -->
-          <g opacity="0.5">
-            <circle cx="150" cy="90" r="3" fill="#00e5cc"/><circle cx="80" cy="110" r="3" fill="#00e5cc"/>
-            <circle cx="140" cy="150" r="3" fill="#00e5cc"/><circle cx="100" cy="80" r="3" fill="#00e5cc"/>
-            <circle cx="170" cy="130" r="3" fill="#00e5cc"/><circle cx="75" cy="140" r="3" fill="#00e5cc"/>
-            <circle cx="120" cy="60" r="3" fill="#00e5cc"/><circle cx="120" cy="175" r="3" fill="#00e5cc"/>
-          </g>
-          <text x="120" y="212" text-anchor="middle" font-family="Roboto Mono" font-size="9" fill="#4a5070">equal variance, no correlation</text>
-
-          <!-- Middle: elongated ellipse (correlated) -->
-          <text x="300" y="20" text-anchor="middle" font-family="Roboto Mono" font-size="9" fill="#e8c547" letter-spacing="0.1em">S correlated (axis-aligned)</text>
-          <ellipse cx="300" cy="120" rx="90" ry="45" fill="none" stroke="#e8c547" stroke-width="1.8" opacity="0.7"/>
-          <line x1="210" y1="120" x2="400" y2="120" stroke="#4a5070" stroke-width="1" opacity="0.4"/>
-          <line x1="300" y1="50" x2="300" y2="190" stroke="#4a5070" stroke-width="1" opacity="0.4"/>
-          <!-- eigenvector axes -->
-          <line x1="210" y1="120" x2="390" y2="120" stroke="#e8c547" stroke-width="2" marker-end="url(#ya)"/>
-          <line x1="300" y1="75" x2="300" y2="165" stroke="#a99cf5" stroke-width="1.5" marker-end="url(#la2)"/>
-          <text x="382" y="114" font-family="Spectral" font-size="12" fill="#e8c547" font-style="italic">v₁ (λ₁ large)</text>
-          <text x="305" y="72" font-family="Spectral" font-size="12" fill="#a99cf5" font-style="italic">v₂ (λ₂ small)</text>
-          <g opacity="0.5">
-            <circle cx="260" cy="118" r="3" fill="#00e5cc"/><circle cx="340" cy="122" r="3" fill="#00e5cc"/>
-            <circle cx="280" cy="115" r="3" fill="#00e5cc"/><circle cx="325" cy="125" r="3" fill="#00e5cc"/>
-            <circle cx="250" cy="125" r="3" fill="#00e5cc"/><circle cx="350" cy="116" r="3" fill="#00e5cc"/>
-          </g>
-          <text x="300" y="212" text-anchor="middle" font-family="Roboto Mono" font-size="9" fill="#4a5070">σ₁² ≫ σ₂²  →  PCA discards v₂</text>
-
-          <!-- Right: rotated ellipse -->
-          <text x="475" y="20" text-anchor="middle" font-family="Roboto Mono" font-size="9" fill="#f07ea6" letter-spacing="0.1em">S rotated (cross-correlated)</text>
-          <ellipse cx="475" cy="120" rx="80" ry="35" fill="none" stroke="#f07ea6" stroke-width="1.8" opacity="0.7" transform="rotate(-35 475 120)"/>
-          <line x1="395" y1="120" x2="560" y2="120" stroke="#4a5070" stroke-width="1" opacity="0.4"/>
-          <line x1="475" y1="50" x2="475" y2="190" stroke="#4a5070" stroke-width="1" opacity="0.4"/>
-          <!-- rotated eigenvectors -->
-          <line x1="415" y1="160" x2="535" y2="80" stroke="#f07ea6" stroke-width="2" marker-end="url(#ra2)"/>
-          <line x1="422" y1="84" x2="528" y2="156" stroke="#a99cf5" stroke-width="1.5" marker-end="url(#la2)"/>
-          <defs><marker id="ra2" markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto"><path d="M0,0 L0,5 L7,2.5z" fill="#f07ea6"/></marker></defs>
-          <g opacity="0.5">
-            <circle cx="440" cy="148" r="3" fill="#00e5cc"/><circle cx="490" cy="108" r="3" fill="#00e5cc"/>
-            <circle cx="455" cy="138" r="3" fill="#00e5cc"/><circle cx="505" cy="100" r="3" fill="#00e5cc"/>
-            <circle cx="470" cy="120" r="3" fill="#00e5cc"/>
-          </g>
-          <text x="475" y="212" text-anchor="middle" font-family="Roboto Mono" font-size="9" fill="#4a5070">eigenvectors ≠ coordinate axes</text>
-        </svg>
-      </div>
-      <div class="fig-cap">Fig 2. The covariance ellipsoid. Left: isotropic (no preferred direction). Centre: elongated along x₁ — PC₁ aligns with x₁. Right: rotated — eigenvectors are oblique to original axes, and PCA finds them exactly.</div>
-    </div>
-  </div>
-
-  <div class="sub">
-    <div class="sh l">Spectral Decomposition of S</div>
-    <p>By the Spectral Theorem for real symmetric matrices:</p>
-    <div class="eq ld">
-      <div class="eq-head"><span>Eigendecomposition of Covariance Matrix</span></div>
-      <div class="eq-body">
-        \[\mathbf{S} = \mathbf{V}\boldsymbol{\Lambda}\mathbf{V}^T = \sum_{j=1}^{d}\lambda_j\mathbf{v}_j\mathbf{v}_j^T\]
-        \[\boldsymbol{\Lambda} = \text{diag}(\lambda_1,\ldots,\lambda_d), \quad \lambda_1 \geq \lambda_2 \geq \cdots \geq \lambda_d \geq 0\]
-        \[\mathbf{V} = [\mathbf{v}_1 | \mathbf{v}_2 | \cdots | \mathbf{v}_d], \quad \mathbf{V}^T\mathbf{V} = \mathbf{I}_d\]
-        <div class="eq-note">V is orthogonal (V^T = V^{-1}). Each outer product λ_j v_j v_j^T is a rank-1 matrix representing the contribution of the j-th principal component to the total covariance structure.</div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- ══ V ═════════════════════════════════════════════════ -->
-<div class="ch" id="c5">
-  <div class="ch-head">
-    <div class="ch-rom">V</div>
-    <div class="ch-title-block">
-      <h2>The Variance Maximization Problem</h2>
-      <div class="ch-tag">// objective function · unit norm constraint · Rayleigh quotient</div>
-    </div>
-  </div>
-
-  <p>PCA's first principal component is the unit vector \(\mathbf{v}_1\) such that projecting the data onto \(\mathbf{v}_1\) gives maximum variance. Let's formalize this.</p>
-
-  <div class="sub">
-    <div class="sh">Variance of the Projection</div>
-    <p>The projection of sample \(\mathbf{x}^{(i)}\) onto unit vector \(\mathbf{v}\) is the scalar \(z^{(i)} = \mathbf{v}^T\mathbf{x}^{(i)}\). The variance of these projected values across all samples:</p>
-    <div class="eq gd">
-      <div class="eq-head"><span>Projection Variance</span></div>
-      <div class="eq-body">
-        \[\text{Var}\left(\mathbf{v}^T\mathbf{x}\right) = \frac{1}{m-1}\sum_{i=1}^{m}\left(\mathbf{v}^T\mathbf{x}^{(i)}\right)^2 = \frac{1}{m-1}\mathbf{v}^T\tilde{\mathbf{X}}^T\tilde{\mathbf{X}}\mathbf{v} = \mathbf{v}^T\mathbf{S}\mathbf{v}\]
-        <div class="eq-note">Since data is centered: the mean of v^T x̃^{(i)} is 0. The variance is the quadratic form v^T S v. PCA maximizes this over all unit vectors v.</div>
-      </div>
-    </div>
-  </div>
-
-  <div class="sub">
-    <div class="sh c">The Rayleigh Quotient</div>
-    <p>The <span class="hc">Rayleigh quotient</span> of a symmetric matrix \(\mathbf{S}\) with respect to vector \(\mathbf{v}\) is:</p>
-    <div class="eq cd">
-      <div class="eq-head"><span>Rayleigh Quotient</span></div>
-      <div class="eq-body">
-        \[R(\mathbf{v}) = \frac{\mathbf{v}^T\mathbf{S}\mathbf{v}}{\mathbf{v}^T\mathbf{v}}\]
-        <p style="font-family:'Roboto Mono',monospace;font-size:0.82em;color:var(--sub);margin-top:10px;">The Rayleigh quotient is bounded: \(\lambda_{\min} \leq R(\mathbf{v}) \leq \lambda_{\max}\). The maximum is achieved when \(\mathbf{v} = \mathbf{v}_1\) (the eigenvector corresponding to the largest eigenvalue). The constrained problem (‖v‖=1) is equivalent to maximizing the unconstrained Rayleigh quotient.</p>
-      </div>
-    </div>
-  </div>
-
-  <div class="sub">
-    <div class="sh">Formal Optimization Problem</div>
-    <div class="eq dark">
-      <div class="eq-head"><span>PCA First Principal Component</span></div>
-      <div class="eq-body">
-        \[\mathbf{v}_1 = \underset{\mathbf{v} \in \mathbb{R}^d}{\arg\max}\; \mathbf{v}^T\mathbf{S}\mathbf{v} \quad\text{subject to}\quad \|\mathbf{v}\|_2 = 1\]
-      </div>
-    </div>
-    <p>Subsequent components are found by successively deflating and re-solving:</p>
-    <div class="eq dark">
-      <div class="eq-head"><span>k-th Principal Component (Deflation)</span></div>
-      <div class="eq-body">
-        \[\mathbf{v}_k = \underset{\mathbf{v}}{\arg\max}\; \mathbf{v}^T\mathbf{S}\mathbf{v} \quad\text{subject to}\quad \|\mathbf{v}\|=1,\; \mathbf{v}\perp\mathbf{v}_j\;\forall j &lt; k\]
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- ══ VI ════════════════════════════════════════════════ -->
-<div class="ch" id="c6">
-  <div class="ch-head">
-    <div class="ch-rom">VI</div>
-    <div class="ch-title-block">
-      <h2>Lagrangian Derivation — Full Proof</h2>
-      <div class="ch-tag">// method of Lagrange multipliers · stationarity · complete derivation</div>
-    </div>
-  </div>
-
-  <p>We now apply the Lagrange multiplier method (from the Lagrange Multipliers masterclass) to solve the PCA optimization problem exactly. This derivation shows <em>why</em> eigenvectors are the answer — it falls out from first principles.</p>
-
-  <div class="sub">
-    <div class="sh">Setting Up the Lagrangian</div>
-    <p>Objective: maximize \(\mathbf{v}^T\mathbf{S}\mathbf{v}\). Constraint: \(\|\mathbf{v}\|^2 = 1\), i.e., \(g(\mathbf{v}) = \mathbf{v}^T\mathbf{v} - 1 = 0\).</p>
-    <div class="eq ld">
-      <div class="eq-head"><span>Lagrangian</span></div>
-      <div class="eq-body">
-        \[\mathcal{L}(\mathbf{v}, \lambda) = \mathbf{v}^T\mathbf{S}\mathbf{v} - \lambda(\mathbf{v}^T\mathbf{v} - 1)\]
-      </div>
-    </div>
-  </div>
-
-  <div class="sub">
-    <div class="sh l">Full Derivation</div>
-    <div class="drv">
-      <div class="drv-hdr">// Lagrangian → Eigenvalue Problem — Complete Proof</div>
-      <div class="drv-row">
-        <span class="dn l">1</span>
-        <div>
-          Stationarity condition: set \(\nabla_{\mathbf{v}}\mathcal{L} = \mathbf{0}\).
-          Using matrix calculus identities: \(\nabla_{\mathbf{v}}(\mathbf{v}^T\mathbf{S}\mathbf{v}) = 2\mathbf{S}\mathbf{v}\) (since \(\mathbf{S}\) is symmetric) and \(\nabla_{\mathbf{v}}(\mathbf{v}^T\mathbf{v}) = 2\mathbf{v}\):
-          \[\nabla_{\mathbf{v}}\mathcal{L} = 2\mathbf{S}\mathbf{v} - 2\lambda\mathbf{v} = \mathbf{0}\]
-        </div>
-      </div>
-      <div class="drv-row">
-        <span class="dn l">2</span>
-        <div>
-          Simplify:
-          \[\mathbf{S}\mathbf{v} = \lambda\mathbf{v}\]
-          <div class="dnote">This is the eigenvalue equation! The stationary points of the Lagrangian are exactly the eigenvectors of S.</div>
-        </div>
-      </div>
-      <div class="drv-row">
-        <span class="dn l">3</span>
-        <div>
-          Evaluate the objective at a stationary point. Multiply both sides of \(\mathbf{S}\mathbf{v} = \lambda\mathbf{v}\) by \(\mathbf{v}^T\) from the left:
-          \[\mathbf{v}^T\mathbf{S}\mathbf{v} = \lambda\mathbf{v}^T\mathbf{v} = \lambda\cdot 1 = \lambda\]
-          <div class="dnote">The variance of the projection equals the Lagrange multiplier λ! To maximize variance, we want the largest λ.</div>
-        </div>
-      </div>
-      <div class="drv-row">
-        <span class="dn l">4</span>
-        <div>
-          Constraint stationarity: \(\partial\mathcal{L}/\partial\lambda = -(\mathbf{v}^T\mathbf{v}-1) = 0\) recovers \(\|\mathbf{v}\|=1\). ∎
-          <br>
-          <strong>Conclusion:</strong> \(\mathbf{v}_1 = \arg\max_{\|\mathbf{v}\|=1}\mathbf{v}^T\mathbf{S}\mathbf{v}\) is the eigenvector of \(\mathbf{S}\) corresponding to eigenvalue \(\lambda_1 = \max_j\lambda_j\). The maximum variance equals \(\lambda_1\).
+      <div class="nav-main">
+        <div class="nav-grid">
+          <div class="nav-item"><a href="#c1"><span class="nav-rom">I</span>Curse of Dimensionality</a></div>
+          <div class="nav-item"><a href="#c2"><span class="nav-rom">II</span>What PCA Does — Intuition</a></div>
+          <div class="nav-item"><a href="#c3"><span class="nav-rom">III</span>Data Centering & Covariance</a></div>
+          <div class="nav-item"><a href="#c4"><span class="nav-rom">IV</span>Covariance Matrix Deep Dive</a></div>
+          <div class="nav-item"><a href="#c5"><span class="nav-rom">V</span>Variance Maximization</a></div>
+          <div class="nav-item"><a href="#c6"><span class="nav-rom">VI</span>Lagrangian Derivation</a></div>
+          <div class="nav-item"><a href="#c7"><span class="nav-rom">VII</span>The Eigenvalue Problem</a></div>
+          <div class="nav-item"><a href="#c8"><span class="nav-rom">VIII</span>Principal Components</a></div>
+          <div class="nav-item"><a href="#c9"><span class="nav-rom">IX</span>Explained Variance & Choosing k</a></div>
+          <div class="nav-item"><a href="#c10"><span class="nav-rom">X</span>Geometric Interpretation</a></div>
+          <div class="nav-item"><a href="#c11"><span class="nav-rom">XI</span>Reconstruction & Error</a></div>
+          <div class="nav-item"><a href="#c12"><span class="nav-rom">XII</span>Connection to SVD</a></div>
+          <div class="nav-item"><a href="#c13"><span class="nav-rom">XIII</span>Whitening & Standardization</a></div>
+          <div class="nav-item"><a href="#c14"><span class="nav-rom">XIV</span>Kernel PCA — Nonlinear Extension</a>
+          </div>
+          <div class="nav-item"><a href="#c15"><span class="nav-rom">XV</span>Randomized PCA & Algorithms</a></div>
+          <div class="nav-item"><a href="#c16"><span class="nav-rom">XVI</span>Applications in ML</a></div>
+          <div class="nav-item"><a href="#c17"><span class="nav-rom">XVII</span>PCA vs Other Methods</a></div>
+          <div class="nav-item"><a href="#c18"><span class="nav-rom">XVIII</span>Complete Mental Model</a></div>
         </div>
       </div>
     </div>
   </div>
 
-  <div class="theorem">
-    <div class="theorem-badge">★ Theorem — PCA as Eigenvalue Problem</div>
-    <p>The \(k\)-th principal component \(\mathbf{v}_k\) is the \(k\)-th eigenvector of the sample covariance matrix \(\mathbf{S}\) (ordered by decreasing eigenvalue). The variance explained by the \(k\)-th component equals the \(k\)-th eigenvalue \(\lambda_k\). This follows directly from the Lagrangian stationarity condition.</p>
-  </div>
-</div>
+  <div class="wrap">
 
-<!-- ══ VII ═══════════════════════════════════════════════ -->
-<div class="ch" id="c7">
-  <div class="ch-head">
-    <div class="ch-rom">VII</div>
-    <div class="ch-title-block">
-      <h2>The Eigenvalue Problem</h2>
-      <div class="ch-tag">// characteristic polynomial · spectral theorem · orthogonality proof</div>
-    </div>
-  </div>
-
-  <div class="sub">
-    <div class="sh">The Characteristic Equation</div>
-    <div class="eq gd">
-      <div class="eq-head"><span>Eigenvalue Equation</span></div>
-      <div class="eq-body">
-        \[\mathbf{S}\mathbf{v} = \lambda\mathbf{v} \quad\Leftrightarrow\quad (\mathbf{S} - \lambda\mathbf{I})\mathbf{v} = \mathbf{0}\]
-        \[\text{Non-trivial solution} \Leftrightarrow \det(\mathbf{S} - \lambda\mathbf{I}) = 0 \quad\text{(characteristic polynomial)}\]
-        <div class="eq-note">The characteristic polynomial is degree d in λ, giving d eigenvalues (counting multiplicity, possibly complex — but since S is real symmetric, all eigenvalues are real and ≥ 0).</div>
-      </div>
-    </div>
-  </div>
-
-  <div class="sub">
-    <div class="sh c">Why Eigenvectors of S Are Orthogonal — Proof</div>
-    <div class="drv">
-      <div class="drv-hdr">// Proving v_i ⊥ v_j for distinct eigenvalues λ_i ≠ λ_j</div>
-      <div class="drv-row">
-        <span class="dn c">1</span>
-        <div>
-          Two eigenvectors: \(\mathbf{S}\mathbf{v}_i = \lambda_i\mathbf{v}_i\) and \(\mathbf{S}\mathbf{v}_j = \lambda_j\mathbf{v}_j\).
+    <!-- ══ I ═════════════════════════════════════════════════ -->
+    <div class="ch" id="c1">
+      <div class="ch-head">
+        <div class="ch-rom">I</div>
+        <div class="ch-title-block">
+          <h2>The Curse of Dimensionality</h2>
+          <div class="ch-tag">// Hughes phenomenon · sparse data · geometry of high dimensions</div>
         </div>
       </div>
-      <div class="drv-row">
-        <span class="dn c">2</span>
-        <div>
-          Multiply first equation by \(\mathbf{v}_j^T\): \(\mathbf{v}_j^T\mathbf{S}\mathbf{v}_i = \lambda_i\mathbf{v}_j^T\mathbf{v}_i\).
-          Multiply second equation by \(\mathbf{v}_i^T\): \(\mathbf{v}_i^T\mathbf{S}\mathbf{v}_j = \lambda_j\mathbf{v}_i^T\mathbf{v}_j\).
+
+      <p>Before understanding what PCA solves, we must understand the problem it addresses. High-dimensional data is not
+        just computationally expensive — it is geometrically pathological in ways that break nearly every ML assumption.
+      </p>
+
+      <div class="sub">
+        <div class="sh">Volume Concentration</div>
+        <p>Consider a unit hypercube \([0,1]^d\). The fraction of its volume within distance \(\epsilon\) of the
+          boundary is \(1 - (1-2\epsilon)^d\). For \(d = 100\) and \(\epsilon = 0.01\):</p>
+        <div class="eq gd">
+          <div class="eq-head"><span>Volume Near Boundary</span></div>
+          <div class="eq-body">
+            \[1 - (1-0.02)^{100} = 1 - 0.98^{100} \approx 1 - 0.133 = 0.867\]
+            <div class="eq-note">87% of the hypercube's volume lies within 1% of the boundary. Nearly all data points
+              are "near the edge" — the notion of a "typical interior point" vanishes.</div>
+          </div>
         </div>
       </div>
-      <div class="drv-row">
-        <span class="dn c">3</span>
-        <div>
-          Since \(\mathbf{S}\) is symmetric: \(\mathbf{v}_j^T\mathbf{S}\mathbf{v}_i = (\mathbf{S}\mathbf{v}_j)^T\mathbf{v}_i = \mathbf{v}_i^T\mathbf{S}\mathbf{v}_j\). So both sides are equal:
-          \[\lambda_i(\mathbf{v}_j^T\mathbf{v}_i) = \lambda_j(\mathbf{v}_i^T\mathbf{v}_j)\]
+
+      <div class="sub">
+        <div class="sh c">Distance Concentration</div>
+        <p>For \(m\) points drawn uniformly from \([0,1]^d\), the ratio of maximum to minimum pairwise distance
+          converges to 1 as \(d \to \infty\):</p>
+        <div class="eq cd">
+          <div class="eq-head"><span>Distance Concentration</span></div>
+          <div class="eq-body">
+            \[\lim_{d\to\infty} \frac{\max\text{dist} - \min\text{dist}}{\min\text{dist}} \to 0\]
+            <div class="eq-note">All points become equidistant. k-NN becomes meaningless. Clustering loses
+              discriminability. Any distance-based algorithm degrades catastrophically.</div>
+          </div>
         </div>
       </div>
-      <div class="drv-row">
-        <span class="dn c">4</span>
-        <div>
-          Rearrange: \((\lambda_i - \lambda_j)(\mathbf{v}_i^T\mathbf{v}_j) = 0\). Since \(\lambda_i \neq \lambda_j\), we get \(\mathbf{v}_i^T\mathbf{v}_j = 0\). ∎
-          <div class="dnote">Eigenvectors corresponding to distinct eigenvalues of a symmetric matrix are automatically orthogonal. No "Gram-Schmidt" needed.</div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
 
-<!-- ══ VIII ══════════════════════════════════════════════ -->
-<div class="ch" id="c8">
-  <div class="ch-head">
-    <div class="ch-rom">VIII</div>
-    <div class="ch-title-block">
-      <h2>Principal Components — Complete Picture</h2>
-      <div class="ch-tag">// loadings · scores · projection · full decomposition</div>
-    </div>
-  </div>
-
-  <div class="sub">
-    <div class="sh">Loadings, Scores, and Projection</div>
-    <div class="eq gd">
-      <div class="eq-head"><span>PCA Projection to k Dimensions</span></div>
-      <div class="eq-body">
-        \[\mathbf{V}_k = [\mathbf{v}_1 | \mathbf{v}_2 | \cdots | \mathbf{v}_k] \in \mathbb{R}^{d\times k} \quad\text{(loadings matrix)}\]
-        \[\mathbf{Z} = \tilde{\mathbf{X}}\mathbf{V}_k \in \mathbb{R}^{m\times k} \quad\text{(scores / projected data)}\]
-        \[Z_{ij} = \tilde{\mathbf{x}}^{(i)}\cdot\mathbf{v}_j \quad\text{(score of sample }i\text{ on component }j\text{)}\]
-        <div class="eq-note">V_k is the first k columns of the eigenvector matrix V. The scores Z are the coordinates in the new PCA subspace. Each column of Z has zero mean (since X̃ is centered) and variance λ_j.</div>
-      </div>
-    </div>
-  </div>
-
-  <div class="sub">
-    <div class="sh c">Properties of the Scores</div>
-    <ul class="fl">
-      <li><strong>Zero mean:</strong> \(\mathbb{E}[\mathbf{Z}] = \mathbf{0}\) — inherited from centering.</li>
-      <li><strong>Diagonal covariance:</strong> \(\text{Cov}(\mathbf{Z}) = \frac{1}{m-1}\mathbf{Z}^T\mathbf{Z} = \boldsymbol{\Lambda}_k = \text{diag}(\lambda_1,\ldots,\lambda_k)\) — the principal components are uncorrelated!</li>
-      <li><strong>Variance:</strong> The \(j\)-th column of \(\mathbf{Z}\) has variance \(\lambda_j\) — the eigenvalue tells you exactly how much variance that component captures.</li>
-    </ul>
-
-    <div class="drv">
-      <div class="drv-hdr">// Proving Cov(Z) = Λ_k</div>
-      <div class="drv-row">
-        <span class="dn">1</span>
-        <div>
-          \(\text{Cov}(\mathbf{Z}) = \frac{1}{m-1}(\tilde{\mathbf{X}}\mathbf{V}_k)^T(\tilde{\mathbf{X}}\mathbf{V}_k) = \frac{1}{m-1}\mathbf{V}_k^T\tilde{\mathbf{X}}^T\tilde{\mathbf{X}}\mathbf{V}_k\)
-        </div>
-      </div>
-      <div class="drv-row">
-        <span class="dn">2</span>
-        <div>
-          \(= \mathbf{V}_k^T\mathbf{S}\mathbf{V}_k\)
-        </div>
-      </div>
-      <div class="drv-row">
-        <span class="dn">3</span>
-        <div>
-          Since \(\mathbf{S}\mathbf{v}_j = \lambda_j\mathbf{v}_j\) and \(\mathbf{v}_i^T\mathbf{v}_j = \delta_{ij}\):
-          \[(\mathbf{V}_k^T\mathbf{S}\mathbf{V}_k)_{ij} = \mathbf{v}_i^T\mathbf{S}\mathbf{v}_j = \lambda_j\mathbf{v}_i^T\mathbf{v}_j = \lambda_j\delta_{ij}\]
-          \[\Rightarrow \mathbf{V}_k^T\mathbf{S}\mathbf{V}_k = \boldsymbol{\Lambda}_k \quad\blacksquare\]
-          <div class="dnote">The projected data has a diagonal covariance — the components are decorrelated. This is the second key property of PCA (the first being variance maximization).</div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- ══ IX ════════════════════════════════════════════════ -->
-<div class="ch" id="c9">
-  <div class="ch-head">
-    <div class="ch-rom">IX</div>
-    <div class="ch-title-block">
-      <h2>Explained Variance &amp; Choosing k</h2>
-      <div class="ch-tag">// variance ratio · scree plot · cumulative explained variance · elbow method</div>
-    </div>
-  </div>
-
-  <div class="sub">
-    <div class="sh">Explained Variance Ratio</div>
-    <div class="eq cd">
-      <div class="eq-head"><span>Explained Variance</span></div>
-      <div class="eq-body">
-        \[\text{EVR}(k) = \frac{\sum_{j=1}^{k}\lambda_j}{\sum_{j=1}^{d}\lambda_j} = \frac{\sum_{j=1}^{k}\lambda_j}{\text{tr}(\mathbf{S})}\]
-        <div class="eq-note">tr(S) = total variance = sum of all variances. EVR(k) ∈ [0,1] — the fraction of total information retained by keeping k components. Common thresholds: 90%, 95%, 99%.</div>
-      </div>
-    </div>
-  </div>
-
-  <div class="sub">
-    <div class="sh r">Methods for Choosing k</div>
-    <div class="t-wrap">
-      <table>
-        <thead><tr><th>Method</th><th>Rule</th><th>Best For</th></tr></thead>
-        <tbody>
-          <tr><td>Cumulative EVR threshold</td><td>Keep smallest \(k\) with EVR ≥ 0.95 (or 0.99)</td><td>General dimensionality reduction with known target</td></tr>
-          <tr><td>Scree plot / Elbow</td><td>Plot \(\lambda_j\) vs \(j\); keep components before the "elbow" where eigenvalues level off</td><td>Exploratory analysis; finding natural breaks</td></tr>
-          <tr><td>Kaiser criterion</td><td>Keep components with \(\lambda_j &gt; 1\) (with standardized data)</td><td>Factor analysis; features on same scale</td></tr>
-          <tr><td>Reconstruction error</td><td>Keep \(k\) such that \(\|\mathbf{X} - \hat{\mathbf{X}}_k\|_F^2 / \|\mathbf{X}\|_F^2 \leq \epsilon\)</td><td>Compression with quality constraint</td></tr>
-          <tr><td>Cross-validation</td><td>Choose \(k\) that minimizes downstream task error</td><td>When PCA is a preprocessing step for classification</td></tr>
-          <tr><td>Optimal Hard Threshold</td><td>Gavish-Donoho formula (depends on noise level)</td><td>Denoising with known noise variance</td></tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
-</div>
-
-<!-- ══ X ═════════════════════════════════════════════════ -->
-<div class="ch" id="c10">
-  <div class="ch-head">
-    <div class="ch-rom">X</div>
-    <div class="ch-title-block">
-      <h2>Geometric Interpretation</h2>
-      <div class="ch-tag">// rotation · projection · new orthonormal basis · change of basis</div>
-    </div>
-  </div>
-
-  <p>PCA is a <em>rigid rotation</em> of the coordinate system — no stretching, no shearing — followed by a <em>projection</em> onto a subspace.</p>
-
-  <div class="sub">
-    <div class="sh">PCA as Change of Basis</div>
-    <div class="eq ld">
-      <div class="eq-head"><span>Geometric Decomposition</span></div>
-      <div class="eq-body">
-        \[\underbrace{\tilde{\mathbf{x}}}_{\text{original}} \xrightarrow{\mathbf{V}^T} \underbrace{\mathbf{z}}_{\text{all PCs}} \xrightarrow{\text{keep first }k} \underbrace{\mathbf{z}_k}_{\text{low-dim rep}}\]
-        \[\mathbf{z} = \mathbf{V}^T\tilde{\mathbf{x}} \in \mathbb{R}^d \quad\text{(rotation — invertible, no info loss)}\]
-        \[\mathbf{z}_k = \mathbf{V}_k^T\tilde{\mathbf{x}} \in \mathbb{R}^k \quad\text{(projection — information loss = }1-\text{EVR}(k)\text{)}\]
-      </div>
-    </div>
-
-    <ul class="fl">
-      <li><strong>Rotation step (\(\mathbf{V}^T\)):</strong> This is an orthogonal transformation — it preserves lengths, angles, and distances. The data cloud shape is unchanged; only the coordinate labels change. No information is lost.</li>
-      <li><strong>Projection step (keep k):</strong> Discard dimensions \(k+1, \ldots, d\). This projects the data onto the \(k\)-dimensional principal subspace. Information is lost — but the minimum possible amount (for a linear projection).</li>
-      <li><strong>Optimality:</strong> PCA is the <em>optimal linear compressor</em>: no other linear projection onto a \(k\)-dimensional subspace retains more variance or has lower reconstruction error.</li>
-    </ul>
-  </div>
-
-  <div class="insight ld">
-    <div class="ins-mark">∠</div>
-    <div class="ins-body">
-      <div class="ins-title">The Data Stays in the Same Place</div>
-      <p>PCA does not move the data points — it moves the coordinate axes. The ellipsoidal cloud stays fixed; we rotate the rulers we use to measure it until they align with the cloud's natural axes. This is why PCA is purely a linear algebraic transformation: \(\mathbf{V}^T\mathbf{V} = \mathbf{I}\), det(\(\mathbf{V}\)) = ±1.</p>
-    </div>
-  </div>
-</div>
-
-<!-- ══ XI ════════════════════════════════════════════════ -->
-<div class="ch" id="c11">
-  <div class="ch-head">
-    <div class="ch-rom">XI</div>
-    <div class="ch-title-block">
-      <h2>Reconstruction &amp; Reconstruction Error</h2>
-      <div class="ch-tag">// inverse transform · Frobenius norm · optimality theorem</div>
-    </div>
-  </div>
-
-  <div class="sub">
-    <div class="sh">Reconstruction from PCA Scores</div>
-    <div class="eq pd">
-      <div class="eq-head"><span>Reconstruction</span></div>
-      <div class="eq-body">
-        \[\hat{\tilde{\mathbf{x}}}^{(i)} = \mathbf{V}_k\mathbf{z}_k^{(i)} = \mathbf{V}_k\mathbf{V}_k^T\tilde{\mathbf{x}}^{(i)} \in \mathbb{R}^d\]
-        \[\mathbf{P}_k = \mathbf{V}_k\mathbf{V}_k^T \in \mathbb{R}^{d\times d} \quad\text{(projection matrix onto principal subspace)}\]
-        <div class="eq-note">P_k is an orthogonal projector: P_k² = P_k, P_k^T = P_k. The final reconstruction in original space: x̂^{(i)} = V_k z_k^{(i)} + μ (add the mean back).</div>
-      </div>
-    </div>
-  </div>
-
-  <div class="sub">
-    <div class="sh p">Reconstruction Error</div>
-    <div class="eq pd">
-      <div class="eq-head"><span>Total Reconstruction Error (Frobenius Norm)</span></div>
-      <div class="eq-body">
-        \[\mathcal{E}_k = \|\tilde{\mathbf{X}} - \hat{\tilde{\mathbf{X}}}_k\|_F^2 = \|\tilde{\mathbf{X}}(\mathbf{I} - \mathbf{V}_k\mathbf{V}_k^T)\|_F^2\]
-        \[= (m-1)\sum_{j=k+1}^{d}\lambda_j = (m-1)\left(\text{tr}(\mathbf{S}) - \sum_{j=1}^{k}\lambda_j\right)\]
-        <div class="eq-note">The reconstruction error equals the sum of discarded eigenvalues (times m-1). Minimizing reconstruction error is exactly equivalent to maximizing retained variance — the two formulations of PCA are identical.</div>
-      </div>
-    </div>
-  </div>
-
-  <div class="theorem">
-    <div class="theorem-badge">★ Eckart-Young-Mirsky Theorem</div>
-    <p>Among all rank-\(k\) approximations \(\hat{\mathbf{X}}\) of \(\tilde{\mathbf{X}}\), the one minimizing the Frobenius norm \(\|\tilde{\mathbf{X}} - \hat{\mathbf{X}}\|_F\) is given by the PCA truncation: \(\hat{\tilde{\mathbf{X}}}_k = \mathbf{Z}_k\mathbf{V}_k^T\). This is the foundation of optimal data compression via PCA.</p>
-  </div>
-</div>
-
-<!-- ══ XII ═══════════════════════════════════════════════ -->
-<div class="ch" id="c12">
-  <div class="ch-head">
-    <div class="ch-rom">XII</div>
-    <div class="ch-title-block">
-      <h2>Connection to SVD</h2>
-      <div class="ch-tag">// singular value decomposition · thin SVD · equivalence proof · numerical stability</div>
-    </div>
-  </div>
-
-  <p>PCA is almost always computed via SVD rather than direct eigendecomposition of \(\mathbf{S}\). SVD is numerically more stable (it avoids squaring the condition number) and works even when \(d &gt; m\).</p>
-
-  <div class="sub">
-    <div class="sh">SVD of the Data Matrix</div>
-    <div class="eq md">
-      <div class="eq-head"><span>Thin SVD of Centered Data Matrix</span></div>
-      <div class="eq-body">
-        \[\tilde{\mathbf{X}} = \mathbf{U}\boldsymbol{\Sigma}\mathbf{V}^T\]
-        \[\mathbf{U} \in \mathbb{R}^{m\times r}, \quad \boldsymbol{\Sigma} = \text{diag}(\sigma_1,\ldots,\sigma_r), \quad \mathbf{V} \in \mathbb{R}^{d\times r}\]
-        \[\mathbf{U}^T\mathbf{U} = \mathbf{I}_r, \quad \mathbf{V}^T\mathbf{V} = \mathbf{I}_r, \quad r = \text{rank}(\tilde{\mathbf{X}})\]
-        <div class="eq-note">σ₁ ≥ σ₂ ≥ ··· ≥ σ_r &gt; 0 are the singular values. U = left singular vectors (m×r). V = right singular vectors (d×r) = PCA loadings. r = min(m,d) in the full case.</div>
-      </div>
-    </div>
-  </div>
-
-  <div class="sub">
-    <div class="sh m">Proof: SVD Right Singular Vectors = PCA Eigenvectors</div>
-    <div class="drv">
-      <div class="drv-hdr">// Deriving the equivalence SVD ↔ PCA</div>
-      <div class="drv-row">
-        <span class="dn" style="color:var(--mint)">1</span>
-        <div>
-          Compute \(\frac{1}{m-1}\tilde{\mathbf{X}}^T\tilde{\mathbf{X}}\) using the SVD:
-          \[\frac{1}{m-1}\tilde{\mathbf{X}}^T\tilde{\mathbf{X}} = \frac{1}{m-1}(\mathbf{U}\boldsymbol{\Sigma}\mathbf{V}^T)^T(\mathbf{U}\boldsymbol{\Sigma}\mathbf{V}^T) = \frac{1}{m-1}\mathbf{V}\boldsymbol{\Sigma}^T\mathbf{U}^T\mathbf{U}\boldsymbol{\Sigma}\mathbf{V}^T\]
-        </div>
-      </div>
-      <div class="drv-row">
-        <span class="dn" style="color:var(--mint)">2</span>
-        <div>
-          Since \(\mathbf{U}^T\mathbf{U} = \mathbf{I}\):
-          \[\mathbf{S} = \frac{1}{m-1}\mathbf{V}\boldsymbol{\Sigma}^2\mathbf{V}^T\]
-        </div>
-      </div>
-      <div class="drv-row">
-        <span class="dn" style="color:var(--mint)">3</span>
-        <div>
-          This is the eigendecomposition of \(\mathbf{S}\) with:
-          \[\lambda_j = \frac{\sigma_j^2}{m-1}, \quad \mathbf{v}_j = \text{right singular vector}_j\]
-          <div class="dnote">The PCA eigenvalues are the squared singular values divided by (m-1). The PCA loading vectors are exactly the right singular vectors V. ∎</div>
+      <div class="sub">
+        <div class="sh r">Data Sparsity</div>
+        <p>To cover a \(d\)-dimensional unit hypercube with a coverage fraction \(r\) per axis, you need \(m = r^{-d}\)
+          samples. For \(r = 0.1\) and \(d = 100\): \(m = 10^{100}\) — more than atoms in the observable universe.</p>
+        <div class="insight gd">
+          <div class="ins-mark">!</div>
+          <div class="ins-body">
+            <div class="ins-title">Why High Dimensions Are Mostly Empty</div>
+            <p>Real datasets with thousands of features have far fewer samples than dimensions. A 28×28 MNIST image
+              lives in \(\mathbb{R}^{784}\) — but natural handwritten digits occupy a manifold of much lower intrinsic
+              dimension. PCA finds this low-dimensional subspace. The <em>intrinsic dimensionality</em> is typically
+              orders of magnitude smaller than the ambient dimension.</p>
+          </div>
         </div>
       </div>
     </div>
 
-    <div class="eq md">
-      <div class="eq-head"><span>SVD → PCA Correspondence</span></div>
-      <div class="eq-body">
-        \[\lambda_j = \frac{\sigma_j^2}{m-1}, \quad \mathbf{v}_j = \text{right singular vector of }\tilde{\mathbf{X}}\]
-        \[\mathbf{Z} = \tilde{\mathbf{X}}\mathbf{V}_k = \mathbf{U}_k\boldsymbol{\Sigma}_k \quad\text{(scores = left singular vectors × singular values)}\]
+    <!-- ══ II ════════════════════════════════════════════════ -->
+    <div class="ch" id="c2">
+      <div class="ch-head">
+        <div class="ch-rom">II</div>
+        <div class="ch-title-block">
+          <h2>What PCA Does — Intuition First</h2>
+          <div class="ch-tag">// linear projection · maximum variance · orthogonal basis</div>
+        </div>
+      </div>
+
+      <p>PCA finds a new coordinate system for your data — one that is <em>aligned with the directions of maximum
+          variance</em>. The first axis points in the direction where the data varies most. The second axis is
+        orthogonal to the first and captures the next most variance. And so on.</p>
+
+      <div class="fig">
+        <div class="fig-box">
+          <svg viewBox="0 0 640 240" xmlns="http://www.w3.org/2000/svg" style="max-width:640px;width:100%;">
+            <rect width="640" height="240" fill="#100d1f" />
+            <defs>
+              <marker id="ba" markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto">
+                <path d="M0,0 L0,5 L7,2.5z" fill="#4a5070" />
+              </marker>
+              <marker id="ya" markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto">
+                <path d="M0,0 L0,5 L7,2.5z" fill="#e8c547" />
+              </marker>
+              <marker id="la2" markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto">
+                <path d="M0,0 L0,5 L7,2.5z" fill="#a99cf5" />
+              </marker>
+            </defs>
+
+            <!-- Left panel: original basis -->
+            <text x="155" y="22" text-anchor="middle" font-family="Roboto Mono" font-size="10" fill="#4a5070"
+              letter-spacing="0.12em">ORIGINAL BASIS (x₁, x₂)</text>
+            <line x1="55" y1="200" x2="265" y2="200" stroke="#201b38" stroke-width="1.2" marker-end="url(#ba)" />
+            <line x1="55" y1="200" x2="55" y2="30" stroke="#201b38" stroke-width="1.2" marker-end="url(#ba)" />
+            <text x="268" y="204" font-family="Roboto Mono" font-size="10" fill="#4a5070">x₁</text>
+            <text x="46" y="28" font-family="Roboto Mono" font-size="10" fill="#4a5070">x₂</text>
+            <!-- Data cloud (elongated ellipse rotated ~35°) -->
+            <g opacity="0.75">
+              <circle cx="115" cy="170" r="3.5" fill="#00e5cc" />
+              <circle cx="130" cy="158" r="3.5" fill="#00e5cc" />
+              <circle cx="145" cy="147" r="3.5" fill="#00e5cc" />
+              <circle cx="158" cy="138" r="3.5" fill="#00e5cc" />
+              <circle cx="170" cy="128" r="3.5" fill="#00e5cc" />
+              <circle cx="183" cy="118" r="3.5" fill="#00e5cc" />
+              <circle cx="197" cy="108" r="3.5" fill="#00e5cc" />
+              <circle cx="120" cy="163" r="3.5" fill="#00e5cc" />
+              <circle cx="138" cy="154" r="3.5" fill="#00e5cc" />
+              <circle cx="150" cy="143" r="3.5" fill="#00e5cc" />
+              <circle cx="165" cy="132" r="3.5" fill="#00e5cc" />
+              <circle cx="179" cy="122" r="3.5" fill="#00e5cc" />
+              <circle cx="192" cy="112" r="3.5" fill="#00e5cc" />
+              <!-- noise in perpendicular direction -->
+              <circle cx="118" cy="160" r="2.5" fill="#a99cf5" opacity="0.6" />
+              <circle cx="155" cy="150" r="2.5" fill="#a99cf5" opacity="0.6" />
+              <circle cx="175" cy="133" r="2.5" fill="#a99cf5" opacity="0.6" />
+              <circle cx="128" cy="168" r="2.5" fill="#a99cf5" opacity="0.6" />
+            </g>
+            <!-- variance arrows in original basis — both needed -->
+            <line x1="155" y1="140" x2="220" y2="140" stroke="#4a5070" stroke-width="1" stroke-dasharray="4,3" />
+            <line x1="155" y1="140" x2="155" y2="80" stroke="#4a5070" stroke-width="1" stroke-dasharray="4,3" />
+
+            <!-- Right panel: PCA basis -->
+            <text x="475" y="22" text-anchor="middle" font-family="Roboto Mono" font-size="10" fill="#e8c547"
+              letter-spacing="0.12em">PCA BASIS (PC₁, PC₂)</text>
+            <!-- PC1 axis (main direction) -->
+            <line x1="340" y1="210" x2="615" y2="55" stroke="#e8c547" stroke-width="1.8" marker-end="url(#ya)" />
+            <!-- PC2 axis (perpendicular) -->
+            <line x1="380" y1="62" x2="575" y2="210" stroke="#a99cf5" stroke-width="1.2" marker-end="url(#la2)" />
+            <text x="620" y="52" font-family="Spectral" font-size="13" fill="#e8c547" font-style="italic">PC₁</text>
+            <text x="580" y="216" font-family="Spectral" font-size="13" fill="#a99cf5" font-style="italic">PC₂</text>
+            <!-- Same data points, now projected onto PCA axes -->
+            <g opacity="0.75">
+              <circle cx="370" cy="195" r="3.5" fill="#00e5cc" />
+              <circle cx="393" cy="177" r="3.5" fill="#00e5cc" />
+              <circle cx="416" cy="160" r="3.5" fill="#00e5cc" />
+              <circle cx="437" cy="144" r="3.5" fill="#00e5cc" />
+              <circle cx="458" cy="127" r="3.5" fill="#00e5cc" />
+              <circle cx="479" cy="110" r="3.5" fill="#00e5cc" />
+              <circle cx="500" cy="93" r="3.5" fill="#00e5cc" />
+              <circle cx="383" cy="186" r="3.5" fill="#00e5cc" />
+              <circle cx="406" cy="169" r="3.5" fill="#00e5cc" />
+              <circle cx="427" cy="152" r="3.5" fill="#00e5cc" />
+              <circle cx="447" cy="136" r="3.5" fill="#00e5cc" />
+              <circle cx="468" cy="119" r="3.5" fill="#00e5cc" />
+              <circle cx="490" cy="101" r="3.5" fill="#00e5cc" />
+              <circle cx="380" cy="190" r="2.5" fill="#a99cf5" opacity="0.6" />
+              <circle cx="429" cy="148" r="2.5" fill="#a99cf5" opacity="0.6" />
+              <circle cx="464" cy="122" r="2.5" fill="#a99cf5" opacity="0.6" />
+              <circle cx="397" cy="172" r="2.5" fill="#a99cf5" opacity="0.6" />
+            </g>
+            <!-- Projection lines to PC1 -->
+            <line x1="380" y1="190" x2="378" y2="194" stroke="#e8c547" stroke-width="0.7" stroke-dasharray="3,2"
+              opacity="0.4" />
+            <line x1="429" y1="148" x2="430" y2="144" stroke="#e8c547" stroke-width="0.7" stroke-dasharray="3,2"
+              opacity="0.4" />
+          </svg>
+        </div>
+        <div class="fig-cap">Fig 1. Left: Data in original correlated basis — both axes needed to describe the cloud.
+          Right: PCA basis — PC₁ (gold) aligns with maximum variance, PC₂ (lavender) captures residual variance. The
+          description is now compact and uncorrelated.</div>
+      </div>
+
+      <div class="insight cd">
+        <div class="ins-mark">→</div>
+        <div class="ins-body">
+          <div class="ins-title">The Core Promise of PCA</div>
+          <p>PCA finds a rotation of the coordinate system such that (1) variance is maximized along each new axis in
+            order, (2) the new axes are mutually orthogonal (uncorrelated), and (3) we can keep only the first \(k\)
+            axes and lose the minimum possible information. It is the <em>optimal linear dimensionality reduction</em>
+            under mean squared error.</p>
+        </div>
       </div>
     </div>
-  </div>
 
-  <div class="sub">
-    <div class="sh">Why SVD is Preferred Numerically</div>
-    <ul class="fl">
-      <li><strong>Condition number:</strong> \(\kappa(\mathbf{S}) = \lambda_1/\lambda_d\). Since \(\lambda_j = \sigma_j^2/(m-1)\), we have \(\kappa(\mathbf{S}) = \kappa(\tilde{\mathbf{X}})^2\). Eigendecomposing \(\mathbf{S}\) squares the condition number — amplifying numerical errors. SVD works directly on \(\tilde{\mathbf{X}}\).</li>
-      <li><strong>Memory when d &gt; m:</strong> Computing \(\mathbf{S} \in \mathbb{R}^{d\times d}\) when \(d = 50000\) features and \(m = 500\) samples would require 20 GB. SVD via thin decomposition operates on the \(m \times m\) matrix \(\tilde{\mathbf{X}}\tilde{\mathbf{X}}^T\) instead.</li>
-      <li><strong>Never explicitly form S:</strong> In practice, call <code>np.linalg.svd(X_centered, full_matrices=False)</code> — not <code>np.linalg.eig(X.T @ X)</code>.</li>
-    </ul>
-  </div>
-</div>
+    <!-- ══ III ═══════════════════════════════════════════════ -->
+    <div class="ch" id="c3">
+      <div class="ch-head">
+        <div class="ch-rom">III</div>
+        <div class="ch-title-block">
+          <h2>Data Centering &amp; The Covariance Matrix</h2>
+          <div class="ch-tag">// mean subtraction · scatter matrix · statistical setup</div>
+        </div>
+      </div>
 
-<!-- ══ XIII ══════════════════════════════════════════════ -->
-<div class="ch" id="c13">
-  <div class="ch-head">
-    <div class="ch-rom">XIII</div>
-    <div class="ch-title-block">
-      <h2>Whitening &amp; Standardization</h2>
-      <div class="ch-tag">// ZCA · sphering · when to standardize · scale invariance</div>
-    </div>
-  </div>
+      <p>PCA operates on <em>centered</em> data. The mean captures the location of the data cloud; the covariance matrix
+        captures its shape. We must remove the mean first so that PCA describes shape, not position.</p>
 
-  <div class="sub">
-    <div class="sh">When to Standardize Before PCA</div>
-    <p>PCA is <span class="hr2">not scale-invariant</span>. Features with larger variance dominate the covariance matrix regardless of their actual importance. If features are on different scales (e.g., income in dollars vs age in years), you must standardize first.</p>
-    <div class="eq rd">
-      <div class="eq-head"><span>Standardization Before PCA</span></div>
-      <div class="eq-body">
-        \[x_{ij}' = \frac{x_{ij} - \mu_j}{\sigma_j} \quad\Rightarrow\quad \mathbf{S} \text{ becomes the correlation matrix}\]
-        <div class="eq-note">Standardized PCA decomposes the correlation matrix. Each feature contributes equally to the total variance (each has variance 1). Use when features are in different units. Skip when features share units (e.g., pixel intensities in images).</div>
+      <div class="sub">
+        <div class="sh">Step 1 — Center the Data</div>
+        <div class="eq gd">
+          <div class="eq-head"><span>Data Centering</span></div>
+          <div class="eq-body">
+            \[\boldsymbol{\mu} = \frac{1}{m}\sum_{i=1}^{m}\mathbf{x}^{(i)} \in \mathbb{R}^d\]
+            \[\tilde{\mathbf{x}}^{(i)} = \mathbf{x}^{(i)} - \boldsymbol{\mu} \quad\Rightarrow\quad
+            \frac{1}{m}\sum_{i=1}^{m}\tilde{\mathbf{x}}^{(i)} = \mathbf{0}\]
+            <div class="eq-note">Let X̃ ∈ ℝ^{m×d} be the centered data matrix (each row is one centered sample).
+              Everything from here uses X̃; we drop the tilde for brevity.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="sub">
+        <div class="sh c">Step 2 — The Sample Covariance Matrix</div>
+        <div class="eq cd">
+          <div class="eq-head"><span>Sample Covariance Matrix</span></div>
+          <div class="eq-body">
+            \[\mathbf{S} = \frac{1}{m-1}\sum_{i=1}^{m}\tilde{\mathbf{x}}^{(i)}(\tilde{\mathbf{x}}^{(i)})^T =
+            \frac{1}{m-1}\tilde{\mathbf{X}}^T\tilde{\mathbf{X}} \in \mathbb{R}^{d\times d}\]
+            <div class="eq-note">The (j,k) entry S_{jk} = Cov(x_j, x_k) = correlation structure between features j and
+              k. The diagonal S_{jj} = Var(x_j). The 1/(m-1) gives an unbiased estimate of the population covariance;
+              for PCA, 1/m gives the same eigenvectors.</div>
+          </div>
+        </div>
+
+        <p>The covariance matrix is the central object of PCA. Its properties determine everything:</p>
+        <ul class="fl">
+          <li><strong>Symmetric:</strong> \(\mathbf{S} = \mathbf{S}^T\) — because \(\text{Cov}(x_j, x_k) =
+            \text{Cov}(x_k, x_j)\).</li>
+          <li><strong>Positive semi-definite (PSD):</strong> \(\mathbf{v}^T\mathbf{S}\mathbf{v} \geq 0\) for all
+            \(\mathbf{v}\) — because \(\mathbf{v}^T\mathbf{S}\mathbf{v} =
+            \frac{1}{m-1}\|\tilde{\mathbf{X}}\mathbf{v}\|^2 \geq 0\). This guarantees all eigenvalues \(\geq 0\).</li>
+          <li><strong>Real eigenvalues:</strong> By the Spectral Theorem for symmetric matrices — guaranteed real,
+            non-negative eigenvalues and orthogonal eigenvectors.</li>
+          <li><strong>Rank:</strong> \(\text{rank}(\mathbf{S}) \leq \min(m-1, d)\) — if \(m &lt; d\), the covariance
+            matrix is singular and has at most \(m-1\) nonzero eigenvalues.</li>
+        </ul>
       </div>
     </div>
-  </div>
 
-  <div class="sub">
-    <div class="sh c">PCA Whitening (Sphering)</div>
-    <p>Whitening transforms the data so that the covariance matrix is the identity: \(\text{Cov}(\mathbf{z}_{\text{white}}) = \mathbf{I}\). Every direction has unit variance.</p>
-    <div class="eq cd">
-      <div class="eq-head"><span>PCA Whitening</span></div>
-      <div class="eq-body">
-        \[\mathbf{z}_{\text{white}} = \boldsymbol{\Lambda}_k^{-1/2}\mathbf{V}_k^T\tilde{\mathbf{x}} = \text{diag}(1/\sqrt{\lambda_1},\ldots,1/\sqrt{\lambda_k})\mathbf{V}_k^T\tilde{\mathbf{x}}\]
-        <div class="eq-note">First rotate (V_k^T), then scale each dimension by 1/√λⱼ. This decorrelates AND equalizes variances. ZCA whitening additionally rotates back: z_ZCA = V Λ^{-1/2} V^T x̃ — whitened data stays in original feature space. Used as preprocessing for CNNs (makes optimization landscape more spherical).</div>
+    <!-- ══ IV ════════════════════════════════════════════════ -->
+    <div class="ch" id="c4">
+      <div class="ch-head">
+        <div class="ch-rom">IV</div>
+        <div class="ch-title-block">
+          <h2>Covariance Matrix — Deep Dive</h2>
+          <div class="ch-tag">// geometric meaning · ellipsoid of concentration · spectral decomposition</div>
+        </div>
+      </div>
+
+      <div class="sub">
+        <div class="sh">The Covariance Ellipsoid</div>
+        <p>The covariance matrix \(\mathbf{S}\) defines an ellipsoid: \(\{\mathbf{v} :
+          \mathbf{v}^T\mathbf{S}^{-1}\mathbf{v} = 1\}\). This is the set of points at Mahalanobis distance 1 from the
+          origin. Its axes are aligned with the eigenvectors of \(\mathbf{S}\), and the length of each axis is
+          proportional to \(\sqrt{\lambda_i}\) (the square root of the corresponding eigenvalue).</p>
+
+        <div class="fig">
+          <div class="fig-box">
+            <svg viewBox="0 0 580 220" xmlns="http://www.w3.org/2000/svg" style="max-width:580px;width:100%;">
+              <rect width="580" height="220" fill="#100d1f" />
+              <!-- Left: correlation circle (identity cov) -->
+              <text x="120" y="20" text-anchor="middle" font-family="Roboto Mono" font-size="9" fill="#4a5070"
+                letter-spacing="0.1em">S = I (uncorrelated)</text>
+              <circle cx="120" cy="120" r="75" fill="none" stroke="#a99cf5" stroke-width="1.5" stroke-dasharray="5,3"
+                opacity="0.6" />
+              <line x1="45" y1="120" x2="200" y2="120" stroke="#4a5070" stroke-width="1" opacity="0.4" />
+              <line x1="120" y1="45" x2="120" y2="200" stroke="#4a5070" stroke-width="1" opacity="0.4" />
+              <!-- axis labels -->
+              <text x="205" y="124" font-family="Roboto Mono" font-size="9" fill="#4a5070">x₁</text>
+              <text x="112" y="42" font-family="Roboto Mono" font-size="9" fill="#4a5070">x₂</text>
+              <!-- data points circle cloud -->
+              <g opacity="0.5">
+                <circle cx="150" cy="90" r="3" fill="#00e5cc" />
+                <circle cx="80" cy="110" r="3" fill="#00e5cc" />
+                <circle cx="140" cy="150" r="3" fill="#00e5cc" />
+                <circle cx="100" cy="80" r="3" fill="#00e5cc" />
+                <circle cx="170" cy="130" r="3" fill="#00e5cc" />
+                <circle cx="75" cy="140" r="3" fill="#00e5cc" />
+                <circle cx="120" cy="60" r="3" fill="#00e5cc" />
+                <circle cx="120" cy="175" r="3" fill="#00e5cc" />
+              </g>
+              <text x="120" y="212" text-anchor="middle" font-family="Roboto Mono" font-size="9" fill="#4a5070">equal
+                variance, no correlation</text>
+
+              <!-- Middle: elongated ellipse (correlated) -->
+              <text x="300" y="20" text-anchor="middle" font-family="Roboto Mono" font-size="9" fill="#e8c547"
+                letter-spacing="0.1em">S correlated (axis-aligned)</text>
+              <ellipse cx="300" cy="120" rx="90" ry="45" fill="none" stroke="#e8c547" stroke-width="1.8"
+                opacity="0.7" />
+              <line x1="210" y1="120" x2="400" y2="120" stroke="#4a5070" stroke-width="1" opacity="0.4" />
+              <line x1="300" y1="50" x2="300" y2="190" stroke="#4a5070" stroke-width="1" opacity="0.4" />
+              <!-- eigenvector axes -->
+              <line x1="210" y1="120" x2="390" y2="120" stroke="#e8c547" stroke-width="2" marker-end="url(#ya)" />
+              <line x1="300" y1="75" x2="300" y2="165" stroke="#a99cf5" stroke-width="1.5" marker-end="url(#la2)" />
+              <text x="382" y="114" font-family="Spectral" font-size="12" fill="#e8c547" font-style="italic">v₁ (λ₁
+                large)</text>
+              <text x="305" y="72" font-family="Spectral" font-size="12" fill="#a99cf5" font-style="italic">v₂ (λ₂
+                small)</text>
+              <g opacity="0.5">
+                <circle cx="260" cy="118" r="3" fill="#00e5cc" />
+                <circle cx="340" cy="122" r="3" fill="#00e5cc" />
+                <circle cx="280" cy="115" r="3" fill="#00e5cc" />
+                <circle cx="325" cy="125" r="3" fill="#00e5cc" />
+                <circle cx="250" cy="125" r="3" fill="#00e5cc" />
+                <circle cx="350" cy="116" r="3" fill="#00e5cc" />
+              </g>
+              <text x="300" y="212" text-anchor="middle" font-family="Roboto Mono" font-size="9" fill="#4a5070">σ₁² ≫
+                σ₂² → PCA discards v₂</text>
+
+              <!-- Right: rotated ellipse -->
+              <text x="475" y="20" text-anchor="middle" font-family="Roboto Mono" font-size="9" fill="#f07ea6"
+                letter-spacing="0.1em">S rotated (cross-correlated)</text>
+              <ellipse cx="475" cy="120" rx="80" ry="35" fill="none" stroke="#f07ea6" stroke-width="1.8" opacity="0.7"
+                transform="rotate(-35 475 120)" />
+              <line x1="395" y1="120" x2="560" y2="120" stroke="#4a5070" stroke-width="1" opacity="0.4" />
+              <line x1="475" y1="50" x2="475" y2="190" stroke="#4a5070" stroke-width="1" opacity="0.4" />
+              <!-- rotated eigenvectors -->
+              <line x1="415" y1="160" x2="535" y2="80" stroke="#f07ea6" stroke-width="2" marker-end="url(#ra2)" />
+              <line x1="422" y1="84" x2="528" y2="156" stroke="#a99cf5" stroke-width="1.5" marker-end="url(#la2)" />
+              <defs>
+                <marker id="ra2" markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto">
+                  <path d="M0,0 L0,5 L7,2.5z" fill="#f07ea6" />
+                </marker>
+              </defs>
+              <g opacity="0.5">
+                <circle cx="440" cy="148" r="3" fill="#00e5cc" />
+                <circle cx="490" cy="108" r="3" fill="#00e5cc" />
+                <circle cx="455" cy="138" r="3" fill="#00e5cc" />
+                <circle cx="505" cy="100" r="3" fill="#00e5cc" />
+                <circle cx="470" cy="120" r="3" fill="#00e5cc" />
+              </g>
+              <text x="475" y="212" text-anchor="middle" font-family="Roboto Mono" font-size="9"
+                fill="#4a5070">eigenvectors ≠ coordinate axes</text>
+            </svg>
+          </div>
+          <div class="fig-cap">Fig 2. The covariance ellipsoid. Left: isotropic (no preferred direction). Centre:
+            elongated along x₁ — PC₁ aligns with x₁. Right: rotated — eigenvectors are oblique to original axes, and PCA
+            finds them exactly.</div>
+        </div>
+      </div>
+
+      <div class="sub">
+        <div class="sh l">Spectral Decomposition of S</div>
+        <p>By the Spectral Theorem for real symmetric matrices:</p>
+        <div class="eq ld">
+          <div class="eq-head"><span>Eigendecomposition of Covariance Matrix</span></div>
+          <div class="eq-body">
+            \[\mathbf{S} = \mathbf{V}\boldsymbol{\Lambda}\mathbf{V}^T =
+            \sum_{j=1}^{d}\lambda_j\mathbf{v}_j\mathbf{v}_j^T\]
+            \[\boldsymbol{\Lambda} = \text{diag}(\lambda_1,\ldots,\lambda_d), \quad \lambda_1 \geq \lambda_2 \geq \cdots
+            \geq \lambda_d \geq 0\]
+            \[\mathbf{V} = [\mathbf{v}_1 | \mathbf{v}_2 | \cdots | \mathbf{v}_d], \quad \mathbf{V}^T\mathbf{V} =
+            \mathbf{I}_d\]
+            <div class="eq-note">V is orthogonal (V^T = V^{-1}). Each outer product λ_j v_j v_j^T is a rank-1 matrix
+              representing the contribution of the j-th principal component to the total covariance structure.</div>
+          </div>
+        </div>
       </div>
     </div>
-  </div>
-</div>
 
-<!-- ══ XIV ═══════════════════════════════════════════════ -->
-<div class="ch" id="c14">
-  <div class="ch-head">
-    <div class="ch-rom">XIV</div>
-    <div class="ch-title-block">
-      <h2>Kernel PCA — Nonlinear Extension</h2>
-      <div class="ch-tag">// feature map · kernel trick · dual covariance · Gram matrix</div>
-    </div>
-  </div>
+    <!-- ══ V ═════════════════════════════════════════════════ -->
+    <div class="ch" id="c5">
+      <div class="ch-head">
+        <div class="ch-rom">V</div>
+        <div class="ch-title-block">
+          <h2>The Variance Maximization Problem</h2>
+          <div class="ch-tag">// objective function · unit norm constraint · Rayleigh quotient</div>
+        </div>
+      </div>
 
-  <p>Standard PCA can only find linear subspaces. Kernel PCA implicitly maps data to a high-dimensional feature space and performs PCA there — enabling nonlinear dimensionality reduction without ever explicitly computing the feature map.</p>
+      <p>PCA's first principal component is the unit vector \(\mathbf{v}_1\) such that projecting the data onto
+        \(\mathbf{v}_1\) gives maximum variance. Let's formalize this.</p>
 
-  <div class="sub">
-    <div class="sh">The Kernel Trick for PCA</div>
-    <p>Replace \(\mathbf{x}\) with \(\phi(\mathbf{x})\) where \(\phi: \mathbb{R}^d \to \mathcal{H}\) (a potentially infinite-dimensional Hilbert space). The covariance in feature space is:</p>
-    <div class="eq ld">
-      <div class="eq-head"><span>Covariance in Feature Space</span></div>
-      <div class="eq-body">
-        \[\mathbf{C}_\phi = \frac{1}{m}\sum_{i=1}^m\phi(\mathbf{x}^{(i)})\phi(\mathbf{x}^{(i)})^T\]
-        <div class="eq-note">The eigenvectors of C_φ lie in span{φ(x^(1)),...,φ(x^(m))}. So we can write v = Σ αᵢ φ(x^(i)). The eigenvalue equation reduces to solving an m×m Gram matrix eigenvalue problem.</div>
+      <div class="sub">
+        <div class="sh">Variance of the Projection</div>
+        <p>The projection of sample \(\mathbf{x}^{(i)}\) onto unit vector \(\mathbf{v}\) is the scalar \(z^{(i)} =
+          \mathbf{v}^T\mathbf{x}^{(i)}\). The variance of these projected values across all samples:</p>
+        <div class="eq gd">
+          <div class="eq-head"><span>Projection Variance</span></div>
+          <div class="eq-body">
+            \[\text{Var}\left(\mathbf{v}^T\mathbf{x}\right) =
+            \frac{1}{m-1}\sum_{i=1}^{m}\left(\mathbf{v}^T\mathbf{x}^{(i)}\right)^2 =
+            \frac{1}{m-1}\mathbf{v}^T\tilde{\mathbf{X}}^T\tilde{\mathbf{X}}\mathbf{v} =
+            \mathbf{v}^T\mathbf{S}\mathbf{v}\]
+            <div class="eq-note">Since data is centered: the mean of v^T x̃^{(i)} is 0. The variance is the quadratic
+              form v^T S v. PCA maximizes this over all unit vectors v.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="sub">
+        <div class="sh c">The Rayleigh Quotient</div>
+        <p>The <span class="hc">Rayleigh quotient</span> of a symmetric matrix \(\mathbf{S}\) with respect to vector
+          \(\mathbf{v}\) is:</p>
+        <div class="eq cd">
+          <div class="eq-head"><span>Rayleigh Quotient</span></div>
+          <div class="eq-body">
+            \[R(\mathbf{v}) = \frac{\mathbf{v}^T\mathbf{S}\mathbf{v}}{\mathbf{v}^T\mathbf{v}}\]
+            <p style="font-family:'Roboto Mono',monospace;font-size:0.82em;color:var(--sub);margin-top:10px;">The
+              Rayleigh quotient is bounded: \(\lambda_{\min} \leq R(\mathbf{v}) \leq \lambda_{\max}\). The maximum is
+              achieved when \(\mathbf{v} = \mathbf{v}_1\) (the eigenvector corresponding to the largest eigenvalue). The
+              constrained problem (‖v‖=1) is equivalent to maximizing the unconstrained Rayleigh quotient.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="sub">
+        <div class="sh">Formal Optimization Problem</div>
+        <div class="eq dark">
+          <div class="eq-head"><span>PCA First Principal Component</span></div>
+          <div class="eq-body">
+            \[\mathbf{v}_1 = \underset{\mathbf{v} \in \mathbb{R}^d}{\arg\max}\; \mathbf{v}^T\mathbf{S}\mathbf{v}
+            \quad\text{subject to}\quad \|\mathbf{v}\|_2 = 1\]
+          </div>
+        </div>
+        <p>Subsequent components are found by successively deflating and re-solving:</p>
+        <div class="eq dark">
+          <div class="eq-head"><span>k-th Principal Component (Deflation)</span></div>
+          <div class="eq-body">
+            \[\mathbf{v}_k = \underset{\mathbf{v}}{\arg\max}\; \mathbf{v}^T\mathbf{S}\mathbf{v} \quad\text{subject
+            to}\quad \|\mathbf{v}\|=1,\; \mathbf{v}\perp\mathbf{v}_j\;\forall j &lt; k\]
+          </div>
+        </div>
       </div>
     </div>
-    <div class="eq ld">
-      <div class="eq-head"><span>Kernel PCA — Gram Matrix Eigenvalue Problem</span></div>
-      <div class="eq-body">
-        \[\mathbf{K}_{ij} = k(\mathbf{x}^{(i)}, \mathbf{x}^{(j)}) = \phi(\mathbf{x}^{(i)})^T\phi(\mathbf{x}^{(j)})\]
-        \[\tilde{\mathbf{K}} = \mathbf{K} - \mathbf{1}_m\mathbf{K} - \mathbf{K}\mathbf{1}_m + \mathbf{1}_m\mathbf{K}\mathbf{1}_m \quad\text{(centered Gram matrix)}\]
-        \[\tilde{\mathbf{K}}\boldsymbol{\alpha}_j = \mu_j\boldsymbol{\alpha}_j \quad\Rightarrow\quad \text{scores: } z_{ij} = \frac{1}{\sqrt{\mu_j}}\sum_{l=1}^m\alpha_{jl} k(\mathbf{x}^{(l)}, \mathbf{x}^{(i)})\]
-        <div class="eq-note">Common kernels: RBF k(x,x')=exp(−‖x−x'‖²/2σ²), polynomial k(x,x')=(x^Tx'+c)^p, sigmoid. Kernel PCA is O(m²) memory and O(m³) time — expensive for large datasets.</div>
+
+    <!-- ══ VI ════════════════════════════════════════════════ -->
+    <div class="ch" id="c6">
+      <div class="ch-head">
+        <div class="ch-rom">VI</div>
+        <div class="ch-title-block">
+          <h2>Lagrangian Derivation — Full Proof</h2>
+          <div class="ch-tag">// method of Lagrange multipliers · stationarity · complete derivation</div>
+        </div>
+      </div>
+
+      <p>We now apply the Lagrange multiplier method (from the Lagrange Multipliers masterclass) to solve the PCA
+        optimization problem exactly. This derivation shows <em>why</em> eigenvectors are the answer — it falls out from
+        first principles.</p>
+
+      <div class="sub">
+        <div class="sh">Setting Up the Lagrangian</div>
+        <p>Objective: maximize \(\mathbf{v}^T\mathbf{S}\mathbf{v}\). Constraint: \(\|\mathbf{v}\|^2 = 1\), i.e.,
+          \(g(\mathbf{v}) = \mathbf{v}^T\mathbf{v} - 1 = 0\).</p>
+        <div class="eq ld">
+          <div class="eq-head"><span>Lagrangian</span></div>
+          <div class="eq-body">
+            \[\mathcal{L}(\mathbf{v}, \lambda) = \mathbf{v}^T\mathbf{S}\mathbf{v} - \lambda(\mathbf{v}^T\mathbf{v} -
+            1)\]
+          </div>
+        </div>
+      </div>
+
+      <div class="sub">
+        <div class="sh l">Full Derivation</div>
+        <div class="drv">
+          <div class="drv-hdr">// Lagrangian → Eigenvalue Problem — Complete Proof</div>
+          <div class="drv-row">
+            <span class="dn l">1</span>
+            <div>
+              Stationarity condition: set \(\nabla_{\mathbf{v}}\mathcal{L} = \mathbf{0}\).
+              Using matrix calculus identities: \(\nabla_{\mathbf{v}}(\mathbf{v}^T\mathbf{S}\mathbf{v}) =
+              2\mathbf{S}\mathbf{v}\) (since \(\mathbf{S}\) is symmetric) and
+              \(\nabla_{\mathbf{v}}(\mathbf{v}^T\mathbf{v}) = 2\mathbf{v}\):
+              \[\nabla_{\mathbf{v}}\mathcal{L} = 2\mathbf{S}\mathbf{v} - 2\lambda\mathbf{v} = \mathbf{0}\]
+            </div>
+          </div>
+          <div class="drv-row">
+            <span class="dn l">2</span>
+            <div>
+              Simplify:
+              \[\mathbf{S}\mathbf{v} = \lambda\mathbf{v}\]
+              <div class="dnote">This is the eigenvalue equation! The stationary points of the Lagrangian are exactly
+                the eigenvectors of S.</div>
+            </div>
+          </div>
+          <div class="drv-row">
+            <span class="dn l">3</span>
+            <div>
+              Evaluate the objective at a stationary point. Multiply both sides of \(\mathbf{S}\mathbf{v} =
+              \lambda\mathbf{v}\) by \(\mathbf{v}^T\) from the left:
+              \[\mathbf{v}^T\mathbf{S}\mathbf{v} = \lambda\mathbf{v}^T\mathbf{v} = \lambda\cdot 1 = \lambda\]
+              <div class="dnote">The variance of the projection equals the Lagrange multiplier λ! To maximize variance,
+                we want the largest λ.</div>
+            </div>
+          </div>
+          <div class="drv-row">
+            <span class="dn l">4</span>
+            <div>
+              Constraint stationarity: \(\partial\mathcal{L}/\partial\lambda = -(\mathbf{v}^T\mathbf{v}-1) = 0\)
+              recovers \(\|\mathbf{v}\|=1\). ∎
+              <br>
+              <strong>Conclusion:</strong> \(\mathbf{v}_1 =
+              \arg\max_{\|\mathbf{v}\|=1}\mathbf{v}^T\mathbf{S}\mathbf{v}\) is the eigenvector of \(\mathbf{S}\)
+              corresponding to eigenvalue \(\lambda_1 = \max_j\lambda_j\). The maximum variance equals \(\lambda_1\).
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="theorem">
+        <div class="theorem-badge">★ Theorem — PCA as Eigenvalue Problem</div>
+        <p>The \(k\)-th principal component \(\mathbf{v}_k\) is the \(k\)-th eigenvector of the sample covariance matrix
+          \(\mathbf{S}\) (ordered by decreasing eigenvalue). The variance explained by the \(k\)-th component equals the
+          \(k\)-th eigenvalue \(\lambda_k\). This follows directly from the Lagrangian stationarity condition.</p>
       </div>
     </div>
-  </div>
-</div>
 
-<!-- ══ XV ════════════════════════════════════════════════ -->
-<div class="ch" id="c15">
-  <div class="ch-head">
-    <div class="ch-rom">XV</div>
-    <div class="ch-title-block">
-      <h2>Algorithms — Power Iteration &amp; Randomized PCA</h2>
-      <div class="ch-tag">// power method · deflation · randomized SVD · computational complexity</div>
-    </div>
-  </div>
+    <!-- ══ VII ═══════════════════════════════════════════════ -->
+    <div class="ch" id="c7">
+      <div class="ch-head">
+        <div class="ch-rom">VII</div>
+        <div class="ch-title-block">
+          <h2>The Eigenvalue Problem</h2>
+          <div class="ch-tag">// characteristic polynomial · spectral theorem · orthogonality proof</div>
+        </div>
+      </div>
 
-  <div class="sub">
-    <div class="sh">Power Iteration — The Classical Algorithm</div>
-    <div class="code-box">
-      <div class="code-top"><div class="code-dots"><div class="code-dot" style="background:#ff5f57"></div><div class="code-dot" style="background:#febc2e"></div><div class="code-dot" style="background:#28c840"></div></div><div class="code-lang">Power Iteration for Largest Eigenvector</div></div>
-      <div class="code-body">
-<span class="cmt"># Find the dominant eigenvector of S = X^T X / (m-1)</span><br>
-<span class="fn">initialize</span>: <span class="var">v</span> = random unit vector in ℝ^d<br><br>
-<span class="kw">repeat until</span> convergence:<br>
-&nbsp;&nbsp;<span class="var">z</span> = S @ <span class="var">v</span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="cmt"># matrix-vector product  O(d²)</span><br>
-&nbsp;&nbsp;<span class="var">v</span> = <span class="var">z</span> / ‖<span class="var">z</span>‖ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="cmt"># renormalize</span><br>
-&nbsp;&nbsp;<span class="var">λ₁</span> = <span class="var">v</span>^T @ S @ <span class="var">v</span> &nbsp;&nbsp;&nbsp;<span class="cmt"># Rayleigh quotient estimate</span><br><br>
-<span class="cmt"># Convergence rate: (λ₂/λ₁)^t — fast when spectral gap is large</span><br><br>
-<span class="cmt"># Deflation for subsequent eigenvectors:</span><br>
-S_deflated = S <span class="op">−</span> <span class="var">λ₁</span> * outer(<span class="var">v</span>, <span class="var">v</span>)<br>
-<span class="cmt"># Repeat on S_deflated for v₂, v₃, ...</span>
+      <div class="sub">
+        <div class="sh">The Characteristic Equation</div>
+        <div class="eq gd">
+          <div class="eq-head"><span>Eigenvalue Equation</span></div>
+          <div class="eq-body">
+            \[\mathbf{S}\mathbf{v} = \lambda\mathbf{v} \quad\Leftrightarrow\quad (\mathbf{S} -
+            \lambda\mathbf{I})\mathbf{v} = \mathbf{0}\]
+            \[\text{Non-trivial solution} \Leftrightarrow \det(\mathbf{S} - \lambda\mathbf{I}) = 0
+            \quad\text{(characteristic polynomial)}\]
+            <div class="eq-note">The characteristic polynomial is degree d in λ, giving d eigenvalues (counting
+              multiplicity, possibly complex — but since S is real symmetric, all eigenvalues are real and ≥ 0).</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="sub">
+        <div class="sh c">Why Eigenvectors of S Are Orthogonal — Proof</div>
+        <div class="drv">
+          <div class="drv-hdr">// Proving v_i ⊥ v_j for distinct eigenvalues λ_i ≠ λ_j</div>
+          <div class="drv-row">
+            <span class="dn c">1</span>
+            <div>
+              Two eigenvectors: \(\mathbf{S}\mathbf{v}_i = \lambda_i\mathbf{v}_i\) and \(\mathbf{S}\mathbf{v}_j =
+              \lambda_j\mathbf{v}_j\).
+            </div>
+          </div>
+          <div class="drv-row">
+            <span class="dn c">2</span>
+            <div>
+              Multiply first equation by \(\mathbf{v}_j^T\): \(\mathbf{v}_j^T\mathbf{S}\mathbf{v}_i =
+              \lambda_i\mathbf{v}_j^T\mathbf{v}_i\).
+              Multiply second equation by \(\mathbf{v}_i^T\): \(\mathbf{v}_i^T\mathbf{S}\mathbf{v}_j =
+              \lambda_j\mathbf{v}_i^T\mathbf{v}_j\).
+            </div>
+          </div>
+          <div class="drv-row">
+            <span class="dn c">3</span>
+            <div>
+              Since \(\mathbf{S}\) is symmetric: \(\mathbf{v}_j^T\mathbf{S}\mathbf{v}_i =
+              (\mathbf{S}\mathbf{v}_j)^T\mathbf{v}_i = \mathbf{v}_i^T\mathbf{S}\mathbf{v}_j\). So both sides are equal:
+              \[\lambda_i(\mathbf{v}_j^T\mathbf{v}_i) = \lambda_j(\mathbf{v}_i^T\mathbf{v}_j)\]
+            </div>
+          </div>
+          <div class="drv-row">
+            <span class="dn c">4</span>
+            <div>
+              Rearrange: \((\lambda_i - \lambda_j)(\mathbf{v}_i^T\mathbf{v}_j) = 0\). Since \(\lambda_i \neq
+              \lambda_j\), we get \(\mathbf{v}_i^T\mathbf{v}_j = 0\). ∎
+              <div class="dnote">Eigenvectors corresponding to distinct eigenvalues of a symmetric matrix are
+                automatically orthogonal. No "Gram-Schmidt" needed.</div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
-  </div>
 
-  <div class="sub">
-    <div class="sh c">Randomized SVD — The Modern Standard</div>
-    <p>For large \(m, d\), computing the full SVD is \(O(\min(md^2, m^2d))\). Randomized PCA (Halko-Martinsson-Tropp 2011) computes a near-optimal rank-\(k\) approximation in \(O(mdk)\) — linear in \(k\).</p>
-    <div class="code-box">
-      <div class="code-top"><div class="code-dots"><div class="code-dot" style="background:#ff5f57"></div><div class="code-dot" style="background:#febc2e"></div><div class="code-dot" style="background:#28c840"></div></div><div class="code-lang">Randomized PCA (sklearn default for large data)</div></div>
-      <div class="code-body">
-<span class="cmt"># Step 1: Random projection to sketch the range of X</span><br>
-<span class="var">Ω</span> = randn(d, k+p) &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="cmt"># random Gaussian matrix, p=10 oversampling</span><br>
-<span class="var">Y</span> = X_centered @ <span class="var">Ω</span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="cmt"># O(mdk) — range approximation</span><br><br>
-<span class="cmt"># (Optional) Power iteration for accuracy:</span><br>
-<span class="kw">for</span> i <span class="kw">in</span> range(n_iter): <span class="var">Y</span> = X_centered @ (X_centered.T @ <span class="var">Y</span>)<br><br>
-<span class="cmt"># Step 2: QR decomposition of Y</span><br>
-<span class="var">Q</span>, _ = qr(<span class="var">Y</span>) &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="cmt"># orthonormal basis for range(X)</span><br><br>
-<span class="cmt"># Step 3: Project and SVD in small space</span><br>
-<span class="var">B</span> = <span class="var">Q</span>.T @ X_centered &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="cmt"># (k+p) × d — small!</span><br>
-<span class="var">U_hat</span>, <span class="var">Σ</span>, <span class="var">Vt</span> = svd(<span class="var">B</span>, full=False)<br>
-<span class="var">U</span> = <span class="var">Q</span> @ <span class="var">U_hat</span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="cmt"># full left singular vectors</span>
+    <!-- ══ VIII ══════════════════════════════════════════════ -->
+    <div class="ch" id="c8">
+      <div class="ch-head">
+        <div class="ch-rom">VIII</div>
+        <div class="ch-title-block">
+          <h2>Principal Components — Complete Picture</h2>
+          <div class="ch-tag">// loadings · scores · projection · full decomposition</div>
+        </div>
+      </div>
+
+      <div class="sub">
+        <div class="sh">Loadings, Scores, and Projection</div>
+        <div class="eq gd">
+          <div class="eq-head"><span>PCA Projection to k Dimensions</span></div>
+          <div class="eq-body">
+            \[\mathbf{V}_k = [\mathbf{v}_1 | \mathbf{v}_2 | \cdots | \mathbf{v}_k] \in \mathbb{R}^{d\times k}
+            \quad\text{(loadings matrix)}\]
+            \[\mathbf{Z} = \tilde{\mathbf{X}}\mathbf{V}_k \in \mathbb{R}^{m\times k} \quad\text{(scores / projected
+            data)}\]
+            \[Z_{ij} = \tilde{\mathbf{x}}^{(i)}\cdot\mathbf{v}_j \quad\text{(score of sample }i\text{ on component
+            }j\text{)}\]
+            <div class="eq-note">V_k is the first k columns of the eigenvector matrix V. The scores Z are the
+              coordinates in the new PCA subspace. Each column of Z has zero mean (since X̃ is centered) and variance
+              λ_j.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="sub">
+        <div class="sh c">Properties of the Scores</div>
+        <ul class="fl">
+          <li><strong>Zero mean:</strong> \(\mathbb{E}[\mathbf{Z}] = \mathbf{0}\) — inherited from centering.</li>
+          <li><strong>Diagonal covariance:</strong> \(\text{Cov}(\mathbf{Z}) = \frac{1}{m-1}\mathbf{Z}^T\mathbf{Z} =
+            \boldsymbol{\Lambda}_k = \text{diag}(\lambda_1,\ldots,\lambda_k)\) — the principal components are
+            uncorrelated!</li>
+          <li><strong>Variance:</strong> The \(j\)-th column of \(\mathbf{Z}\) has variance \(\lambda_j\) — the
+            eigenvalue tells you exactly how much variance that component captures.</li>
+        </ul>
+
+        <div class="drv">
+          <div class="drv-hdr">// Proving Cov(Z) = Λ_k</div>
+          <div class="drv-row">
+            <span class="dn">1</span>
+            <div>
+              \(\text{Cov}(\mathbf{Z}) = \frac{1}{m-1}(\tilde{\mathbf{X}}\mathbf{V}_k)^T(\tilde{\mathbf{X}}\mathbf{V}_k)
+              = \frac{1}{m-1}\mathbf{V}_k^T\tilde{\mathbf{X}}^T\tilde{\mathbf{X}}\mathbf{V}_k\)
+            </div>
+          </div>
+          <div class="drv-row">
+            <span class="dn">2</span>
+            <div>
+              \(= \mathbf{V}_k^T\mathbf{S}\mathbf{V}_k\)
+            </div>
+          </div>
+          <div class="drv-row">
+            <span class="dn">3</span>
+            <div>
+              Since \(\mathbf{S}\mathbf{v}_j = \lambda_j\mathbf{v}_j\) and \(\mathbf{v}_i^T\mathbf{v}_j = \delta_{ij}\):
+              \[(\mathbf{V}_k^T\mathbf{S}\mathbf{V}_k)_{ij} = \mathbf{v}_i^T\mathbf{S}\mathbf{v}_j =
+              \lambda_j\mathbf{v}_i^T\mathbf{v}_j = \lambda_j\delta_{ij}\]
+              \[\Rightarrow \mathbf{V}_k^T\mathbf{S}\mathbf{V}_k = \boldsymbol{\Lambda}_k \quad\blacksquare\]
+              <div class="dnote">The projected data has a diagonal covariance — the components are decorrelated. This is
+                the second key property of PCA (the first being variance maximization).</div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
-  </div>
 
-  <div class="sub">
-    <div class="sh">Complexity Comparison</div>
-    <div class="t-wrap">
-      <table>
-        <thead><tr><th>Algorithm</th><th>Time Complexity</th><th>Memory</th><th>Best For</th></tr></thead>
-        <tbody>
-          <tr><td>Full eigendecomposition of S</td><td>\(O(d^3)\)</td><td>\(O(d^2)\)</td><td>Small \(d\), numerical stability unimportant</td></tr>
-          <tr><td>Full SVD of \(\tilde{\mathbf{X}}\)</td><td>\(O(\min(md^2, m^2d))\)</td><td>\(O(md)\)</td><td>General, numerically stable</td></tr>
-          <tr><td>Power iteration (1 component)</td><td>\(O(mdt)\)</td><td>\(O(d)\)</td><td>Streaming data; very large d</td></tr>
-          <tr><td>Randomized SVD (rank k)</td><td>\(O(mdk)\)</td><td>\(O((m+d)k)\)</td><td>Large \(m,d\); extracting top-k components</td></tr>
-          <tr><td>Incremental PCA</td><td>\(O(d^2 \cdot \text{batches})\)</td><td>\(O(d^2)\)</td><td>Data too large to fit in memory</td></tr>
-        </tbody>
-      </table>
+    <!-- ══ IX ════════════════════════════════════════════════ -->
+    <div class="ch" id="c9">
+      <div class="ch-head">
+        <div class="ch-rom">IX</div>
+        <div class="ch-title-block">
+          <h2>Explained Variance &amp; Choosing k</h2>
+          <div class="ch-tag">// variance ratio · scree plot · cumulative explained variance · elbow method</div>
+        </div>
+      </div>
+
+      <div class="sub">
+        <div class="sh">Explained Variance Ratio</div>
+        <div class="eq cd">
+          <div class="eq-head"><span>Explained Variance</span></div>
+          <div class="eq-body">
+            \[\text{EVR}(k) = \frac{\sum_{j=1}^{k}\lambda_j}{\sum_{j=1}^{d}\lambda_j} =
+            \frac{\sum_{j=1}^{k}\lambda_j}{\text{tr}(\mathbf{S})}\]
+            <div class="eq-note">tr(S) = total variance = sum of all variances. EVR(k) ∈ [0,1] — the fraction of total
+              information retained by keeping k components. Common thresholds: 90%, 95%, 99%.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="sub">
+        <div class="sh r">Methods for Choosing k</div>
+        <div class="t-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Method</th>
+                <th>Rule</th>
+                <th>Best For</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Cumulative EVR threshold</td>
+                <td>Keep smallest \(k\) with EVR ≥ 0.95 (or 0.99)</td>
+                <td>General dimensionality reduction with known target</td>
+              </tr>
+              <tr>
+                <td>Scree plot / Elbow</td>
+                <td>Plot \(\lambda_j\) vs \(j\); keep components before the "elbow" where eigenvalues level off</td>
+                <td>Exploratory analysis; finding natural breaks</td>
+              </tr>
+              <tr>
+                <td>Kaiser criterion</td>
+                <td>Keep components with \(\lambda_j &gt; 1\) (with standardized data)</td>
+                <td>Factor analysis; features on same scale</td>
+              </tr>
+              <tr>
+                <td>Reconstruction error</td>
+                <td>Keep \(k\) such that \(\|\mathbf{X} - \hat{\mathbf{X}}_k\|_F^2 / \|\mathbf{X}\|_F^2 \leq \epsilon\)
+                </td>
+                <td>Compression with quality constraint</td>
+              </tr>
+              <tr>
+                <td>Cross-validation</td>
+                <td>Choose \(k\) that minimizes downstream task error</td>
+                <td>When PCA is a preprocessing step for classification</td>
+              </tr>
+              <tr>
+                <td>Optimal Hard Threshold</td>
+                <td>Gavish-Donoho formula (depends on noise level)</td>
+                <td>Denoising with known noise variance</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
     </div>
-  </div>
-</div>
 
-<!-- ══ XVI ═══════════════════════════════════════════════ -->
-<div class="ch" id="c16">
-  <div class="ch-head">
-    <div class="ch-rom">XVI</div>
-    <div class="ch-title-block">
-      <h2>Applications in Machine Learning</h2>
-      <div class="ch-tag">// dimensionality reduction · denoising · visualization · face recognition · preprocessing</div>
+    <!-- ══ X ═════════════════════════════════════════════════ -->
+    <div class="ch" id="c10">
+      <div class="ch-head">
+        <div class="ch-rom">X</div>
+        <div class="ch-title-block">
+          <h2>Geometric Interpretation</h2>
+          <div class="ch-tag">// rotation · projection · new orthonormal basis · change of basis</div>
+        </div>
+      </div>
+
+      <p>PCA is a <em>rigid rotation</em> of the coordinate system — no stretching, no shearing — followed by a
+        <em>projection</em> onto a subspace.
+      </p>
+
+      <div class="sub">
+        <div class="sh">PCA as Change of Basis</div>
+        <div class="eq ld">
+          <div class="eq-head"><span>Geometric Decomposition</span></div>
+          <div class="eq-body">
+            \[\underbrace{\tilde{\mathbf{x}}}_{\text{original}} \xrightarrow{\mathbf{V}^T}
+            \underbrace{\mathbf{z}}_{\text{all PCs}} \xrightarrow{\text{keep first }k}
+            \underbrace{\mathbf{z}_k}_{\text{low-dim rep}}\]
+            \[\mathbf{z} = \mathbf{V}^T\tilde{\mathbf{x}} \in \mathbb{R}^d \quad\text{(rotation — invertible, no info
+            loss)}\]
+            \[\mathbf{z}_k = \mathbf{V}_k^T\tilde{\mathbf{x}} \in \mathbb{R}^k \quad\text{(projection — information loss
+            = }1-\text{EVR}(k)\text{)}\]
+          </div>
+        </div>
+
+        <ul class="fl">
+          <li><strong>Rotation step (\(\mathbf{V}^T\)):</strong> This is an orthogonal transformation — it preserves
+            lengths, angles, and distances. The data cloud shape is unchanged; only the coordinate labels change. No
+            information is lost.</li>
+          <li><strong>Projection step (keep k):</strong> Discard dimensions \(k+1, \ldots, d\). This projects the data
+            onto the \(k\)-dimensional principal subspace. Information is lost — but the minimum possible amount (for a
+            linear projection).</li>
+          <li><strong>Optimality:</strong> PCA is the <em>optimal linear compressor</em>: no other linear projection
+            onto a \(k\)-dimensional subspace retains more variance or has lower reconstruction error.</li>
+        </ul>
+      </div>
+
+      <div class="insight ld">
+        <div class="ins-mark">∠</div>
+        <div class="ins-body">
+          <div class="ins-title">The Data Stays in the Same Place</div>
+          <p>PCA does not move the data points — it moves the coordinate axes. The ellipsoidal cloud stays fixed; we
+            rotate the rulers we use to measure it until they align with the cloud's natural axes. This is why PCA is
+            purely a linear algebraic transformation: \(\mathbf{V}^T\mathbf{V} = \mathbf{I}\), det(\(\mathbf{V}\)) = ±1.
+          </p>
+        </div>
+      </div>
     </div>
-  </div>
 
-  <div class="card-grid">
-    <div class="card" style="border-top-color:var(--gold)">
-      <div class="card-name" style="color:var(--gold)">Preprocessing for ML</div>
-      <div class="card-formula">X_reduced = pca.fit_transform(X)</div>
-      <p>Reduce features before training a classifier or regressor. Removes multicollinearity (the covariance of PCA scores is diagonal). Speeds up training by \(d/k\). Regularizes against overfitting — fewer degrees of freedom. Most useful when \(d \gg m\).</p>
+    <!-- ══ XI ════════════════════════════════════════════════ -->
+    <div class="ch" id="c11">
+      <div class="ch-head">
+        <div class="ch-rom">XI</div>
+        <div class="ch-title-block">
+          <h2>Reconstruction &amp; Reconstruction Error</h2>
+          <div class="ch-tag">// inverse transform · Frobenius norm · optimality theorem</div>
+        </div>
+      </div>
+
+      <div class="sub">
+        <div class="sh">Reconstruction from PCA Scores</div>
+        <div class="eq pd">
+          <div class="eq-head"><span>Reconstruction</span></div>
+          <div class="eq-body">
+            \[\hat{\tilde{\mathbf{x}}}^{(i)} = \mathbf{V}_k\mathbf{z}_k^{(i)} =
+            \mathbf{V}_k\mathbf{V}_k^T\tilde{\mathbf{x}}^{(i)} \in \mathbb{R}^d\]
+            \[\mathbf{P}_k = \mathbf{V}_k\mathbf{V}_k^T \in \mathbb{R}^{d\times d} \quad\text{(projection matrix onto
+            principal subspace)}\]
+            <div class="eq-note">P_k is an orthogonal projector: P_k² = P_k, P_k^T = P_k. The final reconstruction in
+              original space: x̂^{(i)} = V_k z_k^{(i)} + μ (add the mean back).</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="sub">
+        <div class="sh p">Reconstruction Error</div>
+        <div class="eq pd">
+          <div class="eq-head"><span>Total Reconstruction Error (Frobenius Norm)</span></div>
+          <div class="eq-body">
+            \[\mathcal{E}_k = \|\tilde{\mathbf{X}} - \hat{\tilde{\mathbf{X}}}_k\|_F^2 = \|\tilde{\mathbf{X}}(\mathbf{I}
+            - \mathbf{V}_k\mathbf{V}_k^T)\|_F^2\]
+            \[= (m-1)\sum_{j=k+1}^{d}\lambda_j = (m-1)\left(\text{tr}(\mathbf{S}) - \sum_{j=1}^{k}\lambda_j\right)\]
+            <div class="eq-note">The reconstruction error equals the sum of discarded eigenvalues (times m-1).
+              Minimizing reconstruction error is exactly equivalent to maximizing retained variance — the two
+              formulations of PCA are identical.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="theorem">
+        <div class="theorem-badge">★ Eckart-Young-Mirsky Theorem</div>
+        <p>Among all rank-\(k\) approximations \(\hat{\mathbf{X}}\) of \(\tilde{\mathbf{X}}\), the one minimizing the
+          Frobenius norm \(\|\tilde{\mathbf{X}} - \hat{\mathbf{X}}\|_F\) is given by the PCA truncation:
+          \(\hat{\tilde{\mathbf{X}}}_k = \mathbf{Z}_k\mathbf{V}_k^T\). This is the foundation of optimal data
+          compression via PCA.</p>
+      </div>
     </div>
-    <div class="card" style="border-top-color:var(--cyan)">
-      <div class="card-name" style="color:var(--cyan)">Data Visualization</div>
-      <div class="card-formula">2D: Z = X @ V[:, :2]</div>
-      <p>Project to 2D or 3D for exploratory visualization. Reveals cluster structure, outliers, and data geometry that is invisible in high dimensions. First step in any EDA for high-dim tabular data or embeddings. Your breast cancer and Titanic datasets benefit directly.</p>
+
+    <!-- ══ XII ═══════════════════════════════════════════════ -->
+    <div class="ch" id="c12">
+      <div class="ch-head">
+        <div class="ch-rom">XII</div>
+        <div class="ch-title-block">
+          <h2>Connection to SVD</h2>
+          <div class="ch-tag">// singular value decomposition · thin SVD · equivalence proof · numerical stability</div>
+        </div>
+      </div>
+
+      <p>PCA is almost always computed via SVD rather than direct eigendecomposition of \(\mathbf{S}\). SVD is
+        numerically more stable (it avoids squaring the condition number) and works even when \(d &gt; m\).</p>
+
+      <div class="sub">
+        <div class="sh">SVD of the Data Matrix</div>
+        <div class="eq md">
+          <div class="eq-head"><span>Thin SVD of Centered Data Matrix</span></div>
+          <div class="eq-body">
+            \[\tilde{\mathbf{X}} = \mathbf{U}\boldsymbol{\Sigma}\mathbf{V}^T\]
+            \[\mathbf{U} \in \mathbb{R}^{m\times r}, \quad \boldsymbol{\Sigma} = \text{diag}(\sigma_1,\ldots,\sigma_r),
+            \quad \mathbf{V} \in \mathbb{R}^{d\times r}\]
+            \[\mathbf{U}^T\mathbf{U} = \mathbf{I}_r, \quad \mathbf{V}^T\mathbf{V} = \mathbf{I}_r, \quad r =
+            \text{rank}(\tilde{\mathbf{X}})\]
+            <div class="eq-note">σ₁ ≥ σ₂ ≥ ··· ≥ σ_r &gt; 0 are the singular values. U = left singular vectors (m×r). V
+              = right singular vectors (d×r) = PCA loadings. r = min(m,d) in the full case.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="sub">
+        <div class="sh m">Proof: SVD Right Singular Vectors = PCA Eigenvectors</div>
+        <div class="drv">
+          <div class="drv-hdr">// Deriving the equivalence SVD ↔ PCA</div>
+          <div class="drv-row">
+            <span class="dn" style="color:var(--mint)">1</span>
+            <div>
+              Compute \(\frac{1}{m-1}\tilde{\mathbf{X}}^T\tilde{\mathbf{X}}\) using the SVD:
+              \[\frac{1}{m-1}\tilde{\mathbf{X}}^T\tilde{\mathbf{X}} =
+              \frac{1}{m-1}(\mathbf{U}\boldsymbol{\Sigma}\mathbf{V}^T)^T(\mathbf{U}\boldsymbol{\Sigma}\mathbf{V}^T) =
+              \frac{1}{m-1}\mathbf{V}\boldsymbol{\Sigma}^T\mathbf{U}^T\mathbf{U}\boldsymbol{\Sigma}\mathbf{V}^T\]
+            </div>
+          </div>
+          <div class="drv-row">
+            <span class="dn" style="color:var(--mint)">2</span>
+            <div>
+              Since \(\mathbf{U}^T\mathbf{U} = \mathbf{I}\):
+              \[\mathbf{S} = \frac{1}{m-1}\mathbf{V}\boldsymbol{\Sigma}^2\mathbf{V}^T\]
+            </div>
+          </div>
+          <div class="drv-row">
+            <span class="dn" style="color:var(--mint)">3</span>
+            <div>
+              This is the eigendecomposition of \(\mathbf{S}\) with:
+              \[\lambda_j = \frac{\sigma_j^2}{m-1}, \quad \mathbf{v}_j = \text{right singular vector}_j\]
+              <div class="dnote">The PCA eigenvalues are the squared singular values divided by (m-1). The PCA loading
+                vectors are exactly the right singular vectors V. ∎</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="eq md">
+          <div class="eq-head"><span>SVD → PCA Correspondence</span></div>
+          <div class="eq-body">
+            \[\lambda_j = \frac{\sigma_j^2}{m-1}, \quad \mathbf{v}_j = \text{right singular vector of
+            }\tilde{\mathbf{X}}\]
+            \[\mathbf{Z} = \tilde{\mathbf{X}}\mathbf{V}_k = \mathbf{U}_k\boldsymbol{\Sigma}_k \quad\text{(scores = left
+            singular vectors × singular values)}\]
+          </div>
+        </div>
+      </div>
+
+      <div class="sub">
+        <div class="sh">Why SVD is Preferred Numerically</div>
+        <ul class="fl">
+          <li><strong>Condition number:</strong> \(\kappa(\mathbf{S}) = \lambda_1/\lambda_d\). Since \(\lambda_j =
+            \sigma_j^2/(m-1)\), we have \(\kappa(\mathbf{S}) = \kappa(\tilde{\mathbf{X}})^2\). Eigendecomposing
+            \(\mathbf{S}\) squares the condition number — amplifying numerical errors. SVD works directly on
+            \(\tilde{\mathbf{X}}\).</li>
+          <li><strong>Memory when d &gt; m:</strong> Computing \(\mathbf{S} \in \mathbb{R}^{d\times d}\) when \(d =
+            50000\) features and \(m = 500\) samples would require 20 GB. SVD via thin decomposition operates on the \(m
+            \times m\) matrix \(\tilde{\mathbf{X}}\tilde{\mathbf{X}}^T\) instead.</li>
+          <li><strong>Never explicitly form S:</strong> In practice, call
+            <code>np.linalg.svd(X_centered, full_matrices=False)</code> — not <code>np.linalg.eig(X.T @ X)</code>.
+          </li>
+        </ul>
+      </div>
     </div>
-    <div class="card" style="border-top-color:var(--lav)">
-      <div class="card-name" style="color:var(--lav)">Image Compression</div>
-      <div class="card-formula">X̂ = Z_k @ V_k.T + μ</div>
-      <p>Represent each image as k PCA coefficients instead of H×W pixels. Compression ratio = (H×W)/k. Quality controlled by k (or cumulative EVR threshold). Eigenfaces (PCA on face images) was state-of-the-art face recognition pre-CNN.</p>
+
+    <!-- ══ XIII ══════════════════════════════════════════════ -->
+    <div class="ch" id="c13">
+      <div class="ch-head">
+        <div class="ch-rom">XIII</div>
+        <div class="ch-title-block">
+          <h2>Whitening &amp; Standardization</h2>
+          <div class="ch-tag">// ZCA · sphering · when to standardize · scale invariance</div>
+        </div>
+      </div>
+
+      <div class="sub">
+        <div class="sh">When to Standardize Before PCA</div>
+        <p>PCA is <span class="hr2">not scale-invariant</span>. Features with larger variance dominate the covariance
+          matrix regardless of their actual importance. If features are on different scales (e.g., income in dollars vs
+          age in years), you must standardize first.</p>
+        <div class="eq rd">
+          <div class="eq-head"><span>Standardization Before PCA</span></div>
+          <div class="eq-body">
+            \[x_{ij}' = \frac{x_{ij} - \mu_j}{\sigma_j} \quad\Rightarrow\quad \mathbf{S} \text{ becomes the correlation
+            matrix}\]
+            <div class="eq-note">Standardized PCA decomposes the correlation matrix. Each feature contributes equally to
+              the total variance (each has variance 1). Use when features are in different units. Skip when features
+              share units (e.g., pixel intensities in images).</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="sub">
+        <div class="sh c">PCA Whitening (Sphering)</div>
+        <p>Whitening transforms the data so that the covariance matrix is the identity:
+          \(\text{Cov}(\mathbf{z}_{\text{white}}) = \mathbf{I}\). Every direction has unit variance.</p>
+        <div class="eq cd">
+          <div class="eq-head"><span>PCA Whitening</span></div>
+          <div class="eq-body">
+            \[\mathbf{z}_{\text{white}} = \boldsymbol{\Lambda}_k^{-1/2}\mathbf{V}_k^T\tilde{\mathbf{x}} =
+            \text{diag}(1/\sqrt{\lambda_1},\ldots,1/\sqrt{\lambda_k})\mathbf{V}_k^T\tilde{\mathbf{x}}\]
+            <div class="eq-note">First rotate (V_k^T), then scale each dimension by 1/√λⱼ. This decorrelates AND
+              equalizes variances. ZCA whitening additionally rotates back: z_ZCA = V Λ^{-1/2} V^T x̃ — whitened data
+              stays in original feature space. Used as preprocessing for CNNs (makes optimization landscape more
+              spherical).</div>
+          </div>
+        </div>
+      </div>
     </div>
-    <div class="card" style="border-top-color:var(--rose)">
-      <div class="card-name" style="color:var(--rose)">Denoising</div>
-      <div class="card-formula">X_denoised = pca.inverse_transform(Z_k)</div>
-      <p>Project to PCA subspace (removing noise-dominated components), then reconstruct. Works when signal variance &gt;&gt; noise variance — the first k components capture signal; the rest is noise. Used in fMRI, spectroscopy, financial data cleaning.</p>
+
+    <!-- ══ XIV ═══════════════════════════════════════════════ -->
+    <div class="ch" id="c14">
+      <div class="ch-head">
+        <div class="ch-rom">XIV</div>
+        <div class="ch-title-block">
+          <h2>Kernel PCA — Nonlinear Extension</h2>
+          <div class="ch-tag">// feature map · kernel trick · dual covariance · Gram matrix</div>
+        </div>
+      </div>
+
+      <p>Standard PCA can only find linear subspaces. Kernel PCA implicitly maps data to a high-dimensional feature
+        space and performs PCA there — enabling nonlinear dimensionality reduction without ever explicitly computing the
+        feature map.</p>
+
+      <div class="sub">
+        <div class="sh">The Kernel Trick for PCA</div>
+        <p>Replace \(\mathbf{x}\) with \(\phi(\mathbf{x})\) where \(\phi: \mathbb{R}^d \to \mathcal{H}\) (a potentially
+          infinite-dimensional Hilbert space). The covariance in feature space is:</p>
+        <div class="eq ld">
+          <div class="eq-head"><span>Covariance in Feature Space</span></div>
+          <div class="eq-body">
+            \[\mathbf{C}_\phi = \frac{1}{m}\sum_{i=1}^m\phi(\mathbf{x}^{(i)})\phi(\mathbf{x}^{(i)})^T\]
+            <div class="eq-note">The eigenvectors of C_φ lie in span{φ(x^(1)),...,φ(x^(m))}. So we can write v = Σ αᵢ
+              φ(x^(i)). The eigenvalue equation reduces to solving an m×m Gram matrix eigenvalue problem.</div>
+          </div>
+        </div>
+        <div class="eq ld">
+          <div class="eq-head"><span>Kernel PCA — Gram Matrix Eigenvalue Problem</span></div>
+          <div class="eq-body">
+            \[\mathbf{K}_{ij} = k(\mathbf{x}^{(i)}, \mathbf{x}^{(j)}) = \phi(\mathbf{x}^{(i)})^T\phi(\mathbf{x}^{(j)})\]
+            \[\tilde{\mathbf{K}} = \mathbf{K} - \mathbf{1}_m\mathbf{K} - \mathbf{K}\mathbf{1}_m +
+            \mathbf{1}_m\mathbf{K}\mathbf{1}_m \quad\text{(centered Gram matrix)}\]
+            \[\tilde{\mathbf{K}}\boldsymbol{\alpha}_j = \mu_j\boldsymbol{\alpha}_j \quad\Rightarrow\quad \text{scores: }
+            z_{ij} = \frac{1}{\sqrt{\mu_j}}\sum_{l=1}^m\alpha_{jl} k(\mathbf{x}^{(l)}, \mathbf{x}^{(i)})\]
+            <div class="eq-note">Common kernels: RBF k(x,x')=exp(−‖x−x'‖²/2σ²), polynomial k(x,x')=(x^Tx'+c)^p, sigmoid.
+              Kernel PCA is O(m²) memory and O(m³) time — expensive for large datasets.</div>
+          </div>
+        </div>
+      </div>
     </div>
-    <div class="card" style="border-top-color:var(--mint)">
-      <div class="card-name" style="color:var(--mint)">Anomaly Detection</div>
-      <div class="card-formula">score = ‖x - x̂‖² (reconstruction error)</div>
-      <p>Inliers have low reconstruction error (they lie near the principal subspace). Anomalies have high reconstruction error (they deviate from the normal pattern). Simple, interpretable, and computationally cheap compared to deep autoencoders.</p>
+
+    <!-- ══ XV ════════════════════════════════════════════════ -->
+    <div class="ch" id="c15">
+      <div class="ch-head">
+        <div class="ch-rom">XV</div>
+        <div class="ch-title-block">
+          <h2>Algorithms — Power Iteration &amp; Randomized PCA</h2>
+          <div class="ch-tag">// power method · deflation · randomized SVD · computational complexity</div>
+        </div>
+      </div>
+
+      <div class="sub">
+        <div class="sh">Power Iteration — The Classical Algorithm</div>
+        <div class="code-box">
+          <div class="code-top">
+            <div class="code-dots">
+              <div class="code-dot" style="background:#ff5f57"></div>
+              <div class="code-dot" style="background:#febc2e"></div>
+              <div class="code-dot" style="background:#28c840"></div>
+            </div>
+            <div class="code-lang">Power Iteration for Largest Eigenvector</div>
+          </div>
+          <div class="code-body">
+            <span class="cmt"># Find the dominant eigenvector of S = X^T X / (m-1)</span><br>
+            <span class="fn">initialize</span>: <span class="var">v</span> = random unit vector in ℝ^d<br><br>
+            <span class="kw">repeat until</span> convergence:<br>
+            &nbsp;&nbsp;<span class="var">z</span> = S @ <span class="var">v</span>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="cmt"># matrix-vector product
+              O(d²)</span><br>
+            &nbsp;&nbsp;<span class="var">v</span> = <span class="var">z</span> / ‖<span class="var">z</span>‖
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="cmt"># renormalize</span><br>
+            &nbsp;&nbsp;<span class="var">λ₁</span> = <span class="var">v</span>^T @ S @ <span class="var">v</span>
+            &nbsp;&nbsp;&nbsp;<span class="cmt"># Rayleigh quotient estimate</span><br><br>
+            <span class="cmt"># Convergence rate: (λ₂/λ₁)^t — fast when spectral gap is large</span><br><br>
+            <span class="cmt"># Deflation for subsequent eigenvectors:</span><br>
+            S_deflated = S <span class="op">−</span> <span class="var">λ₁</span> * outer(<span class="var">v</span>,
+            <span class="var">v</span>)<br>
+            <span class="cmt"># Repeat on S_deflated for v₂, v₃, ...</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="sub">
+        <div class="sh c">Randomized SVD — The Modern Standard</div>
+        <p>For large \(m, d\), computing the full SVD is \(O(\min(md^2, m^2d))\). Randomized PCA (Halko-Martinsson-Tropp
+          2011) computes a near-optimal rank-\(k\) approximation in \(O(mdk)\) — linear in \(k\).</p>
+        <div class="code-box">
+          <div class="code-top">
+            <div class="code-dots">
+              <div class="code-dot" style="background:#ff5f57"></div>
+              <div class="code-dot" style="background:#febc2e"></div>
+              <div class="code-dot" style="background:#28c840"></div>
+            </div>
+            <div class="code-lang">Randomized PCA (sklearn default for large data)</div>
+          </div>
+          <div class="code-body">
+            <span class="cmt"># Step 1: Random projection to sketch the range of X</span><br>
+            <span class="var">Ω</span> = randn(d, k+p) &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span
+              class="cmt"># random Gaussian matrix, p=10 oversampling</span><br>
+            <span class="var">Y</span> = X_centered @ <span class="var">Ω</span>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="cmt"># O(mdk) — range
+              approximation</span><br><br>
+            <span class="cmt"># (Optional) Power iteration for accuracy:</span><br>
+            <span class="kw">for</span> i <span class="kw">in</span> range(n_iter): <span class="var">Y</span> =
+            X_centered @ (X_centered.T @ <span class="var">Y</span>)<br><br>
+            <span class="cmt"># Step 2: QR decomposition of Y</span><br>
+            <span class="var">Q</span>, _ = qr(<span class="var">Y</span>)
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="cmt">#
+              orthonormal basis for range(X)</span><br><br>
+            <span class="cmt"># Step 3: Project and SVD in small space</span><br>
+            <span class="var">B</span> = <span class="var">Q</span>.T @ X_centered
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="cmt"># (k+p) × d — small!</span><br>
+            <span class="var">U_hat</span>, <span class="var">Σ</span>, <span class="var">Vt</span> = svd(<span
+              class="var">B</span>, full=False)<br>
+            <span class="var">U</span> = <span class="var">Q</span> @ <span class="var">U_hat</span>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="cmt"># full left singular
+              vectors</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="sub">
+        <div class="sh">Complexity Comparison</div>
+        <div class="t-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Algorithm</th>
+                <th>Time Complexity</th>
+                <th>Memory</th>
+                <th>Best For</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Full eigendecomposition of S</td>
+                <td>\(O(d^3)\)</td>
+                <td>\(O(d^2)\)</td>
+                <td>Small \(d\), numerical stability unimportant</td>
+              </tr>
+              <tr>
+                <td>Full SVD of \(\tilde{\mathbf{X}}\)</td>
+                <td>\(O(\min(md^2, m^2d))\)</td>
+                <td>\(O(md)\)</td>
+                <td>General, numerically stable</td>
+              </tr>
+              <tr>
+                <td>Power iteration (1 component)</td>
+                <td>\(O(mdt)\)</td>
+                <td>\(O(d)\)</td>
+                <td>Streaming data; very large d</td>
+              </tr>
+              <tr>
+                <td>Randomized SVD (rank k)</td>
+                <td>\(O(mdk)\)</td>
+                <td>\(O((m+d)k)\)</td>
+                <td>Large \(m,d\); extracting top-k components</td>
+              </tr>
+              <tr>
+                <td>Incremental PCA</td>
+                <td>\(O(d^2 \cdot \text{batches})\)</td>
+                <td>\(O(d^2)\)</td>
+                <td>Data too large to fit in memory</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
     </div>
-    <div class="card" style="border-top-color:var(--peach)">
-      <div class="card-name" style="color:var(--peach)">Feature Engineering</div>
-      <div class="card-formula">latent = pca.transform(X)[:, :k]</div>
-      <p>PCA features are uncorrelated — avoiding multicollinearity issues in logistic regression and linear models. Whitened PCA features have equal variance — improving gradient descent convergence. Standard preprocessing for linear classifiers on text/image data.</p>
+
+    <!-- ══ XVI ═══════════════════════════════════════════════ -->
+    <div class="ch" id="c16">
+      <div class="ch-head">
+        <div class="ch-rom">XVI</div>
+        <div class="ch-title-block">
+          <h2>Applications in Machine Learning</h2>
+          <div class="ch-tag">// dimensionality reduction · denoising · visualization · face recognition · preprocessing
+          </div>
+        </div>
+      </div>
+
+      <div class="card-grid">
+        <div class="card" style="border-top-color:var(--gold)">
+          <div class="card-name" style="color:var(--gold)">Preprocessing for ML</div>
+          <div class="card-formula">X_reduced = pca.fit_transform(X)</div>
+          <p>Reduce features before training a classifier or regressor. Removes multicollinearity (the covariance of PCA
+            scores is diagonal). Speeds up training by \(d/k\). Regularizes against overfitting — fewer degrees of
+            freedom. Most useful when \(d \gg m\).</p>
+        </div>
+        <div class="card" style="border-top-color:var(--cyan)">
+          <div class="card-name" style="color:var(--cyan)">Data Visualization</div>
+          <div class="card-formula">2D: Z = X @ V[:, :2]</div>
+          <p>Project to 2D or 3D for exploratory visualization. Reveals cluster structure, outliers, and data geometry
+            that is invisible in high dimensions. First step in any EDA for high-dim tabular data or embeddings. Your
+            breast cancer and Titanic datasets benefit directly.</p>
+        </div>
+        <div class="card" style="border-top-color:var(--lav)">
+          <div class="card-name" style="color:var(--lav)">Image Compression</div>
+          <div class="card-formula">X̂ = Z_k @ V_k.T + μ</div>
+          <p>Represent each image as k PCA coefficients instead of H×W pixels. Compression ratio = (H×W)/k. Quality
+            controlled by k (or cumulative EVR threshold). Eigenfaces (PCA on face images) was state-of-the-art face
+            recognition pre-CNN.</p>
+        </div>
+        <div class="card" style="border-top-color:var(--rose)">
+          <div class="card-name" style="color:var(--rose)">Denoising</div>
+          <div class="card-formula">X_denoised = pca.inverse_transform(Z_k)</div>
+          <p>Project to PCA subspace (removing noise-dominated components), then reconstruct. Works when signal variance
+            &gt;&gt; noise variance — the first k components capture signal; the rest is noise. Used in fMRI,
+            spectroscopy, financial data cleaning.</p>
+        </div>
+        <div class="card" style="border-top-color:var(--mint)">
+          <div class="card-name" style="color:var(--mint)">Anomaly Detection</div>
+          <div class="card-formula">score = ‖x - x̂‖² (reconstruction error)</div>
+          <p>Inliers have low reconstruction error (they lie near the principal subspace). Anomalies have high
+            reconstruction error (they deviate from the normal pattern). Simple, interpretable, and computationally
+            cheap compared to deep autoencoders.</p>
+        </div>
+        <div class="card" style="border-top-color:var(--peach)">
+          <div class="card-name" style="color:var(--peach)">Feature Engineering</div>
+          <div class="card-formula">latent = pca.transform(X)[:, :k]</div>
+          <p>PCA features are uncorrelated — avoiding multicollinearity issues in logistic regression and linear models.
+            Whitened PCA features have equal variance — improving gradient descent convergence. Standard preprocessing
+            for linear classifiers on text/image data.</p>
+        </div>
+      </div>
     </div>
-  </div>
-</div>
 
-<!-- ══ XVII ══════════════════════════════════════════════ -->
-<div class="ch" id="c17">
-  <div class="ch-head">
-    <div class="ch-rom">XVII</div>
-    <div class="ch-title-block">
-      <h2>PCA vs Other Dimensionality Reduction Methods</h2>
-      <div class="ch-tag">// t-SNE · UMAP · LDA · ICA · autoencoders</div>
+    <!-- ══ XVII ══════════════════════════════════════════════ -->
+    <div class="ch" id="c17">
+      <div class="ch-head">
+        <div class="ch-rom">XVII</div>
+        <div class="ch-title-block">
+          <h2>PCA vs Other Dimensionality Reduction Methods</h2>
+          <div class="ch-tag">// t-SNE · UMAP · LDA · ICA · autoencoders</div>
+        </div>
+      </div>
+
+      <div class="t-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Method</th>
+              <th>Type</th>
+              <th>Preserves</th>
+              <th>Weaknesses</th>
+              <th>When to Use</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>PCA</strong></td>
+              <td>Linear</td>
+              <td>Global variance (linear structure)</td>
+              <td>Misses nonlinear structure; sensitive to outliers</td>
+              <td>Default — fast, interpretable, reversible</td>
+            </tr>
+            <tr>
+              <td>t-SNE</td>
+              <td>Nonlinear</td>
+              <td>Local neighborhood structure</td>
+              <td>Non-deterministic; no out-of-sample; slow; can distort global structure</td>
+              <td>Visualization only (2D/3D); discovering clusters</td>
+            </tr>
+            <tr>
+              <td>UMAP</td>
+              <td>Nonlinear</td>
+              <td>Local + approximate global</td>
+              <td>Hyperparameter sensitive; still difficult to interpret</td>
+              <td>Visualization + faster alternative to t-SNE</td>
+            </tr>
+            <tr>
+              <td>LDA</td>
+              <td>Linear (supervised)</td>
+              <td>Class separability</td>
+              <td>Requires labels; at most C-1 components (C = classes); Gaussian assumption</td>
+              <td>Classification preprocessing; maximize between-class distance</td>
+            </tr>
+            <tr>
+              <td>ICA</td>
+              <td>Linear</td>
+              <td>Statistical independence</td>
+              <td>Requires non-Gaussian sources; order not defined</td>
+              <td>Signal separation (EEG, audio mixing)</td>
+            </tr>
+            <tr>
+              <td>Autoencoders</td>
+              <td>Nonlinear</td>
+              <td>Task-relevant features</td>
+              <td>Requires training; not interpretable; overparameterized</td>
+              <td>When PCA reconstruction error is unacceptably high</td>
+            </tr>
+            <tr>
+              <td>Random Projections</td>
+              <td>Linear (random)</td>
+              <td>Pairwise distances (JL lemma)</td>
+              <td>Suboptimal compression; not interpretable</td>
+              <td>Very large \(d\) where PCA is too slow</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="insight gd">
+        <div class="ins-mark">→</div>
+        <div class="ins-body">
+          <div class="ins-title">Practical Decision Rule</div>
+          <p>Start with PCA. Always. It's fast, reproducible, interpretable, and reversible. If PCA gives unsatisfactory
+            cluster separation for visualization, try UMAP. If features are not Gaussian and independence matters,
+            consider ICA. If class labels are available and you need maximum discrimination, use LDA. Only reach for
+            autoencoders when linear methods provably fail and nonlinear structure is essential.</p>
+        </div>
+      </div>
     </div>
-  </div>
 
-  <div class="t-wrap">
-    <table>
-      <thead><tr><th>Method</th><th>Type</th><th>Preserves</th><th>Weaknesses</th><th>When to Use</th></tr></thead>
-      <tbody>
-        <tr><td><strong>PCA</strong></td><td>Linear</td><td>Global variance (linear structure)</td><td>Misses nonlinear structure; sensitive to outliers</td><td>Default — fast, interpretable, reversible</td></tr>
-        <tr><td>t-SNE</td><td>Nonlinear</td><td>Local neighborhood structure</td><td>Non-deterministic; no out-of-sample; slow; can distort global structure</td><td>Visualization only (2D/3D); discovering clusters</td></tr>
-        <tr><td>UMAP</td><td>Nonlinear</td><td>Local + approximate global</td><td>Hyperparameter sensitive; still difficult to interpret</td><td>Visualization + faster alternative to t-SNE</td></tr>
-        <tr><td>LDA</td><td>Linear (supervised)</td><td>Class separability</td><td>Requires labels; at most C-1 components (C = classes); Gaussian assumption</td><td>Classification preprocessing; maximize between-class distance</td></tr>
-        <tr><td>ICA</td><td>Linear</td><td>Statistical independence</td><td>Requires non-Gaussian sources; order not defined</td><td>Signal separation (EEG, audio mixing)</td></tr>
-        <tr><td>Autoencoders</td><td>Nonlinear</td><td>Task-relevant features</td><td>Requires training; not interpretable; overparameterized</td><td>When PCA reconstruction error is unacceptably high</td></tr>
-        <tr><td>Random Projections</td><td>Linear (random)</td><td>Pairwise distances (JL lemma)</td><td>Suboptimal compression; not interpretable</td><td>Very large \(d\) where PCA is too slow</td></tr>
-      </tbody>
-    </table>
-  </div>
+    <!-- ══ XVIII ═════════════════════════════════════════════ -->
+    <div class="ch" id="c18">
+      <div class="ch-head">
+        <div class="ch-rom">XVIII</div>
+        <div class="ch-title-block">
+          <h2>The Complete Mental Model</h2>
+          <div class="ch-tag">// everything connected · one derivation thread · all the links</div>
+        </div>
+      </div>
 
-  <div class="insight gd">
-    <div class="ins-mark">→</div>
-    <div class="ins-body">
-      <div class="ins-title">Practical Decision Rule</div>
-      <p>Start with PCA. Always. It's fast, reproducible, interpretable, and reversible. If PCA gives unsatisfactory cluster separation for visualization, try UMAP. If features are not Gaussian and independence matters, consider ICA. If class labels are available and you need maximum discrimination, use LDA. Only reach for autoencoders when linear methods provably fail and nonlinear structure is essential.</p>
+      <div class="fig">
+        <div class="fig-box">
+          <svg viewBox="0 0 720 620" xmlns="http://www.w3.org/2000/svg" style="max-width:720px;width:100%;">
+            <rect width="720" height="620" fill="#0b0917" />
+            <text x="360" y="24" text-anchor="middle" font-family="Roboto Mono" font-size="9" fill="#201b38"
+              letter-spacing="0.26em">PCA — COMPLETE MATHEMATICAL MAP</text>
+            <defs>
+              <marker id="xma" markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto">
+                <path d="M0,0 L0,5 L7,2.5z" fill="#3a3060" />
+              </marker>
+              <marker id="gma" markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto">
+                <path d="M0,0 L0,5 L7,2.5z" fill="#e8c547" />
+              </marker>
+              <marker id="cma" markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto">
+                <path d="M0,0 L0,5 L7,2.5z" fill="#00e5cc" />
+              </marker>
+              <marker id="lma" markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto">
+                <path d="M0,0 L0,5 L7,2.5z" fill="#a99cf5" />
+              </marker>
+              <marker id="mma" markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto">
+                <path d="M0,0 L0,5 L7,2.5z" fill="#67e8a0" />
+              </marker>
+            </defs>
+
+            <!-- ROW 1: Problem -->
+            <rect x="230" y="40" width="260" height="52" rx="4" fill="#100d1f" stroke="#e8c547" stroke-width="2" />
+            <text x="360" y="61" text-anchor="middle" font-family="Roboto Mono" font-size="10.5" fill="#e8c547"
+              font-weight="700">CURSE OF DIMENSIONALITY</text>
+            <text x="360" y="80" text-anchor="middle" font-family="Roboto Mono" font-size="9" fill="#4a5070">data sparse
+              · distances equal · \(d \gg m\)</text>
+
+            <!-- ROW 2: Setup -->
+            <rect x="50" y="142" width="180" height="52" rx="4" fill="#100d1f" stroke="#a99cf5" stroke-width="1.5" />
+            <text x="140" y="162" text-anchor="middle" font-family="Roboto Mono" font-size="10" fill="#a99cf5"
+              font-weight="700">DATA CENTERING</text>
+            <text x="140" y="180" text-anchor="middle" font-family="Roboto Mono" font-size="9" fill="#4a5070">\(x̃ = x -
+              μ\)</text>
+
+            <rect x="270" y="142" width="180" height="52" rx="4" fill="#100d1f" stroke="#e8c547" stroke-width="1.8" />
+            <text x="360" y="162" text-anchor="middle" font-family="Roboto Mono" font-size="10" fill="#e8c547"
+              font-weight="700">COVARIANCE MATRIX</text>
+            <text x="360" y="180" text-anchor="middle" font-family="Roboto Mono" font-size="9" fill="#4a5070">\(S = X̃^T
+              X̃ / (m{-}1)\)</text>
+
+            <rect x="490" y="142" width="180" height="52" rx="4" fill="#100d1f" stroke="#00e5cc" stroke-width="1.5" />
+            <text x="580" y="162" text-anchor="middle" font-family="Roboto Mono" font-size="10" fill="#00e5cc"
+              font-weight="700">PSD PROPERTY</text>
+            <text x="580" y="180" text-anchor="middle" font-family="Roboto Mono" font-size="9" fill="#4a5070">\(v^T S v
+              \geq 0\) · real λ</text>
+
+            <!-- Arrows from row1 to row2 -->
+            <line x1="310" y1="92" x2="185" y2="140" stroke="#3a3060" stroke-width="1.2" stroke-dasharray="4,3"
+              marker-end="url(#xma)" />
+            <line x1="360" y1="92" x2="360" y2="140" stroke="#e8c547" stroke-width="1.3" stroke-dasharray="4,3"
+              marker-end="url(#gma)" />
+            <line x1="410" y1="92" x2="535" y2="140" stroke="#3a3060" stroke-width="1.2" stroke-dasharray="4,3"
+              marker-end="url(#xma)" />
+
+            <!-- ROW 3: Optimization -->
+            <rect x="200" y="248" width="320" height="60" rx="4" fill="#100d1f" stroke="#e8c547" stroke-width="2" />
+            <text x="360" y="271" text-anchor="middle" font-family="Roboto Mono" font-size="10.5" fill="#e8c547"
+              font-weight="700">VARIANCE MAXIMIZATION</text>
+            <text x="360" y="289" text-anchor="middle" font-family="Roboto Mono" font-size="9" fill="#4a5070">max \(v^T
+              S v\) s.t. \(‖v‖=1\)</text>
+
+            <line x1="360" y1="194" x2="360" y2="246" stroke="#e8c547" stroke-width="1.5" stroke-dasharray="4,3"
+              marker-end="url(#gma)" />
+
+            <!-- ROW 4: Lagrangian -->
+            <rect x="100" y="368" width="200" height="52" rx="4" fill="#100d1f" stroke="#a99cf5" stroke-width="1.8" />
+            <text x="200" y="389" text-anchor="middle" font-family="Roboto Mono" font-size="10" fill="#a99cf5"
+              font-weight="700">LAGRANGIAN</text>
+            <text x="200" y="407" text-anchor="middle" font-family="Roboto Mono" font-size="9" fill="#4a5070">\(L = v^T
+              S v - λ(‖v‖²-1)\)</text>
+
+            <rect x="420" y="368" width="200" height="52" rx="4" fill="#100d1f" stroke="#67e8a0" stroke-width="1.8" />
+            <text x="520" y="389" text-anchor="middle" font-family="Roboto Mono" font-size="10" fill="#67e8a0"
+              font-weight="700">SVD CONNECTION</text>
+            <text x="520" y="407" text-anchor="middle" font-family="Roboto Mono" font-size="9" fill="#4a5070">\(λ_j =
+              σ_j^2/(m{-}1)\)</text>
+
+            <line x1="300" y1="308" x2="230" y2="366" stroke="#a99cf5" stroke-width="1.3" stroke-dasharray="4,3"
+              marker-end="url(#lma)" />
+            <line x1="420" y1="308" x2="490" y2="366" stroke="#67e8a0" stroke-width="1.3" stroke-dasharray="4,3"
+              marker-end="url(#mma)" />
+
+            <!-- ROW 5: Eigenvalue / Solution -->
+            <rect x="200" y="478" width="320" height="60" rx="4" fill="#100d1f" stroke="#e8c547" stroke-width="2.5" />
+            <text x="360" y="501" text-anchor="middle" font-family="Roboto Mono" font-size="11" fill="#e8c547"
+              font-weight="700">EIGENVALUE EQUATION</text>
+            <text x="360" y="522" text-anchor="middle" font-family="Roboto Mono" font-size="10" fill="#a99cf5">\(Sv =
+              λv\) → PC loadings + variances</text>
+
+            <line x1="200" y1="420" x2="290" y2="476" stroke="#a99cf5" stroke-width="1.3" stroke-dasharray="4,3"
+              marker-end="url(#lma)" />
+            <line x1="520" y1="420" x2="430" y2="476" stroke="#67e8a0" stroke-width="1.3" stroke-dasharray="4,3"
+              marker-end="url(#mma)" />
+
+            <!-- Applications row -->
+            <rect x="20" y="562" width="200" height="48" rx="3" fill="#0d0b1a" stroke="#e8c547" stroke-width="1" />
+            <text x="120" y="581" text-anchor="middle" font-family="Roboto Mono" font-size="9" fill="#e8c547">SCORES = Z
+              = X̃ V_k</text>
+            <text x="120" y="598" text-anchor="middle" font-family="Roboto Mono" font-size="8.5"
+              fill="#4a5070">projection · visualization</text>
+
+            <rect x="260" y="562" width="200" height="48" rx="3" fill="#0d0b1a" stroke="#a99cf5" stroke-width="1" />
+            <text x="360" y="581" text-anchor="middle" font-family="Roboto Mono" font-size="9"
+              fill="#a99cf5">RECONSTRUCTION</text>
+            <text x="360" y="598" text-anchor="middle" font-family="Roboto Mono" font-size="8.5" fill="#4a5070">x̂ = V_k
+              z_k + μ · error = Σλⱼ</text>
+
+            <rect x="500" y="562" width="200" height="48" rx="3" fill="#0d0b1a" stroke="#67e8a0" stroke-width="1" />
+            <text x="600" y="581" text-anchor="middle" font-family="Roboto Mono" font-size="9" fill="#67e8a0">KERNEL
+              PCA</text>
+            <text x="600" y="598" text-anchor="middle" font-family="Roboto Mono" font-size="8.5" fill="#4a5070">K
+              eigenvalue problem · nonlinear</text>
+
+            <line x1="310" y1="538" x2="155" y2="560" stroke="#3a3060" stroke-width="1" stroke-dasharray="3,2"
+              marker-end="url(#xma)" />
+            <line x1="360" y1="538" x2="360" y2="560" stroke="#a99cf5" stroke-width="1" stroke-dasharray="3,2"
+              marker-end="url(#lma)" />
+            <line x1="410" y1="538" x2="565" y2="560" stroke="#3a3060" stroke-width="1" stroke-dasharray="3,2"
+              marker-end="url(#xma)" />
+          </svg>
+        </div>
+        <div class="fig-cap">Fig 3. PCA complete derivation path — from the curse of dimensionality through covariance,
+          Lagrangian optimization, eigenvalue problem, and out to all applications.</div>
+      </div>
+
+      <p style="margin-top:clamp(22px,4vw,36px);">The complete story as a single coherent thread:</p>
+
+      <ol style="padding-left:clamp(16px,3vw,24px); line-height:2.6; font-size:clamp(14px,1.9vw,16px);">
+        <li><strong>Motivation:</strong> High-dimensional data is geometrically pathological — distances concentrate,
+          data is sparse, algorithms break. But real data often lives on a low-dimensional manifold embedded in
+          high-dimensional space.</li>
+        <li><strong>Setup:</strong> Center the data (\(\tilde{\mathbf{x}} = \mathbf{x} - \boldsymbol{\mu}\)). Compute
+          the sample covariance matrix \(\mathbf{S} = \frac{1}{m-1}\tilde{\mathbf{X}}^T\tilde{\mathbf{X}}\). This is
+          symmetric and PSD — all eigenvalues are real and non-negative by the Spectral Theorem.</li>
+        <li><strong>Optimization:</strong> The first PC is \(\mathbf{v}_1 =
+          \arg\max_{\|\mathbf{v}\|=1}\mathbf{v}^T\mathbf{S}\mathbf{v}\) — the direction of maximum variance. By the
+          Rayleigh quotient, this is bounded by the largest eigenvalue of \(\mathbf{S}\).</li>
+        <li><strong>Lagrangian derivation:</strong> Form \(\mathcal{L} = \mathbf{v}^T\mathbf{S}\mathbf{v} -
+          \lambda(\mathbf{v}^T\mathbf{v}-1)\). Stationarity gives \(\mathbf{S}\mathbf{v} = \lambda\mathbf{v}\). The
+          objective value at the optimum equals \(\lambda\) — so we want the largest eigenvalue. The \(k\)-th PC is the
+          \(k\)-th eigenvector.</li>
+        <li><strong>Eigenvectors are orthogonal</strong> — proven directly from the symmetry of \(\mathbf{S}\). PCA
+          scores are therefore decorrelated: \(\text{Cov}(\mathbf{Z}) = \boldsymbol{\Lambda}_k\).</li>
+        <li><strong>SVD connection:</strong> \(\lambda_j = \sigma_j^2/(m-1)\) and the right singular vectors of
+          \(\tilde{\mathbf{X}}\) are exactly the PC loadings. Always use SVD numerically — it avoids squaring the
+          condition number.</li>
+        <li><strong>Reconstruction:</strong> The truncated reconstruction \(\hat{\mathbf{X}}_k =
+          \mathbf{Z}_k\mathbf{V}_k^T + \boldsymbol{\mu}\) is the optimal rank-\(k\) approximation (Eckart-Young). The
+          reconstruction error equals the sum of discarded eigenvalues.</li>
+        <li><strong>Whitening</strong> additionally scales each PC to unit variance — making the optimization landscape
+          spherical and improving gradient descent convergence for downstream models.</li>
+        <li><strong>Kernel PCA</strong> extends to nonlinear subspaces via the kernel trick — solve an \(m \times m\)
+          Gram matrix eigenvalue problem instead of the \(d \times d\) covariance problem.</li>
+        <li><strong>Applications:</strong> Dimensionality reduction, visualization, denoising, anomaly detection,
+          compression, feature engineering. PCA is the first tool to reach for — it's fast, interpretable, and
+          reversible.</li>
+      </ol>
+
+      <div class="theorem" style="margin-top:clamp(24px,4vw,40px);">
+        <div class="theorem-badge">★ The Unifying Thread</div>
+        <p>PCA is the nexus where <strong>linear algebra</strong> (eigendecomposition, SVD, change of basis),
+          <strong>statistics</strong> (variance, covariance, MLE, sample estimation), and <strong>optimization</strong>
+          (Lagrange multipliers, Rayleigh quotient, constrained maximization) converge on a single clean answer: rotate
+          the coordinate system so axes align with the data's natural variance structure. Every concept from the Linear
+          Regression, Lagrange Multipliers, and Bias-Variance masterclasses appears here — PCA is where they all meet.
+        </p>
+      </div>
     </div>
-  </div>
-</div>
 
-<!-- ══ XVIII ═════════════════════════════════════════════ -->
-<div class="ch" id="c18">
-  <div class="ch-head">
-    <div class="ch-rom">XVIII</div>
-    <div class="ch-title-block">
-      <h2>The Complete Mental Model</h2>
-      <div class="ch-tag">// everything connected · one derivation thread · all the links</div>
-    </div>
-  </div>
-
-  <div class="fig">
-    <div class="fig-box">
-      <svg viewBox="0 0 720 620" xmlns="http://www.w3.org/2000/svg" style="max-width:720px;width:100%;">
-        <rect width="720" height="620" fill="#0b0917"/>
-        <text x="360" y="24" text-anchor="middle" font-family="Roboto Mono" font-size="9" fill="#201b38" letter-spacing="0.26em">PCA — COMPLETE MATHEMATICAL MAP</text>
-        <defs>
-          <marker id="xma" markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto"><path d="M0,0 L0,5 L7,2.5z" fill="#3a3060"/></marker>
-          <marker id="gma" markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto"><path d="M0,0 L0,5 L7,2.5z" fill="#e8c547"/></marker>
-          <marker id="cma" markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto"><path d="M0,0 L0,5 L7,2.5z" fill="#00e5cc"/></marker>
-          <marker id="lma" markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto"><path d="M0,0 L0,5 L7,2.5z" fill="#a99cf5"/></marker>
-          <marker id="mma" markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto"><path d="M0,0 L0,5 L7,2.5z" fill="#67e8a0"/></marker>
-        </defs>
-
-        <!-- ROW 1: Problem -->
-        <rect x="230" y="40" width="260" height="52" rx="4" fill="#100d1f" stroke="#e8c547" stroke-width="2"/>
-        <text x="360" y="61" text-anchor="middle" font-family="Roboto Mono" font-size="10.5" fill="#e8c547" font-weight="700">CURSE OF DIMENSIONALITY</text>
-        <text x="360" y="80" text-anchor="middle" font-family="Roboto Mono" font-size="9" fill="#4a5070">data sparse · distances equal · \(d \gg m\)</text>
-
-        <!-- ROW 2: Setup -->
-        <rect x="50" y="142" width="180" height="52" rx="4" fill="#100d1f" stroke="#a99cf5" stroke-width="1.5"/>
-        <text x="140" y="162" text-anchor="middle" font-family="Roboto Mono" font-size="10" fill="#a99cf5" font-weight="700">DATA CENTERING</text>
-        <text x="140" y="180" text-anchor="middle" font-family="Roboto Mono" font-size="9" fill="#4a5070">\(x̃ = x - μ\)</text>
-
-        <rect x="270" y="142" width="180" height="52" rx="4" fill="#100d1f" stroke="#e8c547" stroke-width="1.8"/>
-        <text x="360" y="162" text-anchor="middle" font-family="Roboto Mono" font-size="10" fill="#e8c547" font-weight="700">COVARIANCE MATRIX</text>
-        <text x="360" y="180" text-anchor="middle" font-family="Roboto Mono" font-size="9" fill="#4a5070">\(S = X̃^T X̃ / (m{-}1)\)</text>
-
-        <rect x="490" y="142" width="180" height="52" rx="4" fill="#100d1f" stroke="#00e5cc" stroke-width="1.5"/>
-        <text x="580" y="162" text-anchor="middle" font-family="Roboto Mono" font-size="10" fill="#00e5cc" font-weight="700">PSD PROPERTY</text>
-        <text x="580" y="180" text-anchor="middle" font-family="Roboto Mono" font-size="9" fill="#4a5070">\(v^T S v \geq 0\) · real λ</text>
-
-        <!-- Arrows from row1 to row2 -->
-        <line x1="310" y1="92" x2="185" y2="140" stroke="#3a3060" stroke-width="1.2" stroke-dasharray="4,3" marker-end="url(#xma)"/>
-        <line x1="360" y1="92" x2="360" y2="140" stroke="#e8c547" stroke-width="1.3" stroke-dasharray="4,3" marker-end="url(#gma)"/>
-        <line x1="410" y1="92" x2="535" y2="140" stroke="#3a3060" stroke-width="1.2" stroke-dasharray="4,3" marker-end="url(#xma)"/>
-
-        <!-- ROW 3: Optimization -->
-        <rect x="200" y="248" width="320" height="60" rx="4" fill="#100d1f" stroke="#e8c547" stroke-width="2"/>
-        <text x="360" y="271" text-anchor="middle" font-family="Roboto Mono" font-size="10.5" fill="#e8c547" font-weight="700">VARIANCE MAXIMIZATION</text>
-        <text x="360" y="289" text-anchor="middle" font-family="Roboto Mono" font-size="9" fill="#4a5070">max \(v^T S v\)  s.t.  \(‖v‖=1\)</text>
-
-        <line x1="360" y1="194" x2="360" y2="246" stroke="#e8c547" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#gma)"/>
-
-        <!-- ROW 4: Lagrangian -->
-        <rect x="100" y="368" width="200" height="52" rx="4" fill="#100d1f" stroke="#a99cf5" stroke-width="1.8"/>
-        <text x="200" y="389" text-anchor="middle" font-family="Roboto Mono" font-size="10" fill="#a99cf5" font-weight="700">LAGRANGIAN</text>
-        <text x="200" y="407" text-anchor="middle" font-family="Roboto Mono" font-size="9" fill="#4a5070">\(L = v^T S v - λ(‖v‖²-1)\)</text>
-
-        <rect x="420" y="368" width="200" height="52" rx="4" fill="#100d1f" stroke="#67e8a0" stroke-width="1.8"/>
-        <text x="520" y="389" text-anchor="middle" font-family="Roboto Mono" font-size="10" fill="#67e8a0" font-weight="700">SVD CONNECTION</text>
-        <text x="520" y="407" text-anchor="middle" font-family="Roboto Mono" font-size="9" fill="#4a5070">\(λ_j = σ_j^2/(m{-}1)\)</text>
-
-        <line x1="300" y1="308" x2="230" y2="366" stroke="#a99cf5" stroke-width="1.3" stroke-dasharray="4,3" marker-end="url(#lma)"/>
-        <line x1="420" y1="308" x2="490" y2="366" stroke="#67e8a0" stroke-width="1.3" stroke-dasharray="4,3" marker-end="url(#mma)"/>
-
-        <!-- ROW 5: Eigenvalue / Solution -->
-        <rect x="200" y="478" width="320" height="60" rx="4" fill="#100d1f" stroke="#e8c547" stroke-width="2.5"/>
-        <text x="360" y="501" text-anchor="middle" font-family="Roboto Mono" font-size="11" fill="#e8c547" font-weight="700">EIGENVALUE EQUATION</text>
-        <text x="360" y="522" text-anchor="middle" font-family="Roboto Mono" font-size="10" fill="#a99cf5">\(Sv = λv\)  →  PC loadings + variances</text>
-
-        <line x1="200" y1="420" x2="290" y2="476" stroke="#a99cf5" stroke-width="1.3" stroke-dasharray="4,3" marker-end="url(#lma)"/>
-        <line x1="520" y1="420" x2="430" y2="476" stroke="#67e8a0" stroke-width="1.3" stroke-dasharray="4,3" marker-end="url(#mma)"/>
-
-        <!-- Applications row -->
-        <rect x="20" y="562" width="200" height="48" rx="3" fill="#0d0b1a" stroke="#e8c547" stroke-width="1"/>
-        <text x="120" y="581" text-anchor="middle" font-family="Roboto Mono" font-size="9" fill="#e8c547">SCORES = Z = X̃ V_k</text>
-        <text x="120" y="598" text-anchor="middle" font-family="Roboto Mono" font-size="8.5" fill="#4a5070">projection · visualization</text>
-
-        <rect x="260" y="562" width="200" height="48" rx="3" fill="#0d0b1a" stroke="#a99cf5" stroke-width="1"/>
-        <text x="360" y="581" text-anchor="middle" font-family="Roboto Mono" font-size="9" fill="#a99cf5">RECONSTRUCTION</text>
-        <text x="360" y="598" text-anchor="middle" font-family="Roboto Mono" font-size="8.5" fill="#4a5070">x̂ = V_k z_k + μ · error = Σλⱼ</text>
-
-        <rect x="500" y="562" width="200" height="48" rx="3" fill="#0d0b1a" stroke="#67e8a0" stroke-width="1"/>
-        <text x="600" y="581" text-anchor="middle" font-family="Roboto Mono" font-size="9" fill="#67e8a0">KERNEL PCA</text>
-        <text x="600" y="598" text-anchor="middle" font-family="Roboto Mono" font-size="8.5" fill="#4a5070">K eigenvalue problem · nonlinear</text>
-
-        <line x1="310" y1="538" x2="155" y2="560" stroke="#3a3060" stroke-width="1" stroke-dasharray="3,2" marker-end="url(#xma)"/>
-        <line x1="360" y1="538" x2="360" y2="560" stroke="#a99cf5" stroke-width="1" stroke-dasharray="3,2" marker-end="url(#lma)"/>
-        <line x1="410" y1="538" x2="565" y2="560" stroke="#3a3060" stroke-width="1" stroke-dasharray="3,2" marker-end="url(#xma)"/>
-      </svg>
-    </div>
-    <div class="fig-cap">Fig 3. PCA complete derivation path — from the curse of dimensionality through covariance, Lagrangian optimization, eigenvalue problem, and out to all applications.</div>
-  </div>
-
-  <p style="margin-top:clamp(22px,4vw,36px);">The complete story as a single coherent thread:</p>
-
-  <ol style="padding-left:clamp(16px,3vw,24px); line-height:2.6; font-size:clamp(14px,1.9vw,16px);">
-    <li><strong>Motivation:</strong> High-dimensional data is geometrically pathological — distances concentrate, data is sparse, algorithms break. But real data often lives on a low-dimensional manifold embedded in high-dimensional space.</li>
-    <li><strong>Setup:</strong> Center the data (\(\tilde{\mathbf{x}} = \mathbf{x} - \boldsymbol{\mu}\)). Compute the sample covariance matrix \(\mathbf{S} = \frac{1}{m-1}\tilde{\mathbf{X}}^T\tilde{\mathbf{X}}\). This is symmetric and PSD — all eigenvalues are real and non-negative by the Spectral Theorem.</li>
-    <li><strong>Optimization:</strong> The first PC is \(\mathbf{v}_1 = \arg\max_{\|\mathbf{v}\|=1}\mathbf{v}^T\mathbf{S}\mathbf{v}\) — the direction of maximum variance. By the Rayleigh quotient, this is bounded by the largest eigenvalue of \(\mathbf{S}\).</li>
-    <li><strong>Lagrangian derivation:</strong> Form \(\mathcal{L} = \mathbf{v}^T\mathbf{S}\mathbf{v} - \lambda(\mathbf{v}^T\mathbf{v}-1)\). Stationarity gives \(\mathbf{S}\mathbf{v} = \lambda\mathbf{v}\). The objective value at the optimum equals \(\lambda\) — so we want the largest eigenvalue. The \(k\)-th PC is the \(k\)-th eigenvector.</li>
-    <li><strong>Eigenvectors are orthogonal</strong> — proven directly from the symmetry of \(\mathbf{S}\). PCA scores are therefore decorrelated: \(\text{Cov}(\mathbf{Z}) = \boldsymbol{\Lambda}_k\).</li>
-    <li><strong>SVD connection:</strong> \(\lambda_j = \sigma_j^2/(m-1)\) and the right singular vectors of \(\tilde{\mathbf{X}}\) are exactly the PC loadings. Always use SVD numerically — it avoids squaring the condition number.</li>
-    <li><strong>Reconstruction:</strong> The truncated reconstruction \(\hat{\mathbf{X}}_k = \mathbf{Z}_k\mathbf{V}_k^T + \boldsymbol{\mu}\) is the optimal rank-\(k\) approximation (Eckart-Young). The reconstruction error equals the sum of discarded eigenvalues.</li>
-    <li><strong>Whitening</strong> additionally scales each PC to unit variance — making the optimization landscape spherical and improving gradient descent convergence for downstream models.</li>
-    <li><strong>Kernel PCA</strong> extends to nonlinear subspaces via the kernel trick — solve an \(m \times m\) Gram matrix eigenvalue problem instead of the \(d \times d\) covariance problem.</li>
-    <li><strong>Applications:</strong> Dimensionality reduction, visualization, denoising, anomaly detection, compression, feature engineering. PCA is the first tool to reach for — it's fast, interpretable, and reversible.</li>
-  </ol>
-
-  <div class="theorem" style="margin-top:clamp(24px,4vw,40px);">
-    <div class="theorem-badge">★ The Unifying Thread</div>
-    <p>PCA is the nexus where <strong>linear algebra</strong> (eigendecomposition, SVD, change of basis), <strong>statistics</strong> (variance, covariance, MLE, sample estimation), and <strong>optimization</strong> (Lagrange multipliers, Rayleigh quotient, constrained maximization) converge on a single clean answer: rotate the coordinate system so axes align with the data's natural variance structure. Every concept from the Linear Regression, Lagrange Multipliers, and Bias-Variance masterclasses appears here — PCA is where they all meet.</p>
-  </div>
-</div>
-
-</div><!-- /wrap -->
+  </div><!-- /wrap -->
 
   <!-- ═══ FOOTER ═══ -->
   <footer class="site-footer">
@@ -1218,12 +1650,7 @@ S_deflated = S <span class="op">−</span> <span class="var">λ₁</span> * oute
     </div>
   </footer>
 
-<script>
-window.MathJax = {
-  tex: { inlineMath:[['\\(','\\)'],['$','$']], displayMath:[['\\[','\\]']] },
-  options: { skipHtmlTags:['script','noscript','style','textarea','pre'] }
-};
-</script>
-<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js"></script>
 </body>
+
 </html>

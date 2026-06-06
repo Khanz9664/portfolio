@@ -227,7 +227,7 @@
     .content {
       max-width: 1200px;
       margin: 0 auto;
-      padding: 0 32px 100px;
+      padding: 0 32px 40px;
       position: relative;
       z-index: 2;
     }
@@ -555,7 +555,7 @@
       }
 
       .content {
-        padding: 0 20px 60px;
+        padding: 0 20px 30px;
       }
 
       table {

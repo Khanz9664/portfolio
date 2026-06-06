@@ -8,7 +8,7 @@
   <meta name="description" content="A complete masterclass on Neural Networks." />
   <meta name="author" content="Shahid Ul Islam" />
   <link rel="icon" type="image/png" href="../img/plogo.png" />
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.min.js"></script>
+
   <link
     href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=JetBrains+Mono:wght@300;400;600;700&family=Lora:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap"
     rel="stylesheet">
@@ -247,7 +247,8 @@
 
         <p>Limitations: weights are fixed (no learning), inputs must be binary, threshold must be hand-set. Rosenblatt's
           <strong>Perceptron</strong> (1958) fixed the first problem by introducing a learning rule. Modern neural
-          networks fix all three.</p>
+          networks fix all three.
+        </p>
       </div>
 
       <div class="note sky">
@@ -981,7 +982,8 @@
         <div class="sh sky">Why the Graph Formalism Matters</div>
         <p>Every modern deep learning framework (PyTorch, JAX, TensorFlow) represents computation as a graph and uses
           <em>automatic differentiation (autograd)</em> to backpropagate through it. You never hand-code gradients. The
-          rules are:</p>
+          rules are:
+        </p>
         <ul class="flist">
           <li><strong>Forward pass</strong>: Evaluate every node in topological order, caching all intermediate values.
           </li>
@@ -1544,8 +1546,10 @@
         <div class="theorem-title">Universal Approximation Theorem (Cybenko 1989, Hornik 1991)</div>
         <p>A feedforward neural network with <strong>one hidden layer</strong> of a sufficient number of neurons using a
           <em>non-polynomial</em> activation function can approximate any continuous function \(f: [0,1]^n \to
-          \mathbb{R}\) to arbitrary precision \(\epsilon &gt; 0\):</p>
-        <div style="margin-top:12px; overflow-x: auto; overflow-y: hidden; padding-bottom: 8px; -webkit-overflow-scrolling: touch;">
+          \mathbb{R}\) to arbitrary precision \(\epsilon &gt; 0\):
+        </p>
+        <div
+          style="margin-top:12px; overflow-x: auto; overflow-y: hidden; padding-bottom: 8px; -webkit-overflow-scrolling: touch;">
           \[\forall\epsilon &gt; 0,\; \exists N: \quad \sup_{\mathbf{x}\in[0,1]^n}\left|f(\mathbf{x}) -
           \sum_{j=1}^{N}v_j\sigma(\mathbf{w}_j^T\mathbf{x}+b_j)\right| &lt; \epsilon\]
         </div>
@@ -1754,9 +1758,9 @@
       </div>
 
       <div class="note violet">
-        <div class="note-icon">Your Work</div>
+        <div class="note-icon">My Work</div>
         <div class="note-body">
-          <p>Your respiratory disease chest X-ray classification with custom CNN, VGG16, and ViT-B/16: all three used
+          <p>My respiratory disease chest X-ray classification with custom CNN, VGG16, and ViT-B/16: all three used
             the same BP1–BP4 equations during training. VGG16 transfer learning froze early layers (no gradient update)
             and fine-tuned late layers — demonstrating that the gradient highway through residuals/convolutions can be
             selectively enabled. The XAI explanations were literally gradient flows visualized spatially.</p>
@@ -1990,16 +1994,6 @@
     </div>
   </footer>
 
-
-  <script>
-    window.MathJax = {
-      tex: {
-        inlineMath: [['\\(', '\\)'], ['$', '$']],
-        displayMath: [['\\[', '\\]']]
-      },
-      options: { skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre'] }
-    };
-  </script>
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js"></script>
   <canvas id="bg-canvas"></canvas>
 </body>

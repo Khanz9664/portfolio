@@ -96,14 +96,14 @@ document.addEventListener('DOMContentLoaded', () => {
         gsap.from('.article-card', {
             scrollTrigger: {
                 trigger: '.articles-grid',
-                start: 'top 80%',
+                start: 'top 95%', // trigger earlier
             },
-            y: 100,
+            y: 50, // reduced distance
             opacity: 0,
-            scale: 0.9,
-            duration: 1.2,
-            stagger: 0.15,
-            ease: 'expo.out',
+            scale: 0.95, // less dramatic scale
+            duration: 0.6, // faster duration
+            stagger: 0.05, // much faster stagger
+            ease: 'power3.out', // slightly punchier ease
             clearProps: 'all' // Clean up after animation so tilt works
         });
     }

@@ -1,0 +1,1390 @@
+<!DOCTYPE html>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SVD | Shahid Ul Islam</title>
+  <meta name="description" content="The most powerful factorization in all of mathematics." />
+  <meta name="author" content="Shahid Ul Islam" />
+  <link rel="icon" type="image/png" href="../img/plogo.png" />
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=JetBrains+Mono:wght@300;400;600;700&family=Lora:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="css/svd.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <link rel="stylesheet" href="../css/variables.css" />
+  <link rel="stylesheet" href="../css/navigation.css" />
+  <link rel="stylesheet" href="../css/footer.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <script defer src="../js/common.js"></script>
+
+</head>
+
+<body>
+  <div class="top-bar">
+    <div class="logo">
+      <img src="../img/plogo.png" alt="Personal Logo" class="logo-icon">
+      <span class="logo-text">SHAHID<span class="logo-accent">||</span>Portfolio</span>
+    </div>
+    <nav class="nav-container">
+      <ul class="nav-links">
+        <li><a href="../index.html" class="nav-link">.Home</a></li>
+        <li><a href="../about.html" class="nav-link">.About</a></li>
+        <li><a href="../skills.html" class="nav-link">.Skills</a></li>
+        <li><a href="../projects.html" class="nav-link">.Projects</a></li>
+        <li><a href="../contact.html" class="nav-link">.Contact</a></li>
+        <li><a href="../articles.html" class="nav-link">.Articles</a></li>
+      </ul>
+      <div class="menu-toggle">
+        <div class="hamburger"></div>
+      </div>
+    </nav>
+  </div>
+  <!-- ══ HERO ═══════════════════════════════════════════════════ -->
+  <div class="hero">
+    <div class="hero-inner">
+      <div class="hero-copy">
+        <div class="hero-kicker">Linear Algebra · Numerical Methods · Machine Learning</div>
+        <h1>
+          SVD
+          <span class="accent">Singular Value Decomposition</span>
+        </h1>
+        <p class="hero-byline">
+          The most powerful factorization in all of mathematics.<br>
+          Works on every matrix. Reveals hidden geometry.<br>
+          Underlies PCA, recommender systems, NLP, and compression.
+        </p>
+        <div class="hero-tags">
+          <span class="htag pk">A = UΣVᵀ</span>
+          <span class="htag tl">Geometric Rotation</span>
+          <span class="htag gd">Low-Rank Approx</span>
+          <span class="htag lv">Eckart-Young</span>
+          <span class="htag sk">Pseudoinverse</span>
+          <span class="htag pk">PCA Bridge</span>
+          <span class="htag tl">LSA</span>
+          <span class="htag gd">Recommender</span>
+          <span class="htag lv">Condition Number</span>
+        </div>
+      </div>
+      <div class="hero-art">
+        <!-- SVD Matrix Diagram -->
+        <svg width="clamp(200px,28vw,320px)" height="clamp(200px,28vw,320px)" viewBox="0 0 300 300"
+          xmlns="http://www.w3.org/2000/svg" style="display:block">
+          <defs>
+            <linearGradient id="pg" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#f02f87" stop-opacity=".9" />
+              <stop offset="100%" stop-color="#a855f7" stop-opacity=".5" />
+            </linearGradient>
+            <linearGradient id="tg" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#00d4b8" stop-opacity=".8" />
+              <stop offset="100%" stop-color="#0ea5e9" stop-opacity=".4" />
+            </linearGradient>
+            <linearGradient id="gg" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#ffc233" stop-opacity=".9" />
+              <stop offset="100%" stop-color="#f97316" stop-opacity=".4" />
+            </linearGradient>
+          </defs>
+          <!-- A matrix (large, center-left) -->
+          <rect x="20" y="60" width="80" height="180" rx="6" fill="none" stroke="url(#pg)" stroke-width="1.5"
+            opacity=".7" />
+          <text x="60" y="158" text-anchor="middle" font-family="Unbounded" font-size="22" fill="url(#pg)"
+            font-weight="700">A</text>
+          <text x="60" y="260" text-anchor="middle" font-family="DM Mono" font-size="9" fill="rgba(240,47,135,.5)"
+            letter-spacing=".1em">m × n</text>
+          <!-- = sign -->
+          <text x="113" y="154" text-anchor="middle" font-family="Unbounded" font-size="18"
+            fill="rgba(230,223,245,.25)">=</text>
+          <!-- U matrix -->
+          <rect x="126" y="60" width="40" height="180" rx="5" fill="none" stroke="url(#pg)" stroke-width="1.2"
+            opacity=".6" />
+          <text x="146" y="155" text-anchor="middle" font-family="Unbounded" font-size="15" fill="url(#pg)"
+            font-weight="700">U</text>
+          <text x="146" y="255" text-anchor="middle" font-family="DM Mono" font-size="8"
+            fill="rgba(240,47,135,.4)">m×m</text>
+          <!-- Σ matrix (square, diagonal) -->
+          <rect x="174" y="90" width="60" height="60" rx="5" fill="rgba(255,194,51,.04)" stroke="url(#gg)"
+            stroke-width="1.2" opacity=".8" />
+          <!-- diagonal dots -->
+          <circle cx="186" cy="102" r="3" fill="#ffc233" opacity=".7" />
+          <circle cx="202" cy="118" r="3" fill="#ffc233" opacity=".5" />
+          <circle cx="218" cy="134" r="3" fill="#ffc233" opacity=".3" />
+          <text x="204" y="170" text-anchor="middle" font-family="Unbounded" font-size="13" fill="url(#gg)"
+            font-weight="700">Σ</text>
+          <text x="204" y="255" text-anchor="middle" font-family="DM Mono" font-size="8"
+            fill="rgba(255,194,51,.4)">m×n</text>
+          <!-- Vᵀ matrix -->
+          <rect x="242" y="90" width="50" height="30" rx="5" fill="none" stroke="url(#tg)" stroke-width="1.2"
+            opacity=".7" />
+          <text x="267" y="112" text-anchor="middle" font-family="Unbounded" font-size="12" fill="url(#tg)"
+            font-weight="700">Vᵀ</text>
+          <text x="267" y="255" text-anchor="middle" font-family="DM Mono" font-size="8"
+            fill="rgba(0,212,184,.4)">n×n</text>
+          <!-- connecting glow lines -->
+          <line x1="100" y1="150" x2="126" y2="150" stroke="rgba(230,223,245,.1)" stroke-width="1" />
+          <line x1="166" y1="150" x2="174" y2="120" stroke="rgba(230,223,245,.1)" stroke-width="1" />
+          <line x1="234" y1="120" x2="242" y2="105" stroke="rgba(230,223,245,.1)" stroke-width="1" />
+        </svg>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ TOC ══════════════════════════════════════════════════ -->
+  <div class="toc-outer">
+    <div class="toc-box">
+      <div class="toc-item"><a href="#c1"><span class="toc-n">01</span>What is SVD? Existence Theorem</a></div>
+      <div class="toc-item"><a href="#c2"><span class="toc-n">02</span>The Factorization in Detail</a></div>
+      <div class="toc-item"><a href="#c3"><span class="toc-n">03</span>Geometric Interpretation</a></div>
+      <div class="toc-item"><a href="#c4"><span class="toc-n">04</span>Full, Thin &amp; Compact SVD</a></div>
+      <div class="toc-item"><a href="#c5"><span class="toc-n">05</span>Singular Values — Deep Meaning</a></div>
+      <div class="toc-item"><a href="#c6"><span class="toc-n">06</span>Spectral Theorem Connection</a></div>
+      <div class="toc-item"><a href="#c7"><span class="toc-n">07</span>Rank &amp; Four Fundamental Subspaces</a></div>
+      <div class="toc-item"><a href="#c8"><span class="toc-n">08</span>Low-Rank Approximation</a></div>
+      <div class="toc-item"><a href="#c9"><span class="toc-n">09</span>The Moore-Penrose Pseudoinverse</a></div>
+      <div class="toc-item"><a href="#c10"><span class="toc-n">10</span>SVD ↔ PCA — Complete Bridge</a></div>
+      <div class="toc-item"><a href="#c11"><span class="toc-n">11</span>Condition Number &amp; Stability</a></div>
+      <div class="toc-item"><a href="#c12"><span class="toc-n">12</span>Computing SVD — Algorithms</a></div>
+      <div class="toc-item"><a href="#c13"><span class="toc-n">13</span>Latent Semantic Analysis</a></div>
+      <div class="toc-item"><a href="#c14"><span class="toc-n">14</span>Recommender Systems</a></div>
+      <div class="toc-item"><a href="#c15"><span class="toc-n">15</span>SVD in Deep Learning</a></div>
+      <div class="toc-item"><a href="#c16"><span class="toc-n">16</span>Image Compression &amp; Applications</a></div>
+      <div class="toc-item"><a href="#c17"><span class="toc-n">17</span>The Complete Mental Model</a></div>
+    </div>
+  </div>
+
+  <div class="page">
+
+    <!-- ══ §01 ══════════════════════════════════════════════════ -->
+    <div class="ch" id="c1">
+      <div class="ch-head">
+        <div class="ch-badge grd-pk">01</div>
+        <div class="ch-text">
+          <h2>What Is SVD? The Existence Theorem</h2>
+          <div class="ch-sub">// every matrix · no square assumption · the fundamental factorization</div>
+        </div>
+      </div>
+
+      <p>Most matrix factorizations — eigendecomposition, Cholesky, LU — require special conditions: square matrices,
+        positive definiteness, non-singularity. SVD requires nothing. It works for every matrix, regardless of shape,
+        rank, or properties.</p>
+
+      <div class="sub">
+        <div class="sh pk">The Theorem</div>
+        <div class="thm">
+          <div class="thm-top">
+            <div class="thm-star grd-pk">★</div>
+            <div class="thm-label" style="color:var(--pink)">SVD Existence Theorem</div>
+          </div>
+          <p>For every matrix \(\mathbf{A} \in \mathbb{R}^{m \times n}\) of rank \(r\), there exist orthogonal matrices
+            \(\mathbf{U} \in \mathbb{R}^{m \times m}\) and \(\mathbf{V} \in \mathbb{R}^{n \times n}\), and a matrix
+            \(\boldsymbol{\Sigma} \in \mathbb{R}^{m \times n}\) with non-negative entries on the diagonal and zeros
+            elsewhere, such that:
+            \[\mathbf{A} = \mathbf{U}\boldsymbol{\Sigma}\mathbf{V}^T\]
+            The diagonal entries \(\sigma_1 \geq \sigma_2 \geq \cdots \geq \sigma_r &gt; \sigma_{r+1} = \cdots = 0\) are
+            the <em>singular values</em> of \(\mathbf{A}\). This decomposition always exists and is essentially unique
+            (up to signs).</p>
+        </div>
+      </div>
+
+      <div class="sub">
+        <div class="sh tl">Why "Singular" Values?</div>
+        <p>A matrix \(\mathbf{A} - \sigma\mathbf{I}\) (for square \(\mathbf{A}\)) becomes singular (non-invertible) at
+          \(\sigma = \sigma_i\). For rectangular matrices, this generalizes to the values at which
+          \(\mathbf{A}^T\mathbf{A} - \sigma^2\mathbf{I}\) is singular — equivalently, \(\sigma^2 =
+          \lambda_i(\mathbf{A}^T\mathbf{A})\). The name comes from classical matrix theory where these were called
+          "singular points" of the transformation.</p>
+      </div>
+    </div>
+
+    <!-- ══ §02 ══════════════════════════════════════════════════ -->
+    <div class="ch" id="c2">
+      <div class="ch-head">
+        <div class="ch-badge grd-tl">02</div>
+        <div class="ch-text">
+          <h2>The Factorization in Detail</h2>
+          <div class="ch-sub">// component matrices · orthogonality · outer product expansion</div>
+        </div>
+      </div>
+
+      <div class="sub">
+        <div class="sh tl">The Three Matrices</div>
+        <div class="eq tl">
+          <div class="eq-inner">
+            <div class="eq-top"><span class="eq-lbl">Full SVD Decomposition</span><span class="eq-tag">Definition</span>
+            </div>
+            <div class="eq-body">
+              \[\underbrace{\mathbf{A}}_{m \times n} = \underbrace{\mathbf{U}}_{m \times m}\underbrace{\Sigma}_{m \times
+              n}\underbrace{\mathbf{V}^T}_{n \times n}\]
+              \[\mathbf{U}^T\mathbf{U} = \mathbf{I}_m, \quad \mathbf{V}^T\mathbf{V} = \mathbf{I}_n \quad
+              \text{(orthogonal/unitary)}\]
+              \[\boldsymbol{\Sigma} = \begin{pmatrix}\sigma_1 & & \\ & \ddots & \\ & & \sigma_r & \\ & & &
+              \mathbf{0}\end{pmatrix}, \quad \sigma_1 \geq \sigma_2 \geq \cdots \geq \sigma_r &gt; 0\]
+              <div class="eq-note">U columns = left singular vectors. V columns = right singular vectors. Σ diagonal =
+                singular values. The r nonzero singular values equal the rank of A.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="sub">
+        <div class="sh pk">The Outer Product Expansion — Column by Column</div>
+        <p>The most revealing form of SVD is the <span class="hpk">sum of rank-1 matrices</span>:</p>
+        <div class="eq pk">
+          <div class="eq-inner">
+            <div class="eq-top"><span class="eq-lbl">Outer Product / Dyadic Expansion</span><span class="eq-tag">Core
+                Form</span></div>
+            <div class="eq-body">
+              \[\mathbf{A} = \sum_{i=1}^{r} \sigma_i \mathbf{u}_i \mathbf{v}_i^T\]
+              <div class="eq-note">Each term σᵢ uᵢ vᵢᵀ is a rank-1 matrix — an outer product of the i-th left and right
+                singular vectors, weighted by σᵢ. This decomposition orders terms from most to least important by
+                singular value magnitude. Truncating to k terms gives the best rank-k approximation.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="band pk">
+          <div class="band-icon">◈</div>
+          <div class="band-content">
+            <div class="band-title">Why This Form Matters</div>
+            <div class="band-body">The outer product expansion reveals that <strong>every matrix is a weighted sum of
+                rank-1 components</strong>, each capturing a "mode" of variation. The first term explains the most;
+              subsequent terms add finer detail. Dropping the last terms gives optimal compression. This is the
+              mathematical basis of every compression, denoising, and latent representation method in ML.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ §03 ══════════════════════════════════════════════════ -->
+    <div class="ch" id="c3">
+      <div class="ch-head">
+        <div class="ch-badge grd-lv">03</div>
+        <div class="ch-text">
+          <h2>Geometric Interpretation</h2>
+          <div class="ch-sub">// rotation → scaling → rotation · unit sphere → ellipse · three operations</div>
+        </div>
+      </div>
+
+      <p>SVD is not just an algebraic factorization — it is a complete geometric description of what every linear
+        transformation does. Any matrix \(\mathbf{A}: \mathbb{R}^n \to \mathbb{R}^m\) maps the unit sphere in
+        \(\mathbb{R}^n\) to an ellipse in \(\mathbb{R}^m\). SVD finds that ellipse exactly.</p>
+
+      <div class="sub">
+        <div class="sh lv">The Three Operations</div>
+        <div class="eq lv">
+          <div class="eq-inner">
+            <div class="eq-top"><span class="eq-lbl">SVD as Three Geometric Steps</span><span
+                class="eq-tag">Geometry</span></div>
+            <div class="eq-body">
+              \[\mathbf{A}\mathbf{x} =
+              \mathbf{U}\underbrace{(\boldsymbol{\Sigma}(\mathbf{V}^T\mathbf{x}))}_{\text{scaled rotated coords}}\]
+              \[\mathbf{x} \xrightarrow{\mathbf{V}^T} \mathbf{V}^T\mathbf{x} \xrightarrow{\boldsymbol{\Sigma}}
+              \boldsymbol{\Sigma}\mathbf{V}^T\mathbf{x} \xrightarrow{\mathbf{U}} \mathbf{A}\mathbf{x}\]
+              <div class="eq-note">Step 1: V^T — rotation in ℝⁿ (change to the right singular vector basis). Step 2: Σ —
+                axis-aligned scaling by σ₁,…,σᵣ (stretch/compress each axis independently). Step 3: U — rotation in ℝᵐ
+                (rotate scaled result to final orientation). Every linear map is just these three operations.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="fig">
+        <div class="fig-box">
+          <svg viewBox="0 0 680 200" xmlns="http://www.w3.org/2000/svg" style="max-width:680px;width:100%">
+            <rect width="680" height="200" fill="#0e0b19" />
+            <defs>
+              <marker id="aa" markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto">
+                <path d="M0,0 L0,5 L7,2.5z" fill="#2c2448" />
+              </marker>
+              <marker id="ap" markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto">
+                <path d="M0,0 L0,5 L7,2.5z" fill="#f02f87" />
+              </marker>
+              <marker id="at" markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto">
+                <path d="M0,0 L0,5 L7,2.5z" fill="#00d4b8" />
+              </marker>
+              <marker id="ag" markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto">
+                <path d="M0,0 L0,5 L7,2.5z" fill="#ffc233" />
+              </marker>
+            </defs>
+            <!-- Panel 1: Unit sphere -->
+            <text x="90" y="20" text-anchor="middle" font-family="DM Mono" font-size="10" fill="#7a6898"
+              letter-spacing=".1em">Input: unit sphere</text>
+            <circle cx="90" cy="110" r="55" fill="rgba(167,139,250,.06)" stroke="#a78bfa" stroke-width="1.5" />
+            <line x1="35" y1="110" x2="150" y2="110" stroke="#2c2448" stroke-width="1" marker-end="url(#aa)" />
+            <line x1="90" y1="170" x2="90" y2="50" stroke="#2c2448" stroke-width="1" marker-end="url(#aa)" />
+            <!-- Unit vectors -->
+            <line x1="90" y1="110" x2="140" y2="110" stroke="#a78bfa" stroke-width="1.8" marker-end="url(#aa)" />
+            <line x1="90" y1="110" x2="90" y2="62" stroke="#a78bfa" stroke-width="1.8" marker-end="url(#aa)" />
+
+            <!-- Arrow 1: V^T rotation -->
+            <path d="M165,110 C180,95 190,85 215,80" fill="none" stroke="#a78bfa" stroke-width="1.5"
+              stroke-dasharray="4,3" marker-end="url(#aa)" />
+            <text x="190" y="78" text-anchor="middle" font-family="DM Mono" font-size="9" fill="#a78bfa">V^T</text>
+
+            <!-- Panel 2: Rotated sphere (V^T x) -->
+            <text x="275" y="20" text-anchor="middle" font-family="DM Mono" font-size="10" fill="#a78bfa"
+              letter-spacing=".1em">After V^T: rotated</text>
+            <circle cx="275" cy="110" r="55" fill="rgba(167,139,250,.05)" stroke="#a78bfa" stroke-width="1.2"
+              stroke-dasharray="4,3" opacity=".5" />
+            <line x1="220" y1="110" x2="334" y2="110" stroke="#2c2448" stroke-width="1" marker-end="url(#aa)" />
+            <line x1="275" y1="170" x2="275" y2="50" stroke="#2c2448" stroke-width="1" marker-end="url(#aa)" />
+            <!-- rotated axes -->
+            <line x1="275" y1="110" x2="321" y2="77" stroke="#a78bfa" stroke-width="1.8" marker-end="url(#aa)" />
+            <line x1="275" y1="110" x2="308" y2="145" stroke="#a78bfa" stroke-width="1.5" marker-end="url(#aa)" />
+            <text x="328" y="74" font-family="DM Mono" font-size="9" fill="#a78bfa">v₁</text>
+            <text x="315" y="150" font-family="DM Mono" font-size="9" fill="#a78bfa">v₂</text>
+
+            <!-- Arrow 2: Σ scaling -->
+            <path d="M348,100 C363,85 375,75 400,72" fill="none" stroke="#ffc233" stroke-width="1.5"
+              stroke-dasharray="4,3" marker-end="url(#ag)" />
+            <text x="375" y="70" text-anchor="middle" font-family="DM Mono" font-size="9" fill="#ffc233">Σ</text>
+
+            <!-- Panel 3: Ellipse (Σ V^T x) -->
+            <text x="470" y="20" text-anchor="middle" font-family="DM Mono" font-size="10" fill="#ffc233"
+              letter-spacing=".1em">After Σ: stretched ellipse</text>
+            <ellipse cx="470" cy="110" rx="78" ry="30" fill="rgba(255,194,51,.05)" stroke="#ffc233"
+              stroke-width="1.5" />
+            <line x1="392" y1="110" x2="554" y2="110" stroke="#ffc233" stroke-width="1.5" />
+            <line x1="470" y1="80" x2="470" y2="140" stroke="#ffc233" stroke-width="1.5" />
+            <!-- σ₁, σ₂ annotations -->
+            <line x1="470" y1="110" x2="548" y2="110" stroke="#f02f87" stroke-width="2" marker-end="url(#ap)" />
+            <text x="520" y="105" font-family="DM Mono" font-size="9" fill="#f02f87">σ₁</text>
+            <line x1="470" y1="110" x2="470" y2="82" stroke="#00d4b8" stroke-width="2" marker-end="url(#at)" />
+            <text x="478" y="90" font-family="DM Mono" font-size="9" fill="#00d4b8">σ₂</text>
+
+            <!-- Final U rotation label -->
+            <text x="600" y="110" text-anchor="middle" font-family="DM Mono" font-size="9" fill="#00d4b8"
+              letter-spacing=".06em">× U: rotate</text>
+            <text x="600" y="125" text-anchor="middle" font-family="DM Mono" font-size="9" fill="#00d4b8">in ℝᵐ</text>
+            <text x="470" y="178" text-anchor="middle" font-family="DM Mono" font-size="8" fill="#7a6898">semi-axes =
+              singular values</text>
+          </svg>
+        </div>
+        <div class="fig-cap">Fig 1. SVD as three geometric operations. The unit sphere is rotated (V^T), stretched along
+          coordinate axes by σᵢ (Σ), then rotated again (U). The resulting ellipsoid has semi-axes of length σ₁ ≥ σ₂ ≥
+          ···.</div>
+      </div>
+
+      <div class="band tl">
+        <div class="band-icon">∿</div>
+        <div class="band-content">
+          <div class="band-title">The Ellipse Theorem</div>
+          <div class="band-body">The image of the unit sphere \(\{\mathbf{x}: \|\mathbf{x}\|=1\}\) under \(\mathbf{A}\)
+            is an ellipse with semi-axes of length \(\sigma_1, \ldots, \sigma_r\) aligned with the columns of
+            \(\mathbf{U}\). The maximum stretch \(\max_{\|\mathbf{x}\|=1}\|\mathbf{A}\mathbf{x}\| = \sigma_1\) (the
+            <strong>spectral norm</strong>). The minimum nonzero stretch is \(\sigma_r\). Zero singular values
+            correspond to directions that are completely collapsed.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ §04 ══════════════════════════════════════════════════ -->
+    <div class="ch" id="c4">
+      <div class="ch-head">
+        <div class="ch-badge grd-gd">04</div>
+        <div class="ch-text">
+          <h2>Full, Thin &amp; Compact SVD</h2>
+          <div class="ch-sub">// three variants · when to use which · memory trade-offs</div>
+        </div>
+      </div>
+
+      <div class="two" style="margin-bottom:clamp(16px,3vw,26px)">
+        <div class="tcol">
+          <h4 style="color:var(--gold)">Full SVD</h4>
+          <p>\(\mathbf{U}\in\mathbb{R}^{m\times m}\), \(\boldsymbol{\Sigma}\in\mathbb{R}^{m\times n}\),
+            \(\mathbf{V}\in\mathbb{R}^{n\times n}\).</p>
+          <p>All singular vectors included, even those corresponding to zero singular values. Necessary for solving
+            linear systems and computing orthonormal bases for all four fundamental subspaces.</p>
+        </div>
+        <div class="tcol">
+          <h4 style="color:var(--pink)">Thin (Economy) SVD</h4>
+          <p>\(\mathbf{U}\in\mathbb{R}^{m\times\min(m,n)}\),
+            \(\boldsymbol{\Sigma}\in\mathbb{R}^{\min(m,n)\times\min(m,n)}\),
+            \(\mathbf{V}\in\mathbb{R}^{n\times\min(m,n)}\).</p>
+          <p>Drops the "extra" singular vectors that correspond to zero singular values. Same information for the
+            factorization; much more memory efficient when \(m \gg n\) or \(n \gg m\).</p>
+        </div>
+      </div>
+      <div class="two">
+        <div class="tcol">
+          <h4 style="color:var(--teal)">Compact SVD</h4>
+          <p>\(\mathbf{U}_r\in\mathbb{R}^{m\times r}\), \(\boldsymbol{\Sigma}_r\in\mathbb{R}^{r\times r}\),
+            \(\mathbf{V}_r\in\mathbb{R}^{n\times r}\) where \(r = \text{rank}(\mathbf{A})\).</p>
+          <p>Only the \(r\) nonzero singular values and their vectors. Exact representation; most storage efficient.
+            <code>numpy.linalg.svd(full_matrices=False)</code>.
+          </p>
+        </div>
+        <div class="tcol">
+          <h4 style="color:var(--lav)">Truncated SVD (Rank-k)</h4>
+          <p>\(\mathbf{U}_k\in\mathbb{R}^{m\times k}\), \(\boldsymbol{\Sigma}_k\in\mathbb{R}^{k\times k}\),
+            \(\mathbf{V}_k\in\mathbb{R}^{n\times k}\), \(k &lt; r\).</p>
+          <p>Approximate, not exact. The best rank-\(k\) approximation (Eckart-Young theorem, §08). Used for
+            compression, PCA, denoising. <code>sklearn.utils.extmath.randomized_svd</code>.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ §05 ══════════════════════════════════════════════════ -->
+    <div class="ch" id="c5">
+      <div class="ch-head">
+        <div class="ch-badge grd-sk">05</div>
+        <div class="ch-text">
+          <h2>Singular Values — Deep Meaning</h2>
+          <div class="ch-sub">// spectral norm · Frobenius norm · information content · energy</div>
+        </div>
+      </div>
+
+      <div class="eq sk">
+        <div class="eq-inner">
+          <div class="eq-top"><span class="eq-lbl">Singular Values — Key Properties</span><span
+              class="eq-tag">Theorems</span></div>
+          <div class="eq-body">
+            \[\sigma_1 = \|\mathbf{A}\|_2 = \max_{\|\mathbf{x}\|=1}\|\mathbf{A}\mathbf{x}\| \quad\text{(spectral /
+            operator norm)}\]
+            \[\|\mathbf{A}\|_F^2 = \sum_{i=1}^{r}\sigma_i^2 = \text{tr}(\mathbf{A}^T\mathbf{A}) \quad\text{(Frobenius
+            norm = sum of squares)}\]
+            \[\|\mathbf{A}\|_* = \sum_{i=1}^{r}\sigma_i \quad\text{(nuclear / trace norm)}\]
+            \[\det(\mathbf{A}) = \prod_{i=1}^n\sigma_i \quad\text{(for square } \mathbf{A}\text{)}\]
+            <div class="eq-note">The singular values are the "energy spectrum" of the matrix. σᵢ² is the energy of the
+              i-th mode. Σᵢσᵢ² = total energy. The fraction σᵢ²/‖A‖_F² is the proportion of total energy in mode i —
+              exactly the explained variance ratio in PCA.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="sub">
+        <div class="sh sk">Singular Values and Matrix Properties</div>
+        <ul class="fl sk">
+          <li><strong>Rank:</strong> \(\text{rank}(\mathbf{A}) = \text{number of nonzero singular values}\).</li>
+          <li><strong>Invertibility:</strong> \(\mathbf{A}\) is invertible iff all \(n\) singular values are strictly
+            positive iff \(\sigma_n &gt; 0\).</li>
+          <li><strong>Orthogonal matrix:</strong> All singular values equal 1 (orthogonal maps preserve lengths).</li>
+          <li><strong>Positive definite:</strong> For symmetric \(\mathbf{A} \succeq 0\), singular values = eigenvalues.
+          </li>
+          <li><strong>Similarity invariance:</strong> Singular values are invariant under orthogonal similarity
+            transformations — they are intrinsic properties of the linear map, not the coordinate representation.</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- ══ §06 ══════════════════════════════════════════════════ -->
+    <div class="ch" id="c6">
+      <div class="ch-head">
+        <div class="ch-badge grd-pk">06</div>
+        <div class="ch-text">
+          <h2>Spectral Theorem Connection</h2>
+          <div class="ch-sub">// AᵀA and AAᵀ · eigendecomposition · why SVD generalizes eigendecomposition</div>
+        </div>
+      </div>
+
+      <p>SVD and eigendecomposition are deeply connected. The singular values and singular vectors of \(\mathbf{A}\) are
+        exactly the square roots of eigenvalues and the eigenvectors of the related square symmetric matrices
+        \(\mathbf{A}^T\mathbf{A}\) and \(\mathbf{A}\mathbf{A}^T\).</p>
+
+      <div class="drv">
+        <div class="drv-hdr">// Deriving U, Σ, V from eigendecomposition of A^T A and A A^T</div>
+        <div class="drv-row">
+          <span class="dn pk">1</span>
+          <div>
+            From \(\mathbf{A} = \mathbf{U}\boldsymbol{\Sigma}\mathbf{V}^T\), compute \(\mathbf{A}^T\mathbf{A}\):
+            \[\mathbf{A}^T\mathbf{A} =
+            (\mathbf{U}\boldsymbol{\Sigma}\mathbf{V}^T)^T(\mathbf{U}\boldsymbol{\Sigma}\mathbf{V}^T) =
+            \mathbf{V}\boldsymbol{\Sigma}^T\mathbf{U}^T\mathbf{U}\boldsymbol{\Sigma}\mathbf{V}^T =
+            \mathbf{V}\boldsymbol{\Sigma}^T\boldsymbol{\Sigma}\mathbf{V}^T\]
+          </div>
+        </div>
+        <div class="drv-row">
+          <span class="dn pk">2</span>
+          <div>
+            Since \(\boldsymbol{\Sigma}^T\boldsymbol{\Sigma} = \text{diag}(\sigma_1^2,\ldots,\sigma_r^2,0,\ldots)\),
+            this is the eigendecomposition of \(\mathbf{A}^T\mathbf{A}\):
+            \[\mathbf{A}^T\mathbf{A}\mathbf{v}_i = \sigma_i^2\mathbf{v}_i \quad\Rightarrow\quad \text{V = eigenvectors
+            of }\mathbf{A}^T\mathbf{A},\; \sigma_i^2 = \text{eigenvalues}\]
+            <div class="dnote">A^T A is n×n symmetric PSD — all eigenvalues ≥ 0, guaranteed real, eigenvectors
+              orthogonal (Spectral Theorem).</div>
+          </div>
+        </div>
+        <div class="drv-row">
+          <span class="dn pk">3</span>
+          <div>
+            Similarly \(\mathbf{A}\mathbf{A}^T = \mathbf{U}\boldsymbol{\Sigma}\boldsymbol{\Sigma}^T\mathbf{U}^T\):
+            \[\mathbf{A}\mathbf{A}^T\mathbf{u}_i = \sigma_i^2\mathbf{u}_i \quad\Rightarrow\quad \text{U = eigenvectors
+            of }\mathbf{A}\mathbf{A}^T\]
+            <div class="dnote">A A^T is m×m symmetric PSD — same nonzero eigenvalues as A^T A (though different sizes).
+              This is why the nonzero singular values of A^T equal those of A.</div>
+          </div>
+        </div>
+        <div class="drv-row">
+          <span class="dn pk">4</span>
+          <div>
+            The singular values: \(\sigma_i = \sqrt{\lambda_i(\mathbf{A}^T\mathbf{A})} =
+            \sqrt{\lambda_i(\mathbf{A}\mathbf{A}^T)} &gt; 0\)
+            <div class="dnote">This is the practical way to compute SVD: eigendecompose A^T A (or A A^T for tall
+              matrices), take square roots of eigenvalues, compute corresponding left/right singular vectors. ∎</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="eq pk">
+        <div class="eq-inner">
+          <div class="eq-top"><span class="eq-lbl">SVD vs Eigendecomposition</span><span
+              class="eq-tag">Comparison</span></div>
+          <div class="eq-body">
+            \[\underbrace{\mathbf{A} = \mathbf{P}\boldsymbol{\Lambda}\mathbf{P}^{-1}}_{\text{eigendecomposition: square
+            A only}} \qquad \underbrace{\mathbf{A} = \mathbf{U}\boldsymbol{\Sigma}\mathbf{V}^T}_{\text{SVD: any A,
+            orthogonal U and V}}\]
+            <div class="eq-note">Eigendecomposition requires square matrix, non-defective. P may not be orthogonal. SVD
+              works for any m×n matrix. U and V are always orthogonal. For symmetric A: eigendecomposition is SVD (U = V
+              = eigenvectors, Σ = |Λ|). SVD strictly generalizes eigendecomposition.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ §07 ══════════════════════════════════════════════════ -->
+    <div class="ch" id="c7">
+      <div class="ch-head">
+        <div class="ch-badge grd-tl">07</div>
+        <div class="ch-text">
+          <h2>Rank &amp; The Four Fundamental Subspaces</h2>
+          <div class="ch-sub">// column space · null space · row space · left null space · SVD reveals all four</div>
+        </div>
+      </div>
+
+      <p>Gilbert Strang's "fundamental theorem of linear algebra" describes four subspaces associated with every matrix.
+        SVD reveals all four simultaneously and in one shot.</p>
+
+      <div class="eq tl">
+        <div class="eq-inner">
+          <div class="eq-top"><span class="eq-lbl">Four Fundamental Subspaces via SVD</span><span
+              class="eq-tag">Theorem</span></div>
+          <div class="eq-body">
+            \[\underbrace{\text{Col}(\mathbf{A})}_{\text{column space}} =
+            \text{span}\{\mathbf{u}_1,\ldots,\mathbf{u}_r\} \subset \mathbb{R}^m \qquad
+            \underbrace{\text{Null}(\mathbf{A}^T)}_{\text{left null space}} =
+            \text{span}\{\mathbf{u}_{r+1},\ldots,\mathbf{u}_m\} \subset \mathbb{R}^m\]
+            \[\underbrace{\text{Row}(\mathbf{A})}_{\text{row space}} = \text{span}\{\mathbf{v}_1,\ldots,\mathbf{v}_r\}
+            \subset \mathbb{R}^n \qquad \underbrace{\text{Null}(\mathbf{A})}_{\text{null space}} =
+            \text{span}\{\mathbf{v}_{r+1},\ldots,\mathbf{v}_n\} \subset \mathbb{R}^n\]
+            <div class="eq-note">Column space and left null space are orthogonal complements in ℝᵐ. Row space and null
+              space are orthogonal complements in ℝⁿ. All four are orthonormal (U and V are orthogonal). SVD gives
+              orthonormal bases for all four simultaneously.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="band tl">
+        <div class="band-icon">⊕</div>
+        <div class="band-content">
+          <div class="band-title">Rank-Nullity Theorem via SVD</div>
+          <div class="band-body">\(\dim(\text{Col}(\mathbf{A})) + \dim(\text{Null}(\mathbf{A}^T)) = m\) and
+            \(\dim(\text{Row}(\mathbf{A})) + \dim(\text{Null}(\mathbf{A})) = n\). Both are immediate from SVD: exactly
+            \(r\) nonzero singular values give dimension \(r\) for column/row spaces; the remaining \(m-r\) and \(n-r\)
+            singular vectors span the null spaces. The rank-nullity theorem is just counting singular values.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ §08 ══════════════════════════════════════════════════ -->
+    <div class="ch" id="c8">
+      <div class="ch-head">
+        <div class="ch-badge grd-gd">08</div>
+        <div class="ch-text">
+          <h2>Low-Rank Approximation — Eckart-Young-Mirsky</h2>
+          <div class="ch-sub">// best rank-k approximation · Frobenius and spectral · optimality proof</div>
+        </div>
+      </div>
+
+      <div class="thm">
+        <div class="thm-top">
+          <div class="thm-star grd-gd">★</div>
+          <div class="thm-label" style="color:var(--gold)">Eckart-Young-Mirsky Theorem (1936)</div>
+        </div>
+        <p>For any matrix norm induced by a unitarily invariant norm (including Frobenius and spectral norms), the best
+          rank-\(k\) approximation of \(\mathbf{A}\) is the truncated SVD:
+          \[\hat{\mathbf{A}}_k = \sum_{i=1}^k\sigma_i\mathbf{u}_i\mathbf{v}_i^T =
+          \mathbf{U}_k\boldsymbol{\Sigma}_k\mathbf{V}_k^T\]
+          The approximation error in the Frobenius norm is \(\|\mathbf{A} - \hat{\mathbf{A}}_k\|_F^2 =
+          \sum_{i=k+1}^r\sigma_i^2\), and in the spectral norm is \(\|\mathbf{A}-\hat{\mathbf{A}}_k\|_2 =
+          \sigma_{k+1}\).</p>
+      </div>
+
+      <div class="sub">
+        <div class="sh gd">Proof Sketch</div>
+        <div class="drv">
+          <div class="drv-hdr">// Why truncated SVD minimizes Frobenius reconstruction error</div>
+          <div class="drv-row">
+            <span class="dn gd">1</span>
+            <div>
+              For any rank-\(k\) matrix \(\mathbf{B}\), write \(\mathbf{A} - \mathbf{B}\) and use the fact that
+              \(\|\mathbf{A}\|_F^2 = \sum_i\sigma_i^2\):
+              \[\|\mathbf{A}-\mathbf{B}\|_F^2 = \|\mathbf{U}^T(\mathbf{A}-\mathbf{B})\mathbf{V}\|_F^2
+              \quad\text{(unitary invariance)}\]
+            </div>
+          </div>
+          <div class="drv-row">
+            <span class="dn gd">2</span>
+            <div>
+              Let \(\mathbf{C} = \boldsymbol{\Sigma} - \mathbf{U}^T\mathbf{B}\mathbf{V}\). Since \(\mathbf{B}\) has rank
+              \(\leq k\), \(\mathbf{U}^T\mathbf{B}\mathbf{V}\) has rank \(\leq k\), and \(\boldsymbol{\Sigma}\) is
+              diagonal. The minimum of \(\|\mathbf{C}\|_F^2\) over rank-\(k\) matrices subtracted from
+              \(\boldsymbol{\Sigma}\) is achieved by zeroing out the \(k\) largest diagonal entries — i.e., keeping
+              \(\sigma_{k+1},\ldots,\sigma_r\).
+              <div class="dnote">This is because taking the best rank-k approximation of a diagonal matrix means keeping
+                the k largest diagonal entries. ∎</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="sub">
+        <div class="sh pk">Energy Interpretation</div>
+        <div class="eq pk">
+          <div class="eq-inner">
+            <div class="eq-top"><span class="eq-lbl">Energy Retained by Rank-k SVD</span><span
+                class="eq-tag">Compression</span></div>
+            <div class="eq-body">
+              \[\text{Energy retained} = \frac{\sum_{i=1}^k\sigma_i^2}{\sum_{i=1}^r\sigma_i^2} =
+              \frac{\|\hat{\mathbf{A}}_k\|_F^2}{\|\mathbf{A}\|_F^2}\]
+              \[\text{Storage ratio} = \frac{k(m+n+1)}{mn} \quad\text{(U}_k\text{, }\boldsymbol{\Sigma}_k\text{,
+              V}_k\text{ vs full A)}\]
+              <div class="eq-note">Compression is beneficial when k(m+n+1) &lt; mn, i.e., k &lt; mn/(m+n+1) ≈ min(m,n)/2
+                roughly. For an image with σ₁²/‖A‖_F² ≈ 0.90, keeping just k=1 retains 90% of the information.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ §09 ══════════════════════════════════════════════════ -->
+    <div class="ch" id="c9">
+      <div class="ch-head">
+        <div class="ch-badge grd-lv">09</div>
+        <div class="ch-text">
+          <h2>The Moore-Penrose Pseudoinverse</h2>
+          <div class="ch-sub">// least-squares solution · minimum norm · regularization · SVD formula</div>
+        </div>
+      </div>
+
+      <p>For non-square or rank-deficient matrices, the regular inverse doesn't exist. The pseudoinverse provides the
+        generalized inverse that gives the least-squares minimum-norm solution to \(\mathbf{A}\mathbf{x} = \mathbf{b}\).
+      </p>
+
+      <div class="eq lv">
+        <div class="eq-inner">
+          <div class="eq-top"><span class="eq-lbl">Moore-Penrose Pseudoinverse via SVD</span><span
+              class="eq-tag">Definition</span></div>
+          <div class="eq-body">
+            \[\mathbf{A}^+ = \mathbf{V}\boldsymbol{\Sigma}^+\mathbf{U}^T \quad\text{where}\quad
+            \boldsymbol{\Sigma}^+_{ii} = \begin{cases}1/\sigma_i & \sigma_i &gt; 0 \\ 0 & \sigma_i = 0\end{cases}\]
+            \[\hat{\mathbf{x}} = \mathbf{A}^+\mathbf{b} =
+            \sum_{i:\sigma_i&gt;0}\frac{\mathbf{u}_i^T\mathbf{b}}{\sigma_i}\mathbf{v}_i\]
+            <div class="eq-note">A⁺b is the minimum Euclidean norm least-squares solution to Ax = b. If A has full
+              column rank: A⁺ = (AᵀA)⁻¹Aᵀ (left inverse, least-squares solution). If A has full row rank: A⁺ = Aᵀ(AAᵀ)⁻¹
+              (right inverse, minimum norm solution). SVD gives A⁺ in all cases.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="sub">
+        <div class="sh lv">Regularized Pseudoinverse</div>
+        <p>For ill-conditioned systems, small singular values \(\sigma_i \approx 0\) cause \(1/\sigma_i\) to explode,
+          amplifying noise. Tikhonov regularization replaces the pseudoinverse with:</p>
+        <div class="eq lv">
+          <div class="eq-inner">
+            <div class="eq-top"><span class="eq-lbl">Tikhonov Regularized Inverse</span><span class="eq-tag">Stable
+                Inversion</span></div>
+            <div class="eq-body">
+              \[\mathbf{A}^+_\lambda = \mathbf{V}\text{diag}\!\left(\frac{\sigma_i}{\sigma_i^2 +
+              \lambda^2}\right)\mathbf{U}^T\]
+              <div class="eq-note">This is the SVD solution to min_{x} ‖Ax−b‖² + λ²‖x‖² — Ridge regression! As λ → 0:
+                reduces to pseudoinverse. As λ → ∞: shrinks solution toward zero. The filter factor σᵢ/(σᵢ²+λ²) smoothly
+                downweights small singular values rather than inverting them.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ §10 ══════════════════════════════════════════════════ -->
+    <div class="ch" id="c10">
+      <div class="ch-head">
+        <div class="ch-badge grd-tl">10</div>
+        <div class="ch-text">
+          <h2>SVD ↔ PCA — The Complete Bridge</h2>
+          <div class="ch-sub">// covariance eigendecomposition · identical solutions · which to use when</div>
+        </div>
+      </div>
+
+      <p>PCA and SVD are different presentations of the same underlying mathematics. Understanding their exact
+        relationship prevents the confusion that arises from seeing two algorithms that produce identical results
+        through apparently different computations.</p>
+
+      <div class="eq tl">
+        <div class="eq-inner">
+          <div class="eq-top"><span class="eq-lbl">SVD of Data Matrix → PCA</span><span class="eq-tag">Equivalence
+              Proof</span></div>
+          <div class="eq-body">
+            \[\tilde{\mathbf{X}} = \mathbf{U}\boldsymbol{\Sigma}\mathbf{V}^T \quad\text{(SVD of centered data matrix }
+            m\times d\text{)}\]
+            \[\mathbf{S} = \frac{1}{m-1}\tilde{\mathbf{X}}^T\tilde{\mathbf{X}} =
+            \frac{1}{m-1}\mathbf{V}\boldsymbol{\Sigma}^2\mathbf{V}^T \quad\text{(eigendecomposition of covariance)}\]
+            \[\lambda_j = \frac{\sigma_j^2}{m-1}, \quad \mathbf{v}_j = \text{j-th right singular vector} = \text{j-th PC
+            loading}\]
+            \[\mathbf{Z} = \tilde{\mathbf{X}}\mathbf{V}_k = \mathbf{U}_k\boldsymbol{\Sigma}_k \quad\text{(PC scores =
+            left singular vectors × singular values)}\]
+            <div class="eq-note">SVD of the data matrix X̃ directly gives PCA without explicitly forming S = X̃^T X̃ /
+              (m-1). This is numerically superior (avoids squaring the condition number). Always call SVD on the data
+              matrix, not eigendecomposition on the covariance matrix.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="t-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Aspect</th>
+              <th>PCA formulation</th>
+              <th>SVD formulation</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Central object</td>
+              <td>Covariance matrix S = X̃^T X̃/(m-1)</td>
+              <td>Data matrix X̃</td>
+            </tr>
+            <tr>
+              <td>Decomposition</td>
+              <td>Eigendecomposition of S</td>
+              <td>SVD of X̃</td>
+            </tr>
+            <tr>
+              <td>Loadings (directions)</td>
+              <td>Eigenvectors V of S</td>
+              <td>Right singular vectors V of X̃</td>
+            </tr>
+            <tr>
+              <td>Variance per component</td>
+              <td>Eigenvalues λⱼ of S</td>
+              <td>σⱼ² / (m-1) from SVD</td>
+            </tr>
+            <tr>
+              <td>Scores (projections)</td>
+              <td>Z = X̃ V_k</td>
+              <td>Z = U_k Σ_k</td>
+            </tr>
+            <tr>
+              <td>Numerical cost</td>
+              <td>O(d³) for d×d matrix</td>
+              <td>O(md min(m,d))</td>
+            </tr>
+            <tr>
+              <td>Preferred when</td>
+              <td>d ≪ m, covariance is available</td>
+              <td>General; always more stable</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ══ §11 ══════════════════════════════════════════════════ -->
+    <div class="ch" id="c11">
+      <div class="ch-head">
+        <div class="ch-badge grd-pk">11</div>
+        <div class="ch-text">
+          <h2>Condition Number &amp; Numerical Stability</h2>
+          <div class="ch-sub">// sensitivity of linear systems · ill-conditioning · regularization insight</div>
+        </div>
+      </div>
+
+      <div class="eq pk">
+        <div class="eq-inner">
+          <div class="eq-top"><span class="eq-lbl">Condition Number via Singular Values</span><span
+              class="eq-tag">Stability</span></div>
+          <div class="eq-body">
+            \[\kappa(\mathbf{A}) = \frac{\sigma_1}{\sigma_r} = \|\mathbf{A}\|_2 \cdot \|\mathbf{A}^{-1}\|_2
+            \quad\text{(for invertible square A)}\]
+            <div class="eq-note">κ(A) measures how sensitive Ax = b is to perturbations: ‖δx‖/‖x‖ ≤ κ(A) ‖δb‖/‖b‖. κ = 1
+              is perfectly conditioned (orthogonal). κ ≫ 1 is ill-conditioned — small changes in b cause large changes
+              in x. κ → ∞ means nearly singular. Double-precision arithmetic has ~16 digits; κ ≈ 10⁸ leaves only ~8
+              reliable digits.</div>
+          </div>
+        </div>
+      </div>
+
+      <ul class="fl pk">
+        <li><strong>SVD avoids squaring:</strong> \(\kappa(\mathbf{A}^T\mathbf{A}) = \kappa(\mathbf{A})^2\).
+          Eigendecomposing \(\mathbf{A}^T\mathbf{A}\) squares the condition number, losing twice as many digits. SVD on
+          \(\mathbf{A}\) directly is always more numerically stable.</li>
+        <li><strong>Regularization changes conditioning:</strong> Ridge regression solves
+          \((\mathbf{A}^T\mathbf{A}+\lambda\mathbf{I})\mathbf{x} = \mathbf{A}^T\mathbf{b}\). The condition number
+          becomes \((\sigma_1^2+\lambda)/(\sigma_r^2+\lambda) \ll \sigma_1^2/\sigma_r^2\) for large \(\lambda\).</li>
+        <li><strong>Singular matrices:</strong> If any \(\sigma_i = 0\), the system \(\mathbf{A}\mathbf{x} =
+          \mathbf{b}\) is either inconsistent (no solution) or under-determined (infinite solutions). SVD via
+          pseudoinverse gives the correct minimum-norm solution in both cases.</li>
+      </ul>
+    </div>
+
+    <!-- ══ §12 ══════════════════════════════════════════════════ -->
+    <div class="ch" id="c12">
+      <div class="ch-head">
+        <div class="ch-badge grd-lv">12</div>
+        <div class="ch-text">
+          <h2>Computing SVD — Algorithms</h2>
+          <div class="ch-sub">// Golub-Reinsch · bidiagonalization · power iteration · randomized SVD</div>
+        </div>
+      </div>
+
+      <div class="sub">
+        <div class="sh lv">Golub-Reinsch Algorithm (Classical)</div>
+        <p>The standard full SVD algorithm operates in two phases:</p>
+        <ul class="fl lv">
+          <li><strong>Phase 1 — Bidiagonalization:</strong> Use Householder reflections to reduce \(\mathbf{A}\) to
+            bidiagonal form \(\mathbf{B}\) (nonzero only on diagonal and superdiagonal). Cost: \(O(mn^2)\) flops.</li>
+          <li><strong>Phase 2 — Iterative diagonalization:</strong> Apply implicit QR iterations to the bidiagonal
+            \(\mathbf{B}\) until it converges to diagonal \(\boldsymbol{\Sigma}\). Cost: \(O(n)\) per iteration,
+            typically converges in few iterations.</li>
+        </ul>
+      </div>
+
+      <div class="sub">
+        <div class="sh sk">Randomized SVD — The Modern Standard for Large Matrices</div>
+        <div class="cb">
+          <div class="cb-top">
+            <div class="cb-dots">
+              <div class="cb-dot" style="background:#ff5f57"></div>
+              <div class="cb-dot" style="background:#febc2e"></div>
+              <div class="cb-dot" style="background:#28c840"></div>
+            </div>
+            <div class="cb-lang">Randomized SVD (Halko-Martinsson-Tropp 2011)</div>
+          </div>
+          <div class="cb-body">
+            <span class="cmt"># Given: A ∈ ℝ^{m×n}, target rank k, oversampling p=10</span><br>
+            <span class="cmt"># Step 1: Form random test matrix and sketch the range of A</span><br>
+            <span class="var">Ω</span> = randn(n, k+p) &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span
+              class="cmt"># random Gaussian — O(n(k+p))</span><br>
+            <span class="var">Y</span> = A @ <span class="var">Ω</span>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="cmt">#
+              sketch: O(mn(k+p))</span><br><br>
+            <span class="cmt"># Step 2: Power iteration for better accuracy (optional)</span><br>
+            <span class="kw">for</span> _ <span class="kw">in</span> range(n_power_iter):<br>
+            &nbsp;&nbsp;<span class="var">Y</span> = A @ (A.T @ <span class="var">Y</span>) &nbsp;&nbsp;&nbsp;<span
+              class="cmt"># amplifies dominant singular vectors</span><br><br>
+            <span class="cmt"># Step 3: Orthonormalize the sketch</span><br>
+            <span class="var">Q</span>, _ = qr(<span class="var">Y</span>, mode=<span class="str">'reduced'</span>)
+            &nbsp;<span class="cmt"># Q ∈ ℝ^{m×(k+p)}</span><br><br>
+            <span class="cmt"># Step 4: Project A into small space and SVD</span><br>
+            <span class="var">B</span> = <span class="var">Q</span>.T @ A
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="cmt"># B ∈
+              ℝ^{(k+p)×n} — tiny!</span><br>
+            <span class="var">Û</span>, <span class="var">Σ</span>, <span class="var">Vt</span> = svd(<span
+              class="var">B</span>, full=False)<br>
+            <span class="var">U</span> = <span class="var">Q</span> @ <span
+              class="var">Û</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span
+              class="cmt"># full left singular vectors</span><br>
+            <span class="kw">return</span> <span class="var">U</span>[:, :k], <span class="var">Σ</span>[:k], <span
+              class="var">Vt</span>[:k]<br><br>
+            <span class="cmt"># Total cost: O(mn(k+p)) vs O(mn min(m,n)) for full SVD</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="t-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Algorithm</th>
+              <th>Cost</th>
+              <th>Memory</th>
+              <th>Use When</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Golub-Reinsch</td>
+              <td>\(O(mn^2)\) for \(m\geq n\)</td>
+              <td>\(O(mn)\)</td>
+              <td>Small/medium matrices; full SVD needed</td>
+            </tr>
+            <tr>
+              <td>Divide &amp; Conquer</td>
+              <td>\(O(mn^2)\) but faster constant</td>
+              <td>\(O(mn)\)</td>
+              <td>Standard in LAPACK; default in NumPy</td>
+            </tr>
+            <tr>
+              <td>Lanczos / Arnoldi</td>
+              <td>\(O(mnk)\)</td>
+              <td>\(O((m+n)k)\)</td>
+              <td>Sparse matrices; top-k SVD</td>
+            </tr>
+            <tr>
+              <td>Randomized SVD</td>
+              <td>\(O(mn(k+p))\)</td>
+              <td>\(O((m+n)k)\)</td>
+              <td>Large dense matrices; top-k approximation</td>
+            </tr>
+            <tr>
+              <td>Incremental SVD</td>
+              <td>\(O(k^2(m+n))\) per update</td>
+              <td>\(O((m+n)k)\)</td>
+              <td>Streaming data; online updates</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ══ §13 ══════════════════════════════════════════════════ -->
+    <div class="ch" id="c13">
+      <div class="ch-head">
+        <div class="ch-badge grd-sk">13</div>
+        <div class="ch-text">
+          <h2>Latent Semantic Analysis (LSA)</h2>
+          <div class="ch-sub">// term-document matrix · tf-idf · latent topics · semantic similarity</div>
+        </div>
+      </div>
+
+      <p>LSA (Deerwester et al. 1990) was the first major application of SVD to natural language processing. It
+        discovers latent semantic structure in text by decomposing the term-document matrix.</p>
+
+      <div class="sub">
+        <div class="sh sk">The Term-Document Matrix</div>
+        <p>Build matrix \(\mathbf{A} \in \mathbb{R}^{t \times d}\) where \(\mathbf{A}_{ij} =
+          \text{tf-idf}(\text{term}_i, \text{doc}_j)\). Then apply SVD and truncate to rank \(k\):</p>
+        <div class="eq sk">
+          <div class="eq-inner">
+            <div class="eq-top"><span class="eq-lbl">LSA via Truncated SVD</span><span class="eq-tag">NLP</span></div>
+            <div class="eq-body">
+              \[\underbrace{\mathbf{A}}_{t\times d} \approx \underbrace{\mathbf{U}_k}_{t\times
+              k}\underbrace{\boldsymbol{\Sigma}_k}_{k\times k}\underbrace{\mathbf{V}_k^T}_{k\times d}\]
+              <p style="font-family:'DM Mono',monospace;font-size:.85em;color:var(--sub);margin-top:10px">Columns of
+                U_k: term embeddings (t terms → k dimensions). Rows of V_k^T: document embeddings (d documents → k
+                dimensions). Cosine similarity in k-dimensional space ≈ semantic similarity.</p>
+              <div class="eq-note">Query embedding: q_new = A_query^T U_k Σ_k^{-1}. The SVD "folds" both terms and
+                documents into the same k-dimensional latent space where synonyms cluster together even if they never
+                co-occur in the same document.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="band sk">
+        <div class="band-icon">λ</div>
+        <div class="band-content">
+          <div class="band-title">Why LSA Works — The Key Insight</div>
+          <div class="band-body">The terms "car" and "automobile" may never appear in the same document, but both
+            co-occur with "drive", "road", "engine". SVD captures this indirect relationship — <strong>the truncated
+              reconstruction implicitly smooths over lexical variation and reveals the underlying semantic
+              structure</strong>. This is because the low-rank SVD effectively clusters terms that appear in similar
+            contexts. LSA directly inspired word2vec and modern distributional semantics.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ §14 ══════════════════════════════════════════════════ -->
+    <div class="ch" id="c14">
+      <div class="ch-head">
+        <div class="ch-badge grd-gd">14</div>
+        <div class="ch-text">
+          <h2>Recommender Systems — Matrix Factorization</h2>
+          <div class="ch-sub">// user-item matrix · collaborative filtering · SVD++ · missing data</div>
+        </div>
+      </div>
+
+      <p>Netflix, Spotify, Amazon — their core recommendation engines are matrix factorization algorithms, all rooted in
+        SVD. The user-item ratings matrix is sparse and incomplete; SVD (or its variants) fills in the missing entries.
+      </p>
+
+      <div class="sub">
+        <div class="sh gd">The Collaborative Filtering Setup</div>
+        <div class="eq gd">
+          <div class="eq-inner">
+            <div class="eq-top"><span class="eq-lbl">Matrix Completion via Factorization</span><span
+                class="eq-tag">Recommendation</span></div>
+            <div class="eq-body">
+              \[\underbrace{\mathbf{R}}_{m\text{ users}\times n\text{ items}} \approx \mathbf{P}\mathbf{Q}^T, \quad
+              \mathbf{P}\in\mathbb{R}^{m\times k},\; \mathbf{Q}\in\mathbb{R}^{n\times k}\]
+              \[\hat{R}_{ui} = \mathbf{p}_u^T\mathbf{q}_i = \sum_{f=1}^k p_{uf}\cdot q_{if}\]
+              \[\min_{\mathbf{P},\mathbf{Q}}\sum_{(u,i)\in\text{observed}}\!(R_{ui}-\mathbf{p}_u^T\mathbf{q}_i)^2 +
+              \lambda(\|\mathbf{P}\|_F^2 + \|\mathbf{Q}\|_F^2)\]
+              <div class="eq-note">P_u = k-dimensional latent user preference vector. Q_i = k-dimensional latent item
+                feature vector. The dot product p_u^T q_i predicts user u's rating of item i. Optimized via SGD or ALS
+                (Alternating Least Squares) over the observed (non-missing) entries only.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="sub">
+        <div class="sh pk">Connection to SVD</div>
+        <p>If all entries of \(\mathbf{R}\) were observed, the optimal rank-\(k\) factorization
+          \(\mathbf{P}\mathbf{Q}^T\) would be exactly the truncated SVD
+          \(\mathbf{U}_k\boldsymbol{\Sigma}_k\mathbf{V}_k^T\). With missing entries, we minimize only over the observed
+          entries — this is the <span class="hpk">matrix completion</span> problem. The SVD gives the unique closed-form
+          solution when all entries are present; SGD/ALS generalizes this to the missing-data case.</p>
+
+        <div class="band gd">
+          <div class="band-icon">★</div>
+          <div class="band-content">
+            <div class="band-title">SVD++ — Simon Funk's Netflix Solution</div>
+            <div class="band-body">Simon Funk (2006) won the Netflix Prize leaderboard with regularized matrix
+              factorization optimized by SGD — essentially stochastic gradient descent on the SVD objective with missing
+              data. The key insight: the SVD structure \(\mathbf{p}_u^T\mathbf{q}_i\) captures latent factors (genre
+              affinity, production era, etc.) even though these factors are never explicitly labeled. SVD++ adds
+              implicit feedback (which items a user interacted with, regardless of rating) to the model.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ §15 ══════════════════════════════════════════════════ -->
+    <div class="ch" id="c15">
+      <div class="ch-head">
+        <div class="ch-badge grd-lm">15</div>
+        <div class="ch-text">
+          <h2>SVD in Deep Learning</h2>
+          <div class="ch-sub">// weight matrices · LoRA · spectral normalization · nuclear norm</div>
+        </div>
+      </div>
+
+      <div class="app-grid">
+        <div class="app-card" style="border-top-color:var(--pink)">
+          <div class="app-card-icon grd-pk">⊗</div>
+          <div class="app-card-name" style="color:var(--pink)">LoRA — Low-Rank Adaptation</div>
+          <p>Fine-tune large language models by decomposing weight updates into low-rank SVD form: \(\Delta\mathbf{W} =
+            \mathbf{A}\mathbf{B}\) with \(\mathbf{A}\in\mathbb{R}^{d\times r}\), \(\mathbf{B}\in\mathbb{R}^{r\times
+            k}\), \(r \ll \min(d,k)\). Only A and B are trained; the pre-trained W is frozen. Uses 0.1% of parameters.
+            Directly uses the insight that weight updates are low-rank (SVD motivation).</p>
+        </div>
+        <div class="app-card" style="border-top-color:var(--teal)">
+          <div class="app-card-icon grd-tl">◈</div>
+          <div class="app-card-name" style="color:var(--teal)">Spectral Normalization</div>
+          <p>Normalize each weight matrix by its largest singular value \(\sigma_1\) to enforce Lipschitz continuity:
+            \(\mathbf{W}_{\text{sn}} = \mathbf{W}/\sigma_1(\mathbf{W})\). Used in Spectral Normalization GAN (SN-GAN) to
+            stabilize discriminator training. Estimated cheaply using the power iteration method for \(\sigma_1\)
+            without full SVD.</p>
+        </div>
+        <div class="app-card" style="border-top-color:var(--gold)">
+          <div class="app-card-icon grd-gd">≈</div>
+          <div class="app-card-name" style="color:var(--gold)">Weight Pruning via SVD</div>
+          <p>Compress neural network weight matrices by replacing each \(\mathbf{W}^{[\ell]}\) with its rank-\(k\) SVD
+            approximation \(\mathbf{U}_k\boldsymbol{\Sigma}_k\mathbf{V}_k^T\). Reduces inference FLOPs by \(d_1 d_2 /
+            (d_1 + d_2)k\). Works well for transformer attention projection matrices and embedding tables.</p>
+        </div>
+        <div class="app-card" style="border-top-color:var(--lav)">
+          <div class="app-card-icon grd-lv">∥</div>
+          <div class="app-card-name" style="color:var(--lav)">Nuclear Norm Regularization</div>
+          <p>The nuclear norm \(\|\mathbf{W}\|_* = \sum_i\sigma_i\) is the convex relaxation of rank. Minimizing it
+            penalizes large singular values, encouraging low-rank weight matrices. Used as a regularizer when the
+            ground-truth relationship is expected to be low-rank: matrix completion, multi-task learning, collaborative
+            filtering.</p>
+        </div>
+        <div class="app-card" style="border-top-color:var(--sky)">
+          <div class="app-card-icon grd-sky">∇</div>
+          <div class="app-card-name" style="color:var(--sky)">Gradient Analysis</div>
+          <p>SVD of gradient matrices during training diagnoses optimization health: effective rank (number of
+            significant singular values) measures gradient diversity. Sudden collapse of singular values indicates
+            training instability. Gradient clipping by spectral norm (\(\sigma_1\)) rather than Frobenius norm is more
+            principled and less aggressive.</p>
+        </div>
+        <div class="app-card" style="border-top-color:var(--lime)">
+          <div class="app-card-icon grd-lm">⊕</div>
+          <div class="app-card-name" style="color:var(--lime)">Attention Matrix Analysis</div>
+          <p>In Transformers, the attention matrix \(\text{softmax}(\mathbf{Q}\mathbf{K}^T/\sqrt{d})\) has an intrinsic
+            rank much lower than its dimension in well-trained models. SVD of attention matrices reveals interpretable
+            "attention heads" — some attend to positional patterns, others to syntactic roles. Used extensively in
+            mechanistic interpretability research.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ §16 ══════════════════════════════════════════════════ -->
+    <div class="ch" id="c16">
+      <div class="ch-head">
+        <div class="ch-badge grd-pk">16</div>
+        <div class="ch-text">
+          <h2>Image Compression &amp; Signal Applications</h2>
+          <div class="ch-sub">// rank-k images · denoising · eigenfaces · signal separation</div>
+        </div>
+      </div>
+
+      <div class="sub">
+        <div class="sh pk">Image Compression</div>
+        <p>Treat an \(m \times n\) grayscale image as a matrix \(\mathbf{A}\). Its SVD compresses it by keeping only the
+          top \(k\) singular triplets:</p>
+        <div class="eq pk">
+          <div class="eq-inner">
+            <div class="eq-top"><span class="eq-lbl">Image Compression via Rank-k SVD</span><span
+                class="eq-tag">Application</span></div>
+            <div class="eq-body">
+              \[\hat{\mathbf{A}}_k = \sum_{i=1}^k\sigma_i\mathbf{u}_i\mathbf{v}_i^T\]
+              \[\text{Compression ratio} = \frac{k(m+n+1)}{mn}, \quad \text{PSNR} =
+              20\log_{10}\frac{\max(\mathbf{A})}{\|\mathbf{A}-\hat{\mathbf{A}}_k\|_F/\sqrt{mn}}\]
+              <div class="eq-note">For most natural images, &gt;95% of the energy is captured in the top 50 singular
+                values. The rank-1 approximation alone gives a blurry but recognizable thumbnail. Ranks 10-50 give
+                visually acceptable quality at 10-50× compression. Note: JPEG is not SVD-based (it uses DCT blocks) but
+                shares the "energy compaction" philosophy.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="sub">
+        <div class="sh tl">Eigenfaces</div>
+        <p>Stack \(m\) face images (each of dimension \(p \times q = n\) pixels) as rows of data matrix \(\mathbf{X}\).
+          The left singular vectors of centered \(\tilde{\mathbf{X}}\) are the <span class="htl">eigenfaces</span> — the
+          principal modes of variation in human faces. Any face can be encoded as linear combination of the top \(k\)
+          eigenfaces. Sirovich and Kirby (1987), Turk and Pentland (1991) — the foundation of computer vision face
+          recognition pre-CNN.</p>
+      </div>
+    </div>
+
+    <!-- ══ §17 ══════════════════════════════════════════════════ -->
+    <div class="ch" id="c17">
+      <div class="ch-head">
+        <div class="ch-badge grd-tl">17</div>
+        <div class="ch-text">
+          <h2>The Complete Mental Model</h2>
+          <div class="ch-sub">// everything unified · one theorem · infinite reach</div>
+        </div>
+      </div>
+
+      <div class="fig">
+        <div class="fig-box">
+          <svg viewBox="0 0 720 560" xmlns="http://www.w3.org/2000/svg" style="max-width:720px;width:100%">
+            <rect width="720" height="560" fill="#08060e" />
+            <defs>
+              <linearGradient id="svd-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#f02f87" />
+                <stop offset="100%" stop-color="#a855f7" />
+              </linearGradient>
+            </defs>
+            <text x="360" y="22" text-anchor="middle" font-family="DM Mono" font-size="9" fill="#201a35"
+              letter-spacing=".28em">SINGULAR VALUE DECOMPOSITION — COMPLETE MAP</text>
+
+            <!-- Central theorem box -->
+            <rect x="220" y="40" width="280" height="64" rx="8" fill="#0e0b19" stroke="url(#svd-grad)"
+              stroke-width="2" />
+            <text x="360" y="64" text-anchor="middle" font-family="Unbounded" font-size="12" fill="#fff"
+              font-weight="700">A = U Σ Vᵀ</text>
+            <text x="360" y="83" text-anchor="middle" font-family="DM Mono" font-size="9" fill="#7a6898">exists for
+              every m×n matrix of rank r</text>
+
+            <!-- Row 2: Three components -->
+            <rect x="30" y="160" width="175" height="54" rx="6" fill="#0e0b19" stroke="#f02f87" stroke-width="1.5" />
+            <text x="117" y="182" text-anchor="middle" font-family="DM Mono" font-size="10" fill="#f02f87"
+              font-weight="600">U (m×m)</text>
+            <text x="117" y="200" text-anchor="middle" font-family="DM Mono" font-size="9" fill="#7a6898">left singular
+              vectors</text>
+
+            <rect x="272" y="160" width="175" height="54" rx="6" fill="#0e0b19" stroke="#ffc233" stroke-width="1.5" />
+            <text x="360" y="182" text-anchor="middle" font-family="DM Mono" font-size="10" fill="#ffc233"
+              font-weight="600">Σ (m×n)</text>
+            <text x="360" y="200" text-anchor="middle" font-family="DM Mono" font-size="9" fill="#7a6898">singular
+              values σ₁ ≥ ··· ≥ 0</text>
+
+            <rect x="515" y="160" width="175" height="54" rx="6" fill="#0e0b19" stroke="#00d4b8" stroke-width="1.5" />
+            <text x="602" y="182" text-anchor="middle" font-family="DM Mono" font-size="10" fill="#00d4b8"
+              font-weight="600">V (n×n)</text>
+            <text x="602" y="200" text-anchor="middle" font-family="DM Mono" font-size="9" fill="#7a6898">right singular
+              vectors</text>
+
+            <!-- Arrows from center to row 2 -->
+            <defs>
+              <marker id="ap2" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
+                <path d="M0,0 L0,5 L7,2.5z" fill="#2c2448" />
+              </marker>
+            </defs>
+            <line x1="295" y1="104" x2="180" y2="158" stroke="#2c2448" stroke-width="1.3" stroke-dasharray="4,3"
+              marker-end="url(#ap2)" />
+            <line x1="360" y1="104" x2="360" y2="158" stroke="#ffc233" stroke-width="1.3" stroke-dasharray="4,3"
+              marker-end="url(#ap2)" />
+            <line x1="425" y1="104" x2="540" y2="158" stroke="#2c2448" stroke-width="1.3" stroke-dasharray="4,3"
+              marker-end="url(#ap2)" />
+
+            <!-- Row 3: Properties -->
+            <rect x="30" y="272" width="180" height="52" rx="5" fill="#0e0b19" stroke="#a78bfa" stroke-width="1.3" />
+            <text x="120" y="292" text-anchor="middle" font-family="DM Mono" font-size="9.5" fill="#a78bfa"
+              font-weight="600">RANK &amp; SUBSPACES</text>
+            <text x="120" y="310" text-anchor="middle" font-family="DM Mono" font-size="8.5" fill="#7a6898">r nonzero σᵢ
+              = rank(A)</text>
+
+            <rect x="270" y="272" width="180" height="52" rx="5" fill="#0e0b19" stroke="#38bdf8" stroke-width="1.3" />
+            <text x="360" y="292" text-anchor="middle" font-family="DM Mono" font-size="9.5" fill="#38bdf8"
+              font-weight="600">GEOMETRY</text>
+            <text x="360" y="310" text-anchor="middle" font-family="DM Mono" font-size="8.5" fill="#7a6898">sphere →
+              ellipse, σᵢ = semi-axes</text>
+
+            <rect x="510" y="272" width="180" height="52" rx="5" fill="#0e0b19" stroke="#84cc16" stroke-width="1.3" />
+            <text x="600" y="292" text-anchor="middle" font-family="DM Mono" font-size="9.5" fill="#84cc16"
+              font-weight="600">ECKART-YOUNG</text>
+            <text x="600" y="310" text-anchor="middle" font-family="DM Mono" font-size="8.5" fill="#7a6898">best rank-k
+              ≡ truncated SVD</text>
+
+            <!-- Arrows to row 3 -->
+            <line x1="117" y1="214" x2="117" y2="270" stroke="#2c2448" stroke-width="1" stroke-dasharray="3,2"
+              marker-end="url(#ap2)" />
+            <line x1="360" y1="214" x2="360" y2="270" stroke="#2c2448" stroke-width="1" stroke-dasharray="3,2"
+              marker-end="url(#ap2)" />
+            <line x1="602" y1="214" x2="602" y2="270" stroke="#2c2448" stroke-width="1" stroke-dasharray="3,2"
+              marker-end="url(#ap2)" />
+
+            <!-- Row 4: Applications -->
+            <rect x="30" y="378" width="152" height="52" rx="5" fill="#0e0b19" stroke="#f02f87" stroke-width="1" />
+            <text x="106" y="397" text-anchor="middle" font-family="DM Mono" font-size="9" fill="#f02f87">PCA /
+              Eigenfaces</text>
+            <text x="106" y="415" text-anchor="middle" font-family="DM Mono" font-size="8" fill="#7a6898">V_k = PC
+              loadings</text>
+
+            <rect x="194" y="378" width="152" height="52" rx="5" fill="#0e0b19" stroke="#00d4b8" stroke-width="1" />
+            <text x="270" y="397" text-anchor="middle" font-family="DM Mono" font-size="9"
+              fill="#00d4b8">Pseudoinverse</text>
+            <text x="270" y="415" text-anchor="middle" font-family="DM Mono" font-size="8" fill="#7a6898">A⁺ = V Σ⁺
+              Uᵀ</text>
+
+            <rect x="358" y="378" width="152" height="52" rx="5" fill="#0e0b19" stroke="#ffc233" stroke-width="1" />
+            <text x="434" y="397" text-anchor="middle" font-family="DM Mono" font-size="9" fill="#ffc233">LSA /
+              NLP</text>
+            <text x="434" y="415" text-anchor="middle" font-family="DM Mono" font-size="8" fill="#7a6898">term-doc
+              latent space</text>
+
+            <rect x="522" y="378" width="168" height="52" rx="5" fill="#0e0b19" stroke="#a78bfa" stroke-width="1" />
+            <text x="606" y="397" text-anchor="middle" font-family="DM Mono" font-size="9" fill="#a78bfa">Recommender /
+              LoRA</text>
+            <text x="606" y="415" text-anchor="middle" font-family="DM Mono" font-size="8" fill="#7a6898">low-rank
+              factorization</text>
+
+            <!-- Arrows to applications -->
+            <line x1="120" y1="324" x2="106" y2="376" stroke="#2c2448" stroke-width="1" stroke-dasharray="3,2"
+              marker-end="url(#ap2)" />
+            <line x1="360" y1="324" x2="270" y2="376" stroke="#2c2448" stroke-width="1" stroke-dasharray="3,2"
+              marker-end="url(#ap2)" />
+            <line x1="360" y1="324" x2="434" y2="376" stroke="#2c2448" stroke-width="1" stroke-dasharray="3,2"
+              marker-end="url(#ap2)" />
+            <line x1="600" y1="324" x2="606" y2="376" stroke="#2c2448" stroke-width="1" stroke-dasharray="3,2"
+              marker-end="url(#ap2)" />
+
+            <!-- Bottom: Summary -->
+            <rect x="20" y="460" width="680" height="82" rx="6" fill="#0b0917" stroke="#201a35" stroke-width="1" />
+            <text x="360" y="480" text-anchor="middle" font-family="DM Mono" font-size="8.5" fill="#201a35"
+              letter-spacing=".2em">THE UNIFIED PRINCIPLE</text>
+            <text x="40" y="500" font-family="DM Mono" font-size="8.5" fill="#7a6898">Every matrix = weighted sum of
+              rank-1 components: A = Σᵢ σᵢ uᵢ vᵢᵀ</text>
+            <text x="40" y="518" font-family="DM Mono" font-size="8.5" fill="#7a6898">Singular values = energy spectrum.
+              Truncate → optimal compression (Eckart-Young).</text>
+            <text x="40" y="536" font-family="DM Mono" font-size="8.5" fill="#f02f87">SVD reveals: rank · geometry ·
+              subspaces · condition · pseudoinverse · PCA · latent structure</text>
+          </svg>
+        </div>
+        <div class="fig-cap">Fig 2. Complete SVD mental map — from the fundamental factorization through mathematical
+          properties to all major applications.</div>
+      </div>
+
+      <p style="margin-top:clamp(22px,4vw,36px)">The complete story in one thread:</p>
+
+      <ol style="padding-left:clamp(16px,3vw,24px);line-height:2.6;font-size:clamp(14px,1.9vw,16px)">
+        <li><strong>Existence:</strong> Every matrix \(\mathbf{A}\in\mathbb{R}^{m\times n}\) has an SVD \(\mathbf{A} =
+          \mathbf{U}\boldsymbol{\Sigma}\mathbf{V}^T\) with orthogonal \(\mathbf{U},\mathbf{V}\) and non-negative
+          diagonal \(\boldsymbol{\Sigma}\). No conditions required.</li>
+        <li><strong>Geometry:</strong> The three matrices have clear geometric meaning — \(\mathbf{V}^T\) rotates in
+          domain space, \(\boldsymbol{\Sigma}\) scales along coordinate axes, \(\mathbf{U}\) rotates in range space.
+          Every linear map maps the unit sphere to an ellipse; SVD finds that ellipse exactly.</li>
+        <li><strong>Rank and subspaces:</strong> The number of nonzero singular values equals the rank. The first \(r\)
+          columns of \(\mathbf{U}\) span the column space; the last \(m-r\) span the left null space. Vice versa for
+          \(\mathbf{V}\). All four fundamental subspaces fall out simultaneously.</li>
+        <li><strong>Optimal approximation:</strong> The Eckart-Young theorem proves that the truncated SVD
+          \(\hat{\mathbf{A}}_k = \sum_{i=1}^k\sigma_i\mathbf{u}_i\mathbf{v}_i^T\) is the best rank-\(k\) approximation
+          under any unitarily invariant norm. No other rank-\(k\) matrix is closer to \(\mathbf{A}\).</li>
+        <li><strong>Connection to eigenvalues:</strong> \(\sigma_i^2 = \lambda_i(\mathbf{A}^T\mathbf{A}) =
+          \lambda_i(\mathbf{A}\mathbf{A}^T)\). SVD generalizes eigendecomposition to rectangular matrices while
+          guaranteeing orthogonal decomposition matrices.</li>
+        <li><strong>Pseudoinverse:</strong> \(\mathbf{A}^+ = \mathbf{V}\boldsymbol{\Sigma}^+\mathbf{U}^T\) gives the
+          minimum-norm least-squares solution to any linear system — well-defined for any matrix, with or without full
+          rank.</li>
+        <li><strong>PCA:</strong> SVD of the centered data matrix gives PCA directly — right singular vectors are the
+          principal components, and \(\sigma_i^2/(m-1)\) are the explained variances. Always compute PCA via SVD.</li>
+        <li><strong>Applications span all of ML:</strong> LSA discovers semantic structure in text. Matrix factorization
+          powers recommendation engines. LoRA uses low-rank SVD structure to fine-tune LLMs with 1000× fewer parameters.
+          Spectral normalization stabilizes GAN training. Image compression uses rank-\(k\) SVD. Every major ML system
+          uses SVD somewhere.</li>
+      </ol>
+
+      <div class="thm" style="margin-top:clamp(24px,4vw,42px)">
+        <div class="thm-top">
+          <div class="thm-star grd-pk">★</div>
+          <div class="thm-label" style="color:var(--pink)">Why SVD Is the Most Important Matrix Factorization</div>
+        </div>
+        <p>Eigendecomposition requires a square matrix. Cholesky requires positive definiteness. LU requires no zero
+          pivots. <strong>SVD requires nothing.</strong> It works for every matrix, reveals all its intrinsic
+          properties, provides the best possible low-rank approximation, generalizes both the inverse and the
+          projection, and connects to PCA, least squares, optimization, and signal processing in one unified
+          factorization. If you can only know one matrix decomposition — this is the one.</p>
+      </div>
+    </div>
+
+  </div><!-- /page -->
+
+
+  <!-- ═══ FOOTER ═══ -->
+  <footer class="site-footer">
+    <div class="footer-content">
+      <div class="footer-main">
+        <div class="footer-left">
+          <p class="copyright">&copy; 2025 Shahid Ul Islam</p>
+          <p class="footer-meta">Data Scientist & AI Developer</p>
+        </div>
+        <div class="footer-right">
+          <div class="footer-links">
+            <a href="#" class="back-to-top">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="12" y1="19" x2="12" y2="5"></line>
+                <polyline points="5 12 12 5 19 12"></polyline>
+              </svg>
+              <span>Back to Top</span>
+            </a>
+            <div class="social-links11">
+              <a href="https://github.com/Khanz9664" target="_blank" class="social-link11">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path
+                    d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22" />
+                </svg>
+              </a>
+              <a href="https://linkedin.com/in/shahid-ul-islam-13650998" target="_blank" class="social-link11">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" />
+                  <rect x="2" y="9" width="4" height="12" />
+                  <circle cx="4" cy="4" r="2" />
+                </svg>
+              </a>
+              <a href="mailto:shahid9664@gmail.com" class="social-link11">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
+                  <polyline points="22,6 12,13 2,6" />
+                </svg>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="made-with">
+      <p>Crafted with <span class="heart-icon">❤️</span> By Shahid</p>
+    </div>
+  </footer>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js"></script>
+</body>
+
+</html>

@@ -160,15 +160,15 @@ A core pillar of this portfolio is the **"Machine Learning From First Principles
 
 | Article | Description | Category |
 | :--- | :--- | :--- |
-| **[Gradient Descent](articles/gradient-descent.html)** | The workhorse of machine learning optimization. Understand partial derivatives, learning rates, and convergence behavior from first principles. | Optimization |
-| **[Lagrange Multipliers](articles/lagrange-multipliers.html)** | Constrained optimization unlocked. A deep dive into the method of Lagrange multipliers, dual problems, and their geometric intuition. | Optimization |
-| **[Bias Variance TradeOff](articles/biasvariance.html)** | The fundamental trade-off between model simplicity and prediction accuracy. | Optimization |
-| **[Linear Regression](articles/linear-regression.html)** | The foundation of predictive modeling. Complete mathematical derivation of Ordinary Least Squares, normal equations, and assumptions. | Supervised Learning |
-| **[Logistic Regression](articles/logistic-regression.html)** | Moving from continuous to categorical. Explore sigmoid functions, maximum likelihood estimation, and cross-entropy loss gradients. | Classification |
-| **[Neural Networks](articles/neuralnets.html)** | The mathematical foundations of deep learning. Explore forward propagation, backpropagation derivations, and the universal approximation theorem. | Deep Learning |
-| **[Principal Component Analysis](articles/pca.html)** | From variance maximization to SVD equivalence. A definitive guide to understanding PCA's mathematical machinery from the ground up. | Dimensionality Reduction |
-| **[Information Theory](articles/infotheory.html)** | The mathematics of uncertainty and learning. Explore Shannon entropy, KL divergence, cross-entropy, and the maximum entropy principle. | Information Theory |
-| **[Singular Value Decomposition](articles/svd.html)** | The most powerful factorization in all of mathematics. Works on every matrix, reveals hidden geometry, and underlies PCA and compression. | Linear Algebra |
+| **[Gradient Descent](https://khanz9664.github.io/portfolio/articles/gradient-descent.html)** | The workhorse of machine learning optimization. Understand partial derivatives, learning rates, and convergence behavior from first principles. | Optimization |
+| **[Lagrange Multipliers](https://khanz9664.github.io/portfolio/articles/lagrange-multipliers.html)** | Constrained optimization unlocked. A deep dive into the method of Lagrange multipliers, dual problems, and their geometric intuition. | Optimization |
+| **[Bias Variance TradeOff](https://khanz9664.github.io/portfolio/articles/biasvariance.html)** | The fundamental trade-off between model simplicity and prediction accuracy. | Optimization |
+| **[Linear Regression](https://khanz9664.github.io/portfolio/articles/linear-regression.html)** | The foundation of predictive modeling. Complete mathematical derivation of Ordinary Least Squares, normal equations, and assumptions. | Supervised Learning |
+| **[Logistic Regression](https://khanz9664.github.io/portfolio/articles/logistic-regression.html)** | Moving from continuous to categorical. Explore sigmoid functions, maximum likelihood estimation, and cross-entropy loss gradients. | Classification |
+| **[Neural Networks](https://khanz9664.github.io/portfolio/articles/neuralnets.html)** | The mathematical foundations of deep learning. Explore forward propagation, backpropagation derivations, and the universal approximation theorem. | Deep Learning |
+| **[Principal Component Analysis](https://khanz9664.github.io/portfolio/articles/pca.html)** | From variance maximization to SVD equivalence. A definitive guide to understanding PCA's mathematical machinery from the ground up. | Dimensionality Reduction |
+| **[Information Theory](https://khanz9664.github.io/portfolio/articles/infotheory.html)** | The mathematics of uncertainty and learning. Explore Shannon entropy, KL divergence, cross-entropy, and the maximum entropy principle. | Information Theory |
+| **[Singular Value Decomposition](https://khanz9664.github.io/portfolio/articles/svd.html)** | The most powerful factorization in all of mathematics. Works on every matrix, reveals hidden geometry, and underlies PCA and compression. | Linear Algebra |
 
 ---
 <p align="center">

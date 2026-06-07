@@ -770,8 +770,7 @@
   }
 
   .mjx-container {
-    overflow-x: auto !important;
-    overflow-y: hidden !important;
+    overflow: auto hidden !important;
     max-width: 100% !important;
     padding: 10px 0;
     -webkit-overflow-scrolling: touch;

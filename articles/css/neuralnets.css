@@ -566,7 +566,7 @@ p {
   padding: clamp(14px, 2.5vw, 20px) clamp(14px, 3vw, 26px);
   border-bottom: 1px solid var(--border);
   display: grid;
-  grid-template-columns: clamp(24px, 3.5vw, 32px) 1fr;
+  grid-template-columns: clamp(24px, 3.5vw, 32px) minmax(0, 1fr);
   gap: clamp(10px, 2vw, 18px);
   align-items: start;
 }
@@ -1031,4 +1031,12 @@ code {
 
 .site-footer {
   margin-top: 2rem;
+}
+
+.mjx-container {
+  overflow-x: auto !important;
+  overflow-y: hidden !important;
+  max-width: 100% !important;
+  padding: 10px 0;
+  -webkit-overflow-scrolling: touch;
 }

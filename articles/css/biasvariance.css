@@ -421,11 +421,16 @@
     padding: clamp(13px, 2.5vw, 18px) clamp(14px, 3vw, 26px);
     border-bottom: 1px solid var(--border);
     display: grid;
-    grid-template-columns: clamp(22px, 3.5vw, 30px) 1fr;
+    grid-template-columns: clamp(22px, 3.5vw, 30px) minmax(0, 1fr);
     gap: clamp(10px, 2vw, 18px);
     align-items: start;
   }
   .deriv-step:last-child { border-bottom: none; }
+
+  .deriv-step div {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
 
   .step-n {
     font-family: Inconsolata, monospace;
@@ -504,6 +509,8 @@
     margin-bottom: 0;
     font-size: clamp(14px, 1.9vw, 15.5px);
     line-height: 1.75;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
   }
 
   /* ─── TABLES ──────────────────────────────────────────── */
@@ -760,4 +767,11 @@
   ::-webkit-scrollbar-thumb {
     background: var(--border2);
     border-radius: 3px;
+  }
+
+  .mjx-container {
+    overflow: auto hidden !important;
+    max-width: 100% !important;
+    padding: 10px 0;
+    -webkit-overflow-scrolling: touch;
   }

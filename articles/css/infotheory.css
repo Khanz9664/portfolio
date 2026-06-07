@@ -775,6 +775,8 @@ tbody td {
   position: relative;
   font-size: clamp(14px, 1.9vw, 15.5px);
   line-height: 1.72;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 .flist li:last-child {
@@ -1066,4 +1068,11 @@ code {
   border-color: #c4b5fd !important;
   background: rgb(124 58 237 / 20%) !important;
   box-shadow: 0 0 15px rgb(124 58 237 / 20%) !important;
+}
+
+.mjx-container {
+  overflow: auto hidden !important;
+  max-width: 100% !important;
+  padding: 10px 0;
+  -webkit-overflow-scrolling: touch;
 }

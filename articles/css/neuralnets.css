@@ -566,7 +566,7 @@ p {
   padding: clamp(14px, 2.5vw, 20px) clamp(14px, 3vw, 26px);
   border-bottom: 1px solid var(--border);
   display: grid;
-  grid-template-columns: clamp(24px, 3.5vw, 32px) 1fr;
+  grid-template-columns: clamp(24px, 3.5vw, 32px) minmax(0, 1fr);
   gap: clamp(10px, 2vw, 18px);
   align-items: start;
 }
@@ -619,6 +619,12 @@ p {
   flex-shrink: 0;
   padding: 4px 0;
   align-self: flex-start;
+}
+
+.note-body {
+  min-width: 0;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 .note-body p {
@@ -978,6 +984,8 @@ tbody td {
   font-size: clamp(14px, 1.9vw, 16px);
   margin-bottom: 0;
   line-height: 1.8;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 /* ═══════════════════════════════════════════════════
@@ -1031,4 +1039,11 @@ code {
 
 .site-footer {
   margin-top: 2rem;
+}
+
+.mjx-container {
+  overflow: auto hidden !important;
+  max-width: 100% !important;
+  padding: 10px 0;
+  -webkit-overflow-scrolling: touch;
 }

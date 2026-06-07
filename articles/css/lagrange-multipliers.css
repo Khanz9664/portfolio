@@ -364,6 +364,7 @@
     }
 
     .derivation-hdr,
+    .deriv-hdr,
     .derivation-header {
       background: var(--surface2);
       padding: 16px 24px;
@@ -375,18 +376,20 @@
       border-bottom: 1px solid var(--border);
     }
 
-    .derivation-step {
+    .derivation-step,
+    .deriv-step {
       padding: 20px 28px;
       border-bottom: 1px solid var(--border);
       display: grid;
-      grid-template-columns: 32px 1fr;
+      grid-template-columns: 32px minmax(0, 1fr);
       gap: 20px;
       align-items: start;
       background: var(--surface);
       backdrop-filter: blur(5px);
     }
 
-    .derivation-step:last-child {
+    .derivation-step:last-child,
+    .deriv-step:last-child {
       border-bottom: none;
     }
 
@@ -566,13 +569,15 @@
         border-collapse: collapse;
       }
 
-      .derivation-step {
-        grid-template-columns: 1fr;
+      .derivation-step,
+      .deriv-step {
+        grid-template-columns: minmax(0, 1fr);
         gap: 10px;
         padding: 16px 20px;
       }
 
-      .derivation-step div {
+      .derivation-step div,
+      .deriv-step div {
         overflow-x: auto;
       }
 
@@ -584,12 +589,19 @@
         padding: 4px 10px;
         font-size: 10px;
       }
+    }
 
-      .mjx-container {
-        overflow: auto hidden !important;
-        max-width: 100% !important;
-        padding: 10px 0;
-      }
+    .mjx-container {
+      overflow: auto hidden !important;
+      max-width: 100% !important;
+      padding: 10px 0;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .kkt-card {
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      margin-bottom: 24px;
     }
 
     /* ── FIGURE / SVG ── */

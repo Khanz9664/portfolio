@@ -625,6 +625,10 @@ p {
   margin-bottom: 8px;
 }
 
+.ins-body {
+  min-width: 0;
+}
+
 .ins-body p {
   margin-bottom: 0;
   font-size: clamp(13.5px, 1.8vw, 15px);
@@ -727,6 +731,8 @@ p {
 .theorem p {
   font-size: clamp(14px, 1.9vw, 16px);
   margin-bottom: 0;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 /* ── TABLES ─────────────────────────────────── */
@@ -810,6 +816,7 @@ tbody td {
   border-radius: 8px;
   padding: clamp(16px, 2.5vw, 24px);
   border-top: 3px solid;
+  min-width: 0;
 }
 
 .card-name {
@@ -923,6 +930,8 @@ tbody td {
   position: relative;
   font-size: clamp(14px, 1.9vw, 15.5px);
   line-height: 1.7;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 .fl li:last-child {
@@ -957,6 +966,7 @@ tbody td {
   border: 1px solid var(--bord2);
   border-radius: 8px;
   padding: clamp(16px, 2.5vw, 22px);
+  min-width: 0;
 }
 
 .two-box-title {
@@ -1046,4 +1056,11 @@ code {
 ::-webkit-scrollbar-thumb {
   background: var(--bord2);
   border-radius: 3px;
+}
+
+.mjx-container {
+  overflow: auto hidden !important;
+  max-width: 100% !important;
+  padding: 10px 0;
+  -webkit-overflow-scrolling: touch;
 }

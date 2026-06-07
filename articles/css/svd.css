@@ -943,6 +943,8 @@ tbody td {
   border: 1px solid var(--rim2);
   border-radius: var(--r-md);
   padding: clamp(16px, 2.5vw, 24px);
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 .tcol h4 {
@@ -1091,6 +1093,8 @@ code {
   padding: 1px 6px;
   border-radius: 4px;
   color: var(--pink);
+  word-break: break-word;
+  white-space: pre-wrap;
 }
 
 .hpk {

@@ -509,6 +509,8 @@
     margin-bottom: 0;
     font-size: clamp(14px, 1.9vw, 15.5px);
     line-height: 1.75;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
   }
 
   /* ─── TABLES ──────────────────────────────────────────── */

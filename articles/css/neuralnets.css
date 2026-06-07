@@ -621,6 +621,12 @@ p {
   align-self: flex-start;
 }
 
+.note-body {
+  min-width: 0;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
 .note-body p {
   margin-bottom: 0;
   font-size: clamp(13.5px, 1.8vw, 15px);
@@ -978,6 +984,8 @@ tbody td {
   font-size: clamp(14px, 1.9vw, 16px);
   margin-bottom: 0;
   line-height: 1.8;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 /* ═══════════════════════════════════════════════════

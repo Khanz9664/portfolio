@@ -169,7 +169,7 @@ body{
 /* ═══════════════════════════════════════════
    CONTENT
 ═══════════════════════════════════════════ */
-.page{max-width:1200px;margin:0 auto;padding:0 clamp(24px,5vw,68px) clamp(80px,12vw,140px)}
+.page{max-width:1200px;margin:0 auto;padding:0 clamp(24px,5vw,68px) clamp(40px,6vw,60px)}
 
 /* ═══════════════════════════════════════════
    CHAPTER — DM Serif Display number + Jakarta title

@@ -1,0 +1,1046 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bayesian ML | Shahid Ul Islam</title>
+  <meta name="description" content="What we believe before seeing data" />
+  <meta name="author" content="Shahid Ul Islam" />
+  <link rel="icon" type="image/png" href="../img/plogo.png" />
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=JetBrains+Mono:wght@300;400;600;700&family=Lora:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="css/bayesian.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <link rel="stylesheet" href="../css/variables.css" />
+  <link rel="stylesheet" href="../css/navigation.css" />
+  <link rel="stylesheet" href="../css/footer.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <script defer src="../js/common.js"></script>
+
+</head>
+
+<body>
+  <div class="top-bar">
+    <div class="logo">
+      <img src="../img/plogo.png" alt="Personal Logo" class="logo-icon">
+      <span class="logo-text">SHAHID<span class="logo-accent">||</span>Portfolio</span>
+    </div>
+    <nav class="nav-container">
+      <ul class="nav-links">
+        <li><a href="../index.html" class="nav-link">.Home</a></li>
+        <li><a href="../about.html" class="nav-link">.About</a></li>
+        <li><a href="../skills.html" class="nav-link">.Skills</a></li>
+        <li><a href="../projects.html" class="nav-link">.Projects</a></li>
+        <li><a href="../contact.html" class="nav-link">.Contact</a></li>
+        <li><a href="../articles.html" class="nav-link">.Articles</a></li>
+      </ul>
+      <div class="menu-toggle">
+        <div class="hamburger"></div>
+      </div>
+    </nav>
+  </div>
+
+<!-- ══ HERO ════════════════════════════════════════════════ -->
+<div class="hero">
+  <div class="hero-inner">
+    <div class="hero-kicker">
+      <div class="hero-kicker-dot"></div>
+      Probabilistic Machine Learning · Bayesian Inference
+    </div>
+    <div class="hero-title">
+      <span class="light">belief, updated</span>
+      <span class="glow">Bayesian</span>
+      Machine Learning
+    </div>
+    <div class="hero-row">
+      <div>
+        <p class="hero-desc">
+          From the philosophical divide between frequentist and Bayesian thinking,
+          through Bayes' theorem, priors, posteriors, conjugate families,
+          and into every modern probabilistic ML technique.
+        </p>
+        <div class="hero-pills">
+          <span class="hpill a">Bayes' Theorem</span>
+          <span class="hpill o">Prior · Likelihood · Posterior</span>
+          <span class="hpill t">MAP Estimation</span>
+          <span class="hpill r">Conjugate Priors</span>
+          <span class="hpill s">Predictive Distributions</span>
+          <span class="hpill m">Variational Inference</span>
+          <span class="hpill a">MCMC</span>
+          <span class="hpill o">Bayesian NNs</span>
+          <span class="hpill t">Evidence &amp; Model Selection</span>
+        </div>
+      </div>
+      <div class="hero-bayes">P(θ|X)<br>=<br>P(X|θ)P(θ)<br>P(X)</div>
+    </div>
+  </div>
+
+  <!-- Belief Update Strip -->
+  <div class="hero-strip">
+    <div class="hs-cell">
+      <div class="hs-label" style="color:var(--amber)">Prior Belief</div>
+      <div class="hs-eq" style="color:var(--amber)">P(θ)</div>
+      <div class="hs-desc">What we believe before seeing data. Encodes domain knowledge and assumptions.</div>
+    </div>
+    <div class="hs-arrow">×</div>
+    <div class="hs-cell">
+      <div class="hs-label" style="color:var(--oran)">Likelihood</div>
+      <div class="hs-eq" style="color:var(--oran)">P(X|θ)</div>
+      <div class="hs-desc">How probable the observed data is for each possible parameter value.</div>
+    </div>
+    <div class="hs-arrow">÷</div>
+    <div class="hs-cell">
+      <div class="hs-label" style="color:var(--teal)">Evidence</div>
+      <div class="hs-eq" style="color:var(--teal)">P(X)</div>
+      <div class="hs-desc">The marginal probability of the data. Normalizing constant. Usually intractable.</div>
+    </div>
+    <div class="hs-arrow">=</div>
+    <div class="hs-cell">
+      <div class="hs-label" style="color:var(--sage)">Posterior Belief</div>
+      <div class="hs-eq" style="color:var(--sage)">P(θ|X)</div>
+      <div class="hs-desc">Updated belief after seeing data. The answer to every Bayesian question.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ TOC ══════════════════════════════════════════════════ -->
+<div class="toc-outer">
+  <div class="toc-box">
+    <div class="toc-side">
+      <div class="toc-side-title">Contents</div>
+      <div class="toc-amber-line"></div>
+    </div>
+    <div class="toc-main">
+      <div class="toc-item"><a href="#c1"><span class="toc-n">01</span>Frequentist vs Bayesian Thinking</a></div>
+      <div class="toc-item"><a href="#c2"><span class="toc-n">02</span>Probability Foundations</a></div>
+      <div class="toc-item"><a href="#c3"><span class="toc-n">03</span>Bayes' Theorem — Derivation</a></div>
+      <div class="toc-item"><a href="#c4"><span class="toc-n">04</span>The Prior Distribution</a></div>
+      <div class="toc-item"><a href="#c5"><span class="toc-n">05</span>The Likelihood Function</a></div>
+      <div class="toc-item"><a href="#c6"><span class="toc-n">06</span>The Posterior Distribution</a></div>
+      <div class="toc-item"><a href="#c7"><span class="toc-n">07</span>MAP vs MLE — The Comparison</a></div>
+      <div class="toc-item"><a href="#c8"><span class="toc-n">08</span>Conjugate Priors — Full Treatment</a></div>
+      <div class="toc-item"><a href="#c9"><span class="toc-n">09</span>Bayesian Updating — Sequential</a></div>
+      <div class="toc-item"><a href="#c10"><span class="toc-n">10</span>Predictive Distributions</a></div>
+      <div class="toc-item"><a href="#c11"><span class="toc-n">11</span>Bayesian Linear Regression</a></div>
+      <div class="toc-item"><a href="#c12"><span class="toc-n">12</span>The Evidence &amp; Model Selection</a></div>
+      <div class="toc-item"><a href="#c13"><span class="toc-n">13</span>Variational Inference &amp; ELBO</a></div>
+      <div class="toc-item"><a href="#c14"><span class="toc-n">14</span>MCMC — Sampling Methods</a></div>
+      <div class="toc-item"><a href="#c15"><span class="toc-n">15</span>Bayesian Neural Networks</a></div>
+      <div class="toc-item"><a href="#c16"><span class="toc-n">16</span>The Complete Mental Model</a></div>
+    </div>
+  </div>
+</div>
+
+<div class="page">
+
+<!-- ══ §01 ═════════════════════════════════════════════════ -->
+<div class="ch" id="c1">
+  <div class="ch-head">
+    <div class="ch-meta"><div class="ch-num">01</div><span class="ch-tag a">Philosophy</span></div>
+    <h2>Frequentist vs Bayesian Thinking</h2>
+    <div class="ch-sub">// two schools · probability as frequency vs degree of belief · what parameters mean</div>
+  </div>
+
+  <p>The deepest divide in statistics is not methodological — it is philosophical. It concerns what probability <em>is</em>, what parameters <em>are</em>, and what it means to make an inference.</p>
+
+  <div class="sub">
+    <div class="sh a">The Two Philosophies</div>
+    <div class="compare">
+      <div class="cmp-box">
+        <div class="cmp-title" style="color:var(--sky)">Frequentist View</div>
+        <p><strong>Probability</strong> is the long-run frequency of an event in infinitely repeated identical experiments. \(P(A) = \lim_{n\to\infty}\frac{\text{occurrences of }A}{n}\).</p>
+        <p><strong>Parameters</strong> are fixed, unknown constants. They have a true value; they are not random. It is meaningless to write \(P(\theta)\).</p>
+        <p><strong>Inference</strong>: estimate the fixed parameter from data. Report confidence intervals — \(1-\alpha\)% of such intervals will contain the true value over repeated experiments.</p>
+        <p><strong>Example</strong>: "The coin has a true fixed bias \(p\). After 100 flips, my estimate is \(\hat{p} = 0.52\)."</p>
+      </div>
+      <div class="cmp-box">
+        <div class="cmp-title" style="color:var(--amber)">Bayesian View</div>
+        <p><strong>Probability</strong> is a degree of belief — a subjective state of knowledge about an event. Any uncertain quantity can have a probability, whether or not it can be repeated.</p>
+        <p><strong>Parameters</strong> are uncertain quantities. They have a probability distribution \(P(\theta)\) reflecting our state of knowledge. They are random variables.</p>
+        <p><strong>Inference</strong>: update beliefs using Bayes' theorem. The posterior \(P(\theta|X)\) is our updated belief after seeing data.</p>
+        <p><strong>Example</strong>: "Before flipping, I believe the bias is near 0.5. After 100 flips, I update: posterior has mean 0.52, concentrated near 0.5."</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="sub">
+    <div class="sh o">Concrete Consequences</div>
+    <div class="t-wrap">
+      <table>
+        <thead><tr><th>Question</th><th>Frequentist Answer</th><th>Bayesian Answer</th></tr></thead>
+        <tbody>
+          <tr><td>"What is the probability that θ &gt; 0.5?"</td><td>Undefined. θ is fixed, not random.</td><td>\(P(\theta &gt; 0.5 | \text{data}) = \int_{0.5}^1 p(\theta|\text{data})\,d\theta\) — directly answerable.</td></tr>
+          <tr><td>How to incorporate domain knowledge?</td><td>Through the choice of estimator (ad hoc).</td><td>Through the prior \(P(\theta)\) — principled.</td></tr>
+          <tr><td>Small sample inference?</td><td>Asymptotic theory breaks down.</td><td>Prior regularizes; posteriors are always valid.</td></tr>
+          <tr><td>Prediction for new \(x_*\)?</td><td>Plug in \(\hat{\theta}\): \(p(y_*|x_*, \hat{\theta})\)</td><td>Integrate over uncertainty: \(\int p(y_*|x_*,\theta)p(\theta|\text{data})\,d\theta\)</td></tr>
+          <tr><td>Model comparison?</td><td>Hypothesis tests, AIC/BIC (approximate)</td><td>Bayes factors: exact ratio of model evidences</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="lens a">
+    <div class="lens-glyph">B</div>
+    <div class="lens-content">
+      <div class="lens-title">The Bayesian Advantage in ML</div>
+      <p>Most ML methods are implicitly Bayesian: L2 regularization is a Gaussian prior; L1 regularization is a Laplace prior; early stopping is an implicit prior; dropout is approximate variational inference. Understanding the Bayesian framework reveals what these methods are really doing and gives a principled basis for designing new ones.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ══ §02 ═════════════════════════════════════════════════ -->
+<div class="ch" id="c2">
+  <div class="ch-head">
+    <div class="ch-meta"><div class="ch-num">02</div><span class="ch-tag o">Probability</span></div>
+    <h2>Probability Foundations</h2>
+    <div class="ch-sub">// conditional probability · product rule · sum rule · marginalization</div>
+  </div>
+
+  <p>Bayesian inference is built on three rules of probability. Everything else is algebra.</p>
+
+  <div class="sub">
+    <div class="sh o">The Three Fundamental Rules</div>
+    <div class="eq a">
+      <div class="eq-hdr"><span class="eq-title">The Sum Rule and Product Rule</span><span class="eq-badge">Foundation</span></div>
+      <div class="eq-body">
+        \[\text{Product Rule:}\quad P(A,B) = P(A|B)\,P(B) = P(B|A)\,P(A)\]
+        \[\text{Sum Rule:}\quad P(A) = \sum_B P(A,B) = \sum_B P(A|B)\,P(B)\quad\text{(marginalization)}\]
+        \[\text{Bayes' Theorem:}\quad P(A|B) = \frac{P(B|A)\,P(A)}{P(B)} \quad\text{(product rule applied twice)}\]
+        <div class="eq-note">These three rules are all you need. The rest of Bayesian inference is applying them to increasingly complex models. Marginalization (the sum rule) is often the computationally intractable step that drives approximate inference methods.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sub">
+    <div class="sh t">Continuous Distributions</div>
+    <div class="eq t">
+      <div class="eq-hdr"><span class="eq-title">Continuous Bayes' Theorem</span><span class="eq-badge">Key Form</span></div>
+      <div class="eq-body">
+        \[p(\theta | \mathcal{D}) = \frac{p(\mathcal{D}|\theta)\,p(\theta)}{p(\mathcal{D})} = \frac{p(\mathcal{D}|\theta)\,p(\theta)}{\int p(\mathcal{D}|\theta')\,p(\theta')\,d\theta'}\]
+        <div class="eq-note">p(θ|D) — posterior. p(D|θ) — likelihood. p(θ) — prior. p(D) — evidence/marginal likelihood. The denominator is the "normalizing constant" that ensures the posterior integrates to 1. It's often written as the proportionality: p(θ|D) ∝ p(D|θ)·p(θ).</div>
+      </div>
+    </div>
+
+    <div class="lens t">
+      <div class="lens-glyph">∝</div>
+      <div class="lens-content">
+        <div class="lens-title">The ∝ Shortcut</div>
+        <p>Since \(p(\mathcal{D})\) doesn't depend on \(\theta\), we almost always write \(p(\theta|\mathcal{D}) \propto p(\mathcal{D}|\theta)\,p(\theta)\). We only need to compute \(p(\mathcal{D})\) if we need a proper normalized distribution or want to compare models. For finding the posterior mode (MAP) or its shape, the proportionality is sufficient.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ §03 ═════════════════════════════════════════════════ -->
+<div class="ch" id="c3">
+  <div class="ch-head">
+    <div class="ch-meta"><div class="ch-num">03</div><span class="ch-tag a">Core Theorem</span></div>
+    <h2>Bayes' Theorem — Derivation &amp; Interpretation</h2>
+    <div class="ch-sub">// from product rule · the four terms · belief update · prior × likelihood = posterior</div>
+  </div>
+
+  <div class="sub">
+    <div class="sh a">Derivation from First Principles</div>
+    <div class="drv">
+      <div class="drv-hdr">// Deriving Bayes' theorem from the product rule alone</div>
+      <div class="drv-row">
+        <span class="dn a">1</span>
+        <div>Product rule applied to \(P(\theta, \mathcal{D})\):
+          \[P(\theta, \mathcal{D}) = P(\mathcal{D}|\theta)\,P(\theta)\]</div>
+      </div>
+      <div class="drv-row">
+        <span class="dn a">2</span>
+        <div>Product rule applied the other way:
+          \[P(\theta, \mathcal{D}) = P(\theta|\mathcal{D})\,P(\mathcal{D})\]</div>
+      </div>
+      <div class="drv-row">
+        <span class="dn a">3</span>
+        <div>Equate (both equal the joint):
+          \[P(\theta|\mathcal{D})\,P(\mathcal{D}) = P(\mathcal{D}|\theta)\,P(\theta)\]</div>
+      </div>
+      <div class="drv-row">
+        <span class="dn a">4</span>
+        <div>Divide both sides by \(P(\mathcal{D}) &gt; 0\):
+          \[\boxed{P(\theta|\mathcal{D}) = \frac{P(\mathcal{D}|\theta)\,P(\theta)}{P(\mathcal{D})}}\]
+          <div class="dnote">That's it. Two applications of the product rule. The entire Bayesian framework follows from this. ∎</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sub">
+    <div class="sh o">The Belief Update Visual</div>
+    <div class="belief-flow">
+      <div class="bf-cell">
+        <div class="bf-label" style="color:var(--amber)">Prior</div>
+        <div class="bf-eq" style="color:var(--amber)">P(θ)</div>
+        <div class="bf-desc">What we believed before seeing any data. Can be informative (domain knowledge) or diffuse (ignorance).</div>
+      </div>
+      <div class="bf-arrow" style="font-size:1.4rem">×</div>
+      <div class="bf-cell">
+        <div class="bf-label" style="color:var(--oran)">Likelihood</div>
+        <div class="bf-eq" style="color:var(--oran)">P(D|θ)</div>
+        <div class="bf-desc">How well each θ explains the observed data. Points in parameter space where data is likely.</div>
+      </div>
+      <div class="bf-arrow" style="font-size:1.4rem">÷</div>
+      <div class="bf-cell">
+        <div class="bf-label" style="color:var(--teal)">Evidence</div>
+        <div class="bf-eq" style="color:var(--teal)">P(D)</div>
+        <div class="bf-desc">The average likelihood under the prior. Ensures the posterior is a proper distribution.</div>
+      </div>
+      <div class="bf-arrow" style="font-size:1.4rem">=</div>
+      <div class="bf-cell">
+        <div class="bf-label" style="color:var(--sage)">Posterior</div>
+        <div class="bf-eq" style="color:var(--sage)">P(θ|D)</div>
+        <div class="bf-desc">Updated beliefs after seeing data. Combines prior knowledge with evidence from data.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="fig">
+    <div class="fig-box">
+      <svg viewBox="0 0 680 200" xmlns="http://www.w3.org/2000/svg" style="max-width:680px;width:100%">
+        <rect width="680" height="200" fill="#120e08"/>
+        <defs>
+          <marker id="axa" markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto"><path d="M0,0 L0,5 L7,2.5z" fill="#3a3220"/></marker>
+        </defs>
+        <!-- Panel 1: Prior (broad, centered at 0.5) -->
+        <text x="113" y="18" text-anchor="middle" font-family="JetBrains Mono" font-size="10" fill="#f0a500" letter-spacing=".1em">PRIOR P(θ)</text>
+        <line x1="30" y1="170" x2="200" y2="170" stroke="#3a3220" stroke-width="1.2" marker-end="url(#axa)"/>
+        <line x1="30" y1="170" x2="30" y2="28" stroke="#3a3220" stroke-width="1.2" marker-end="url(#axa)"/>
+        <!-- Broad Gaussian prior -->
+        <path d="M35,162 C55,158 75,140 95,115 C110,96 120,80 128,72 C136,65 143,65 150,72 C157,80 168,96 183,115 C196,134 200,148 205,162" fill="rgba(240,165,0,0.12)" stroke="#f0a500" stroke-width="2"/>
+        <text x="113" y="185" text-anchor="middle" font-family="JetBrains Mono" font-size="9" fill="#7a6a4a">wide → uncertain</text>
+
+        <!-- × sign -->
+        <text x="230" y="100" text-anchor="middle" font-family="DM Serif Display" font-size="28" fill="rgba(224,107,26,0.5)" font-style="italic">×</text>
+
+        <!-- Panel 2: Likelihood (sharp, peaked at data) -->
+        <text x="340" y="18" text-anchor="middle" font-family="JetBrains Mono" font-size="10" fill="#e06b1a" letter-spacing=".1em">LIKELIHOOD P(D|θ)</text>
+        <line x1="260" y1="170" x2="425" y2="170" stroke="#3a3220" stroke-width="1.2" marker-end="url(#axa)"/>
+        <line x1="260" y1="170" x2="260" y2="28" stroke="#3a3220" stroke-width="1.2" marker-end="url(#axa)"/>
+        <!-- Sharp likelihood function -->
+        <path d="M265,168 C280,166 295,158 310,138 C318,125 325,105 333,88 C340,72 348,60 355,52 C360,46 365,44 370,48 C376,54 381,68 385,82 C392,105 397,128 403,148 C410,165 418,168 425,168" fill="rgba(224,107,26,0.12)" stroke="#e06b1a" stroke-width="2"/>
+        <text x="340" y="185" text-anchor="middle" font-family="JetBrains Mono" font-size="9" fill="#7a6a4a">data speaks clearly</text>
+
+        <!-- = sign -->
+        <text x="460" y="100" text-anchor="middle" font-family="DM Serif Display" font-size="28" fill="rgba(122,184,122,0.5)" font-style="italic">=</text>
+
+        <!-- Panel 3: Posterior (compromise, narrowed) -->
+        <text x="572" y="18" text-anchor="middle" font-family="JetBrains Mono" font-size="10" fill="#7ab87a" letter-spacing=".1em">POSTERIOR P(θ|D)</text>
+        <line x1="492" y1="170" x2="655" y2="170" stroke="#3a3220" stroke-width="1.2" marker-end="url(#axa)"/>
+        <line x1="492" y1="170" x2="492" y2="28" stroke="#3a3220" stroke-width="1.2" marker-end="url(#axa)"/>
+        <!-- Posterior: compromise between prior and likelihood -->
+        <path d="M495,168 C510,166 525,155 540,135 C548,120 555,102 563,87 C568,76 572,64 578,58 C582,52 587,50 592,54 C597,60 601,74 607,92 C614,115 620,140 630,160 C637,168 645,168 650,168" fill="rgba(122,184,122,0.15)" stroke="#7ab87a" stroke-width="2.2"/>
+        <text x="572" y="185" text-anchor="middle" font-family="JetBrains Mono" font-size="9" fill="#7a6a4a">updated belief</text>
+        <!-- Shift annotation -->
+        <line x1="578" y1="58" x2="578" y2="170" stroke="#7ab87a" stroke-width="1" stroke-dasharray="4,3"/>
+        <text x="586" y="56" font-family="JetBrains Mono" font-size="9" fill="#7ab87a">mode</text>
+      </svg>
+    </div>
+    <div class="fig-cap">Fig 1. Bayesian update. Broad prior (uncertain) × peaked likelihood (data informative) = narrower posterior (updated belief). The posterior is a compromise: pulled toward the likelihood, regularized by the prior.</div>
+  </div>
+</div>
+
+<!-- ══ §04 ═════════════════════════════════════════════════ -->
+<div class="ch" id="c4">
+  <div class="ch-head">
+    <div class="ch-meta"><div class="ch-num">04</div><span class="ch-tag a">Prior</span></div>
+    <h2>The Prior Distribution</h2>
+    <div class="ch-sub">// informative vs diffuse · improper priors · Jeffreys prior · prior elicitation</div>
+  </div>
+
+  <p>The prior \(p(\theta)\) encodes everything we believe about \(\theta\) before seeing data. Choosing a prior is both the most criticized and most valuable part of Bayesian inference.</p>
+
+  <div class="sub">
+    <div class="sh a">Types of Priors</div>
+    <div class="conj-grid">
+      <div class="conj-card" style="border-top-color:var(--amber)">
+        <div class="conj-name" style="color:var(--amber)">Informative Prior</div>
+        <div class="conj-formula">θ ~ N(μ₀, σ₀²) with small σ₀</div>
+        <p>Encodes genuine domain knowledge. A medical expert's belief about drug efficacy. Strong priors require justification but can dramatically improve inference with small data.</p>
+      </div>
+      <div class="conj-card" style="border-top-color:var(--oran)">
+        <div class="conj-name" style="color:var(--oran)">Weakly Informative</div>
+        <div class="conj-formula">θ ~ N(0, 10²) or Cauchy(0,2.5)</div>
+        <p>Encodes soft constraints: "θ is probably in a reasonable range." Recommended default in modern Bayesian practice (Gelman et al.). Prevents wild extrapolations without being dogmatic.</p>
+      </div>
+      <div class="conj-card" style="border-top-color:var(--teal)">
+        <div class="conj-name" style="color:var(--teal)">Diffuse / Uninformative</div>
+        <div class="conj-formula">θ ~ Uniform(−∞, ∞)</div>
+        <p>Attempts to express "no information." Often improper (doesn't integrate to 1). Can cause issues: uniform prior on θ ≠ uniform prior on θ². The concept of "no information" is not well-defined.</p>
+      </div>
+      <div class="conj-card" style="border-top-color:var(--rose)">
+        <div class="conj-name" style="color:var(--rose)">Jeffreys Prior</div>
+        <div class="conj-formula">p(θ) ∝ √det(I(θ))</div>
+        <p>Invariant under reparametrization — the "objective" prior. Based on the Fisher information matrix \(\mathcal{I}(\theta)\). Gives the same inference regardless of how you parametrize the model.</p>
+      </div>
+      <div class="conj-card" style="border-top-color:var(--sky)">
+        <div class="conj-name" style="color:var(--sky)">Hierarchical Prior</div>
+        <div class="conj-formula">θᵢ ~ p(θ|φ), φ ~ p(φ)</div>
+        <p>Prior parameters (hyperparameters) are themselves given priors. Allows the data to determine how strong the regularization should be. Foundation of Bayesian hierarchical models.</p>
+      </div>
+      <div class="conj-card" style="border-top-color:var(--sage)">
+        <div class="conj-name" style="color:var(--sage)">Empirical Bayes</div>
+        <div class="conj-formula">φ̂ = argmax P(D|φ)</div>
+        <p>Estimate hyperparameters from the data itself. Not fully Bayesian (uses data twice) but computationally tractable. Used in Gaussian process ML and empirical Bayes methods.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="sub">
+    <div class="sh o">Priors as Regularization</div>
+    <div class="eq o">
+      <div class="eq-hdr"><span class="eq-title">Prior ↔ Regularizer Correspondence</span><span class="eq-badge">ML Connection</span></div>
+      <div class="eq-body">
+        \[\text{MAP objective:} \quad \log p(\theta|\mathcal{D}) = \underbrace{\log p(\mathcal{D}|\theta)}_{\text{log-likelihood}} + \underbrace{\log p(\theta)}_{\text{log-prior}} + \text{const}\]
+        \[\theta \sim \mathcal{N}(0, \sigma^2\mathbf{I}) \quad\Rightarrow\quad \log p(\theta) = -\frac{1}{2\sigma^2}\|\theta\|^2 + \text{const} \quad\Leftrightarrow\quad \text{L2 regularization}\]
+        \[\theta_j \sim \text{Laplace}(0, b) \quad\Rightarrow\quad \log p(\theta) = -\frac{1}{b}\|\theta\|_1 + \text{const} \quad\Leftrightarrow\quad \text{L1 regularization}\]
+        <div class="eq-note">Every regularized ML model is implicitly a MAP Bayesian model. The regularization strength λ equals 1/σ² (Gaussian) or 1/b (Laplace). The Bayesian framework reveals the probabilistic assumptions implicit in regularization choices.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ §05 ═════════════════════════════════════════════════ -->
+<div class="ch" id="c5">
+  <div class="ch-head">
+    <div class="ch-meta"><div class="ch-num">05</div><span class="ch-tag o">Likelihood</span></div>
+    <h2>The Likelihood Function</h2>
+    <div class="ch-sub">// P(data|θ) · as a function of θ · likelihood principle · sufficient statistics</div>
+  </div>
+
+  <p>The likelihood \(p(\mathcal{D}|\theta)\) is the same mathematical expression as the data distribution — but with a crucial conceptual inversion: we fix \(\mathcal{D}\) (observed) and vary \(\theta\). It is <em>not</em> a probability distribution over \(\theta\).</p>
+
+  <div class="eq o">
+    <div class="eq-hdr"><span class="eq-title">Likelihood for i.i.d. Data</span><span class="eq-badge">Standard Form</span></div>
+    <div class="eq-body">
+      \[\mathcal{L}(\theta) = p(\mathcal{D}|\theta) = \prod_{i=1}^{n}p(x_i|\theta)\]
+      \[\ell(\theta) = \log\mathcal{L}(\theta) = \sum_{i=1}^{n}\log p(x_i|\theta)\]
+      <div class="eq-note">The i.i.d. assumption converts the joint probability of all data into a product of individual probabilities. Log-likelihood converts this to a sum — numerically stable and analytically convenient. MLE maximizes ℓ(θ). Bayesian inference multiplies the likelihood by the prior.</div>
+    </div>
+  </div>
+
+  <div class="sub">
+    <div class="sh t">The Likelihood Principle</div>
+    <div class="lens t">
+      <div class="lens-glyph">L</div>
+      <div class="lens-content">
+        <div class="lens-title">The Likelihood Principle</div>
+        <p>All evidence about \(\theta\) from data \(\mathcal{D}\) is contained in the likelihood function \(\mathcal{L}(\theta) = p(\mathcal{D}|\theta)\). Two experiments with proportional likelihoods provide the same evidence about \(\theta\), even if the experimental designs were different. Bayesian inference automatically satisfies this principle; frequentist methods generally do not.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="sub">
+    <div class="sh a">Common Likelihood Functions in ML</div>
+    <div class="t-wrap">
+      <table>
+        <thead><tr><th>Data Type</th><th>Model</th><th>Likelihood \(p(y|\theta, x)\)</th><th>MLE Estimate</th></tr></thead>
+        <tbody>
+          <tr><td>Continuous target</td><td>\(y = f_\theta(x) + \epsilon, \epsilon\sim\mathcal{N}(0,\sigma^2)\)</td><td>\(\mathcal{N}(y; f_\theta(x), \sigma^2)\)</td><td>Minimize MSE</td></tr>
+          <tr><td>Binary classification</td><td>Logistic: \(p = \sigma(f_\theta(x))\)</td><td>\(\text{Bern}(y; \sigma(f_\theta(x)))\)</td><td>Minimize BCE</td></tr>
+          <tr><td>Multi-class</td><td>Softmax: \(\mathbf{p} = \text{softmax}(f_\theta(x))\)</td><td>\(\text{Cat}(y; \text{softmax}(f_\theta))\)</td><td>Minimize CCE</td></tr>
+          <tr><td>Count data</td><td>Poisson regression</td><td>\(\text{Poi}(y; \exp(f_\theta(x)))\)</td><td>Minimize neg log-Poisson</td></tr>
+          <tr><td>Coin flips</td><td>Bernoulli(\(p\))</td><td>\(p^k(1-p)^{n-k}\)</td><td>\(\hat{p} = k/n\)</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ══ §06 ═════════════════════════════════════════════════ -->
+<div class="ch" id="c6">
+  <div class="ch-head">
+    <div class="ch-meta"><div class="ch-num">06</div><span class="ch-tag m">Posterior</span></div>
+    <h2>The Posterior Distribution</h2>
+    <div class="ch-sub">// the complete answer · what it contains · point estimates vs full posterior</div>
+  </div>
+
+  <p>The posterior \(p(\theta|\mathcal{D})\) is the Bayesian answer to every question. It is not a single number — it is a complete probability distribution over parameters, encoding all we know after observing data.</p>
+
+  <div class="eq a">
+    <div class="eq-hdr"><span class="eq-title">The Posterior Contains Everything</span><span class="eq-badge">Complete Answer</span></div>
+    <div class="eq-body">
+      \[p(\theta|\mathcal{D}) = \frac{p(\mathcal{D}|\theta)\,p(\theta)}{p(\mathcal{D})}, \quad p(\mathcal{D}) = \int p(\mathcal{D}|\theta)\,p(\theta)\,d\theta\]
+      \[\text{Posterior mean: } \mathbb{E}[\theta|\mathcal{D}] = \int\theta\,p(\theta|\mathcal{D})\,d\theta\]
+      \[\text{Posterior mode (MAP): } \hat{\theta}_{\text{MAP}} = \arg\max_\theta p(\theta|\mathcal{D})\]
+      \[\text{Posterior variance: } \text{Var}[\theta|\mathcal{D}] = \mathbb{E}[\theta^2|\mathcal{D}] - (\mathbb{E}[\theta|\mathcal{D}])^2\]
+      \[\text{Credible interval: } P(\theta \in [a,b]|\mathcal{D}) = \int_a^b p(\theta|\mathcal{D})\,d\theta = 1-\alpha\]
+      <div class="eq-note">The 95% Bayesian credible interval [a,b] directly means "given the observed data, θ lies in [a,b] with probability 95%." This is what most people intuitively want from a confidence interval — but frequentist CIs don't actually mean this.</div>
+    </div>
+  </div>
+
+  <div class="lens a">
+    <div class="lens-glyph">∫</div>
+    <div class="lens-content">
+      <div class="lens-title">The Intractability Problem</div>
+      <p>The denominator \(p(\mathcal{D}) = \int p(\mathcal{D}|\theta)p(\theta)\,d\theta\) is a high-dimensional integral — analytically intractable for most models. This is the central computational challenge in Bayesian inference. Solutions: conjugate priors (exact, §08), Laplace approximation (Gaussian approximation), variational inference (§13), or MCMC sampling (§14).</p>
+    </div>
+  </div>
+</div>
+
+<!-- ══ §07 ═════════════════════════════════════════════════ -->
+<div class="ch" id="c7">
+  <div class="ch-head">
+    <div class="ch-meta"><div class="ch-num">07</div><span class="ch-tag r">Estimation</span></div>
+    <h2>MAP vs MLE — The Complete Comparison</h2>
+    <div class="ch-sub">// maximum a posteriori · regularization equivalence · when MAP = MLE · asymptotic behavior</div>
+  </div>
+
+  <div class="eq r">
+    <div class="eq-hdr"><span class="eq-title">MLE vs MAP — Side by Side</span><span class="eq-badge">Comparison</span></div>
+    <div class="eq-body">
+      \[\hat{\theta}_{\text{MLE}} = \arg\max_\theta\,p(\mathcal{D}|\theta) = \arg\max_\theta\,\ell(\theta)\]
+      \[\hat{\theta}_{\text{MAP}} = \arg\max_\theta\,p(\theta|\mathcal{D}) = \arg\max_\theta\,[\ell(\theta) + \log p(\theta)]\]
+      <div class="eq-note">MAP = MLE + log-prior. When the prior is uniform, MAP = MLE. MAP uses the mode of the posterior — a single point estimate that ignores the rest of the distribution. Full Bayesian inference keeps the entire posterior rather than collapsing it to a point.</div>
+    </div>
+  </div>
+
+  <div class="sub">
+    <div class="sh r">Asymptotic Equivalence</div>
+    <p>As \(n \to \infty\), both MLE and MAP converge to the true parameter (under regularity conditions). The prior is "washed out" by the likelihood:</p>
+    <div class="eq a">
+      <div class="eq-hdr"><span class="eq-title">Asymptotic Behavior</span><span class="eq-badge">Large n</span></div>
+      <div class="eq-body">
+        \[p(\theta|\mathcal{D}) \xrightarrow{n\to\infty} \mathcal{N}(\hat{\theta}_{\text{MLE}},\, \mathcal{I}_n(\hat{\theta})^{-1}) \quad\text{(Bernstein-von Mises theorem)}\]
+        <div class="eq-note">For large enough data, the posterior concentrates around the MLE regardless of the prior (as long as the prior assigns positive probability to a neighbourhood of θ*). The influence of the prior scales as O(1) while the likelihood scales as O(n). Prior choice matters most with small data.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="t-wrap">
+    <table>
+      <thead><tr><th>Property</th><th>MLE</th><th>MAP</th><th>Full Bayes</th></tr></thead>
+      <tbody>
+        <tr><td>Output</td><td>Point estimate \(\hat{\theta}\)</td><td>Point estimate \(\hat{\theta}_{\text{MAP}}\)</td><td>Full distribution \(p(\theta|\mathcal{D})\)</td></tr>
+        <tr><td>Prior used?</td><td>No (uniform implicit)</td><td>Yes (as regularizer)</td><td>Yes (fully)</td></tr>
+        <tr><td>Uncertainty quantified?</td><td>Via asymptotic SE</td><td>Partially (Laplace approx)</td><td>Fully</td></tr>
+        <tr><td>Regularization?</td><td>No</td><td>Yes (= log-prior)</td><td>Natural (averaging)</td></tr>
+        <tr><td>Overfitting risk?</td><td>High (large models)</td><td>Lower</td><td>Lowest (averaging)</td></tr>
+        <tr><td>Computational cost</td><td>Low</td><td>Low</td><td>High</td></tr>
+        <tr><td>Typical use</td><td>Deep learning, large data</td><td>Regularized ML models</td><td>Probabilistic ML, small data</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ══ §08 ═════════════════════════════════════════════════ -->
+<div class="ch" id="c8">
+  <div class="ch-head">
+    <div class="ch-meta"><div class="ch-num">08</div><span class="ch-tag t">Conjugacy</span></div>
+    <h2>Conjugate Priors — Full Treatment</h2>
+    <div class="ch-sub">// closed-form posteriors · exponential family · Beta-Binomial · Gaussian-Gaussian · full derivation</div>
+  </div>
+
+  <p>A prior \(p(\theta)\) is <span class="ha">conjugate</span> to a likelihood \(p(\mathcal{D}|\theta)\) if the posterior \(p(\theta|\mathcal{D})\) has the same distributional form as the prior. Conjugacy gives exact, closed-form posteriors — no approximation needed.</p>
+
+  <div class="sub">
+    <div class="sh t">Beta-Binomial: The Canonical Example</div>
+    <p>Model: \(n\) coin flips with \(k\) heads, unknown bias \(p\in[0,1]\).</p>
+
+    <div class="drv">
+      <div class="drv-hdr">// Full Beta-Binomial conjugate derivation</div>
+      <div class="drv-row">
+        <span class="dn t">Prior</span>
+        <div>
+          \[p \sim \text{Beta}(\alpha, \beta) \propto p^{\alpha-1}(1-p)^{\beta-1}\]
+          <div class="dnote">α = prior number of "successes", β = prior number of "failures". α=β=1 is the uniform prior. α=β=10 is a strong prior centered at 0.5.</div>
+        </div>
+      </div>
+      <div class="drv-row">
+        <span class="dn t">Like</span>
+        <div>
+          \[p(\mathcal{D}|p) = \binom{n}{k}p^k(1-p)^{n-k} \propto p^k(1-p)^{n-k}\]
+        </div>
+      </div>
+      <div class="drv-row">
+        <span class="dn t">Post</span>
+        <div>
+          \[p(p|\mathcal{D}) \propto p^{\alpha-1}(1-p)^{\beta-1} \cdot p^k(1-p)^{n-k} = p^{(\alpha+k)-1}(1-p)^{(\beta+n-k)-1}\]
+        </div>
+      </div>
+      <div class="drv-row">
+        <span class="dn t">Result</span>
+        <div>
+          \[\boxed{p|\mathcal{D} \sim \text{Beta}(\alpha+k,\; \beta+n-k)}\]
+          <div class="dnote">The posterior is a Beta with updated counts. The prior parameters α, β act as "pseudo-counts" of prior observations. This is exact — no approximation. Posterior mean = (α+k)/(α+β+n).</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="lens t">
+      <div class="lens-glyph">β</div>
+      <div class="lens-content">
+        <div class="lens-title">Interpreting the Beta Parameters</div>
+        <p>The Beta posterior \(\text{Beta}(\alpha+k, \beta+n-k)\) has a beautiful interpretation: \(\alpha+k\) is the total number of heads (prior pseudo-counts + observed heads); \(\beta+n-k\) is the total number of tails. The posterior mean \(\hat{p} = (\alpha+k)/(\alpha+\beta+n)\) interpolates between the prior mean \(\alpha/(\alpha+\beta)\) and the MLE \(k/n\), weighted by how many observations each is based on.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="sub">
+    <div class="sh a">Gaussian-Gaussian: Known Variance</div>
+    <p>Observe \(x_1,\ldots,x_n \overset{iid}{\sim} \mathcal{N}(\mu, \sigma^2)\) with known \(\sigma^2\), unknown \(\mu\).</p>
+
+    <div class="eq a">
+      <div class="eq-hdr"><span class="eq-title">Gaussian Conjugate Prior — Posterior</span><span class="eq-badge">Key Result</span></div>
+      <div class="eq-body">
+        \[\text{Prior: } \mu \sim \mathcal{N}(\mu_0, \tau_0^2)\]
+        \[\text{Posterior: } \mu|\mathbf{x} \sim \mathcal{N}(\mu_n, \tau_n^2)\]
+        \[\tau_n^2 = \left(\frac{1}{\tau_0^2} + \frac{n}{\sigma^2}\right)^{-1} \qquad \mu_n = \tau_n^2\left(\frac{\mu_0}{\tau_0^2} + \frac{n\bar{x}}{\sigma^2}\right)\]
+        <div class="eq-note">The posterior precision (1/τₙ²) = prior precision + data precision. The posterior mean is a precision-weighted average of prior mean μ₀ and sample mean x̄. As n→∞: μₙ → x̄ (data dominates). As τ₀²→∞ (diffuse prior): μₙ → x̄ and τₙ² → σ²/n (same as frequentist).</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sub">
+    <div class="sh o">The Exponential Family and Conjugacy</div>
+    <div class="eq o">
+      <div class="eq-hdr"><span class="eq-title">Exponential Family — Universal Conjugate Structure</span><span class="eq-badge">General Theory</span></div>
+      <div class="eq-body">
+        \[p(x|\eta) = h(x)\exp(\eta^T T(x) - A(\eta)) \quad\text{(exponential family)}\]
+        \[\text{Conjugate prior: } p(\eta|\chi,\nu) \propto \exp(\eta^T\chi - \nu A(\eta))\]
+        \[\text{Posterior: } p(\eta|\mathcal{D}) = p(\eta|\chi + \textstyle\sum_i T(x_i),\; \nu+n)\]
+        <div class="eq-note">Every exponential family distribution has a conjugate prior — and the posterior update is simply adding the sufficient statistics Σᵢ T(xᵢ) to the prior hyperparameter χ, and incrementing ν by n. This is why conjugacy and the exponential family are inseparably linked.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sub">
+    <div class="sh m">Complete Conjugate Prior Table</div>
+    <div class="t-wrap">
+      <table>
+        <thead><tr><th>Likelihood</th><th>Parameter</th><th>Conjugate Prior</th><th>Posterior Update</th></tr></thead>
+        <tbody>
+          <tr><td>Binomial\((n,p)\)</td><td>\(p\)</td><td>Beta\((\alpha,\beta)\)</td><td>Beta\((\alpha+k,\beta+n-k)\)</td></tr>
+          <tr><td>Poisson\((\lambda)\)</td><td>\(\lambda\)</td><td>Gamma\((\alpha,\beta)\)</td><td>Gamma\((\alpha+\sum x_i,\beta+n)\)</td></tr>
+          <tr><td>Normal\((\mu,\sigma^2)\) known \(\sigma^2\)</td><td>\(\mu\)</td><td>\(\mathcal{N}(\mu_0,\tau_0^2)\)</td><td>\(\mathcal{N}(\mu_n,\tau_n^2)\) as above</td></tr>
+          <tr><td>Normal\((\mu,\sigma^2)\) known \(\mu\)</td><td>\(\sigma^2\)</td><td>Inverse-Gamma\((\alpha,\beta)\)</td><td>IG\((\alpha+n/2, \beta+\frac{1}{2}\sum(x_i-\mu)^2)\)</td></tr>
+          <tr><td>Categorical\((\mathbf{p})\)</td><td>\(\mathbf{p}\)</td><td>Dirichlet\((\boldsymbol{\alpha})\)</td><td>Dirichlet\((\boldsymbol{\alpha}+\mathbf{n})\)</td></tr>
+          <tr><td>Multinomial\((n,\mathbf{p})\)</td><td>\(\mathbf{p}\)</td><td>Dirichlet\((\boldsymbol{\alpha})\)</td><td>Dirichlet\((\boldsymbol{\alpha}+\mathbf{n})\)</td></tr>
+          <tr><td>Normal (both unknown)</td><td>\((\mu,\sigma^2)\)</td><td>Normal-Inverse-Gamma</td><td>NIG with updated hyperparams</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ══ §09 ═════════════════════════════════════════════════ -->
+<div class="ch" id="c9">
+  <div class="ch-head">
+    <div class="ch-meta"><div class="ch-num">09</div><span class="ch-tag a">Sequential</span></div>
+    <h2>Bayesian Updating — Sequential Inference</h2>
+    <div class="ch-sub">// online learning · today's posterior is tomorrow's prior · order invariance</div>
+  </div>
+
+  <p>Bayesian inference is naturally sequential. Today's posterior becomes tomorrow's prior when new data arrives. This is the Bayesian version of online learning.</p>
+
+  <div class="eq a">
+    <div class="eq-hdr"><span class="eq-title">Sequential Bayesian Update</span><span class="eq-badge">Online Learning</span></div>
+    <div class="eq-body">
+      \[p(\theta|\mathcal{D}_{1:t}) \propto p(x_t|\theta)\cdot p(\theta|\mathcal{D}_{1:t-1})\]
+      \[\text{i.e.} \quad \underbrace{p(\theta|\mathcal{D}_{1:t})}_{\text{new posterior}} \propto \underbrace{p(x_t|\theta)}_{\text{new data}} \times \underbrace{p(\theta|\mathcal{D}_{1:t-1})}_{\text{previous posterior as new prior}}\]
+      <div class="eq-note">The result is identical whether you process data all at once (batch) or one point at a time (sequential). Bayesian inference is order-invariant: p(θ|x₁,x₂) = p(θ|x₂,x₁) for i.i.d. data. This is the mathematical basis for online/streaming Bayesian learning.</div>
+    </div>
+  </div>
+
+  <div class="lens o">
+    <div class="lens-glyph">→</div>
+    <div class="lens-content">
+      <div class="lens-title">Beta-Binomial Sequential Update</div>
+      <p>Start: \(\text{Beta}(1,1)\) (uniform prior). Observe H, T, H, H, T. Updates: \(\text{Beta}(2,1) \to \text{Beta}(2,2) \to \text{Beta}(3,2) \to \text{Beta}(4,2) \to \text{Beta}(4,3)\). Final posterior: \(\text{Beta}(4,3)\), same as if we'd processed all 5 flips at once with \(k=3, n=5\). The order doesn't matter; only the counts do.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ══ §10 ═════════════════════════════════════════════════ -->
+<div class="ch" id="c10">
+  <div class="ch-head">
+    <div class="ch-meta"><div class="ch-num">10</div><span class="ch-tag s">Prediction</span></div>
+    <h2>Predictive Distributions</h2>
+    <div class="ch-sub">// posterior predictive · marginalizing over parameters · uncertainty propagation</div>
+  </div>
+
+  <p>A key Bayesian advantage: instead of predicting with a single "best" parameter, we average over all parameter values weighted by their posterior probability. This naturally propagates parameter uncertainty into predictions.</p>
+
+  <div class="eq s">
+    <div class="eq-hdr"><span class="eq-title">Posterior Predictive Distribution</span><span class="eq-badge">Full Prediction</span></div>
+    <div class="eq-body">
+      \[p(x_{\text{new}}|\mathcal{D}) = \int p(x_{\text{new}}|\theta)\,p(\theta|\mathcal{D})\,d\theta = \mathbb{E}_{\theta|\mathcal{D}}\!\left[p(x_{\text{new}}|\theta)\right]\]
+      <div class="eq-note">The posterior predictive marginalizes over parameter uncertainty. It is always "wider" (more uncertain) than the prediction at any fixed θ. Compared to plugging in θ̂: plug-in gives p(x_new|θ̂), which can be overconfident, especially for small data or complex models.</div>
+    </div>
+  </div>
+
+  <div class="sub">
+    <div class="sh t">Prior Predictive Distribution</div>
+    <div class="eq t">
+      <div class="eq-hdr"><span class="eq-title">Prior Predictive</span><span class="eq-badge">Before Data</span></div>
+      <div class="eq-body">
+        \[p(x_{\text{new}}) = \int p(x_{\text{new}}|\theta)\,p(\theta)\,d\theta\]
+        <div class="eq-note">This is how the model thinks data looks before seeing any observations. Useful for prior predictive checking: simulate data from the prior predictive and compare to domain knowledge. If the prior predictive generates physically impossible values (e.g., negative ages, probabilities &gt; 1), your prior is wrong.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sub">
+    <div class="sh a">Beta-Binomial Predictive — Closed Form</div>
+    <div class="eq a">
+      <div class="eq-hdr"><span class="eq-title">Beta-Binomial Predictive Distribution</span><span class="eq-badge">Exact</span></div>
+      <div class="eq-body">
+        \[p(x_{\text{new}} = k | n_{\text{new}}, \mathcal{D}) = \binom{n_{\text{new}}}{k}\frac{B(\alpha+k,\beta+n_{\text{new}}-k)}{B(\alpha,\beta)}\]
+        <div class="eq-note">where B(·,·) is the Beta function and (α,β) are the posterior parameters after updating on D. This is the Beta-Binomial distribution. Its variance is larger than a pure Binomial with p̂ because it accounts for uncertainty in p itself — it is "over-dispersed."</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ §11 ═════════════════════════════════════════════════ -->
+<div class="ch" id="c11">
+  <div class="ch-head">
+    <div class="ch-meta"><div class="ch-num">11</div><span class="ch-tag m">Regression</span></div>
+    <h2>Bayesian Linear Regression</h2>
+    <div class="ch-sub">// Gaussian prior on weights · posterior over functions · predictive intervals · evidence</div>
+  </div>
+
+  <p>Bayesian linear regression replaces a single weight vector with a distribution over weight vectors. The result is a distribution over functions — and a predictive distribution that honestly quantifies uncertainty.</p>
+
+  <div class="eq a">
+    <div class="eq-hdr"><span class="eq-title">Bayesian Linear Regression — Setup</span><span class="eq-badge">Model</span></div>
+    <div class="eq-body">
+      \[\mathbf{y} = \mathbf{X}\mathbf{w} + \boldsymbol{\epsilon}, \quad \boldsymbol{\epsilon}\sim\mathcal{N}(\mathbf{0},\sigma^2\mathbf{I})\]
+      \[\text{Prior: }\mathbf{w}\sim\mathcal{N}(\mathbf{0}, \tau^2\mathbf{I})\]
+      \[\text{Posterior: }\mathbf{w}|\mathbf{y},\mathbf{X} \sim \mathcal{N}(\boldsymbol{\mu}_w, \boldsymbol{\Sigma}_w)\]
+      \[\boldsymbol{\Sigma}_w = \left(\frac{1}{\sigma^2}\mathbf{X}^T\mathbf{X} + \frac{1}{\tau^2}\mathbf{I}\right)^{-1} \qquad \boldsymbol{\mu}_w = \frac{1}{\sigma^2}\boldsymbol{\Sigma}_w\mathbf{X}^T\mathbf{y}\]
+      <div class="eq-note">Note: μ_w = (X^T X + (σ²/τ²) I)^{-1} X^T y — this is exactly the Ridge regression solution with λ = σ²/τ²! Bayesian linear regression with Gaussian prior is Ridge regression in disguise. The posterior mean is the MAP; the full posterior quantifies the uncertainty.</div>
+    </div>
+  </div>
+
+  <div class="sub">
+    <div class="sh t">Predictive Distribution for New Points</div>
+    <div class="eq t">
+      <div class="eq-hdr"><span class="eq-title">Bayesian Predictive Distribution</span><span class="eq-badge">Uncertainty-Aware</span></div>
+      <div class="eq-body">
+        \[p(y_*|\mathbf{x}_*, \mathbf{X}, \mathbf{y}) = \mathcal{N}(y_*;\; \boldsymbol{\mu}_w^T\mathbf{x}_*,\; \sigma^2 + \mathbf{x}_*^T\boldsymbol{\Sigma}_w\mathbf{x}_*)\]
+        <div class="eq-note">The predictive variance has two components: σ² (irreducible observation noise) and x_*^T Σ_w x_* (parameter uncertainty). The second term grows where the training data is sparse, giving wider uncertainty estimates in extrapolation regions. This is the key advantage over simply predicting with the MLE ŵ.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ §12 ═════════════════════════════════════════════════ -->
+<div class="ch" id="c12">
+  <div class="ch-head">
+    <div class="ch-meta"><div class="ch-num">12</div><span class="ch-tag r">Evidence</span></div>
+    <h2>The Evidence &amp; Bayesian Model Selection</h2>
+    <div class="ch-sub">// marginal likelihood · Bayes factors · Occam's razor · automatic complexity penalty</div>
+  </div>
+
+  <p>The marginal likelihood \(p(\mathcal{D}|M)\) — also called the <span class="hr2">evidence</span> — measures how well a model predicts the data on average over all parameter values. It automatically penalizes overly complex models without a separate regularization procedure.</p>
+
+  <div class="eq r">
+    <div class="eq-hdr"><span class="eq-title">Model Evidence and Bayes Factors</span><span class="eq-badge">Model Selection</span></div>
+    <div class="eq-body">
+      \[p(\mathcal{D}|M_k) = \int p(\mathcal{D}|\theta, M_k)\,p(\theta|M_k)\,d\theta\]
+      \[\text{Posterior over models: } P(M_k|\mathcal{D}) = \frac{p(\mathcal{D}|M_k)\,P(M_k)}{\sum_j p(\mathcal{D}|M_j)\,P(M_j)}\]
+      \[\text{Bayes Factor: } BF_{12} = \frac{p(\mathcal{D}|M_1)}{p(\mathcal{D}|M_2)}\]
+      <div class="eq-note">BF &gt; 10: strong evidence for M₁. BF &gt; 100: decisive. BF = 1: no evidence either way. Unlike AIC/BIC, Bayes factors are exact (given the model and prior) and don't require asymptotic approximations. The evidence automatically embodies Occam's razor: simpler models that fit almost as well have higher evidence.</div>
+    </div>
+  </div>
+
+  <div class="lens r">
+    <div class="lens-glyph">Ω</div>
+    <div class="lens-content">
+      <div class="lens-title">Automatic Occam's Razor</div>
+      <p>A complex model spreads its probability over a large hypothesis space — most of which the data doesn't look like. A simple model concentrates its probability on a smaller region. If the data falls in the simple model's region, the simple model wins on evidence. This is the Bayesian version of Occam's razor: <strong>given equal fit, prefer the simpler model</strong>. It falls out automatically from the mathematics, with no need to specify a penalty term.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ══ §13 ═════════════════════════════════════════════════ -->
+<div class="ch" id="c13">
+  <div class="ch-head">
+    <div class="ch-meta"><div class="ch-num">13</div><span class="ch-tag s">Approx. Inference</span></div>
+    <h2>Variational Inference &amp; the ELBO</h2>
+    <div class="ch-sub">// intractable posterior · approximation family · KL minimization · mean-field VI</div>
+  </div>
+
+  <p>When the posterior is intractable, variational inference (VI) approximates it with a tractable distribution \(q_\phi(\theta)\) from a chosen family, by minimizing KL divergence.</p>
+
+  <div class="eq s">
+    <div class="eq-hdr"><span class="eq-title">Variational Inference — ELBO</span><span class="eq-badge">VI Objective</span></div>
+    <div class="eq-body">
+      \[\text{Goal: find } q_\phi(\theta) \approx p(\theta|\mathcal{D})\]
+      \[\text{Minimize: } D_{\text{KL}}(q_\phi(\theta)\,\|\,p(\theta|\mathcal{D}))\]
+      \[\log p(\mathcal{D}) = \underbrace{\mathbb{E}_q[\log p(\mathcal{D},\theta) - \log q_\phi(\theta)]}_{\text{ELBO}(\phi)} + D_{\text{KL}}(q_\phi\,\|\,p(\theta|\mathcal{D}))\]
+      \[\therefore\quad \text{Maximizing ELBO} \equiv \text{Minimizing KL}(q_\phi \,\|\, p_{\text{posterior}})\]
+      <div class="eq-note">Since KL ≥ 0: ELBO ≤ log p(D). The ELBO is a lower bound on the log evidence. Maximizing the ELBO simultaneously (1) makes q fit the posterior well, and (2) gives a lower bound on log p(D) useful for model comparison. ELBO = E_q[log likelihood] − KL(q ‖ prior). Used in VAEs, topic models, and scalable Bayesian deep learning.</div>
+    </div>
+  </div>
+
+  <div class="sub">
+    <div class="sh a">Mean-Field Variational Inference</div>
+    <p>The most common VI approximation: assume the posterior factorizes fully:
+    \(q(\boldsymbol{\theta}) = \prod_j q_j(\theta_j)\). This ignores all posterior correlations but enables closed-form updates for exponential family models:</p>
+    <div class="eq a">
+      <div class="eq-hdr"><span class="eq-title">Mean-Field Update Equations</span><span class="eq-badge">CAVI</span></div>
+      <div class="eq-body">
+        \[\log q_j^*(\theta_j) = \mathbb{E}_{-j}\!\left[\log p(\boldsymbol{\theta}, \mathcal{D})\right] + \text{const}\]
+        <div class="eq-note">Coordinate Ascent VI (CAVI) updates each factor q_j in turn, holding others fixed. Guaranteed to converge to a local ELBO maximum. For conjugate exponential family models, the optimal q_j* is in the same family as the prior — giving closed-form updates.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ §14 ═════════════════════════════════════════════════ -->
+<div class="ch" id="c14">
+  <div class="ch-head">
+    <div class="ch-meta"><div class="ch-num">14</div><span class="ch-tag o">Sampling</span></div>
+    <h2>MCMC — Markov Chain Monte Carlo</h2>
+    <div class="ch-sub">// sampling from posteriors · Metropolis-Hastings · HMC · No-U-Turn Sampler</div>
+  </div>
+
+  <p>MCMC constructs a Markov chain whose stationary distribution is the target posterior \(p(\theta|\mathcal{D})\). By running the chain long enough, we obtain samples that (approximately) represent the posterior — without computing the intractable normalizing constant.</p>
+
+  <div class="sub">
+    <div class="sh o">Metropolis-Hastings Algorithm</div>
+    <div class="cb">
+      <div class="cb-bar"><div class="cb-dots"><div class="cb-dot" style="background:#ff5f57"></div><div class="cb-dot" style="background:#febc2e"></div><div class="cb-dot" style="background:#28c840"></div></div><div class="cb-lang">Metropolis-Hastings Sampler</div></div>
+      <div class="cb-body">
+<span class="cmt"># Target: p(θ|D) ∝ p(D|θ)·p(θ). Proposal: q(θ'|θ_curr)</span><br>
+<span class="var">θ_curr</span> = <span class="fn">initialize</span>() &nbsp;&nbsp;<span class="cmt"># start somewhere in parameter space</span><br>
+samples = []<br><br>
+<span class="kw">for</span> t <span class="kw">in</span> range(N_samples + N_burnin):<br>
+&nbsp;&nbsp;<span class="cmt"># Propose a new state</span><br>
+&nbsp;&nbsp;<span class="var">θ_prop</span> = q_sample(<span class="var">θ_curr</span>) &nbsp;&nbsp;<span class="cmt"># e.g., θ_curr + N(0, σ²)</span><br><br>
+&nbsp;&nbsp;<span class="cmt"># Compute acceptance ratio</span><br>
+&nbsp;&nbsp;<span class="var">log_ratio</span> = (log_p(<span class="var">θ_prop</span>) + log_q(<span class="var">θ_curr</span>|<span class="var">θ_prop</span>)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- log_p(<span class="var">θ_curr</span>) - log_q(<span class="var">θ_prop</span>|<span class="var">θ_curr</span>))<br>
+&nbsp;&nbsp;<span class="var">α</span> = min(<span class="num">1</span>, exp(<span class="var">log_ratio</span>)) &nbsp;&nbsp;<span class="cmt"># acceptance probability</span><br><br>
+&nbsp;&nbsp;<span class="cmt"># Accept or reject</span><br>
+&nbsp;&nbsp;<span class="kw">if</span> uniform(<span class="num">0</span>,<span class="num">1</span>) &lt; <span class="var">α</span>:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="var">θ_curr</span> = <span class="var">θ_prop</span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="cmt"># accept: move to proposed</span><br>
+&nbsp;&nbsp;<span class="cmt"># else: stay at θ_curr (reject)</span><br><br>
+&nbsp;&nbsp;<span class="kw">if</span> t &gt;= N_burnin:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;samples.<span class="fn">append</span>(<span class="var">θ_curr</span>)<br><br>
+<span class="cmt"># Use samples to estimate E[f(θ)|D] ≈ mean([f(s) for s in samples])</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="sub">
+    <div class="sh t">Hamiltonian Monte Carlo (HMC)</div>
+    <p>HMC exploits gradient information to make large, accepted proposals. It introduces auxiliary "momentum" variables and simulates Hamiltonian dynamics to traverse the posterior efficiently — avoiding the random walk behavior of MH.</p>
+    <div class="eq t">
+      <div class="eq-hdr"><span class="eq-title">HMC — Hamiltonian</span><span class="eq-badge">Gradient-Based MCMC</span></div>
+      <div class="eq-body">
+        \[H(\theta, \rho) = \underbrace{-\log p(\theta|\mathcal{D})}_{\text{potential energy } U(\theta)} + \underbrace{\frac{1}{2}\rho^T M^{-1}\rho}_{\text{kinetic energy}}\]
+        <div class="eq-note">θ is the position (parameter), ρ is the momentum (auxiliary). The joint distribution p(θ,ρ) ∝ exp(−H(θ,ρ)) has p(θ|D) as its marginal. Simulating Hamiltonian dynamics (leapfrog integrator) proposes new states that preserve H — giving very high acceptance rates and long-distance moves. The NUTS (No-U-Turn Sampler) automatically tunes the step size and trajectory length. Used in Stan and PyMC.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ §15 ═════════════════════════════════════════════════ -->
+<div class="ch" id="c15">
+  <div class="ch-head">
+    <div class="ch-meta"><div class="ch-num">15</div><span class="ch-tag s">Deep Learning</span></div>
+    <h2>Bayesian Neural Networks</h2>
+    <div class="ch-sub">// weight distributions · uncertainty · MC Dropout · deep ensembles · Laplace approx</div>
+  </div>
+
+  <p>Bayesian Neural Networks (BNNs) place priors over the weights \(\mathbf{W}\) of a neural network and compute (or approximate) the posterior \(p(\mathbf{W}|\mathcal{D})\). This gives uncertainty-aware predictions — crucial for safety-critical applications like medical diagnosis and autonomous driving.</p>
+
+  <div class="eq a">
+    <div class="eq-hdr"><span class="eq-title">Bayesian Neural Network Prediction</span><span class="eq-badge">Full Uncertainty</span></div>
+    <div class="eq-body">
+      \[p(y_*|\mathbf{x}_*, \mathcal{D}) = \int p(y_*|\mathbf{x}_*, \mathbf{W})\,p(\mathbf{W}|\mathcal{D})\,d\mathbf{W}\]
+      <div class="eq-note">This integral is intractable for neural networks — too many weights, non-conjugate. Approximations: (1) Laplace approximation: Gaussian centered at MAP estimate. (2) Mean-field VI (Bayes by Backprop). (3) MC Dropout: use dropout at test time as approximate posterior sampling. (4) Deep Ensembles: train K networks with different random seeds.</div>
+    </div>
+  </div>
+
+  <div class="sub">
+    <div class="sh o">MC Dropout — Practical BNNs</div>
+    <p>Gal &amp; Ghahramani (2016) showed that a neural network with dropout trained by minimizing cross-entropy is mathematically equivalent to approximate Bayesian inference in a deep Gaussian process. The approximation: apply dropout at test time and compute \(T\) stochastic forward passes:</p>
+    <div class="eq o">
+      <div class="eq-hdr"><span class="eq-title">MC Dropout Predictive</span><span class="eq-badge">Practical</span></div>
+      <div class="eq-body">
+        \[\hat{y}_* \approx \frac{1}{T}\sum_{t=1}^{T} f_{\hat{\mathbf{W}}_t}(\mathbf{x}_*), \quad \hat{\mathbf{W}}_t \sim q_{\text{dropout}}\]
+        \[\text{Epistemic uncertainty} \approx \text{Var}\!\left[\{f_{\hat{\mathbf{W}}_t}(\mathbf{x}_*)\}_{t=1}^T\right]\]
+        <div class="eq-note">Epistemic uncertainty (model uncertainty) is high where training data is sparse. Aleatoric uncertainty (data noise) is irreducible. MC Dropout separates these: the mean of the T predictions is the estimate; the variance captures epistemic uncertainty. Your XAI chest X-ray work could directly use MC Dropout to produce uncertainty maps alongside GradCAM.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ §16 ═════════════════════════════════════════════════ -->
+<div class="ch" id="c16">
+  <div class="ch-head">
+    <div class="ch-meta"><div class="ch-num">16</div><span class="ch-tag a">Mental Model</span></div>
+    <h2>The Complete Mental Model</h2>
+    <div class="ch-sub">// everything connected · one framework · the probabilistic view of ML</div>
+  </div>
+
+  <div class="fig">
+    <div class="fig-box">
+      <svg viewBox="0 0 720 580" xmlns="http://www.w3.org/2000/svg" style="max-width:720px;width:100%">
+        <rect width="720" height="580" fill="#0b0906"/>
+        <defs>
+          <marker id="ama" markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto"><path d="M0,0 L0,5 L7,2.5z" fill="#3a3220"/></marker>
+          <marker id="amg" markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto"><path d="M0,0 L0,5 L7,2.5z" fill="#f0a500"/></marker>
+          <marker id="amo" markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto"><path d="M0,0 L0,5 L7,2.5z" fill="#e06b1a"/></marker>
+          <marker id="amt" markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto"><path d="M0,0 L0,5 L7,2.5z" fill="#2eb8a3"/></marker>
+          <marker id="amm" markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto"><path d="M0,0 L0,5 L7,2.5z" fill="#7ab87a"/></marker>
+        </defs>
+        <text x="360" y="22" text-anchor="middle" font-family="JetBrains Mono" font-size="9" fill="#2e2818" letter-spacing=".28em">BAYESIAN ML — COMPLETE MAP</text>
+
+        <!-- Core: Bayes' Theorem -->
+        <rect x="230" y="40" width="260" height="62" rx="8" fill="#1a1610" stroke="#f0a500" stroke-width="2"/>
+        <text x="360" y="65" text-anchor="middle" font-family="DM Serif Display" font-size="16" fill="#f0a500" font-style="italic">P(θ|D) ∝ P(D|θ)·P(θ)</text>
+        <text x="360" y="86" text-anchor="middle" font-family="JetBrains Mono" font-size="8.5" fill="#7a6a4a">prior × likelihood = posterior × evidence</text>
+
+        <!-- Three inputs -->
+        <rect x="28" y="156" width="175" height="52" rx="6" fill="#120e08" stroke="#f0a500" stroke-width="1.5"/>
+        <text x="115" y="177" text-anchor="middle" font-family="JetBrains Mono" font-size="10" fill="#f0a500" font-weight="600">PRIOR P(θ)</text>
+        <text x="115" y="195" text-anchor="middle" font-family="JetBrains Mono" font-size="8.5" fill="#7a6a4a">beliefs before data</text>
+
+        <rect x="272" y="156" width="175" height="52" rx="6" fill="#120e08" stroke="#e06b1a" stroke-width="1.5"/>
+        <text x="360" y="177" text-anchor="middle" font-family="JetBrains Mono" font-size="10" fill="#e06b1a" font-weight="600">LIKELIHOOD P(D|θ)</text>
+        <text x="360" y="195" text-anchor="middle" font-family="JetBrains Mono" font-size="8.5" fill="#7a6a4a">how well θ explains data</text>
+
+        <rect x="516" y="156" width="175" height="52" rx="6" fill="#120e08" stroke="#2eb8a3" stroke-width="1.5"/>
+        <text x="603" y="177" text-anchor="middle" font-family="JetBrains Mono" font-size="10" fill="#2eb8a3" font-weight="600">EVIDENCE P(D)</text>
+        <text x="603" y="195" text-anchor="middle" font-family="JetBrains Mono" font-size="8.5" fill="#7a6a4a">normalizer · model selection</text>
+
+        <!-- Arrows from core to three -->
+        <line x1="310" y1="102" x2="170" y2="154" stroke="#3a3220" stroke-width="1.2" stroke-dasharray="4,3" marker-end="url(#ama)"/>
+        <line x1="360" y1="102" x2="360" y2="154" stroke="#3a3220" stroke-width="1.2" stroke-dasharray="4,3" marker-end="url(#ama)"/>
+        <line x1="410" y1="102" x2="550" y2="154" stroke="#3a3220" stroke-width="1.2" stroke-dasharray="4,3" marker-end="url(#ama)"/>
+
+        <!-- Posterior box -->
+        <rect x="240" y="262" width="240" height="52" rx="6" fill="#120e08" stroke="#7ab87a" stroke-width="2"/>
+        <text x="360" y="283" text-anchor="middle" font-family="JetBrains Mono" font-size="10" fill="#7ab87a" font-weight="600">POSTERIOR P(θ|D)</text>
+        <text x="360" y="301" text-anchor="middle" font-family="JetBrains Mono" font-size="8.5" fill="#7a6a4a">full updated beliefs · use everything</text>
+
+        <line x1="360" y1="208" x2="360" y2="260" stroke="#7ab87a" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#amm)"/>
+
+        <!-- Row 3: Inference methods -->
+        <rect x="20" y="368" width="165" height="52" rx="5" fill="#120e08" stroke="#f0a500" stroke-width="1.2"/>
+        <text x="102" y="388" text-anchor="middle" font-family="JetBrains Mono" font-size="9" fill="#f0a500">MAP ESTIMATE</text>
+        <text x="102" y="406" text-anchor="middle" font-family="JetBrains Mono" font-size="8.5" fill="#7a6a4a">argmax posterior</text>
+
+        <rect x="197" y="368" width="165" height="52" rx="5" fill="#120e08" stroke="#e06b1a" stroke-width="1.2"/>
+        <text x="280" y="388" text-anchor="middle" font-family="JetBrains Mono" font-size="9" fill="#e06b1a">VARIATIONAL</text>
+        <text x="280" y="406" text-anchor="middle" font-family="JetBrains Mono" font-size="8.5" fill="#7a6a4a">ELBO · q(θ) ≈ p(θ|D)</text>
+
+        <rect x="374" y="368" width="165" height="52" rx="5" fill="#120e08" stroke="#2eb8a3" stroke-width="1.2"/>
+        <text x="457" y="388" text-anchor="middle" font-family="JetBrains Mono" font-size="9" fill="#2eb8a3">MCMC SAMPLING</text>
+        <text x="457" y="406" text-anchor="middle" font-family="JetBrains Mono" font-size="8.5" fill="#7a6a4a">HMC · NUTS · exact</text>
+
+        <rect x="551" y="368" width="165" height="52" rx="5" fill="#120e08" stroke="#7ab87a" stroke-width="1.2"/>
+        <text x="634" y="388" text-anchor="middle" font-family="JetBrains Mono" font-size="9" fill="#7ab87a">CONJUGATE</text>
+        <text x="634" y="406" text-anchor="middle" font-family="JetBrains Mono" font-size="8.5" fill="#7a6a4a">closed form · exact</text>
+
+        <!-- Arrows from posterior to methods -->
+        <line x1="320" y1="314" x2="148" y2="366" stroke="#3a3220" stroke-width="1" stroke-dasharray="3,2" marker-end="url(#ama)"/>
+        <line x1="345" y1="314" x2="295" y2="366" stroke="#3a3220" stroke-width="1" stroke-dasharray="3,2" marker-end="url(#ama)"/>
+        <line x1="375" y1="314" x2="435" y2="366" stroke="#3a3220" stroke-width="1" stroke-dasharray="3,2" marker-end="url(#ama)"/>
+        <line x1="400" y1="314" x2="594" y2="366" stroke="#3a3220" stroke-width="1" stroke-dasharray="3,2" marker-end="url(#ama)"/>
+
+        <!-- Bottom: Applications / Connections -->
+        <rect x="20" y="462" width="680" height="100" rx="6" fill="#0f0b07" stroke="#2e2818" stroke-width="1"/>
+        <text x="360" y="481" text-anchor="middle" font-family="JetBrains Mono" font-size="8.5" fill="#2e2818" letter-spacing=".2em">ML CONNECTIONS</text>
+        <text x="50" y="502" font-family="JetBrains Mono" font-size="8.5" fill="#f0a500">L2 reg = Gaussian prior</text>
+        <text x="230" y="502" font-family="JetBrains Mono" font-size="8.5" fill="#e06b1a">L1 reg = Laplace prior</text>
+        <text x="410" y="502" font-family="JetBrains Mono" font-size="8.5" fill="#2eb8a3">Ridge = MAP Bayes LR</text>
+        <text x="575" y="502" font-family="JetBrains Mono" font-size="8.5" fill="#7ab87a">VAE ELBO = VI bound</text>
+        <text x="50" y="524" font-family="JetBrains Mono" font-size="8.5" fill="#5ba8d4">Dropout ≈ VI posterior</text>
+        <text x="230" y="524" font-family="JetBrains Mono" font-size="8.5" fill="#f0a500">Ensembles ≈ posterior</text>
+        <text x="410" y="524" font-family="JetBrains Mono" font-size="8.5" fill="#e06b1a">GP = Bayes nonparametric</text>
+        <text x="575" y="524" font-family="JetBrains Mono" font-size="8.5" fill="#2eb8a3">BNN = VI over weights</text>
+        <text x="50" y="546" font-family="JetBrains Mono" font-size="8.5" fill="#7a6a4a">Bayesian opt. → acquisition fn uses posterior</text>
+        <text x="350" y="546" font-family="JetBrains Mono" font-size="8.5" fill="#7a6a4a">A/B testing → Bayesian update on p(best)</text>
+      </svg>
+    </div>
+    <div class="fig-cap">Fig 2. Complete Bayesian ML mental map — from Bayes' theorem through inference methods to every ML connection.</div>
+  </div>
+
+  <p style="margin-top:clamp(22px,4vw,36px)">The complete unified thread:</p>
+
+  <ol style="padding-left:clamp(16px,3vw,24px);line-height:2.6;font-size:clamp(14px,1.9vw,16px)">
+    <li><strong>Probability is belief.</strong> Parameters are uncertain quantities with distributions, not fixed unknowns. Every uncertain quantity — parameters, predictions, model structure — gets a probability.</li>
+    <li><strong>Bayes' theorem is the update rule:</strong> \(p(\theta|\mathcal{D}) \propto p(\mathcal{D}|\theta)\,p(\theta)\). Prior belief times likelihood equals posterior belief (up to normalization). This is the only learning rule consistent with probability theory.</li>
+    <li><strong>The prior encodes knowledge.</strong> Gaussian prior = L2 regularization. Laplace prior = L1 regularization. Horseshoe prior = sparsity-inducing. The Bayesian framework reveals what regularization really is: a prior on the parameters.</li>
+    <li><strong>Conjugate priors</strong> give exact closed-form posteriors. Beta-Binomial. Gaussian-Gaussian. Dirichlet-Categorical. These arise from the exponential family structure and make sequential updating trivially simple.</li>
+    <li><strong>MAP estimation</strong> is the mode of the posterior — equivalent to regularized maximum likelihood. Full Bayesian inference keeps the entire posterior, propagating uncertainty into every downstream quantity.</li>
+    <li><strong>Predictive distributions</strong> integrate out parameter uncertainty: \(p(y_*|\mathcal{D}) = \int p(y_*|\theta)p(\theta|\mathcal{D})\,d\theta\). This gives honest uncertainty — wider where data is sparse.</li>
+    <li><strong>The evidence</strong> \(p(\mathcal{D}|M)\) measures how well a model predicts data on average. Maximizing it for model selection automatically implements Occam's razor without a penalty term.</li>
+    <li><strong>When exact inference fails:</strong> Variational inference (minimize KL, maximize ELBO), MCMC (Metropolis-Hastings, HMC/NUTS), Laplace approximation, or MC Dropout. Every deep learning trick has a Bayesian interpretation.</li>
+  </ol>
+
+  <div class="thm" style="margin-top:clamp(24px,4vw,40px)">
+    <div class="thm-badge">The Probabilistic View of Machine Learning</div>
+    <p>Every ML model is implicitly a probabilistic model — of the data-generating process, of the noise, of the parameters. Ridge regression is MAP inference with a Gaussian prior. L1 regularization uses a Laplace prior. Dropout is approximate variational inference. Deep ensembles approximate the posterior predictive. The VAE ELBO is the Bayesian evidence lower bound. Understanding the Bayesian framework doesn't add a separate layer of complexity to ML — it reveals the probabilistic assumptions already embedded in every algorithm you've used, and gives you the tools to reason about them explicitly, improve them, and quantify the uncertainty they produce.</p>
+  </div>
+</div>
+
+</div><!-- /page -->
+
+  <!-- ═══ FOOTER ═══ -->
+  <footer class="site-footer">
+    <div class="footer-content">
+      <div class="footer-main">
+        <div class="footer-left">
+          <p class="copyright">&copy; 2025 Shahid Ul Islam</p>
+          <p class="footer-meta">Data Scientist & AI Developer</p>
+        </div>
+        <div class="footer-right">
+          <div class="footer-links">
+            <a href="#" class="back-to-top">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="12" y1="19" x2="12" y2="5"></line>
+                <polyline points="5 12 12 5 19 12"></polyline>
+              </svg>
+              <span>Back to Top</span>
+            </a>
+            <div class="social-links11">
+              <a href="https://github.com/Khanz9664" target="_blank" class="social-link11">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path
+                    d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22" />
+                </svg>
+              </a>
+              <a href="https://linkedin.com/in/shahid-ul-islam-13650998" target="_blank" class="social-link11">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" />
+                  <rect x="2" y="9" width="4" height="12" />
+                  <circle cx="4" cy="4" r="2" />
+                </svg>
+              </a>
+              <a href="mailto:shahid9664@gmail.com" class="social-link11">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
+                  <polyline points="22,6 12,13 2,6" />
+                </svg>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="made-with">
+      <p>Crafted with <span class="heart-icon">❤️</span> By Shahid</p>
+    </div>
+  </footer>
+
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js"></script>
+</body>
+</html>

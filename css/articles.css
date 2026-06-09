@@ -677,7 +677,7 @@
     width: 100%;
     height: 100%;
     color: var(--accent-orange, #f0a500);
-    filter: drop-shadow(0 0 10px rgba(240, 165, 0, 0.4));
+    filter: drop-shadow(0 0 10px rgb(240 165 0 / 40%));
 }
 
 .visual-bayesian .v-prior {

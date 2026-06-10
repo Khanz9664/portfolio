@@ -663,6 +663,42 @@
     50% { transform: translateY(-5px); }
 }
 
+/* Bayesian Visual */
+.visual-bayesian .v-bayesian-wrapper {
+    position: absolute;
+    width: 250px;
+    height: 150px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.visual-bayesian .v-bayesian-svg {
+    width: 100%;
+    height: 100%;
+    color: var(--accent-orange, #f0a500);
+    filter: drop-shadow(0 0 10px rgb(240 165 0 / 40%));
+}
+
+.visual-bayesian .v-prior {
+    stroke-dasharray: 300;
+    animation: drawBayesian 4s infinite alternate ease-in-out;
+}
+
+.visual-bayesian .v-posterior {
+    stroke-dasharray: 250;
+    animation: drawBayesian 4s infinite alternate-reverse ease-in-out;
+}
+
+.visual-bayesian .v-posterior-dot {
+    animation: pulseDot 4s infinite alternate ease-in-out;
+}
+
+@keyframes drawBayesian {
+    0% { stroke-dashoffset: 300; }
+    100% { stroke-dashoffset: 0; }
+}
+
 .card-image-overlay {
     position: absolute;
     top: 0;

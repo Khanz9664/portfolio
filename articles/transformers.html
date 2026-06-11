@@ -1,0 +1,1561 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Transformers | Shahid Ul Islam</title>
+  <meta name="description" content="Attention Is All You Need" />
+  <meta name="author" content="Shahid Ul Islam" />
+  <link rel="icon" type="image/png" href="../img/plogo.png" />
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=JetBrains+Mono:wght@300;400;600;700&family=Lora:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="css/transformers.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <link rel="stylesheet" href="../css/variables.css" />
+  <link rel="stylesheet" href="../css/navigation.css" />
+  <link rel="stylesheet" href="../css/footer.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <script defer src="../js/common.js"></script>
+
+</head>
+
+<body>
+  <div class="top-bar">
+    <div class="logo">
+      <img src="../img/plogo.png" alt="Personal Logo" class="logo-icon">
+      <span class="logo-text">SHAHID<span class="logo-accent">||</span>Portfolio</span>
+    </div>
+    <nav class="nav-container">
+      <ul class="nav-links">
+        <li><a href="../index.html" class="nav-link">.Home</a></li>
+        <li><a href="../about.html" class="nav-link">.About</a></li>
+        <li><a href="../skills.html" class="nav-link">.Skills</a></li>
+        <li><a href="../projects.html" class="nav-link">.Projects</a></li>
+        <li><a href="../contact.html" class="nav-link">.Contact</a></li>
+        <li><a href="../articles.html" class="nav-link">.Articles</a></li>
+      </ul>
+      <div class="menu-toggle">
+        <div class="hamburger"></div>
+      </div>
+    </nav>
+  </div>
+
+
+  <!-- ══ HERO ════════════════════════════════════════════════ -->
+  <div class="hero">
+    <div class="hero-inner">
+      <div>
+        <div class="hero-eyebrow">
+          <div class="hero-eyebrow-bar"></div>Deep Learning · Sequence Modeling
+        </div>
+        <h1>
+          <span class="dim">Attention Is All You Need</span>
+          <span class="hi">Transformers</span>
+          from First Principles
+        </h1>
+        <p class="hero-sub">
+          From the failure modes of RNNs, through the mathematical derivation
+          of attention, to multi-head attention, positional encoding, and the
+          complete encoder-decoder architecture. Every equation, every design choice.
+        </p>
+        <div class="hero-chips">
+          <span class="hchip b">Why RNNs Fail</span>
+          <span class="hchip c">Q · K · V Derivation</span>
+          <span class="hchip v">Scaled Dot-Product</span>
+          <span class="hchip e">Multi-Head Attention</span>
+          <span class="hchip a">Positional Encoding</span>
+          <span class="hchip b">Encoder-Decoder</span>
+          <span class="hchip c">Self-Attention O(n²)</span>
+          <span class="hchip v">Layer Norm · FFN</span>
+          <span class="hchip e">BERT vs GPT</span>
+          <span class="hchip a">Vision Transformers</span>
+        </div>
+      </div>
+      <!-- Attention matrix decoration -->
+      <div style="flex-shrink:0">
+        <svg width="clamp(180px,22vw,280px)" height="clamp(180px,22vw,280px)" viewBox="0 0 260 260"
+          xmlns="http://www.w3.org/2000/svg" style="display:block">
+          <defs>
+            <radialGradient id="cellg" cx="50%" cy="50%" r="50%">
+              <stop offset="0%" stop-color="#0ea5e9" stop-opacity=".9" />
+              <stop offset="100%" stop-color="#0ea5e9" stop-opacity=".1" />
+            </radialGradient>
+          </defs>
+          <!-- Attention matrix cells - 5x5 grid -->
+          <!-- Row labels (tokens) -->
+          <g font-family="IBM Plex Mono" font-size="9" fill="rgba(14,165,233,0.5)">
+            <text x="20" y="65">The</text><text x="20" y="97">cat</text>
+            <text x="20" y="129">sat</text><text x="20" y="161">on</text>
+            <text x="20" y="193">mat</text>
+          </g>
+          <!-- Column labels -->
+          <g font-family="IBM Plex Mono" font-size="9" fill="rgba(14,165,233,0.5)">
+            <text x="57" y="28" transform="rotate(-45 57 28)">The</text>
+            <text x="89" y="28" transform="rotate(-45 89 28)">cat</text>
+            <text x="121" y="28" transform="rotate(-45 121 28)">sat</text>
+            <text x="153" y="28" transform="rotate(-45 153 28)">on</text>
+            <text x="185" y="28" transform="rotate(-45 185 28)">mat</text>
+          </g>
+          <!-- Attention weights as colored rectangles -->
+          <!-- Row 1: "The" attends to: -->
+          <rect x="48" y="47" width="30" height="30" rx="3" fill="#0ea5e9" opacity=".7" />
+          <rect x="80" y="47" width="30" height="30" rx="3" fill="#0ea5e9" opacity=".4" />
+          <rect x="112" y="47" width="30" height="30" rx="3" fill="#0ea5e9" opacity=".1" />
+          <rect x="144" y="47" width="30" height="30" rx="3" fill="#0ea5e9" opacity=".05" />
+          <rect x="176" y="47" width="30" height="30" rx="3" fill="#0ea5e9" opacity=".2" />
+          <!-- Row 2: "cat" attends heavily to "mat" -->
+          <rect x="48" y="79" width="30" height="30" rx="3" fill="#8b5cf6" opacity=".2" />
+          <rect x="80" y="79" width="30" height="30" rx="3" fill="#8b5cf6" opacity=".7" />
+          <rect x="112" y="79" width="30" height="30" rx="3" fill="#8b5cf6" opacity=".15" />
+          <rect x="144" y="79" width="30" height="30" rx="3" fill="#8b5cf6" opacity=".05" />
+          <rect x="176" y="79" width="30" height="30" rx="3" fill="#f43f5e" opacity=".6" />
+          <!-- Row 3: "sat" -->
+          <rect x="48" y="111" width="30" height="30" rx="3" fill="#0ea5e9" opacity=".1" />
+          <rect x="80" y="111" width="30" height="30" rx="3" fill="#0ea5e9" opacity=".3" />
+          <rect x="112" y="111" width="30" height="30" rx="3" fill="#10b981" opacity=".7" />
+          <rect x="144" y="111" width="30" height="30" rx="3" fill="#10b981" opacity=".4" />
+          <rect x="176" y="111" width="30" height="30" rx="3" fill="#10b981" opacity=".15" />
+          <!-- Row 4: "on" -->
+          <rect x="48" y="143" width="30" height="30" rx="3" fill="#0ea5e9" opacity=".05" />
+          <rect x="80" y="143" width="30" height="30" rx="3" fill="#0ea5e9" opacity=".1" />
+          <rect x="112" y="143" width="30" height="30" rx="3" fill="#f59e0b" opacity=".3" />
+          <rect x="144" y="143" width="30" height="30" rx="3" fill="#f59e0b" opacity=".7" />
+          <rect x="176" y="143" width="30" height="30" rx="3" fill="#f59e0b" opacity=".5" />
+          <!-- Row 5: "mat" -->
+          <rect x="48" y="175" width="30" height="30" rx="3" fill="#8b5cf6" opacity=".15" />
+          <rect x="80" y="175" width="30" height="30" rx="3" fill="#f43f5e" opacity=".5" />
+          <rect x="112" y="175" width="30" height="30" rx="3" fill="#0ea5e9" opacity=".1" />
+          <rect x="144" y="175" width="30" height="30" rx="3" fill="#10b981" opacity=".2" />
+          <rect x="176" y="175" width="30" height="30" rx="3" fill="#8b5cf6" opacity=".7" />
+          <!-- Grid lines -->
+          <g stroke="rgba(14,165,233,0.06)" stroke-width="1">
+            <line x1="48" y1="47" x2="48" y2="205" />
+            <line x1="80" y1="47" x2="80" y2="205" />
+            <line x1="112" y1="47" x2="112" y2="205" />
+            <line x1="144" y1="47" x2="144" y2="205" />
+            <line x1="176" y1="47" x2="176" y2="205" />
+            <line x1="206" y1="47" x2="206" y2="205" />
+            <line x1="48" y1="47" x2="206" y2="47" />
+            <line x1="48" y1="79" x2="206" y2="79" />
+            <line x1="48" y1="111" x2="206" y2="111" />
+            <line x1="48" y1="143" x2="206" y2="143" />
+            <line x1="48" y1="175" x2="206" y2="175" />
+            <line x1="48" y1="205" x2="206" y2="205" />
+          </g>
+          <text x="130" y="250" text-anchor="middle" font-family="IBM Plex Mono" font-size="9"
+            fill="rgba(14,165,233,0.35)" letter-spacing=".08em">attention matrix</text>
+        </svg>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ NAV BAR ═══════════════════════════════════════════ -->
+  <div class="nav-bar">
+    <div class="nav-inner">
+      <div class="nav-item"><a href="#c1"><span class="nav-num">01/</span>RNN Failures</a></div>
+      <div class="nav-item"><a href="#c2"><span class="nav-num">02/</span>Attention Intuition</a></div>
+      <div class="nav-item"><a href="#c3"><span class="nav-num">03/</span>Q·K·V Derivation</a></div>
+      <div class="nav-item"><a href="#c4"><span class="nav-num">04/</span>Scaled Dot-Product</a></div>
+      <div class="nav-item"><a href="#c5"><span class="nav-num">05/</span>Multi-Head Attention</a></div>
+      <div class="nav-item"><a href="#c6"><span class="nav-num">06/</span>Positional Encoding</a></div>
+      <div class="nav-item"><a href="#c7"><span class="nav-num">07/</span>Transformer Block</a></div>
+      <div class="nav-item"><a href="#c8"><span class="nav-num">08/</span>Encoder-Decoder</a></div>
+      <div class="nav-item"><a href="#c9"><span class="nav-num">09/</span>Complexity Analysis</a></div>
+      <div class="nav-item"><a href="#c10"><span class="nav-num">10/</span>Why It Works</a></div>
+      <div class="nav-item"><a href="#c11"><span class="nav-num">11/</span>BERT vs GPT</a></div>
+      <div class="nav-item"><a href="#c12"><span class="nav-num">12/</span>Vision Transformers</a></div>
+      <div class="nav-item"><a href="#c13"><span class="nav-num">13/</span>Mental Model</a></div>
+    </div>
+  </div>
+
+  <div class="page">
+
+    <!-- ══ §01 ═════════════════════════════════════════════════ -->
+    <div class="ch" id="c1">
+      <div class="ch-head">
+        <div class="ch-meta">
+          <div class="ch-num">01</div><span class="ch-label c">The Problem</span>
+        </div>
+        <h2>Why RNNs Struggle</h2>
+        <div class="ch-sub">// sequential bottleneck · vanishing gradients · long-range dependencies · the information
+          bottleneck</div>
+      </div>
+
+      <p>To understand why transformers are revolutionary, you must first understand what they replaced — and why RNNs
+        fundamentally cannot handle long-range dependencies, no matter how large you make them.</p>
+
+      <div class="sub">
+        <div class="sh c">The Sequential Bottleneck</div>
+        <p>An RNN processes a sequence one token at a time, updating a hidden state \(\mathbf{h}_t\):</p>
+
+        <div class="eq c">
+          <div class="eq-top"><span class="eq-name">RNN Hidden State Update</span><span class="eq-tag">Recurrent</span>
+          </div>
+          <div class="eq-body">
+            \[\mathbf{h}_t = f(\mathbf{W}_h\mathbf{h}_{t-1} + \mathbf{W}_x\mathbf{x}_t + \mathbf{b})\]
+            <div class="eq-note">To compute h_t, you need h_{t-1}. To compute h_{t-1}, you need h_{t-2}. This creates an
+              irreducible sequential dependency: you cannot compute h_t for all t simultaneously. This makes RNNs
+              fundamentally un-parallelizable on GPUs — and GPUs are only useful for parallel computation.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="sub">
+        <div class="sh b">Vanishing Gradients Through Time</div>
+        <p>To learn long-range dependencies, the gradient must flow backward through hundreds of timesteps. Each step
+          multiplies by \(\mathbf{W}_h\) and \(f'(\cdot)\):</p>
+
+        <div class="eq b">
+          <div class="eq-top"><span class="eq-name">Gradient Flow Through Time — BPTT</span><span
+              class="eq-tag">Vanishing</span></div>
+          <div class="eq-body">
+            \[\frac{\partial \mathcal{L}}{\partial \mathbf{h}_1} = \frac{\partial \mathcal{L}}{\partial
+            \mathbf{h}_T}\prod_{t=2}^{T}\frac{\partial \mathbf{h}_t}{\partial \mathbf{h}_{t-1}} = \frac{\partial
+            \mathcal{L}}{\partial \mathbf{h}_T}\prod_{t=2}^{T}\mathbf{W}_h^T\text{diag}(f'(\mathbf{h}_{t-1}))\]
+            <div class="eq-note">If the spectral radius ρ(W_h) &lt; 1: the product of T matrices → 0 exponentially fast
+              (vanishing). If ρ(W_h) &gt; 1: → ∞ exponentially fast (exploding). Neither allows the gradient to carry
+              signal across T=1000 steps. LSTMs and GRUs mitigate but don't eliminate this — they still process
+              sequentially.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="sub">
+        <div class="sh c">The Information Bottleneck</div>
+        <p>For seq2seq tasks (translation, summarization), an encoder RNN compresses the <em>entire</em> source sentence
+          into a single fixed-size vector \(\mathbf{h}_T\). A 1000-word document must be squeezed into, say, 512
+          numbers. The decoder then generates the output from this bottleneck. Information is inevitably lost —
+          especially from the beginning of the sequence.</p>
+
+        <div class="note c">
+          <div class="note-icon">!</div>
+          <div class="note-body">
+            <div class="note-title">The Fundamental Limitation</div>
+            <p>Three compounding problems: (1) <strong>No parallelism</strong> — training is slow regardless of
+              hardware. (2) <strong>Vanishing gradients</strong> — early tokens effectively stop contributing to the
+              gradient. (3) <strong>Fixed-size bottleneck</strong> — all source information must fit in one vector. The
+              transformer solves all three simultaneously.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="t-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Model</th>
+              <th>Parallelizable?</th>
+              <th>Max Path Length</th>
+              <th>Long-Range Dependency</th>
+              <th>Memory per Token</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>RNN</td>
+              <td>No — strictly sequential</td>
+              <td>O(n)</td>
+              <td>Poor — gradient decay</td>
+              <td>O(1)</td>
+            </tr>
+            <tr>
+              <td>LSTM/GRU</td>
+              <td>No — sequential</td>
+              <td>O(n)</td>
+              <td>Better but still limited</td>
+              <td>O(1)</td>
+            </tr>
+            <tr>
+              <td>1D CNN</td>
+              <td>Yes</td>
+              <td>O(n/k) per layer</td>
+              <td>Limited by kernel size</td>
+              <td>O(1)</td>
+            </tr>
+            <tr>
+              <td><strong>Transformer</strong></td>
+              <td><strong>Yes — fully parallel</strong></td>
+              <td><strong>O(1)</strong></td>
+              <td><strong>Perfect — direct attention</strong></td>
+              <td><strong>O(n)</strong></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ══ §02 ═════════════════════════════════════════════════ -->
+    <div class="ch" id="c2">
+      <div class="ch-head">
+        <div class="ch-meta">
+          <div class="ch-num">02</div><span class="ch-label b">Intuition</span>
+        </div>
+        <h2>Attention Intuition</h2>
+        <div class="ch-sub">// from human attention · information retrieval · dynamic weighted average · relevance
+          scoring</div>
+      </div>
+
+      <p>The attention mechanism solves the bottleneck problem by allowing every output token to look directly at every
+        input token — without going through the sequential bottleneck. It's an information retrieval system embedded
+        inside a neural network.</p>
+
+      <div class="sub">
+        <div class="sh b">The Retrieval Metaphor</div>
+        <p>Think of a search engine. You have a <span class="hb">query</span> (what you're looking for), a set of <span
+            class="hc">keys</span> (metadata describing database entries), and <span class="hv">values</span> (the
+          actual content). You compute similarity between query and each key, then retrieve a weighted blend of values:
+        </p>
+
+        <div class="eq b">
+          <div class="eq-top"><span class="eq-name">Information Retrieval Analogy</span><span
+              class="eq-tag">Intuition</span></div>
+          <div class="eq-body">
+            \[\text{Query } q \text{ matches Key } k_i \to \text{similarity score } s_i = q \cdot k_i\]
+            \[\text{Weights: } \alpha_i = \text{softmax}(s_i)\]
+            \[\text{Output: } o = \sum_i \alpha_i v_i \quad \text{(weighted blend of Values)}\]
+            <div class="eq-note">In a hard database lookup, you retrieve exactly one record (the best match). Attention
+              is a "soft" lookup — you retrieve a weighted sum of all values, where the weights reflect relevance. The
+              softmax ensures weights sum to 1 and are non-negative. Every token can directly attend to every other
+              token — path length is O(1).</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="fig">
+        <div class="fig-box">
+          <svg viewBox="0 0 680 180" xmlns="http://www.w3.org/2000/svg" style="max-width:680px;width:100%">
+            <rect width="680" height="180" fill="#060f1c" />
+            <defs>
+              <marker id="aa2" markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto">
+                <path d="M0,0 L0,5 L7,2.5z" fill="#4a6a90" />
+              </marker>
+              <marker id="ab2" markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto">
+                <path d="M0,0 L0,5 L7,2.5z" fill="#0ea5e9" />
+              </marker>
+              <marker id="ac2" markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto">
+                <path d="M0,0 L0,5 L7,2.5z" fill="#f43f5e" />
+              </marker>
+            </defs>
+
+            <!-- Tokens row -->
+            <text x="30" y="16" font-family="IBM Plex Mono" font-size="9" fill="#4a6a90" letter-spacing=".1em">INPUT
+              TOKENS</text>
+            <g>
+              <rect x="22" y="24" width="55" height="26" rx="4" fill="rgba(14,165,233,.1)" stroke="#0ea5e9"
+                stroke-width="1" />
+              <text x="49" y="41" text-anchor="middle" font-family="IBM Plex Mono" font-size="10"
+                fill="#0ea5e9">The</text>
+              <rect x="86" y="24" width="55" height="26" rx="4" fill="rgba(14,165,233,.1)" stroke="#0ea5e9"
+                stroke-width="1" />
+              <text x="113" y="41" text-anchor="middle" font-family="IBM Plex Mono" font-size="10"
+                fill="#0ea5e9">cat</text>
+              <rect x="150" y="24" width="55" height="26" rx="4" fill="rgba(14,165,233,.1)" stroke="#0ea5e9"
+                stroke-width="1" />
+              <text x="177" y="41" text-anchor="middle" font-family="IBM Plex Mono" font-size="10"
+                fill="#0ea5e9">sat</text>
+              <rect x="214" y="24" width="55" height="26" rx="4" fill="rgba(14,165,233,.1)" stroke="#0ea5e9"
+                stroke-width="1" />
+              <text x="241" y="41" text-anchor="middle" font-family="IBM Plex Mono" font-size="10"
+                fill="#0ea5e9">on</text>
+              <rect x="278" y="24" width="55" height="26" rx="4" fill="rgba(244,63,94,.15)" stroke="#f43f5e"
+                stroke-width="1.5" />
+              <text x="305" y="41" text-anchor="middle" font-family="IBM Plex Mono" font-size="10"
+                fill="#f43f5e">mat</text>
+            </g>
+
+            <!-- Attention arrows from "cat" to all others (various weights) -->
+            <!-- cat = query -->
+            <text x="113" y="68" text-anchor="middle" font-family="IBM Plex Mono" font-size="8" fill="#f43f5e">query:
+              cat?</text>
+            <!-- To "The" - low weight -->
+            <line x1="113" y1="50" x2="49" y2="110" stroke="#0ea5e9" stroke-width=".8" opacity=".3"
+              marker-end="url(#aa2)" />
+            <text x="62" y="88" font-family="IBM Plex Mono" font-size="8" fill="#4a6a90">0.05</text>
+            <!-- To "cat" itself - medium weight -->
+            <line x1="113" y1="50" x2="113" y2="110" stroke="#0ea5e9" stroke-width="1.5" opacity=".6"
+              marker-end="url(#ab2)" />
+            <text x="120" y="88" font-family="IBM Plex Mono" font-size="8" fill="#0ea5e9">0.20</text>
+            <!-- To "sat" - low weight -->
+            <line x1="113" y1="50" x2="177" y2="110" stroke="#0ea5e9" stroke-width=".8" opacity=".3"
+              marker-end="url(#aa2)" />
+            <text x="155" y="88" font-family="IBM Plex Mono" font-size="8" fill="#4a6a90">0.08</text>
+            <!-- To "on" - low weight -->
+            <line x1="113" y1="50" x2="241" y2="110" stroke="#0ea5e9" stroke-width=".8" opacity=".25"
+              marker-end="url(#aa2)" />
+            <text x="200" y="88" font-family="IBM Plex Mono" font-size="8" fill="#4a6a90">0.05</text>
+            <!-- To "mat" - HIGH weight -->
+            <line x1="113" y1="50" x2="305" y2="110" stroke="#f43f5e" stroke-width="3" opacity=".8"
+              marker-end="url(#ac2)" />
+            <text x="235" y="100" font-family="IBM Plex Mono" font-size="8" fill="#f43f5e">0.62</text>
+
+            <!-- Value vectors row -->
+            <text x="30" y="104" font-family="IBM Plex Mono" font-size="9" fill="#4a6a90" letter-spacing=".1em">VALUE
+              VECTORS</text>
+            <g>
+              <rect x="22" y="112" width="55" height="26" rx="4" fill="rgba(14,165,233,.05)" stroke="#4a6a90"
+                stroke-width="1" />
+              <text x="49" y="129" text-anchor="middle" font-family="IBM Plex Mono" font-size="9"
+                fill="#4a6a90">v_The</text>
+              <rect x="86" y="112" width="55" height="26" rx="4" fill="rgba(14,165,233,.08)" stroke="#0ea5e9"
+                stroke-width="1" />
+              <text x="113" y="129" text-anchor="middle" font-family="IBM Plex Mono" font-size="9"
+                fill="#0ea5e9">v_cat</text>
+              <rect x="150" y="112" width="55" height="26" rx="4" fill="rgba(14,165,233,.05)" stroke="#4a6a90"
+                stroke-width="1" />
+              <text x="177" y="129" text-anchor="middle" font-family="IBM Plex Mono" font-size="9"
+                fill="#4a6a90">v_sat</text>
+              <rect x="214" y="112" width="55" height="26" rx="4" fill="rgba(14,165,233,.05)" stroke="#4a6a90"
+                stroke-width="1" />
+              <text x="241" y="129" text-anchor="middle" font-family="IBM Plex Mono" font-size="9"
+                fill="#4a6a90">v_on</text>
+              <rect x="278" y="112" width="55" height="26" rx="4" fill="rgba(244,63,94,.12)" stroke="#f43f5e"
+                stroke-width="1.5" />
+              <text x="305" y="129" text-anchor="middle" font-family="IBM Plex Mono" font-size="9"
+                fill="#f43f5e">v_mat</text>
+            </g>
+
+            <!-- Output arrow -->
+            <line x1="420" y1="125" x2="500" y2="125" stroke="#8b5cf6" stroke-width="1.5" marker-end="url(#aa2)" />
+            <text x="455" y="118" text-anchor="middle" font-family="IBM Plex Mono" font-size="8" fill="#8b5cf6">weighted
+              sum</text>
+            <rect x="506" y="108" width="90" height="34" rx="4" fill="rgba(139,92,246,.15)" stroke="#8b5cf6"
+              stroke-width="1.5" />
+            <text x="551" y="126" text-anchor="middle" font-family="IBM Plex Mono" font-size="9"
+              fill="#8b5cf6">context(cat)</text>
+            <text x="551" y="160" text-anchor="middle" font-family="IBM Plex Mono" font-size="8" fill="#4a6a90">≈
+              0.62·v_mat + 0.20·v_cat + ...</text>
+          </svg>
+        </div>
+        <div class="fig-cap">Fig 1. Attention from "cat" to all other tokens. "cat" attends most strongly to "mat" (its
+          likely reference in context), retrieving a context vector dominated by mat's value representation.</div>
+      </div>
+    </div>
+
+    <!-- ══ §03 ═════════════════════════════════════════════════ -->
+    <div class="ch" id="c3">
+      <div class="ch-head">
+        <div class="ch-meta">
+          <div class="ch-num">03</div><span class="ch-label v">Derivation</span>
+        </div>
+        <h2>Query–Key–Value Derivation</h2>
+        <div class="ch-sub">// where Q, K, V come from · learned projections · why three matrices · mathematical
+          motivation</div>
+      </div>
+
+      <p>The Query-Key-Value framework is not arbitrary — it is the result of asking: "how do we make the attention
+        weights learnable and differentiable?" We derive it from first principles.</p>
+
+      <div class="sub">
+        <div class="sh v">From Token Embeddings to Q, K, V</div>
+        <p>Start with \(n\) token embeddings: \(\mathbf{X} \in \mathbb{R}^{n \times d_{\text{model}}}\). Each row
+          \(\mathbf{x}_i\) is one token. For each token, we want to compute three different linear projections — each
+          encoding a different aspect of the token for a different role:</p>
+
+        <div class="eq v">
+          <div class="eq-top"><span class="eq-name">Q, K, V Projections</span><span class="eq-tag">Core
+              Definition</span></div>
+          <div class="eq-body">
+            \[\mathbf{Q} = \mathbf{X}\mathbf{W}^Q \in \mathbb{R}^{n \times d_k} \quad \text{(Queries: what am I looking
+            for?}\]
+            \[\mathbf{K} = \mathbf{X}\mathbf{W}^K \in \mathbb{R}^{n \times d_k} \quad \text{(Keys: what do I
+            contain?)}\]
+            \[\mathbf{V} = \mathbf{X}\mathbf{W}^V \in \mathbb{R}^{n \times d_v} \quad \text{(Values: what do I want to
+            share?)}\]
+            \[\mathbf{W}^Q, \mathbf{W}^K \in \mathbb{R}^{d_{\text{model}}\times d_k}, \quad \mathbf{W}^V \in
+            \mathbb{R}^{d_{\text{model}}\times d_v}\]
+            <div class="eq-note">The three projection matrices W^Q, W^K, W^V are learned. Using separate matrices for
+              each role gives the model the freedom to represent "what to search for" independently from "what to
+              advertise" independently from "what to contribute." If W^Q = W^K = W^V = I (identity), you get simple
+              dot-product similarity — but the model can't learn to specialize.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="sub">
+        <div class="sh b">Why Separate Queries and Keys?</div>
+        <div class="compare">
+          <div class="cmp">
+            <h4 style="color:var(--blue)">Query = "What am I looking for?"</h4>
+            <p>The query for token \(i\) encodes what information token \(i\) needs to compute its output. When
+              translating "cat" to French, the query might encode "I need a noun that refers to a feline animal."</p>
+            <p>Different tokens have different queries: "cat" searches for its referent; "sat" searches for its subject
+              and object.</p>
+          </div>
+          <div class="cmp">
+            <h4 style="color:var(--coral)">Key = "What can I provide?"</h4>
+            <p>The key for token \(j\) encodes what that token contains that might be relevant to others. "mat" has a
+              key that advertises "I am a physical object, a location."</p>
+            <p>The query-key dot product measures compatibility: does what token \(i\) needs match what token \(j\)
+              provides?</p>
+          </div>
+        </div>
+        <div class="compare" style="margin-top:clamp(10px,2vw,16px)">
+          <div class="cmp">
+            <h4 style="color:var(--violet)">Value = "What information do I share?"</h4>
+            <p>The value for token \(j\) is the actual content that gets aggregated. Once token \(i\) decides to attend
+              to token \(j\) (via high query-key similarity), it receives \(v_j\).</p>
+            <p>The value can encode different information than the key. A token can advertise one thing (key) but share
+              another (value).</p>
+          </div>
+          <div class="cmp">
+            <h4 style="color:var(--emerald)">The Key Insight</h4>
+            <p>Separating Q, K, V gives three degrees of freedom: (1) What to search for, (2) what to make findable, (3)
+              what to contribute when found. Using a single vector for all three would conflate these distinct roles.
+            </p>
+            <p>Training learns all three matrices jointly via backpropagation through the attention weights.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ §04 ═════════════════════════════════════════════════ -->
+    <div class="ch" id="c4">
+      <div class="ch-head">
+        <div class="ch-meta">
+          <div class="ch-num">04</div><span class="ch-label b">Core Algorithm</span>
+        </div>
+        <h2>Scaled Dot-Product Attention</h2>
+        <div class="ch-sub">// the full formula · why scale · softmax as competition · complete derivation</div>
+      </div>
+
+      <div class="thm">
+        <div class="thm-top">
+          <div class="thm-icon">◎</div>
+          <div class="thm-label">Scaled Dot-Product Attention (Vaswani et al. 2017)</div>
+        </div>
+        <p>\[\text{Attention}(\mathbf{Q}, \mathbf{K}, \mathbf{V}) =
+          \text{softmax}\!\left(\frac{\mathbf{Q}\mathbf{K}^T}{\sqrt{d_k}}\right)\mathbf{V} \in \mathbb{R}^{n \times
+          d_v}\]</p>
+      </div>
+
+      <div class="sub">
+        <div class="sh b">Step-by-Step Breakdown</div>
+        <div class="drv">
+          <div class="drv-hdr">// Complete derivation and interpretation of each operation</div>
+          <div class="drv-row">
+            <span class="dn b">Step 1</span>
+            <div>
+              <strong>Compute raw attention scores:</strong> \(\mathbf{S} = \mathbf{Q}\mathbf{K}^T \in \mathbb{R}^{n
+              \times n}\)
+              <div class="dnote">S_{ij} = q_i · k_j = dot product of query for position i with key for position j.
+                Measures "how much does token i want to attend to token j?" High values: strong match. Low/negative:
+                weak or no match. Each of the n² entries is computed in parallel by the matrix multiply.</div>
+            </div>
+          </div>
+          <div class="drv-row">
+            <span class="dn b">Step 2</span>
+            <div>
+              <strong>Scale by \(1/\sqrt{d_k}\):</strong> \(\mathbf{S}_{\text{scaled}} = \mathbf{S}/\sqrt{d_k}\)
+              <div class="dnote">Why? For q, k ~ N(0,1) components: dot product q·k has variance d_k (sum of d_k
+                products of unit-variance numbers). So std(S_{ij}) ≈ √d_k. Without scaling, for large d_k these scores
+                have huge variance → softmax saturates (all weight on max, gradients vanish). Dividing by √d_k brings
+                variance back to O(1).</div>
+            </div>
+          </div>
+          <div class="drv-row">
+            <span class="dn b">Step 3</span>
+            <div>
+              <strong>Apply softmax row-wise:</strong> \(\mathbf{A} = \text{softmax}(\mathbf{S}_{\text{scaled}}) \in
+              \mathbb{R}^{n\times n}\)
+              <div class="dnote">Each row of A sums to 1 and is non-negative — it's a probability distribution over
+                positions. A_{ij} is the attention weight token i assigns to token j. Softmax creates competition:
+                attending strongly to one position reduces attention to others.</div>
+            </div>
+          </div>
+          <div class="drv-row">
+            <span class="dn b">Step 4</span>
+            <div>
+              <strong>Weighted sum of values:</strong> \(\text{Output} = \mathbf{A}\mathbf{V} \in \mathbb{R}^{n \times
+              d_v}\)
+              <div class="dnote">Output_i = Σ_j A_{ij} · v_j = weighted average of all value vectors, weighted by how
+                much token i attends to each position j. This is the "retrieved information" — a blended representation
+                containing contributions from all tokens the current token cares about.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="sub">
+        <div class="sh c">Why Scaling by √d_k is Critical</div>
+        <div class="eq c">
+          <div class="eq-top"><span class="eq-name">Scaling Analysis — Variance Computation</span><span
+              class="eq-tag">Mathematics</span></div>
+          <div class="eq-body">
+            \[\mathbf{q}, \mathbf{k} \sim \mathcal{N}(\mathbf{0}, \mathbf{I}_{d_k}) \Rightarrow \mathbf{q}^T\mathbf{k} =
+            \sum_{j=1}^{d_k}q_j k_j\]
+            \[\mathbb{E}[q_j k_j] = 0, \quad \text{Var}(q_j k_j) = 1 \Rightarrow \text{Var}(\mathbf{q}^T\mathbf{k}) =
+            d_k\]
+            \[\text{Without scaling: } \text{softmax}(\mathbf{s}) \approx \mathbf{e}_{\text{argmax}} \text{ (one-hot) as
+            } d_k \to \infty\]
+            \[\text{Gradient of one-hot softmax} \approx \mathbf{0} \text{ everywhere except argmax}\]
+            <div class="eq-note">Practical example: d_k = 512. Without scaling: scores ~ N(0, 512) → std ≈ 22. The max
+              score is ~3 std above mean ≈ 66. Softmax(66) ≈ 1, all others ≈ 0. Gradient is zero. With √512 scaling:
+              scores ~ N(0,1). Softmax is smooth, gradients flow freely.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="sub">
+        <div class="sh v">Masked Attention — For Decoder</div>
+        <div class="eq v">
+          <div class="eq-top"><span class="eq-name">Masked Scaled Dot-Product Attention</span><span
+              class="eq-tag">Causal Mask</span></div>
+          <div class="eq-body">
+            \[\text{MaskedAttention}(\mathbf{Q},\mathbf{K},\mathbf{V}) =
+            \text{softmax}\!\left(\frac{\mathbf{Q}\mathbf{K}^T + \mathbf{M}}{\sqrt{d_k}}\right)\mathbf{V}\]
+            \[\mathbf{M}_{ij} = \begin{cases}0 & j \leq i \\ -\infty & j &gt; i\end{cases}\]
+            <div class="eq-note">The causal mask M prevents position i from attending to future positions j &gt; i.
+              Adding −∞ before softmax makes those weights exactly 0 (softmax(−∞) = 0). This ensures the decoder cannot
+              "cheat" by looking at tokens it hasn't generated yet. Essential for autoregressive language models.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ §05 ═════════════════════════════════════════════════ -->
+    <div class="ch" id="c5">
+      <div class="ch-head">
+        <div class="ch-meta">
+          <div class="ch-num">05</div><span class="ch-label e">Multi-Head</span>
+        </div>
+        <h2>Multi-Head Attention</h2>
+        <div class="ch-sub">// parallel attention heads · different representation subspaces · concatenation ·
+          projection</div>
+      </div>
+
+      <p>A single attention head can only capture one type of relationship. Multi-head attention runs \(h\) attention
+        mechanisms in parallel — each in a different learned subspace — and concatenates their outputs.</p>
+
+      <div class="eq e">
+        <div class="eq-top"><span class="eq-name">Multi-Head Attention — Full Definition</span><span
+            class="eq-tag">Architecture</span></div>
+        <div class="eq-body">
+          \[\text{head}_i = \text{Attention}(\mathbf{X}\mathbf{W}_i^Q, \mathbf{X}\mathbf{W}_i^K,
+          \mathbf{X}\mathbf{W}_i^V)\]
+          \[\text{MultiHead}(\mathbf{Q},\mathbf{K},\mathbf{V}) = \text{Concat}(\text{head}_1, \ldots,
+          \text{head}_h)\mathbf{W}^O\]
+          \[\mathbf{W}_i^Q, \mathbf{W}_i^K \in \mathbb{R}^{d_{\text{model}}\times d_k},\quad \mathbf{W}_i^V \in
+          \mathbb{R}^{d_{\text{model}}\times d_v},\quad \mathbf{W}^O \in \mathbb{R}^{hd_v \times d_{\text{model}}}\]
+          <div class="eq-note">In "Attention Is All You Need": h=8 heads, d_k = d_v = d_model/h = 64 (for d_model=512).
+            Total parameters per MHA: h(d_model·d_k + d_model·d_k + d_model·d_v) + hd_v·d_model = d_model·(2d_k·h +
+            d_v·h) + d_model² ≈ 4d_model². Computational cost matches a single head at d_k = d_model (due to parallel
+            heads × smaller dimensions).</div>
+        </div>
+      </div>
+
+      <div class="sub">
+        <div class="sh e">Why Multiple Heads?</div>
+        <ul class="fl e">
+          <li><strong>Different relationship types simultaneously:</strong> Head 1 might learn syntactic dependencies;
+            head 2 coreference resolution; head 3 positional proximity. Each head specializes in a different linguistic
+            pattern without explicit supervision.</li>
+          <li><strong>Multiple representation subspaces:</strong> Each head projects the embeddings to a different
+            \(d_k\)-dimensional subspace. Token relationships that aren't visible in the full
+            \(d_{\text{model}}\)-dimensional space may become clear in a specialized subspace.</li>
+          <li><strong>Richer, more stable gradients:</strong> \(h\) independent gradient paths back through \(h\)
+            independent sets of Q, K, V projections. The average gradient is more stable than a single high-dimensional
+            head.</li>
+          <li><strong>Empirical evidence:</strong> Removing attention heads during inference shows different heads learn
+            qualitatively different behaviors — some are removable without impact; others are critical and
+            task-specific.</li>
+        </ul>
+      </div>
+
+      <div class="sub">
+        <div class="sh b">Computation Cost</div>
+        <div class="eq b">
+          <div class="eq-top"><span class="eq-name">Multi-Head Attention — Complexity</span><span
+              class="eq-tag">Cost</span></div>
+          <div class="eq-body">
+            \[\text{Cost per head: } O(n^2 d_k + n d_k d_{\text{model}})\]
+            \[\text{Total (h heads): } O(n^2 d_k h + n d_{\text{model}}^2) = O(n^2 d_{\text{model}} + n
+            d_{\text{model}}^2)\]
+            <div class="eq-note">The n² term (the attention matrix) is the bottleneck for long sequences. For n &lt;
+              d_model: the d_model² term (projection) dominates. For n &gt; d_model: the n² term dominates — this is the
+              "quadratic bottleneck" addressed by Longformer, BigBird, Flash Attention etc.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ §06 ═════════════════════════════════════════════════ -->
+    <div class="ch" id="c6">
+      <div class="ch-head">
+        <div class="ch-meta">
+          <div class="ch-num">06</div><span class="ch-label a">Position</span>
+        </div>
+        <h2>Positional Encoding</h2>
+        <div class="ch-sub">// attention is permutation invariant · injecting position · sinusoidal · learned · RoPE
+        </div>
+      </div>
+
+      <p>Self-attention is <span class="hc">permutation-equivariant</span> — shuffle the input tokens and the output
+        shuffles identically. The model has no built-in notion of order. "The cat sat on the mat" and "mat the on sat
+        cat The" would produce the same attention scores without positional encoding.</p>
+
+      <div class="sub">
+        <div class="sh a">Sinusoidal Positional Encoding (Original)</div>
+        <div class="eq a">
+          <div class="eq-top"><span class="eq-name">Sinusoidal Positional Encoding</span><span class="eq-tag">Vaswani
+              2017</span></div>
+          <div class="eq-body">
+            \[\text{PE}(\text{pos}, 2i) = \sin\!\left(\frac{\text{pos}}{10000^{2i/d_{\text{model}}}}\right)\]
+            \[\text{PE}(\text{pos}, 2i+1) = \cos\!\left(\frac{\text{pos}}{10000^{2i/d_{\text{model}}}}\right)\]
+            \[\mathbf{x}'_{\text{pos}} = \mathbf{x}_{\text{pos}} + \text{PE}(\text{pos}, :) \quad \text{(added to input
+            embeddings)}\]
+            <div class="eq-note">pos is the position in the sequence (0, 1, 2, ...). i is the dimension index (0, 1,
+              ..., d_model/2 − 1). Each dimension oscillates at a different frequency — from very fast (2π period) to
+              very slow (2π·10000 period). The model can learn to attend by relative position because PE(pos+k, :) can
+              be expressed as a linear function of PE(pos, :) via rotation matrices.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="sub">
+        <div class="sh b">Why Sinusoidal Encodings Work</div>
+        <div class="drv">
+          <div class="drv-hdr">// Relative position encoding via rotation matrices</div>
+          <div class="drv-row">
+            <span class="dn b">1</span>
+            <div>
+              Consider dimension pair \((2i, 2i+1)\) as a 2D vector: \(\text{PE}_{\text{pos}} =
+              [\sin(\omega_i\text{pos}), \cos(\omega_i\text{pos})]\) where \(\omega_i = 10000^{-2i/d}\).
+            </div>
+          </div>
+          <div class="drv-row">
+            <span class="dn b">2</span>
+            <div>
+              Shift by \(k\) positions: \(\text{PE}_{\text{pos}+k} = [\sin(\omega_i(\text{pos}+k)),
+              \cos(\omega_i(\text{pos}+k))]\)
+            </div>
+          </div>
+          <div class="drv-row">
+            <span class="dn b">3</span>
+            <div>
+              Using angle addition formulas: \(\text{PE}_{\text{pos}+k} = \mathbf{R}(\omega_i
+              k)\,\text{PE}_{\text{pos}}\) where \(\mathbf{R}(\theta) = \begin{pmatrix}\cos\theta & -\sin\theta \\
+              \sin\theta & \cos\theta\end{pmatrix}\)
+              <div class="dnote">The rotation matrix R(ω_i k) depends only on the offset k, not on the absolute
+                position. This means attention score PE_pos^T PE_{pos+k} = PE_0^T R^T(ω_i k) PE_0 — relative position,
+                not absolute. The model can learn to detect "k tokens apart" patterns without seeing absolute positions.
+                ∎</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="sub">
+        <div class="sh v">Modern Alternatives</div>
+        <div class="attn-grid">
+          <div class="attn-card" style="border-top-color:var(--blue)">
+            <div class="attn-name" style="color:var(--blue)">Learned Positional Embeddings</div>
+            <div class="attn-formula">PE ∈ ℝ^{max_len × d_model} (trainable)</div>
+            <p>Learn a separate embedding for each position index, trained jointly with the model. Used by BERT, GPT-2.
+              Fixed maximum sequence length; doesn't generalize beyond training length.</p>
+          </div>
+          <div class="attn-card" style="border-top-color:var(--coral)">
+            <div class="attn-name" style="color:var(--coral)">Rotary Position Embedding (RoPE)</div>
+            <div class="attn-formula">q̃ᵢ = R(θ·pos)·qᵢ</div>
+            <p>Multiply Q and K by rotation matrices that depend on position. Relative position naturally emerges in the
+              dot product. Used in LLaMA, GPT-NeoX, PaLM. Generalizes well to unseen lengths.</p>
+          </div>
+          <div class="attn-card" style="border-top-color:var(--violet)">
+            <div class="attn-name" style="color:var(--violet)">ALiBi (Attention with Linear Biases)</div>
+            <div class="attn-formula">Sᵢⱼ = qᵢᵀkⱼ − m·|i−j|</div>
+            <p>Add a linear penalty proportional to distance between positions. No learned parameters. Strong
+              generalization to longer sequences at inference. Used in BLOOM, MPT.</p>
+          </div>
+          <div class="attn-card" style="border-top-color:var(--emerald)">
+            <div class="attn-name" style="color:var(--emerald)">No Positional Encoding</div>
+            <div class="attn-formula">Input order not encoded explicitly</div>
+            <p>Some recent work (e.g., RWKV) avoids explicit PE entirely, relying on architectural inductive biases. The
+              bag-of-words model is the extreme case: no position information at all.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ §07 ═════════════════════════════════════════════════ -->
+    <div class="ch" id="c7">
+      <div class="ch-head">
+        <div class="ch-meta">
+          <div class="ch-num">07</div><span class="ch-label b">Building Block</span>
+        </div>
+        <h2>The Transformer Block</h2>
+        <div class="ch-sub">// layer normalization · residual connections · feed-forward network · pre-norm vs post-norm
+        </div>
+      </div>
+
+      <p>The transformer block is the repeated unit that forms both the encoder and decoder. It wraps multi-head
+        attention and a feed-forward network with residual connections and layer normalization.</p>
+
+      <div class="eq b">
+        <div class="eq-top"><span class="eq-name">Transformer Block (Post-LayerNorm, original)</span><span
+            class="eq-tag">Block Equations</span></div>
+        <div class="eq-body">
+          \[\mathbf{Z} = \text{LayerNorm}\!\left(\mathbf{X} +
+          \text{MultiHead}(\mathbf{X},\mathbf{X},\mathbf{X})\right)\]
+          \[\mathbf{Y} = \text{LayerNorm}\!\left(\mathbf{Z} + \text{FFN}(\mathbf{Z})\right)\]
+          \[\text{FFN}(\mathbf{x}) = \max(0, \mathbf{x}\mathbf{W}_1 + \mathbf{b}_1)\mathbf{W}_2 + \mathbf{b}_2\]
+          \[\mathbf{W}_1 \in \mathbb{R}^{d_{\text{model}}\times d_{\text{ff}}}, \quad d_{\text{ff}} = 4d_{\text{model}}
+          \text{ (typically)}\]
+          <div class="eq-note">Pre-LayerNorm (modern standard): LayerNorm applied before attention/FFN. More stable
+            training; used in GPT-3, LLaMA. Post-LayerNorm: original paper; applied after residual add. Layer
+            normalization normalizes each token's representation independently across the d_model dimension: LN(x) = (x
+            − μ)/σ · γ + β.</div>
+        </div>
+      </div>
+
+      <div class="sub">
+        <div class="sh e">Why Each Component Is Essential</div>
+        <ul class="fl e">
+          <li><strong>Residual connections (+X):</strong> Allow gradients to flow directly from output to every layer —
+            circumventing vanishing gradients exactly as in ResNets. Without them, training deep transformers is
+            unstable. The residual path also allows earlier representations to pass through unchanged if no
+            transformation is needed.</li>
+          <li><strong>Layer Normalization:</strong> Normalizes the activation within each token's embedding (across the
+            d_model dimension, not across the batch). Stabilizes training, makes the model less sensitive to learning
+            rate, and helps maintain signal through deep networks. Different from BatchNorm: no dependency on batch
+            size.</li>
+          <li><strong>Feed-Forward Network (FFN):</strong> Applied independently and identically to each token position.
+            It acts as a learned "memory" — research suggests FFN layers store factual associations (e.g., "Paris is in
+            France"). The 4× expansion (d_ff = 4·d_model) then projection gives the model capacity to transform each
+            token's representation nonlinearly.</li>
+        </ul>
+
+        <div class="eq v">
+          <div class="eq-top"><span class="eq-name">Layer Normalization</span><span class="eq-tag">Normalization</span>
+          </div>
+          <div class="eq-body">
+            \[\text{LN}(\mathbf{x}) = \frac{\mathbf{x} - \boldsymbol{\mu}}{\boldsymbol{\sigma}}\odot\boldsymbol{\gamma}
+            + \boldsymbol{\beta}, \quad \boldsymbol{\mu} = \frac{1}{d}\sum_{j=1}^d x_j, \quad \boldsymbol{\sigma} =
+            \sqrt{\frac{1}{d}\sum_{j=1}^d(x_j-\mu)^2 + \epsilon}\]
+            <div class="eq-note">γ, β ∈ ℝ^d are learned per-dimension scale and shift (trainable). Applied per token
+              (per row of X) — unlike BatchNorm which normalizes per feature across the batch. ε ≈ 1e-5 for numerical
+              stability. RMSNorm (used in LLaMA): remove the mean subtraction, only divide by RMS — cheaper and often
+              performs as well.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ §08 ═════════════════════════════════════════════════ -->
+    <div class="ch" id="c8">
+      <div class="ch-head">
+        <div class="ch-meta">
+          <div class="ch-num">08</div><span class="ch-label v">Architecture</span>
+        </div>
+        <h2>Encoder–Decoder Structure</h2>
+        <div class="ch-sub">// encoder self-attention · decoder masked self-attention · cross-attention · the
+          information flow</div>
+      </div>
+
+      <div class="fig">
+        <div class="fig-box">
+          <svg viewBox="0 0 680 360" xmlns="http://www.w3.org/2000/svg" style="max-width:680px;width:100%">
+            <rect width="680" height="360" fill="#060f1c" />
+            <defs>
+              <marker id="af3" markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto">
+                <path d="M0,0 L0,5 L7,2.5z" fill="#4a6a90" />
+              </marker>
+              <marker id="ab3" markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto">
+                <path d="M0,0 L0,5 L7,2.5z" fill="#0ea5e9" />
+              </marker>
+              <marker id="av3" markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto">
+                <path d="M0,0 L0,5 L7,2.5z" fill="#8b5cf6" />
+              </marker>
+              <marker id="ac3" markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto">
+                <path d="M0,0 L0,5 L7,2.5z" fill="#f43f5e" />
+              </marker>
+            </defs>
+
+            <!-- ENCODER STACK -->
+            <text x="170" y="20" text-anchor="middle" font-family="IBM Plex Mono" font-size="10" fill="#0ea5e9"
+              letter-spacing=".12em">ENCODER (×N layers)</text>
+            <rect x="40" y="28" width="260" height="290" rx="8" fill="rgba(14,165,233,0.04)" stroke="#112238"
+              stroke-width="1" />
+
+            <!-- Encoder: Input Embeddings + PE -->
+            <rect x="80" y="285" width="180" height="26" rx="4" fill="rgba(14,165,233,.08)" stroke="#0ea5e9"
+              stroke-width="1" />
+            <text x="170" y="302" text-anchor="middle" font-family="IBM Plex Mono" font-size="9" fill="#0ea5e9">Input
+              Embeddings + PE</text>
+
+            <!-- Encoder: Self-Attention -->
+            <rect x="80" y="245" width="180" height="28" rx="4" fill="rgba(14,165,233,.12)" stroke="#0ea5e9"
+              stroke-width="1.5" />
+            <text x="170" y="263" text-anchor="middle" font-family="IBM Plex Mono" font-size="9"
+              fill="#0ea5e9">Multi-Head Self-Attention</text>
+
+            <!-- Encoder: Add+Norm -->
+            <rect x="80" y="205" width="180" height="26" rx="4" fill="rgba(14,165,233,.06)" stroke="#112238"
+              stroke-width="1" />
+            <text x="170" y="222" text-anchor="middle" font-family="IBM Plex Mono" font-size="9" fill="#4a6a90">Add
+              &amp; LayerNorm</text>
+
+            <!-- Encoder: FFN -->
+            <rect x="80" y="165" width="180" height="26" rx="4" fill="rgba(16,185,129,.1)" stroke="#10b981"
+              stroke-width="1" />
+            <text x="170" y="182" text-anchor="middle" font-family="IBM Plex Mono" font-size="9"
+              fill="#10b981">Feed-Forward Network</text>
+
+            <!-- Encoder: Add+Norm -->
+            <rect x="80" y="125" width="180" height="26" rx="4" fill="rgba(14,165,233,.06)" stroke="#112238"
+              stroke-width="1" />
+            <text x="170" y="142" text-anchor="middle" font-family="IBM Plex Mono" font-size="9" fill="#4a6a90">Add
+              &amp; LayerNorm</text>
+
+            <!-- Encoder output label -->
+            <text x="170" y="105" text-anchor="middle" font-family="IBM Plex Mono" font-size="9" fill="#4a6a90">encoder
+              output</text>
+            <text x="170" y="90" text-anchor="middle" font-family="IBM Plex Mono" font-size="9" fill="#4a6a90">(all
+              token representations)</text>
+            <line x1="170" y1="125" x2="170" y2="75" stroke="#0ea5e9" stroke-width="1.2" stroke-dasharray="5,3"
+              marker-end="url(#ab3)" />
+
+            <!-- Flow arrows encoder -->
+            <line x1="170" y1="285" x2="170" y2="273" stroke="#4a6a90" stroke-width="1.2" marker-end="url(#af3)" />
+            <line x1="170" y1="245" x2="170" y2="231" stroke="#4a6a90" stroke-width="1.2" marker-end="url(#af3)" />
+            <line x1="170" y1="205" x2="170" y2="191" stroke="#4a6a90" stroke-width="1.2" marker-end="url(#af3)" />
+            <line x1="170" y1="165" x2="170" y2="151" stroke="#4a6a90" stroke-width="1.2" marker-end="url(#af3)" />
+
+            <!-- Residual connection encoder -->
+            <path d="M68,245 C52,245 52,205 68,205" fill="none" stroke="#0ea5e9" stroke-width="1" stroke-dasharray="3,2"
+              opacity=".5" />
+            <path d="M68,165 C52,165 52,125 68,125" fill="none" stroke="#10b981" stroke-width="1" stroke-dasharray="3,2"
+              opacity=".5" />
+
+            <!-- DECODER STACK -->
+            <text x="510" y="20" text-anchor="middle" font-family="IBM Plex Mono" font-size="10" fill="#8b5cf6"
+              letter-spacing=".12em">DECODER (×N layers)</text>
+            <rect x="380" y="28" width="260" height="290" rx="8" fill="rgba(139,92,246,0.04)" stroke="#112238"
+              stroke-width="1" />
+
+            <!-- Decoder: Output Embeddings + PE -->
+            <rect x="420" y="285" width="180" height="26" rx="4" fill="rgba(139,92,246,.08)" stroke="#8b5cf6"
+              stroke-width="1" />
+            <text x="510" y="302" text-anchor="middle" font-family="IBM Plex Mono" font-size="9" fill="#8b5cf6">Output
+              Embeddings + PE</text>
+
+            <!-- Decoder: Masked Self-Attention -->
+            <rect x="420" y="245" width="180" height="28" rx="4" fill="rgba(244,63,94,.1)" stroke="#f43f5e"
+              stroke-width="1.5" />
+            <text x="510" y="260" text-anchor="middle" font-family="IBM Plex Mono" font-size="9" fill="#f43f5e">Masked
+              Multi-Head</text>
+            <text x="510" y="271" text-anchor="middle" font-family="IBM Plex Mono" font-size="9"
+              fill="#f43f5e">Self-Attention</text>
+
+            <!-- Decoder: Add+Norm -->
+            <rect x="420" y="205" width="180" height="26" rx="4" fill="rgba(139,92,246,.06)" stroke="#112238"
+              stroke-width="1" />
+            <text x="510" y="222" text-anchor="middle" font-family="IBM Plex Mono" font-size="9" fill="#4a6a90">Add
+              &amp; LayerNorm</text>
+
+            <!-- Decoder: Cross-Attention -->
+            <rect x="420" y="165" width="180" height="28" rx="4" fill="rgba(14,165,233,.12)" stroke="#0ea5e9"
+              stroke-width="1.5" />
+            <text x="510" y="180" text-anchor="middle" font-family="IBM Plex Mono" font-size="9"
+              fill="#0ea5e9">Multi-Head Cross-Attention</text>
+            <text x="510" y="191" text-anchor="middle" font-family="IBM Plex Mono" font-size="8"
+              fill="#4a6a90">(Q=decoder, K,V=encoder)</text>
+
+            <!-- Decoder: Add+Norm -->
+            <rect x="420" y="130" width="180" height="26" rx="4" fill="rgba(139,92,246,.06)" stroke="#112238"
+              stroke-width="1" />
+            <text x="510" y="147" text-anchor="middle" font-family="IBM Plex Mono" font-size="9" fill="#4a6a90">Add
+              &amp; LayerNorm</text>
+
+            <!-- Decoder: FFN -->
+            <rect x="420" y="92" width="180" height="26" rx="4" fill="rgba(16,185,129,.1)" stroke="#10b981"
+              stroke-width="1" />
+            <text x="510" y="109" text-anchor="middle" font-family="IBM Plex Mono" font-size="9"
+              fill="#10b981">Feed-Forward Network</text>
+
+            <!-- Decoder: Add+Norm + Linear + Softmax -->
+            <rect x="420" y="56" width="180" height="24" rx="4" fill="rgba(139,92,246,.06)" stroke="#112238"
+              stroke-width="1" />
+            <text x="510" y="72" text-anchor="middle" font-family="IBM Plex Mono" font-size="8" fill="#4a6a90">Add &amp;
+              Norm → Linear → Softmax</text>
+
+            <!-- Decoder flow arrows -->
+            <line x1="510" y1="285" x2="510" y2="273" stroke="#4a6a90" stroke-width="1.2" marker-end="url(#af3)" />
+            <line x1="510" y1="245" x2="510" y2="231" stroke="#4a6a90" stroke-width="1.2" marker-end="url(#af3)" />
+            <line x1="510" y1="205" x2="510" y2="193" stroke="#4a6a90" stroke-width="1.2" marker-end="url(#af3)" />
+            <line x1="510" y1="165" x2="510" y2="156" stroke="#4a6a90" stroke-width="1.2" marker-end="url(#af3)" />
+            <line x1="510" y1="130" x2="510" y2="118" stroke="#4a6a90" stroke-width="1.2" marker-end="url(#af3)" />
+            <line x1="510" y1="92" x2="510" y2="80" stroke="#4a6a90" stroke-width="1.2" marker-end="url(#af3)" />
+
+            <!-- Encoder→Decoder cross-attention connection -->
+            <path d="M170,75 C280,50 300,179 418,179" fill="none" stroke="#0ea5e9" stroke-width="1.8"
+              stroke-dasharray="6,3" marker-end="url(#ab3)" />
+            <text x="295" y="45" text-anchor="middle" font-family="IBM Plex Mono" font-size="8" fill="#0ea5e9">K, V from
+              encoder</text>
+
+            <!-- Output arrow -->
+            <text x="510" y="345" text-anchor="middle" font-family="IBM Plex Mono" font-size="9" fill="#4a6a90">Output
+              probabilities</text>
+            <line x1="510" y1="338" x2="510" y2="320" stroke="#8b5cf6" stroke-width="1.2" stroke-dasharray="4,3"
+              marker-end="url(#av3)" />
+
+            <!-- Residual connections decoder -->
+            <path d="M408,245 C392,245 392,205 408,205" fill="none" stroke="#f43f5e" stroke-width="1"
+              stroke-dasharray="3,2" opacity=".5" />
+            <path d="M408,165 C392,165 392,130 408,130" fill="none" stroke="#0ea5e9" stroke-width="1"
+              stroke-dasharray="3,2" opacity=".5" />
+            <path d="M408,92 C392,92 392,56 408,56" fill="none" stroke="#10b981" stroke-width="1" stroke-dasharray="3,2"
+              opacity=".5" />
+          </svg>
+        </div>
+        <div class="fig-cap">Fig 2. Full encoder-decoder Transformer architecture. Left: Encoder stack — bidirectional
+          self-attention reads the source. Right: Decoder stack — masked self-attention for target, cross-attention
+          reads encoder output (K, V from encoder, Q from decoder).</div>
+      </div>
+
+      <div class="sub">
+        <div class="sh v">Three Types of Attention in the Transformer</div>
+        <div class="attn-grid">
+          <div class="attn-card" style="border-top-color:var(--blue)">
+            <div class="attn-name" style="color:var(--blue)">Encoder Self-Attention</div>
+            <div class="attn-formula">Q=K=V=X_encoder</div>
+            <p>Every source token attends to every other source token. Bidirectional — can look forward and backward.
+              Builds rich contextual representations: "bank" in "river bank" vs "bank account" gets different
+              representations based on surrounding context.</p>
+          </div>
+          <div class="attn-card" style="border-top-color:var(--coral)">
+            <div class="attn-name" style="color:var(--coral)">Decoder Masked Self-Attention</div>
+            <div class="attn-formula">Q=K=V=X_decoder + causal mask</div>
+            <p>Generated tokens attend only to previous tokens. Prevents peeking at future tokens during training.
+              Causal/autoregressive: each position can only see what has already been generated. Essential for language
+              modeling and generation.</p>
+          </div>
+          <div class="attn-card" style="border-top-color:var(--violet)">
+            <div class="attn-name" style="color:var(--violet)">Decoder Cross-Attention</div>
+            <div class="attn-formula">Q=X_decoder, K=V=X_encoder</div>
+            <p>Decoder queries attend to encoder keys/values. This is where the translation happens: each target word
+              looks up relevant source words. Replaces the RNN bottleneck with direct, flexible attention across the
+              full source sequence.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ §09 ═════════════════════════════════════════════════ -->
+    <div class="ch" id="c9">
+      <div class="ch-head">
+        <div class="ch-meta">
+          <div class="ch-num">09</div><span class="ch-label c">Complexity</span>
+        </div>
+        <h2>Self-Attention Complexity</h2>
+        <div class="ch-sub">// O(n²) bottleneck · sparse attention · Flash Attention · linear transformers</div>
+      </div>
+
+      <div class="eq c">
+        <div class="eq-top"><span class="eq-name">Self-Attention Computational Cost</span><span
+            class="eq-tag">Complexity</span></div>
+        <div class="eq-body">
+          \[\text{Time: } O(n^2 d) \quad \text{Memory: } O(n^2 + nd)\]
+          \[\text{n = sequence length, d = model dimension}\]
+          <div class="eq-note">The n² term is the attention matrix QK^T ∈ ℝ^{n×n}. For n=512: 262,144 entries. For
+            n=32,000 (GPT-4 context): 1,024,000,000 entries — 4GB just for the attention matrix. This is the quadratic
+            bottleneck that limits context length.</div>
+        </div>
+      </div>
+
+      <div class="t-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Method</th>
+              <th>Time Complexity</th>
+              <th>Memory</th>
+              <th>Exact?</th>
+              <th>Notes</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Full Self-Attention</td>
+              <td>O(n²d)</td>
+              <td>O(n²)</td>
+              <td>Yes</td>
+              <td>Baseline — quadratic bottleneck</td>
+            </tr>
+            <tr>
+              <td>Flash Attention v2</td>
+              <td>O(n²d)</td>
+              <td>O(n)</td>
+              <td>Yes</td>
+              <td>Tiled SRAM computation; same math, better memory access pattern</td>
+            </tr>
+            <tr>
+              <td>Sparse Attention (Longformer)</td>
+              <td>O(nd·k)</td>
+              <td>O(nk)</td>
+              <td>Approx</td>
+              <td>Attend to k local + global tokens only</td>
+            </tr>
+            <tr>
+              <td>Linear Attention</td>
+              <td>O(nd²)</td>
+              <td>O(d²)</td>
+              <td>Approx</td>
+              <td>Kernel approximation; approximate softmax</td>
+            </tr>
+            <tr>
+              <td>State Space Models (Mamba)</td>
+              <td>O(nd)</td>
+              <td>O(d)</td>
+              <td>Different model</td>
+              <td>Not attention-based; RNN-style recurrence in latent space</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="sub">
+        <div class="sh b">Flash Attention — The Hardware Perspective</div>
+        <p>Flash Attention (Dao et al., 2022) achieves the same mathematical result as standard attention but uses tiled
+          computation to avoid materializing the full \(n\times n\) attention matrix in HBM (GPU DRAM). Instead, it
+          computes attention in SRAM tiles. Memory goes from \(O(n^2)\) to \(O(n)\) while compute remains \(O(n^2 d)\) —
+          but the constant factor improves because SRAM is ~100× faster than HBM:</p>
+        <div class="eq b">
+          <div class="eq-top"><span class="eq-name">Flash Attention Tiled Computation</span><span class="eq-tag">IO
+              Complexity</span></div>
+          <div class="eq-body">
+            \[\text{HBM reads/writes: Standard Attn} = O(n^2 + nd)\]
+            \[\text{HBM reads/writes: Flash Attn} = O(n^2d / M) \quad M = \text{SRAM size}\]
+            <div class="eq-note">For M = 100KB (typical GPU SRAM) and d = 64: Flash Attention reduces HBM access by
+              ~n²/M ≈ 10×. This translates to 2-4× wall-clock speedup and enables training on much longer sequences.
+              Flash Attention is now the default in PyTorch, JAX, and all major deep learning frameworks.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ §10 ═════════════════════════════════════════════════ -->
+    <div class="ch" id="c10">
+      <div class="ch-head">
+        <div class="ch-meta">
+          <div class="ch-num">10</div><span class="ch-label e">Understanding</span>
+        </div>
+        <h2>Why Transformers Work</h2>
+        <div class="ch-sub">// inductive biases · universal approximation · empirical evidence · interpretability</div>
+      </div>
+
+      <div class="sub">
+        <div class="sh e">Five Reasons Transformers Win</div>
+        <ul class="fl e">
+          <li><strong>Constant-length dependency path:</strong> Every pair of tokens is connected in exactly one
+            attention step — O(1) path length regardless of sequence length. RNNs have O(n) path length for distant
+            tokens. This directly enables learning long-range dependencies.</li>
+          <li><strong>Full parallelism:</strong> All attention operations across all positions can be computed
+            simultaneously on a GPU. This makes transformers \(100\times\) more practical to train than RNNs on modern
+            hardware — more compute = more data = better models.</li>
+          <li><strong>Content-based routing:</strong> Attention weights are computed dynamically from the content of the
+            tokens — unlike convolutions which use fixed local filters. The model can learn to attend to the token
+            "bank" in "river bank" differently from "bank" in "bank account" based on context.</li>
+          <li><strong>Hierarchical feature learning through depth:</strong> Each layer builds on the previous. Layer 1
+            attention may learn syntactic patterns; layer 12 may learn semantic relationships; layer 24 may encode
+            factual associations. Depth enables composition.</li>
+          <li><strong>Scalability with compute and data:</strong> Transformers follow the <em>scaling laws</em> (Kaplan
+            et al. 2020): validation loss decreases as a power law with compute, data, and parameters. No other
+            architecture has demonstrated this property at scale. This enables GPT-4, PaLM, LLaMA-scale models.</li>
+        </ul>
+      </div>
+
+      <div class="sub">
+        <div class="sh b">Transformers as Graph Neural Networks</div>
+        <div class="note b">
+          <div class="note-icon">◎</div>
+          <div class="note-body">
+            <div class="note-title">Unifying Framework</div>
+            <p>Self-attention is equivalent to a fully-connected Graph Neural Network where every token is a node and
+              attention weights are edge weights. The attention mechanism is a differentiable message-passing algorithm.
+              Masked attention restricts the graph. This perspective reveals that transformers are the most general
+              sequence model — they can learn any permutation-equivariant function of the input tokens.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="thm">
+        <div class="thm-top">
+          <div class="thm-icon">★</div>
+          <div class="thm-label">Universal Approximation for Sequences</div>
+        </div>
+        <p>A transformer with sufficiently many layers, heads, and sufficient dimension can approximate any continuous
+          sequence-to-sequence mapping to arbitrary accuracy. This follows from the FFN's universal approximation (each
+          token independently), combined with the attention mechanism's ability to aggregate global context. In
+          practice, depth matters more than width — scaling laws confirm that \(L \propto N^{0.5}\) layers is optimal
+          for a model with \(N\) parameters.</p>
+      </div>
+    </div>
+
+    <!-- ══ §11 ═════════════════════════════════════════════════ -->
+    <div class="ch" id="c11">
+      <div class="ch-head">
+        <div class="ch-meta">
+          <div class="ch-num">11</div><span class="ch-label b">Architectures</span>
+        </div>
+        <h2>BERT vs GPT — Encoder vs Decoder</h2>
+        <div class="ch-sub">// encoder-only · decoder-only · seq2seq · pre-training objectives</div>
+      </div>
+
+      <div class="compare">
+        <div class="cmp">
+          <h4 style="color:var(--blue)">BERT — Encoder-Only</h4>
+          <p><strong>Architecture:</strong> Encoder stack only. Bidirectional — each token attends to all others (no
+            causal mask).</p>
+          <p><strong>Pre-training:</strong> Masked Language Modeling (MLM): mask 15% of tokens, predict them. Next
+            Sentence Prediction (NSP).</p>
+          <p><strong>Best for:</strong> Understanding tasks — classification, NER, question answering, retrieval. Not
+            for generation.</p>
+          <p><strong>Representations:</strong> Each token gets a contextualized embedding conditioned on the full
+            bidirectional context. Richer representations per token.</p>
+        </div>
+        <div class="cmp">
+          <h4 style="color:var(--coral)">GPT — Decoder-Only</h4>
+          <p><strong>Architecture:</strong> Decoder stack only with causal masking. Each token attends only to previous
+            tokens.</p>
+          <p><strong>Pre-training:</strong> Autoregressive Language Modeling: predict next token given all previous
+            tokens. Simple, scalable, infinite data.</p>
+          <p><strong>Best for:</strong> Generation tasks — text generation, translation, code generation, few-shot
+            learning.</p>
+          <p><strong>Representations:</strong> Each token conditioned on prefix only. Can generate arbitrarily long
+            sequences autoregressively.</p>
+        </div>
+      </div>
+
+      <div class="t-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Model Family</th>
+              <th>Architecture</th>
+              <th>Pre-training</th>
+              <th>Key Models</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>BERT, RoBERTa</td>
+              <td>Encoder-only</td>
+              <td>MLM (bidirectional)</td>
+              <td>BERT, RoBERTa, DeBERTa, ELECTRA</td>
+            </tr>
+            <tr>
+              <td>GPT, LLaMA</td>
+              <td>Decoder-only</td>
+              <td>Causal LM (left-to-right)</td>
+              <td>GPT-4, LLaMA 3, Mistral, PaLM</td>
+            </tr>
+            <tr>
+              <td>T5, BART</td>
+              <td>Encoder-Decoder</td>
+              <td>Text-to-text denoising</td>
+              <td>T5, BART, mT5, Flan-T5</td>
+            </tr>
+            <tr>
+              <td>XLNet, ALBERT</td>
+              <td>Encoder-only</td>
+              <td>Permutation LM</td>
+              <td>XLNet (overcomes BERT limitations)</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ══ §12 ═════════════════════════════════════════════════ -->
+    <div class="ch" id="c12">
+      <div class="ch-head">
+        <div class="ch-meta">
+          <div class="ch-num">12</div><span class="ch-label v">Computer Vision</span>
+        </div>
+        <h2>Vision Transformers (ViT)</h2>
+        <div class="ch-sub">// patch embeddings · class token · no convolutions · your XAI work</div>
+      </div>
+
+      <p>Dosovitskiy et al. (2020) showed that a pure transformer — with minimal modifications — applied directly to
+        image patches achieves state-of-the-art on image classification when pre-trained at scale.</p>
+
+      <div class="eq v">
+        <div class="eq-top"><span class="eq-name">Vision Transformer — Input Preparation</span><span
+            class="eq-tag">ViT</span></div>
+        <div class="eq-body">
+          \[\text{Image } \mathbf{I} \in \mathbb{R}^{H \times W \times C} \xrightarrow{\text{split}} N = \frac{HW}{P^2}
+          \text{ patches of size } P\times P\]
+          \[\mathbf{x}_p \in \mathbb{R}^{P^2 C} \xrightarrow{\mathbf{E}} \mathbf{z}_p = \mathbf{x}_p\mathbf{E} +
+          \mathbf{e}_p^{\text{pos}} \quad \mathbf{E} \in \mathbb{R}^{P^2C \times D}\]
+          \[\text{Input sequence: } [\mathbf{z}_{\text{cls}}; \mathbf{z}_1; \mathbf{z}_2; \ldots; \mathbf{z}_N]\]
+          <div class="eq-note">P=16: each patch is 16×16 pixels. For a 224×224 image: N = 224²/16² = 196 patches. A
+            learnable [CLS] token is prepended — its final representation is used for classification. Positional
+            embeddings (learned or sinusoidal) allow the model to distinguish spatial locations. For ViT-B/16 (your
+            chest X-ray model): D=768, 12 heads, 12 layers.</div>
+        </div>
+      </div>
+
+      <div class="note v">
+        <div class="note-icon">◈</div>
+        <div class="note-body">
+          <div class="note-title">My ViT-B/16 Chest X-Ray Work</div>
+          <p>My chest X-ray classification used ViT-B/16 pretrained on ImageNet. Transfer learning: the 196 patch tokens
+            attend to each other across the full 224×224 image — allowing the model to capture global patterns (like
+            bilateral infiltrates) that local CNN filters would miss. GradCAM on the attention maps (Attention Rollout)
+            gives XAI explanations: high attention to radiologically relevant regions validates the model's
+            reasoning. ViT's global attention is why it outperforms VGG16 on detecting spatially distributed
+            pathologies.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ §13 ═════════════════════════════════════════════════ -->
+    <div class="ch" id="c13">
+      <div class="ch-head">
+        <div class="ch-meta">
+          <div class="ch-num">13</div><span class="ch-label b">Mental Model</span>
+        </div>
+        <h2>The Complete Mental Model</h2>
+        <div class="ch-sub">// everything unified · one diagram · one thread</div>
+      </div>
+
+      <div class="fig">
+        <div class="fig-box">
+          <svg viewBox="0 0 720 560" xmlns="http://www.w3.org/2000/svg" style="max-width:720px;width:100%">
+            <rect width="720" height="560" fill="#060f1c" />
+            <defs>
+              <marker id="xm" markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto">
+                <path d="M0,0 L0,5 L7,2.5z" fill="#112238" />
+              </marker>
+              <marker id="bm" markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto">
+                <path d="M0,0 L0,5 L7,2.5z" fill="#0ea5e9" />
+              </marker>
+              <marker id="vm" markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto">
+                <path d="M0,0 L0,5 L7,2.5z" fill="#8b5cf6" />
+              </marker>
+              <marker id="em" markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto">
+                <path d="M0,0 L0,5 L7,2.5z" fill="#10b981" />
+              </marker>
+              <marker id="cm2" markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto">
+                <path d="M0,0 L0,5 L7,2.5z" fill="#f43f5e" />
+              </marker>
+            </defs>
+
+            <text x="360" y="22" text-anchor="middle" font-family="IBM Plex Mono" font-size="9" fill="#112238"
+              letter-spacing=".26em">TRANSFORMER — COMPLETE ARCHITECTURE MAP</text>
+
+            <!-- Core: Scaled Dot-Product Attention -->
+            <rect x="220" y="40" width="280" height="58" rx="6" fill="#091524" stroke="#0ea5e9" stroke-width="2" />
+            <text x="360" y="62" text-anchor="middle" font-family="IBM Plex Mono" font-size="11" fill="#0ea5e9"
+              font-weight="700">Attention(Q,K,V)</text>
+            <text x="360" y="82" text-anchor="middle" font-family="IBM Plex Mono" font-size="9" fill="#4a6a90">=
+              softmax(QKᵀ/√d_k)V</text>
+
+            <!-- Q, K, V -->
+            <rect x="28" y="152" width="165" height="50" rx="5" fill="#091524" stroke="#f43f5e" stroke-width="1.5" />
+            <text x="110" y="173" text-anchor="middle" font-family="IBM Plex Mono" font-size="10" fill="#f43f5e"
+              font-weight="600">QUERY Q = XW^Q</text>
+            <text x="110" y="190" text-anchor="middle" font-family="IBM Plex Mono" font-size="8.5" fill="#4a6a90">what
+              am I looking for?</text>
+
+            <rect x="278" y="152" width="165" height="50" rx="5" fill="#091524" stroke="#8b5cf6" stroke-width="1.5" />
+            <text x="360" y="173" text-anchor="middle" font-family="IBM Plex Mono" font-size="10" fill="#8b5cf6"
+              font-weight="600">KEY K = XW^K</text>
+            <text x="360" y="190" text-anchor="middle" font-family="IBM Plex Mono" font-size="8.5" fill="#4a6a90">what
+              do I contain?</text>
+
+            <rect x="528" y="152" width="165" height="50" rx="5" fill="#091524" stroke="#10b981" stroke-width="1.5" />
+            <text x="610" y="173" text-anchor="middle" font-family="IBM Plex Mono" font-size="10" fill="#10b981"
+              font-weight="600">VALUE V = XW^V</text>
+            <text x="610" y="190" text-anchor="middle" font-family="IBM Plex Mono" font-size="8.5" fill="#4a6a90">what
+              do I share?</text>
+
+            <!-- Arrows from attention -->
+            <line x1="296" y1="98" x2="165" y2="150" stroke="#f43f5e" stroke-width="1.2" stroke-dasharray="4,3"
+              marker-end="url(#cm2)" />
+            <line x1="360" y1="98" x2="360" y2="150" stroke="#8b5cf6" stroke-width="1.2" stroke-dasharray="4,3"
+              marker-end="url(#vm)" />
+            <line x1="424" y1="98" x2="555" y2="150" stroke="#10b981" stroke-width="1.2" stroke-dasharray="4,3"
+              marker-end="url(#em)" />
+
+            <!-- Multi-Head Attention -->
+            <rect x="220" y="256" width="280" height="50" rx="5" fill="#091524" stroke="#0ea5e9" stroke-width="2" />
+            <text x="360" y="278" text-anchor="middle" font-family="IBM Plex Mono" font-size="10" fill="#0ea5e9"
+              font-weight="700">MULTI-HEAD ATTENTION (×h)</text>
+            <text x="360" y="296" text-anchor="middle" font-family="IBM Plex Mono" font-size="8.5"
+              fill="#4a6a90">Concat(head₁,...,headₕ)·W^O</text>
+
+            <line x1="360" y1="202" x2="360" y2="254" stroke="#0ea5e9" stroke-width="1.5" stroke-dasharray="4,3"
+              marker-end="url(#bm)" />
+
+            <!-- Positional Encoding -->
+            <rect x="28" y="256" width="165" height="50" rx="5" fill="#091524" stroke="#f59e0b" stroke-width="1.5" />
+            <text x="110" y="277" text-anchor="middle" font-family="IBM Plex Mono" font-size="9.5" fill="#f59e0b"
+              font-weight="600">POSITIONAL ENC</text>
+            <text x="110" y="295" text-anchor="middle" font-family="IBM Plex Mono" font-size="8.5"
+              fill="#4a6a90">sin/cos or RoPE</text>
+
+            <!-- Transformer Block -->
+            <rect x="220" y="360" width="280" height="50" rx="5" fill="#091524" stroke="#8b5cf6" stroke-width="2" />
+            <text x="360" y="381" text-anchor="middle" font-family="IBM Plex Mono" font-size="10" fill="#8b5cf6"
+              font-weight="700">TRANSFORMER BLOCK</text>
+            <text x="360" y="399" text-anchor="middle" font-family="IBM Plex Mono" font-size="8.5" fill="#4a6a90">MHA +
+              LN + FFN + residuals</text>
+
+            <line x1="360" y1="306" x2="360" y2="358" stroke="#4a6a90" stroke-width="1.2" stroke-dasharray="4,3"
+              marker-end="url(#xm)" />
+
+            <!-- Applications row -->
+            <rect x="28" y="462" width="155" height="52" rx="5" fill="#091524" stroke="#0ea5e9" stroke-width="1.2" />
+            <text x="105" y="481" text-anchor="middle" font-family="IBM Plex Mono" font-size="9.5"
+              fill="#0ea5e9">BERT</text>
+            <text x="105" y="499" text-anchor="middle" font-family="IBM Plex Mono" font-size="8" fill="#4a6a90">Encoder
+              · MLM · NLU</text>
+
+            <rect x="196" y="462" width="155" height="52" rx="5" fill="#091524" stroke="#f43f5e" stroke-width="1.2" />
+            <text x="273" y="481" text-anchor="middle" font-family="IBM Plex Mono" font-size="9.5" fill="#f43f5e">GPT /
+              LLaMA</text>
+            <text x="273" y="499" text-anchor="middle" font-family="IBM Plex Mono" font-size="8" fill="#4a6a90">Decoder
+              · CLM · Gen</text>
+
+            <rect x="364" y="462" width="155" height="52" rx="5" fill="#091524" stroke="#8b5cf6" stroke-width="1.2" />
+            <text x="441" y="481" text-anchor="middle" font-family="IBM Plex Mono" font-size="9.5" fill="#8b5cf6">T5 /
+              BART</text>
+            <text x="441" y="499" text-anchor="middle" font-family="IBM Plex Mono" font-size="8" fill="#4a6a90">Enc-Dec
+              · Seq2Seq</text>
+
+            <rect x="532" y="462" width="155" height="52" rx="5" fill="#091524" stroke="#10b981" stroke-width="1.2" />
+            <text x="609" y="481" text-anchor="middle" font-family="IBM Plex Mono" font-size="9.5" fill="#10b981">ViT /
+              DINO</text>
+            <text x="609" y="499" text-anchor="middle" font-family="IBM Plex Mono" font-size="8" fill="#4a6a90">Vision ·
+              Patches</text>
+
+            <!-- Block → Applications arrows -->
+            <line x1="310" y1="410" x2="150" y2="460" stroke="#112238" stroke-width="1" stroke-dasharray="3,2"
+              marker-end="url(#xm)" />
+            <line x1="340" y1="410" x2="295" y2="460" stroke="#112238" stroke-width="1" stroke-dasharray="3,2"
+              marker-end="url(#xm)" />
+            <line x1="380" y1="410" x2="426" y2="460" stroke="#112238" stroke-width="1" stroke-dasharray="3,2"
+              marker-end="url(#xm)" />
+            <line x1="410" y1="410" x2="570" y2="460" stroke="#112238" stroke-width="1" stroke-dasharray="3,2"
+              marker-end="url(#xm)" />
+
+            <!-- Bottom summary -->
+            <rect x="20" y="530" width="680" height="22" rx="4" fill="#040c16" stroke="#112238" stroke-width="1" />
+            <text x="360" y="545" text-anchor="middle" font-family="IBM Plex Mono" font-size="8.5" fill="#4a6a90">RNN
+              O(n) path → Attention O(1) path · Sequential → Parallel · Fixed bottleneck → Direct token-to-token
+              access</text>
+          </svg>
+        </div>
+        <div class="fig-cap">Fig 3. Complete transformer mental map — from Q/K/V through multi-head attention,
+          positional encoding, transformer block, to encoder-only (BERT), decoder-only (GPT), encoder-decoder (T5), and
+          vision (ViT) architectures.</div>
+      </div>
+
+      <p style="margin-top:clamp(22px,4vw,36px)">The unified story in one thread:</p>
+
+      <ol style="padding-left:clamp(16px,3vw,24px);line-height:2.6;font-size:clamp(14px,1.9vw,16px)">
+        <li><strong>RNNs fail</strong> at long-range dependencies because information must travel through \(O(n)\)
+          sequential steps, gradients vanish exponentially, and all information must pass through a fixed-size
+          bottleneck.</li>
+        <li><strong>Attention solves this</strong> by allowing direct token-to-token communication in one step: each
+          token computes a weighted sum of all other tokens' values, weighted by relevance. Path length becomes
+          \(O(1)\).</li>
+        <li><strong>Q, K, V</strong> come from learned linear projections of the same input: Queries encode "what to
+          look for," Keys encode "what I contain," Values encode "what to contribute." Separating these three roles
+          gives the model expressive flexibility.</li>
+        <li><strong>Scaling by \(1/\sqrt{d_k}\)</strong> is mathematically necessary: without it, dot products in high
+          dimensions have large variance → softmax saturates → gradients vanish. Scaling restores \(O(1)\) variance.
+        </li>
+        <li><strong>Multi-head attention</strong> runs \(h\) attention mechanisms in parallel, each specializing in a
+          different type of relationship (syntactic, semantic, coreference, positional). Concatenate + project.</li>
+        <li><strong>Positional encoding</strong> injects order information into the permutation-invariant attention.
+          Sinusoidal encodings enable relative position detection. RoPE (modern) encodes relative positions directly
+          into query-key dot products.</li>
+        <li><strong>The transformer block</strong> wraps MHA with residual connections (gradient highway) and LayerNorm
+          (stabilization), followed by a per-position FFN (nonlinear transformation of each token's representation).
+        </li>
+        <li><strong>Architectures diverge</strong>: BERT (encoder, bidirectional, MLM) for understanding; GPT/LLaMA
+          (decoder, causal, CLM) for generation; T5/BART (encoder-decoder) for sequence-to-sequence; ViT (patches as
+          tokens) for vision.</li>
+        <li><strong>The \(O(n^2)\) bottleneck</strong> limits context length. Flash Attention reduces memory to \(O(n)\)
+          with same compute. Sparse attention methods achieve sub-quadratic. State space models (Mamba) are linear
+          alternatives.</li>
+      </ol>
+
+      <div class="thm">
+        <div class="thm-top">
+          <div class="thm-icon">★</div>
+          <div class="thm-label">Why Transformers Are the Foundation of Modern AI</div>
+        </div>
+        <p>The transformer's combination of (1) constant-path-length attention enabling true long-range dependencies,
+          (2) full GPU parallelism enabling massive scale, (3) content-based dynamic routing enabling flexible
+          context-dependent representations, and (4) empirical scaling laws enabling predictable improvement with
+          compute has made it the universal foundation of AI — language, vision, protein structure, code, scientific
+          discovery. Your chest X-ray ViT classification, your GPT-based interactions, and every large language model
+          rely on the same four equations: \(\mathbf{Q}=\mathbf{X}\mathbf{W}^Q\), \(\mathbf{K}=\mathbf{X}\mathbf{W}^K\),
+          \(\mathbf{V}=\mathbf{X}\mathbf{W}^V\),
+          \(\text{Attention}=\text{softmax}(\mathbf{QK}^T/\sqrt{d_k})\mathbf{V}\).</p>
+      </div>
+    </div>
+
+  </div><!-- /page -->
+
+  <!-- ═══ FOOTER ═══ -->
+  <footer class="site-footer">
+    <div class="footer-content">
+      <div class="footer-main">
+        <div class="footer-left">
+          <p class="copyright">&copy; 2025 Shahid Ul Islam</p>
+          <p class="footer-meta">Data Scientist & AI Developer</p>
+        </div>
+        <div class="footer-right">
+          <div class="footer-links">
+            <a href="#" class="back-to-top">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="12" y1="19" x2="12" y2="5"></line>
+                <polyline points="5 12 12 5 19 12"></polyline>
+              </svg>
+              <span>Back to Top</span>
+            </a>
+            <div class="social-links11">
+              <a href="https://github.com/Khanz9664" target="_blank" class="social-link11">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path
+                    d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22" />
+                </svg>
+              </a>
+              <a href="https://linkedin.com/in/shahid-ul-islam-13650998" target="_blank" class="social-link11">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" />
+                  <rect x="2" y="9" width="4" height="12" />
+                  <circle cx="4" cy="4" r="2" />
+                </svg>
+              </a>
+              <a href="mailto:shahid9664@gmail.com" class="social-link11">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
+                  <polyline points="22,6 12,13 2,6" />
+                </svg>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="made-with">
+      <p>Crafted with <span class="heart-icon">❤️</span> By Shahid</p>
+    </div>
+  </footer>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js"></script>
+</body>
+
+</html>

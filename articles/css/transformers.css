@@ -2,28 +2,44 @@
    TOKENS — deep space electric blue
 ═══════════════════════════════════════════ */
 :root {
-  --void: #010408;
-  --bg: #030810;
-  --bg2: #060f1c;
-  --bg3: #091524;
-  --bg4: #0c1a2e;
-  --rim: #112238;
-  --rim2: #173050;
-  --text: #e2edff;
-  --sub: #4a6a90;
-  --ghost: rgb(14 165 233 / 4%);
-  --blue: #0ea5e9;
-  --bk: rgb(14 165 233 / 9%);
-  --coral: #f43f5e;
-  --ck: rgb(244 63 94 / 9%);
-  --violet: #8b5cf6;
-  --vk: rgb(139 92 246 / 9%);
-  --emerald: #10b981;
-  --ek: rgb(16 185 129 / 9%);
-  --amber: #f59e0b;
-  --ak: rgb(245 158 11 / 9%);
-  --sky: #38bdf8;
-  --sk2: rgb(56 189 248 / 9%);
+  /* Base */
+  --void: #050505;
+  --bg: #0a0a0b;
+  --bg2: #111113;
+  --bg3: #17171b;
+  --bg4: #1e1f25;
+
+  /* Borders */
+  --rim: #2a2c35;
+  --rim2: #3a3d49;
+
+  /* Text */
+  --text: #f5f7fb;
+  --sub: #8b93a7;
+
+  /* Surface tint */
+  --ghost: rgb(255 255 255 / 0.03);
+
+  /* Primary */
+  --blue: #5eead4;
+  --bk: rgb(94 234 212 / 0.12);
+
+  /* Secondary */
+  --violet: #a78bfa;
+  --vk: rgb(167 139 250 / 0.12);
+
+  /* Status */
+  --coral: #fb7185;
+  --ck: rgb(251 113 133 / 0.12);
+
+  --emerald: #34d399;
+  --ek: rgb(52 211 153 / 0.12);
+
+  --amber: #fbbf24;
+  --ak: rgb(251 191 36 / 0.12);
+
+  --sky: #60a5fa;
+  --sk2: rgb(96 165 250 / 0.12);
 }
 
 *,
@@ -704,7 +720,7 @@ p {
   align-items: start
 }
 
-.drv-row > div {
+.drv-row>div {
   min-width: 0;
   overflow-x: auto;
   padding-bottom: 8px;

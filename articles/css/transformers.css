@@ -18,28 +18,25 @@
   --sub: #8b93a7;
 
   /* Surface tint */
-  --ghost: rgb(255 255 255 / 0.03);
+  --ghost: rgb(255 255 255 / 3%);
 
   /* Primary */
   --blue: #5eead4;
-  --bk: rgb(94 234 212 / 0.12);
+  --bk: rgb(94 234 212 / 12%);
 
   /* Secondary */
   --violet: #a78bfa;
-  --vk: rgb(167 139 250 / 0.12);
+  --vk: rgb(167 139 250 / 12%);
 
   /* Status */
   --coral: #fb7185;
-  --ck: rgb(251 113 133 / 0.12);
-
+  --ck: rgb(251 113 133 / 12%);
   --emerald: #34d399;
-  --ek: rgb(52 211 153 / 0.12);
-
+  --ek: rgb(52 211 153 / 12%);
   --amber: #fbbf24;
-  --ak: rgb(251 191 36 / 0.12);
-
+  --ak: rgb(251 191 36 / 12%);
   --sky: #60a5fa;
-  --sk2: rgb(96 165 250 / 0.12);
+  --sk2: rgb(96 165 250 / 12%);
 }
 
 *,

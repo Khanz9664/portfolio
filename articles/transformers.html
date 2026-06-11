@@ -608,7 +608,7 @@
           <div class="eq-body">
             \[\text{MaskedAttention}(\mathbf{Q},\mathbf{K},\mathbf{V}) =
             \text{softmax}\!\left(\frac{\mathbf{Q}\mathbf{K}^T + \mathbf{M}}{\sqrt{d_k}}\right)\mathbf{V}\]
-            \[\mathbf{M}_{ij} = \begin{cases}0 & j \leq i \\ -\infty & j > i\end{cases}\]
+            \[\mathbf{M}_{ij} = \begin{cases}0 & j \leq i \\ -\infty & j &gt; i\end{cases}\]
             <div class="eq-note">The causal mask M prevents position i from attending to future positions j &gt; i.
               Adding −∞ before softmax makes those weights exactly 0 (softmax(−∞) = 0). This ensures the decoder cannot
               "cheat" by looking at tokens it hasn't generated yet. Essential for autoregressive language models.</div>

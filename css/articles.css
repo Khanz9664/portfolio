@@ -721,8 +721,15 @@
 }
 
 @keyframes pulseCell {
-    0% { transform: scale(0.95); filter: brightness(0.8); }
-    100% { transform: scale(1.05); filter: brightness(1.2); }
+    0% {
+        transform: scale(0.95);
+        filter: brightness(0.8);
+    }
+
+    100% {
+        transform: scale(1.05);
+        filter: brightness(1.2);
+    }
 }
 
 .card-image-overlay {

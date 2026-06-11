@@ -11,20 +11,19 @@
   --rim2: #173050;
   --text: #e2edff;
   --sub: #4a6a90;
-  --ghost: rgba(14, 165, 233, 0.04);
-
+  --ghost: rgb(14 165 233 / 4%);
   --blue: #0ea5e9;
-  --bk: rgba(14, 165, 233, 0.09);
+  --bk: rgb(14 165 233 / 9%);
   --coral: #f43f5e;
-  --ck: rgba(244, 63, 94, 0.09);
+  --ck: rgb(244 63 94 / 9%);
   --violet: #8b5cf6;
-  --vk: rgba(139, 92, 246, 0.09);
+  --vk: rgb(139 92 246 / 9%);
   --emerald: #10b981;
-  --ek: rgba(16, 185, 129, 0.09);
+  --ek: rgb(16 185 129 / 9%);
   --amber: #f59e0b;
-  --ak: rgba(245, 158, 11, 0.09);
+  --ak: rgb(245 158 11 / 9%);
   --sky: #38bdf8;
-  --sk2: rgba(56, 189, 248, 0.09);
+  --sk2: rgb(56 189 248 / 9%);
 }
 
 *,
@@ -68,9 +67,9 @@ body {
   inset: 0;
   pointer-events: none;
   background:
-    radial-gradient(ellipse 65% 55% at 75% 55%, rgba(14, 165, 233, 0.1) 0%, transparent 65%),
-    radial-gradient(ellipse 50% 45% at 15% 40%, rgba(139, 92, 246, 0.06) 0%, transparent 60%),
-    radial-gradient(ellipse 40% 35% at 55% 100%, rgba(244, 63, 94, 0.06) 0%, transparent 55%);
+    radial-gradient(ellipse 65% 55% at 75% 55%, rgb(14 165 233 / 10%) 0%, transparent 65%),
+    radial-gradient(ellipse 50% 45% at 15% 40%, rgb(139 92 246 / 6%) 0%, transparent 60%),
+    radial-gradient(ellipse 40% 35% at 55% 100%, rgb(244 63 94 / 6%) 0%, transparent 55%);
 }
 
 /* circuit-board dot grid */
@@ -79,7 +78,7 @@ body {
   position: absolute;
   inset: 0;
   pointer-events: none;
-  background-image: radial-gradient(circle, rgba(14, 165, 233, 0.09) 1px, transparent 1px);
+  background-image: radial-gradient(circle, rgb(14 165 233 / 9%) 1px, transparent 1px);
   background-size: 32px 32px;
 }
 
@@ -96,7 +95,7 @@ body {
   align-items: center;
 }
 
-@media(max-width:700px) {
+@media(width <=700px) {
   .hero-inner {
     grid-template-columns: 1fr
   }
@@ -131,7 +130,7 @@ body {
 
 .hero h1 .dim {
   font-weight: 100;
-  color: rgba(255, 255, 255, 0.18);
+  color: rgb(255 255 255 / 18%);
   display: block;
   font-size: .55em;
   letter-spacing: .02em;
@@ -141,9 +140,8 @@ body {
 .hero h1 .hi {
   background: linear-gradient(90deg, #0ea5e9 0%, #8b5cf6 50%, #38bdf8 100%);
   background-size: 200% auto;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
   background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 .hero-sub {
@@ -174,27 +172,27 @@ body {
 
 .hchip.b {
   color: var(--blue);
-  border-color: rgba(14, 165, 233, .3)
+  border-color: rgb(14 165 233 / 30%)
 }
 
 .hchip.c {
   color: var(--coral);
-  border-color: rgba(244, 63, 94, .3)
+  border-color: rgb(244 63 94 / 30%)
 }
 
 .hchip.v {
   color: var(--violet);
-  border-color: rgba(139, 92, 246, .3)
+  border-color: rgb(139 92 246 / 30%)
 }
 
 .hchip.e {
   color: var(--emerald);
-  border-color: rgba(16, 185, 129, .3)
+  border-color: rgb(16 185 129 / 30%)
 }
 
 .hchip.a {
   color: var(--amber);
-  border-color: rgba(245, 158, 11, .3)
+  border-color: rgb(245 158 11 / 30%)
 }
 
 /* ═══════════════════════════════════════════
@@ -307,27 +305,27 @@ body {
 
 .ch-label.b {
   color: var(--blue);
-  border-color: rgba(14, 165, 233, .3)
+  border-color: rgb(14 165 233 / 30%)
 }
 
 .ch-label.c {
   color: var(--coral);
-  border-color: rgba(244, 63, 94, .3)
+  border-color: rgb(244 63 94 / 30%)
 }
 
 .ch-label.v {
   color: var(--violet);
-  border-color: rgba(139, 92, 246, .3)
+  border-color: rgb(139 92 246 / 30%)
 }
 
 .ch-label.e {
   color: var(--emerald);
-  border-color: rgba(16, 185, 129, .3)
+  border-color: rgb(16 185 129 / 30%)
 }
 
 .ch-label.a {
   color: var(--amber);
-  border-color: rgba(245, 158, 11, .3)
+  border-color: rgb(245 158 11 / 30%)
 }
 
 .ch h2 {
@@ -416,7 +414,7 @@ p {
   justify-content: space-between;
   padding: clamp(8px, 1.4vw, 11px) clamp(14px, 2.5vw, 20px);
   border-bottom: 1px solid var(--rim);
-  background: rgba(255, 255, 255, 0.02);
+  background: rgb(255 255 255 / 2%);
 }
 
 .eq-name {
@@ -456,7 +454,7 @@ p {
 
 /* color variants */
 .eq.b .eq-top {
-  border-bottom-color: rgba(14, 165, 233, .2)
+  border-bottom-color: rgb(14 165 233 / 20%)
 }
 
 .eq.b .eq-body {
@@ -464,12 +462,12 @@ p {
 }
 
 .eq.b .eq-tag {
-  background: rgba(14, 165, 233, .12);
+  background: rgb(14 165 233 / 12%);
   color: var(--blue)
 }
 
 .eq.c .eq-top {
-  border-bottom-color: rgba(244, 63, 94, .2)
+  border-bottom-color: rgb(244 63 94 / 20%)
 }
 
 .eq.c .eq-body {
@@ -477,12 +475,12 @@ p {
 }
 
 .eq.c .eq-tag {
-  background: rgba(244, 63, 94, .12);
+  background: rgb(244 63 94 / 12%);
   color: var(--coral)
 }
 
 .eq.v .eq-top {
-  border-bottom-color: rgba(139, 92, 246, .2)
+  border-bottom-color: rgb(139 92 246 / 20%)
 }
 
 .eq.v .eq-body {
@@ -490,12 +488,12 @@ p {
 }
 
 .eq.v .eq-tag {
-  background: rgba(139, 92, 246, .12);
+  background: rgb(139 92 246 / 12%);
   color: var(--violet)
 }
 
 .eq.e .eq-top {
-  border-bottom-color: rgba(16, 185, 129, .2)
+  border-bottom-color: rgb(16 185 129 / 20%)
 }
 
 .eq.e .eq-body {
@@ -503,12 +501,12 @@ p {
 }
 
 .eq.e .eq-tag {
-  background: rgba(16, 185, 129, .12);
+  background: rgb(16 185 129 / 12%);
   color: var(--emerald)
 }
 
 .eq.a .eq-top {
-  border-bottom-color: rgba(245, 158, 11, .2)
+  border-bottom-color: rgb(245 158 11 / 20%)
 }
 
 .eq.a .eq-body {
@@ -516,7 +514,7 @@ p {
 }
 
 .eq.a .eq-tag {
-  background: rgba(245, 158, 11, .12);
+  background: rgb(245 158 11 / 12%);
   color: var(--amber)
 }
 
@@ -621,7 +619,7 @@ p {
   position: absolute;
   inset: 0;
   pointer-events: none;
-  background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(14, 165, 233, 0.05) 0%, transparent 70%)
+  background: radial-gradient(ellipse 80% 60% at 50% 0%, rgb(14 165 233 / 5%) 0%, transparent 70%)
 }
 
 .thm::after {
@@ -647,7 +645,7 @@ p {
   width: clamp(24px, 3.5vw, 30px);
   height: clamp(24px, 3.5vw, 30px);
   border-radius: 6px;
-  background: rgba(14, 165, 233, .15);
+  background: rgb(14 165 233 / 15%);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -833,7 +831,7 @@ tbody td {
   margin: clamp(16px, 3vw, 26px) 0
 }
 
-@media(max-width:620px) {
+@media(width <=620px) {
   .compare {
     grid-template-columns: 1fr
   }
@@ -998,7 +996,7 @@ tbody td {
   font-family: 'IBM Plex Mono', monospace;
   font-size: clamp(11px, 1.6vw, 13px);
   line-height: 2.1;
-  color: rgba(226, 237, 255, 0.42);
+  color: rgb(226 237 255 / 42%);
   overflow-x: auto;
   -webkit-overflow-scrolling: touch
 }
@@ -1020,7 +1018,7 @@ tbody td {
 }
 
 .cmt {
-  color: rgba(226, 237, 255, .18);
+  color: rgb(226 237 255 / 18%);
   font-style: italic
 }
 

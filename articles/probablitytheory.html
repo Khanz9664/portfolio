@@ -1,0 +1,992 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Probablity Theory | Shahid Ul Islam</title>
+  <meta name="description" content="Mathematical foundation beneath every algorithm" />
+  <meta name="author" content="Shahid Ul Islam" />
+  <link rel="icon" type="image/png" href="../img/plogo.png" />
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=JetBrains+Mono:wght@300;400;600;700&family=Lora:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="css/probablitytheory.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <link rel="stylesheet" href="../css/variables.css" />
+  <link rel="stylesheet" href="../css/navigation.css" />
+  <link rel="stylesheet" href="../css/footer.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <script defer src="../js/common.js"></script>
+
+</head>
+
+<body>
+  <div class="top-bar">
+    <div class="logo">
+      <img src="../img/plogo.png" alt="Personal Logo" class="logo-icon">
+      <span class="logo-text">SHAHID<span class="logo-accent">||</span>Portfolio</span>
+    </div>
+    <nav class="nav-container">
+      <ul class="nav-links">
+        <li><a href="../index.html" class="nav-link">.Home</a></li>
+        <li><a href="../about.html" class="nav-link">.About</a></li>
+        <li><a href="../skills.html" class="nav-link">.Skills</a></li>
+        <li><a href="../projects.html" class="nav-link">.Projects</a></li>
+        <li><a href="../contact.html" class="nav-link">.Contact</a></li>
+        <li><a href="../articles.html" class="nav-link">.Articles</a></li>
+      </ul>
+      <div class="menu-toggle">
+        <div class="hamburger"></div>
+      </div>
+    </nav>
+  </div>
+
+<!-- ══ HERO ════════════════════════════════════════════════ -->
+<div class="hero">
+  <div class="hero-inner">
+    <div>
+      <div class="hero-overline"><div class="hero-overline-dot"></div>Mathematics · Statistics · Machine Learning</div>
+      <h1>
+        <span class="light">from first principles</span>
+        <span class="main">Probability</span>
+        <span class="accent">Theory for ML</span>
+      </h1>
+      <p class="hero-byline">
+        The rigorous mathematical foundation beneath every<br>
+        algorithm you've ever run. Measure theory to CLT,<br>
+        concentration inequalities to the probabilistic soul of ML.
+      </p>
+      <div class="hero-tags">
+        <span class="htag v">Probability Spaces</span>
+        <span class="htag o">Random Variables</span>
+        <span class="htag e">PMF · PDF · CDF</span>
+        <span class="htag p">Expectation · Variance</span>
+        <span class="htag b">Bayes' Rule</span>
+        <span class="htag a">Joint Distributions</span>
+        <span class="htag v">Common Distributions</span>
+        <span class="htag o">LLN &amp; CLT</span>
+        <span class="htag e">Concentration Ineq.</span>
+        <span class="htag p">Prob. View of ML</span>
+      </div>
+    </div>
+    <!-- Distribution curves art -->
+    <div style="flex-shrink:0">
+      <svg width="clamp(200px,24vw,300px)" height="clamp(200px,24vw,300px)" viewBox="0 0 280 280" xmlns="http://www.w3.org/2000/svg" style="display:block">
+        <defs>
+          <linearGradient id="bell-fill" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#c084fc" stop-opacity=".25"/><stop offset="100%" stop-color="#c084fc" stop-opacity=".02"/></linearGradient>
+          <linearGradient id="exp-fill" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#fb923c" stop-opacity=".2"/><stop offset="100%" stop-color="#fb923c" stop-opacity=".02"/></linearGradient>
+          <linearGradient id="unif-fill" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#34d399" stop-opacity=".18"/><stop offset="100%" stop-color="#34d399" stop-opacity=".02"/></linearGradient>
+        </defs>
+        <!-- Coordinate axes -->
+        <line x1="20" y1="240" x2="265" y2="240" stroke="rgba(192,132,252,0.15)" stroke-width="1"/>
+        <line x1="20" y1="20" x2="20" y2="245" stroke="rgba(192,132,252,0.15)" stroke-width="1"/>
+
+        <!-- Bell curve (Gaussian) — fill + stroke -->
+        <path d="M20,238 C40,238 55,235 70,225 C82,215 92,195 105,168 C114,148 122,126 140,110 C155,95 162,90 175,110 C185,126 192,148 202,168 C212,188 220,210 235,225 C248,235 258,238 265,238 Z" fill="url(#bell-fill)"/>
+        <path d="M20,238 C40,238 55,235 70,225 C82,215 92,195 105,168 C114,148 122,126 140,110 C155,95 162,90 175,110 C185,126 192,148 202,168 C212,188 220,210 235,225 C248,235 258,238 265,238" fill="none" stroke="#c084fc" stroke-width="2"/>
+
+        <!-- Exponential decay (offset) -->
+        <path d="M20,100 C30,140 45,175 60,200 C75,220 95,232 120,237 C145,240 170,240 265,239" fill="url(#exp-fill)"/>
+        <path d="M20,100 C30,140 45,175 60,200 C75,220 95,232 120,237 C145,240 170,240 265,239" fill="none" stroke="#fb923c" stroke-width="1.5" opacity=".7"/>
+
+        <!-- Uniform (offset) -->
+        <path d="M65,200 L65,165 L200,165 L200,200 Z" fill="url(#unif-fill)"/>
+        <path d="M65,200 L65,165 L200,165 L200,200" fill="none" stroke="#34d399" stroke-width="1.5" opacity=".6"/>
+
+        <!-- Labels -->
+        <text x="148" y="105" font-family="Lora" font-size="12" fill="#c084fc" font-style="italic">𝒩(μ,σ²)</text>
+        <text x="22" y="96" font-family="Lora" font-size="11" fill="#fb923c" font-style="italic">Exp(λ)</text>
+        <text x="115" y="160" font-family="Lora" font-size="11" fill="#34d399" font-style="italic">Unif</text>
+
+        <!-- Axis labels -->
+        <text x="268" y="244" font-family="Fira Code" font-size="10" fill="rgba(192,132,252,.4)">x</text>
+        <text x="8" y="18" font-family="Fira Code" font-size="10" fill="rgba(192,132,252,.4)">f</text>
+
+        <!-- μ marker -->
+        <line x1="140" y1="220" x2="140" y2="244" stroke="rgba(192,132,252,.4)" stroke-width="1.2" stroke-dasharray="3,2"/>
+        <text x="140" y="256" text-anchor="middle" font-family="Fira Code" font-size="9" fill="rgba(192,132,252,.4)">μ</text>
+      </svg>
+    </div>
+  </div>
+</div>
+
+<!-- ══ INDEX ════════════════════════════════════════════════ -->
+<div class="idx-outer">
+  <div class="idx-grid">
+    <div class="idx-cell"><a href="#c1"><span class="idx-n">01</span>Probability Spaces</a></div>
+    <div class="idx-cell"><a href="#c2"><span class="idx-n">02</span>Random Variables</a></div>
+    <div class="idx-cell"><a href="#c3"><span class="idx-n">03</span>PMFs, PDFs &amp; CDFs</a></div>
+    <div class="idx-cell"><a href="#c4"><span class="idx-n">04</span>Expectation</a></div>
+    <div class="idx-cell"><a href="#c5"><span class="idx-n">05</span>Variance &amp; Covariance</a></div>
+    <div class="idx-cell"><a href="#c6"><span class="idx-n">06</span>Conditional Probability</a></div>
+    <div class="idx-cell"><a href="#c7"><span class="idx-n">07</span>Law of Total Probability</a></div>
+    <div class="idx-cell"><a href="#c8"><span class="idx-n">08</span>Bayes' Rule</a></div>
+    <div class="idx-cell"><a href="#c9"><span class="idx-n">09</span>Joint Distributions</a></div>
+    <div class="idx-cell"><a href="#c10"><span class="idx-n">10</span>Independence</a></div>
+    <div class="idx-cell"><a href="#c11"><span class="idx-n">11</span>Common Distributions</a></div>
+    <div class="idx-cell"><a href="#c12"><span class="idx-n">12</span>Law of Large Numbers</a></div>
+    <div class="idx-cell"><a href="#c13"><span class="idx-n">13</span>Central Limit Theorem</a></div>
+    <div class="idx-cell"><a href="#c14"><span class="idx-n">14</span>Concentration Inequalities</a></div>
+    <div class="idx-cell"><a href="#c15"><span class="idx-n">15</span>Probabilistic View of ML</a></div>
+    <div class="idx-cell"><a href="#c16"><span class="idx-n">16</span>Complete Mental Model</a></div>
+  </div>
+</div>
+
+<div class="page">
+
+<!-- ══ §01 ═════════════════════════════════════════════════ -->
+<div class="ch" id="c1">
+  <div class="ch-head">
+    <div class="ch-top"><div class="ch-num">01</div><span class="ch-badge v">Foundations</span></div>
+    <h2>Probability Spaces</h2>
+    <div class="ch-sub">// sample space · σ-algebra · probability measure · Kolmogorov axioms</div>
+  </div>
+
+  <p>A probability space is the mathematical bedrock on which everything in statistics and ML rests. It gives a rigorous answer to the question: <em>what is a random experiment?</em></p>
+
+  <div class="sub">
+    <div class="sh v">The Formal Definition</div>
+    <div class="eq v">
+      <div class="eq-top"><span class="eq-name">Probability Space (Ω, ℱ, ℙ)</span><span class="eq-tag">Definition</span></div>
+      <div class="eq-body">
+        \[(\Omega,\,\mathcal{F},\,\mathbb{P}) \quad\text{where:}\]
+        \[\Omega \text{ — sample space: the set of all possible outcomes}\]
+        \[\mathcal{F} \subseteq 2^\Omega \text{ — σ-algebra: a collection of measurable events}\]
+        \[\mathbb{P}:\mathcal{F}\to[0,1] \text{ — probability measure: assigns probabilities to events}\]
+        <div class="eq-note">The σ-algebra ℱ must satisfy: (1) Ω ∈ ℱ, (2) if A ∈ ℱ then Aᶜ ∈ ℱ (closed under complement), (3) if A₁,A₂,... ∈ ℱ then ∪ᵢAᵢ ∈ ℱ (closed under countable unions). This ensures every set we want to assign a probability to is "measurable."</div>
+      </div>
+    </div>
+
+    <div class="eq o">
+      <div class="eq-top"><span class="eq-name">Kolmogorov's Three Axioms</span><span class="eq-tag">Axioms</span></div>
+      <div class="eq-body">
+        \[\textbf{(K1) Non-negativity:}\quad \mathbb{P}(A) \geq 0 \quad\forall A\in\mathcal{F}\]
+        \[\textbf{(K2) Normalization:}\quad \mathbb{P}(\Omega) = 1\]
+        \[\textbf{(K3) Countable Additivity:}\quad A_i \cap A_j = \emptyset \Rightarrow \mathbb{P}\!\left(\bigcup_{i=1}^\infty A_i\right) = \sum_{i=1}^\infty \mathbb{P}(A_i)\]
+        <div class="eq-note">All probability rules you've ever used — complement rule P(Aᶜ) = 1−P(A), inclusion-exclusion, Boole's inequality — are theorems derived from these three axioms alone. They were proposed by Andrei Kolmogorov in 1933, unifying all previous ad hoc probability rules into a single coherent framework.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sub">
+    <div class="sh e">Key Consequences</div>
+    <ul class="fl e">
+      <li><strong>Complement rule:</strong> \(\mathbb{P}(A^c) = 1 - \mathbb{P}(A)\). Proof: \(\Omega = A \cup A^c\) (disjoint), so \(1 = \mathbb{P}(A) + \mathbb{P}(A^c)\).</li>
+      <li><strong>Monotonicity:</strong> If \(A \subseteq B\) then \(\mathbb{P}(A) \leq \mathbb{P}(B)\).</li>
+      <li><strong>Inclusion-Exclusion:</strong> \(\mathbb{P}(A \cup B) = \mathbb{P}(A) + \mathbb{P}(B) - \mathbb{P}(A \cap B)\).</li>
+      <li><strong>Union bound (Boole's inequality):</strong> \(\mathbb{P}(\bigcup_i A_i) \leq \sum_i \mathbb{P}(A_i)\) — used constantly in ML generalization bounds.</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ══ §02 ═════════════════════════════════════════════════ -->
+<div class="ch" id="c2">
+  <div class="ch-head">
+    <div class="ch-top"><div class="ch-num">02</div><span class="ch-badge o">Variables</span></div>
+    <h2>Random Variables</h2>
+    <div class="ch-sub">// measurable function · distribution · discrete vs continuous · induced measure</div>
+  </div>
+
+  <p>A random variable is not actually a variable in the usual sense — it is a <em>function</em> from the sample space to the real numbers. This formalism connects the abstract probability space to measurable quantities.</p>
+
+  <div class="sub">
+    <div class="sh v">Formal Definition</div>
+    <div class="eq v">
+      <div class="eq-top"><span class="eq-name">Random Variable — Definition</span><span class="eq-tag">Formal</span></div>
+      <div class="eq-body">
+        \[X: \Omega \to \mathbb{R} \quad \text{such that } \{X \leq x\} = \{\omega\in\Omega: X(\omega) \leq x\} \in \mathcal{F} \quad\forall x\in\mathbb{R}\]
+        <div class="eq-note">The measurability condition ensures that P(X ≤ x) makes sense (the set we're measuring is in ℱ). In practice: for discrete probability spaces, every function is a random variable. For continuous spaces (e.g., Ω = ℝ), we need measurability to rule out pathological functions. Most functions you'll ever encounter are measurable.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="two">
+    <div class="tcol">
+      <h4 style="color:var(--violet)">Discrete Random Variables</h4>
+      <p>Takes values in a countable set \(\{x_1, x_2, \ldots\}\). The distribution is fully described by the probability mass function (PMF).</p>
+      <p>Examples: number of heads in \(n\) flips, number of words in a sentence, number of training epochs until convergence.</p>
+    </div>
+    <div class="tcol">
+      <h4 style="color:var(--orange)">Continuous Random Variables</h4>
+      <p>Takes values in an uncountable set (e.g., \(\mathbb{R}\)). The distribution is described by a probability density function (PDF). \(P(X = x) = 0\) for any specific \(x\).</p>
+      <p>Examples: Gaussian noise, uniform random initialization, model output probabilities.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ══ §03 ═════════════════════════════════════════════════ -->
+<div class="ch" id="c3">
+  <div class="ch-head">
+    <div class="ch-top"><div class="ch-num">03</div><span class="ch-badge e">Distributions</span></div>
+    <h2>PMFs, PDFs, and CDFs</h2>
+    <div class="ch-sub">// probability mass · density · cumulative · LOTUS · transformations</div>
+  </div>
+
+  <p>In Machine Learning, probability distributions form the backbone of our loss functions and generative models. When a neural network predicts a class, it outputs a Probability Mass Function (PMF) via a softmax layer. When a variational autoencoder learns the latent space of images, it models a continuous Probability Density Function (PDF).</p>
+
+  <div class="sub">
+    <div class="sh v">Probability Mass Function (Discrete)</div>
+    <div class="eq v">
+      <div class="eq-top"><span class="eq-name">PMF — Discrete Distribution</span><span class="eq-tag">Discrete</span></div>
+      <div class="eq-body">
+        \[p_X(x) = \mathbb{P}(X = x) \geq 0, \quad \sum_{x\in\mathcal{X}} p_X(x) = 1\]
+        \[\mathbb{P}(X \in A) = \sum_{x\in A}p_X(x)\]
+        <div class="eq-note">The PMF must be non-negative and sum to 1. Every valid probability distribution must satisfy these two constraints — they follow directly from Kolmogorov's axioms.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sub">
+    <div class="sh o">Probability Density Function (Continuous)</div>
+    <div class="eq o">
+      <div class="eq-top"><span class="eq-name">PDF — Continuous Distribution</span><span class="eq-tag">Continuous</span></div>
+      <div class="eq-body">
+        \[f_X(x) \geq 0, \quad \int_{-\infty}^\infty f_X(x)\,dx = 1\]
+        \[\mathbb{P}(a \leq X \leq b) = \int_a^b f_X(x)\,dx\]
+        <div class="eq-note">f_X(x) is NOT a probability — it's a density. P(X = x) = 0 for any specific x (measure-zero set). However, f_X(x) dx ≈ P(x ≤ X ≤ x+dx) for infinitesimally small dx. The density can exceed 1 (as long as the integral equals 1).</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sub">
+    <div class="sh e">Cumulative Distribution Function (CDF)</div>
+    <div class="eq e">
+      <div class="eq-top"><span class="eq-name">CDF — Definition and Properties</span><span class="eq-tag">Universal</span></div>
+      <div class="eq-body">
+        \[F_X(x) = \mathbb{P}(X \leq x) = \begin{cases}\sum_{t \leq x}p_X(t) & \text{discrete} \\ \int_{-\infty}^x f_X(t)\,dt & \text{continuous}\end{cases}\]
+        <div class="eq-note">CDF properties: (1) Non-decreasing: x₁ ≤ x₂ → F(x₁) ≤ F(x₂). (2) Right-continuous. (3) F(−∞) = 0, F(+∞) = 1. The CDF exists for every random variable (even when PMF/PDF don't). P(a &lt; X ≤ b) = F(b) − F(a). For continuous RVs: f(x) = dF/dx.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ §04 ═════════════════════════════════════════════════ -->
+<div class="ch" id="c4">
+  <div class="ch-head">
+    <div class="ch-top"><div class="ch-num">04</div><span class="ch-badge v">Expectation</span></div>
+    <h2>Expectation</h2>
+    <div class="ch-sub">// Lebesgue integral · LOTUS · linearity · Jensen's inequality · moments</div>
+  </div>
+
+  <p>Machine Learning is fundamentally the science of optimizing expectations. The loss function we minimize during training (Empirical Risk Minimization) is simply a sample-based approximation of the expected loss over the true data distribution. Furthermore, when our models make predictions under uncertainty, they frequently output the expected value of the target.</p>
+
+  <div class="eq v">
+    <div class="eq-top"><span class="eq-name">Expectation — All Cases</span><span class="eq-tag">Core Definition</span></div>
+    <div class="eq-body">
+      \[\mathbb{E}[X] = \begin{cases}\sum_{x\in\mathcal{X}} x\,p(x) & \text{discrete} \\ \int_{-\infty}^\infty x\,f(x)\,dx & \text{continuous}\end{cases}\]
+      \[\mathbb{E}[g(X)] = \begin{cases}\sum_x g(x)\,p(x) & \text{discrete (LOTUS)} \\ \int g(x)\,f(x)\,dx & \text{continuous (LOTUS)}\end{cases}\]
+      <div class="eq-note">LOTUS = Law of the Unconscious Statistician. Lets you compute E[g(X)] without first finding the distribution of g(X) — just integrate g(x) against the original density f(x). Essential for computing moments, MGFs, and loss function expectations.</div>
+    </div>
+  </div>
+
+  <div class="sub">
+    <div class="sh o">Linearity of Expectation</div>
+    <div class="eq o">
+      <div class="eq-top"><span class="eq-name">Linearity — No Independence Required</span><span class="eq-tag">Key Property</span></div>
+      <div class="eq-body">
+        \[\mathbb{E}[aX + bY] = a\mathbb{E}[X] + b\mathbb{E}[Y]\]
+        \[\mathbb{E}\!\left[\sum_{i=1}^n X_i\right] = \sum_{i=1}^n \mathbb{E}[X_i]\]
+        <div class="eq-note">Linearity holds regardless of whether X and Y are independent. This is the single most powerful trick in probability — it lets you compute the expected value of complicated sums by breaking them into simple pieces. The expected number of heads in n flips = n · E[one flip] = n/2, with no need to compute the Binomial PMF.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sub">
+    <div class="sh e">Jensen's Inequality</div>
+    <div class="eq e">
+      <div class="eq-top"><span class="eq-name">Jensen's Inequality</span><span class="eq-tag">Convexity</span></div>
+      <div class="eq-body">
+        \[f\text{ convex} \Rightarrow f(\mathbb{E}[X]) \leq \mathbb{E}[f(X)]\]
+        \[f\text{ concave} \Rightarrow f(\mathbb{E}[X]) \geq \mathbb{E}[f(X)]\]
+        <div class="eq-note">Applications: KL divergence ≥ 0 (proven via Jensen with f = −log). Variance ≥ 0 (Jensen with f(x) = x²). E[1/X] ≥ 1/E[X] for X &gt; 0. E[X²] ≥ (E[X])² (hence Var(X) ≥ 0). In ML: the ELBO lower bound in VAEs uses Jensen. Softmax and the log-sum-exp trick use Jensen.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ §05 ═════════════════════════════════════════════════ -->
+<div class="ch" id="c5">
+  <div class="ch-head">
+    <div class="ch-top"><div class="ch-num">05</div><span class="ch-badge p">Spread</span></div>
+    <h2>Variance &amp; Covariance</h2>
+    <div class="ch-sub">// second moment · spread · correlation · covariance matrix · Cauchy-Schwarz</div>
+  </div>
+
+  <p>While expectation tells us our model's average prediction, variance measures its uncertainty and instability—central to understanding the famous bias-variance tradeoff. Covariance extends this to multiple dimensions, forming the foundation of feature correlation, Principal Component Analysis (PCA), and the geometry of multivariate data.</p>
+
+  <div class="eq p">
+    <div class="eq-top"><span class="eq-name">Variance and Standard Deviation</span><span class="eq-tag">Second Moment</span></div>
+    <div class="eq-body">
+      \[\text{Var}(X) = \mathbb{E}\!\left[(X-\mathbb{E}[X])^2\right] = \mathbb{E}[X^2] - (\mathbb{E}[X])^2\]
+      \[\sigma_X = \text{SD}(X) = \sqrt{\text{Var}(X)}\]
+      \[\text{Var}(aX+b) = a^2\,\text{Var}(X)\]
+      <div class="eq-note">The computational formula E[X²] − (E[X])² is usually easier than the definition. Variance is not linear (note the a² factor). Var(X+Y) = Var(X) + Var(Y) only when X and Y are uncorrelated (not necessarily independent).</div>
+    </div>
+  </div>
+
+  <div class="sub">
+    <div class="sh v">Covariance and Correlation</div>
+    <div class="eq v">
+      <div class="eq-top"><span class="eq-name">Covariance — Definition and Properties</span><span class="eq-tag">Joint Spread</span></div>
+      <div class="eq-body">
+        \[\text{Cov}(X,Y) = \mathbb{E}[(X-\mu_X)(Y-\mu_Y)] = \mathbb{E}[XY] - \mathbb{E}[X]\mathbb{E}[Y]\]
+        \[\rho_{XY} = \text{Corr}(X,Y) = \frac{\text{Cov}(X,Y)}{\sigma_X\sigma_Y} \in [-1,1]\]
+        \[\text{Var}(X+Y) = \text{Var}(X) + \text{Var}(Y) + 2\,\text{Cov}(X,Y)\]
+        \[\text{Var}\!\left(\sum_{i=1}^n X_i\right) = \sum_{i=1}^n\text{Var}(X_i) + 2\sum_{i&lt;j}\text{Cov}(X_i,X_j)\]
+        <div class="eq-note">|Corr(X,Y)| ≤ 1 by Cauchy-Schwarz: |Cov(X,Y)|² ≤ Var(X)·Var(Y). Cov(X,Y) = 0 means X and Y are uncorrelated, NOT independent (independence → uncorrelated, but not vice versa). The covariance matrix Σᵢⱼ = Cov(Xᵢ,Xⱼ) is the central object in multivariate statistics and PCA.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sub">
+    <div class="sh o">The Covariance Matrix</div>
+    <div class="eq o">
+      <div class="eq-top"><span class="eq-name">Covariance Matrix — Definition &amp; Properties</span><span class="eq-tag">Multivariate</span></div>
+      <div class="eq-body">
+        \[\boldsymbol{\Sigma} = \text{Cov}(\mathbf{X}) = \mathbb{E}[(\mathbf{X}-\boldsymbol{\mu})(\mathbf{X}-\boldsymbol{\mu})^T] \in \mathbb{R}^{d\times d}\]
+        \[\boldsymbol{\Sigma}_{ij} = \text{Cov}(X_i, X_j), \quad \boldsymbol{\Sigma}_{ii} = \text{Var}(X_i)\]
+        <div class="eq-note">Σ is always symmetric (Σᵢⱼ = Σⱼᵢ) and positive semi-definite (v^T Σ v ≥ 0 for all v). PSD follows from Var(v^T X) = v^T Σ v ≥ 0. The covariance matrix encodes the shape, scale, and correlation structure of a multivariate distribution. PCA diagonalizes it.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ §06 ═════════════════════════════════════════════════ -->
+<div class="ch" id="c6">
+  <div class="ch-head">
+    <div class="ch-top"><div class="ch-num">06</div><span class="ch-badge b">Conditioning</span></div>
+    <h2>Conditional Probability</h2>
+    <div class="ch-sub">// definition · updating on evidence · chain rule · independence</div>
+  </div>
+
+  <p>Conditional probability is the mathematical formulation of supervised learning. When we train a discriminative model, we are not trying to learn the distribution of everything; we are specifically trying to model the conditional probability \(P(Y|X)\)—the probability of a target \(Y\) given our observed features \(X\).</p>
+
+  <div class="eq b">
+    <div class="eq-top"><span class="eq-name">Conditional Probability</span><span class="eq-tag">Definition</span></div>
+    <div class="eq-body">
+      \[\mathbb{P}(A \mid B) = \frac{\mathbb{P}(A \cap B)}{\mathbb{P}(B)}, \quad \mathbb{P}(B) &gt; 0\]
+      \[\text{(Product rule)} \quad \mathbb{P}(A \cap B) = \mathbb{P}(A \mid B)\,\mathbb{P}(B) = \mathbb{P}(B \mid A)\,\mathbb{P}(A)\]
+      \[\text{(Chain rule)} \quad \mathbb{P}(A_1 \cap \cdots \cap A_n) = \prod_{k=1}^n \mathbb{P}(A_k \mid A_1,\ldots,A_{k-1})\]
+      <div class="eq-note">Conditioning restricts the sample space to B and renormalizes. P(A|B) is the probability of A given that B has occurred. The product rule is Bayes' theorem waiting to happen. The chain rule factorizes any joint probability into a product of conditionals — used in autoregressive language models like GPT: P(w₁,...,wₙ) = P(w₁)P(w₂|w₁)P(w₃|w₁,w₂)···</div>
+    </div>
+  </div>
+
+  <div class="sub">
+    <div class="sh v">Conditional Expectation</div>
+    <div class="eq v">
+      <div class="eq-top"><span class="eq-name">Conditional Expectation E[Y|X]</span><span class="eq-tag">Key Object</span></div>
+      <div class="eq-body">
+        \[\mathbb{E}[Y \mid X = x] = \int y\,f_{Y|X}(y|x)\,dy\]
+        \[\text{Tower Property (Law of Total Expectation):}\quad \mathbb{E}[Y] = \mathbb{E}[\mathbb{E}[Y \mid X]]\]
+        <div class="eq-note">E[Y|X] is itself a random variable — a function of X. The tower property says: to compute E[Y], first compute E[Y|X] for each value of X, then average over X. Used in ANOVA, Bayesian updating, and the derivation of the Kalman filter.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ §07 ═════════════════════════════════════════════════ -->
+<div class="ch" id="c7">
+  <div class="ch-head">
+    <div class="ch-top"><div class="ch-num">07</div><span class="ch-badge a">Total Probability</span></div>
+    <h2>Law of Total Probability</h2>
+    <div class="ch-sub">// partition of sample space · marginalizing · the bridge between prior and evidence</div>
+  </div>
+
+  <div class="eq a">
+    <div class="eq-top"><span class="eq-name">Law of Total Probability</span><span class="eq-tag">Marginalization</span></div>
+    <div class="eq-body">
+      \[\text{Let }\{B_1, B_2, \ldots, B_n\}\text{ partition }\Omega\text{ (mutually exclusive and exhaustive).}\]
+      \[\mathbb{P}(A) = \sum_{i=1}^n \mathbb{P}(A \mid B_i)\,\mathbb{P}(B_i)\]
+      \[\text{Continuous version:} \quad p(x) = \int p(x \mid z)\,p(z)\,dz\]
+      <div class="eq-note">The continuous version is the marginalisation integral — the denominator in Bayes' theorem. Computing this integral is often the hardest part of Bayesian inference. Variational inference (ELBO) and MCMC exist precisely to avoid computing this integral directly. It is also the "evidence" P(D) = ∫P(D|θ)P(θ)dθ in Bayesian ML.</div>
+    </div>
+  </div>
+
+  <div class="lens a">
+    <div class="lens-mark">∑</div>
+    <div class="lens-content">
+      <div class="lens-title">Why This Is Fundamental to ML</div>
+      <p>The law of total probability is the mathematical operation of <em>marginalization</em> — averaging over unobserved variables. In probabilistic ML, latent variables \(z\) represent hidden structure. The marginal \(p(x) = \int p(x|z)p(z)\,dz\) is the likelihood you actually want to maximize. The entire field of latent variable models (VAEs, GMMs, HMMs) centers on computing or approximating this integral.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ══ §08 ═════════════════════════════════════════════════ -->
+<div class="ch" id="c8">
+  <div class="ch-head">
+    <div class="ch-top"><div class="ch-num">08</div><span class="ch-badge v">Bayes</span></div>
+    <h2>Bayes' Rule — Derivation</h2>
+    <div class="ch-sub">// from product rule · diagnostic reasoning · prior · likelihood · posterior</div>
+  </div>
+
+  <p>Bayes' Rule is the engine of Bayesian ML. It provides a principled mathematical framework for how an AI agent should update its beliefs (its model parameters or weights) as it observes new training data. Instead of finding a single "best" parameter set, Bayesian inference finds an entire distribution of plausible parameters.</p>
+
+  <div class="eq v">
+    <div class="eq-top"><span class="eq-name">Bayes' Rule — Full Form</span><span class="eq-tag">Core Theorem</span></div>
+    <div class="eq-body">
+      \[\mathbb{P}(B \mid A) = \frac{\mathbb{P}(A \mid B)\,\mathbb{P}(B)}{\mathbb{P}(A)} = \frac{\mathbb{P}(A \mid B)\,\mathbb{P}(B)}{\sum_j \mathbb{P}(A \mid B_j)\,\mathbb{P}(B_j)}\]
+      \[\underbrace{p(\theta \mid \mathcal{D})}_{\text{posterior}} = \frac{\overbrace{p(\mathcal{D}\mid\theta)}^{\text{likelihood}}\,\overbrace{p(\theta)}^{\text{prior}}}{\underbrace{p(\mathcal{D})}_{\text{evidence}}} \propto p(\mathcal{D}\mid\theta)\,p(\theta)\]
+      <div class="eq-note">Derivation: product rule applied two ways: P(A∩B) = P(A|B)P(B) = P(B|A)P(A). Divide both sides by P(A). Bayes' rule is not a deep theorem — it is one line of algebra from the definition of conditional probability. Its profundity comes from its interpretation as belief updating.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ §09 ═════════════════════════════════════════════════ -->
+<div class="ch" id="c9">
+  <div class="ch-head">
+    <div class="ch-top"><div class="ch-num">09</div><span class="ch-badge e">Joint</span></div>
+    <h2>Joint Distributions</h2>
+    <div class="ch-sub">// joint PMF/PDF · marginals · conditional distributions · multivariate Gaussian</div>
+  </div>
+
+  <p>A joint distribution models the entire universe of our data variables simultaneously, \(P(X_1, X_2, \ldots, Y)\). While discriminative models focus solely on the conditional, generative AI—such as Variational Autoencoders, GANs, or Diffusion Models—attempts the much harder task of learning this complete joint distribution, allowing us to sample entirely new, synthetic data points.</p>
+
+  <div class="eq e">
+    <div class="eq-top"><span class="eq-name">Joint, Marginal, and Conditional</span><span class="eq-tag">Multivariate</span></div>
+    <div class="eq-body">
+      \[\text{Joint:}\quad p(x,y) \text{ — the full distribution over both variables}\]
+      \[\text{Marginal:}\quad p(x) = \int p(x,y)\,dy \quad\text{(marginalize out } y\text{)}\]
+      \[\text{Conditional:}\quad p(y \mid x) = \frac{p(x,y)}{p(x)}\]
+      \[\text{Factorization:}\quad p(x,y) = p(y \mid x)\,p(x) = p(x \mid y)\,p(y)\]
+      <div class="eq-note">These three forms are related by simple algebra. The Bayesian network literature generalizes this: any joint distribution over n variables can be factored as a product of conditionals along a DAG: p(x₁,...,xₙ) = ∏ᵢ p(xᵢ|parents(xᵢ)). This is the foundation of probabilistic graphical models.</div>
+    </div>
+  </div>
+
+  <div class="sub">
+    <div class="sh v">Multivariate Gaussian</div>
+    <div class="eq v">
+      <div class="eq-top"><span class="eq-name">Multivariate Gaussian Distribution</span><span class="eq-tag">MVN</span></div>
+      <div class="eq-body">
+        \[\mathbf{X} \sim \mathcal{N}(\boldsymbol{\mu}, \boldsymbol{\Sigma})\]
+        \[f(\mathbf{x}) = \frac{1}{(2\pi)^{d/2}|\boldsymbol{\Sigma}|^{1/2}}\exp\!\left(-\frac{1}{2}(\mathbf{x}-\boldsymbol{\mu})^T\boldsymbol{\Sigma}^{-1}(\mathbf{x}-\boldsymbol{\mu})\right)\]
+        <div class="eq-note">The MVN is the multivariate maximum-entropy distribution subject to fixed mean and covariance (by MaxEnt principle). Its contours are ellipses aligned with eigenvectors of Σ. The exponent (x−μ)^T Σ^{-1} (x−μ) is the squared Mahalanobis distance. Conditionals of a MVN are Gaussian; marginals are Gaussian — closure under all linear operations makes it the workhorse of probabilistic ML.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ §10 ═════════════════════════════════════════════════ -->
+<div class="ch" id="c10">
+  <div class="ch-head">
+    <div class="ch-top"><div class="ch-num">10</div><span class="ch-badge p">Independence</span></div>
+    <h2>Independence</h2>
+    <div class="ch-sub">// pairwise vs mutual · conditional independence · independence in ML</div>
+  </div>
+
+  <p>Independence is the most common (and often violated) assumption in data science. The fundamental "i.i.d." assumption—that training examples are independent and identically distributed—allows us to multiply probabilities and sum log-likelihoods. Furthermore, conditional independence is what makes complex graphical models (like Naive Bayes or Hidden Markov Models) computationally tractable.</p>
+
+  <div class="eq p">
+    <div class="eq-top"><span class="eq-name">Independence — Formal Definition</span><span class="eq-tag">Definition</span></div>
+    <div class="eq-body">
+      \[X \perp Y \iff p(x,y) = p(x)\,p(y) \quad\forall x,y\]
+      \[\iff p(x \mid y) = p(x) \quad\forall x,y \text{ s.t. } p(y) &gt; 0\]
+      \[\text{Mutual independence: } p(x_1,\ldots,x_n) = \prod_{i=1}^n p(x_i)\]
+      \[\text{Conditional independence: } X \perp Y \mid Z \iff p(x,y|z) = p(x|z)\,p(y|z)\]
+      <div class="eq-note">Mutual independence is strictly stronger than pairwise independence. Pairwise independence: every pair is independent. Mutual independence: every subset is jointly independent. Counterexample: X, Y ~ Bernoulli(0.5) iid, Z = X ⊕ Y (XOR). X⊥Y, X⊥Z, Y⊥Z but not X⊥Y⊥Z (knowing X and Z determines Y). Conditional independence is the core of Bayesian networks and naive Bayes classifiers.</div>
+    </div>
+  </div>
+
+  <div class="sub">
+    <div class="sh o">Independence vs Uncorrelated</div>
+    <div class="two">
+      <div class="tcol">
+        <h4 style="color:var(--violet)">Independent ⟹ Uncorrelated</h4>
+        <p>If \(X \perp Y\) then \(\text{Cov}(X,Y) = 0\). Proof: \(\mathbb{E}[XY] = \mathbb{E}[X]\mathbb{E}[Y]\) (by independence), so \(\text{Cov} = \mathbb{E}[XY] - \mathbb{E}[X]\mathbb{E}[Y] = 0\).</p>
+      </div>
+      <div class="tcol">
+        <h4 style="color:var(--orange)">Uncorrelated ⟹̸ Independent</h4>
+        <p>Counterexample: \(X \sim \mathcal{N}(0,1)\), \(Y = X^2\). Then \(\text{Cov}(X,Y) = \mathbb{E}[X^3] - \mathbb{E}[X]\mathbb{E}[X^2] = 0\), but \(Y = X^2\) — completely determined by \(X\). Independence requires checking all moments, not just the second moment.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ §11 ═════════════════════════════════════════════════ -->
+<div class="ch" id="c11">
+  <div class="ch-head">
+    <div class="ch-top"><div class="ch-num">11</div><span class="ch-badge b">Distributions</span></div>
+    <h2>Common Distributions</h2>
+    <div class="ch-sub">// Bernoulli · Gaussian · Binomial · Poisson · Beta · Dirichlet · Exponential · Gamma</div>
+  </div>
+
+  <p>These distributions are our algorithmic building blocks. The choice of a target distribution directly dictates the loss function we use: assuming Gaussian noise leads to Mean Squared Error (MSE), assuming a Bernoulli distribution leads to Binary Cross-Entropy, and a Categorical distribution gives us Softmax Cross-Entropy.</p>
+
+  <div class="dist-grid">
+    <div class="dist-card" style="border-top-color:var(--violet)">
+      <div class="dist-name" style="color:var(--violet)">Bernoulli</div>
+      <div class="dist-pdf">p(x) = pˣ(1−p)^{1−x}, x∈{0,1}</div>
+      <p>Single binary trial with success probability p. E[X]=p, Var(X)=p(1−p). Basis of logistic regression output.</p>
+    </div>
+    <div class="dist-card" style="border-top-color:var(--orange)">
+      <div class="dist-name" style="color:var(--orange)">Binomial</div>
+      <div class="dist-pdf">p(k) = C(n,k)pᵏ(1−p)^{n−k}</div>
+      <p>Number of successes in n independent Bernoulli(p) trials. E[X]=np, Var=np(1−p). CLT: Bin(n,p) ≈ N(np, np(1−p)) for large n.</p>
+    </div>
+    <div class="dist-card" style="border-top-color:var(--violet)">
+      <div class="dist-name" style="color:var(--violet)">Gaussian / Normal</div>
+      <div class="dist-pdf">f(x) = (1/√(2πσ²))exp(−(x−μ)²/2σ²)</div>
+      <p>MaxEnt distribution for known mean and variance. E[X]=μ, Var=σ². Basis of regression likelihood, weight initialization, noise models. Central to CLT.</p>
+    </div>
+    <div class="dist-card" style="border-top-color:var(--emerald)">
+      <div class="dist-name" style="color:var(--emerald)">Poisson</div>
+      <div class="dist-pdf">p(k) = λᵏe^{−λ}/k!, k=0,1,2,...  </div>
+      <p>Count of rare events in a fixed interval. E[X]=Var(X)=λ. Approximates Binomial(n,p) when n large, p small, λ=np. Used in NLP token count models.</p>
+    </div>
+    <div class="dist-card" style="border-top-color:var(--orange)">
+      <div class="dist-name" style="color:var(--orange)">Beta</div>
+      <div class="dist-pdf">f(x) ∝ x^{α−1}(1−x)^{β−1}, x∈[0,1]</div>
+      <p>Distribution over probabilities. Conjugate prior for Bernoulli/Binomial. E[X]=α/(α+β). Uniform=Beta(1,1). MaxEnt on [0,1] with fixed E[log X] and E[log(1−X)].</p>
+    </div>
+    <div class="dist-card" style="border-top-color:var(--pink)">
+      <div class="dist-name" style="color:var(--pink)">Dirichlet</div>
+      <div class="dist-pdf">f(p) ∝ ∏ pₖ^{αₖ−1}, Σpₖ=1</div>
+      <p>Distribution over probability simplices. Conjugate prior for Categorical/Multinomial. Generalizes Beta. E[pₖ] = αₖ/Σαⱼ. Foundation of LDA topic models.</p>
+    </div>
+    <div class="dist-card" style="border-top-color:var(--blue)">
+      <div class="dist-name" style="color:var(--blue)">Exponential</div>
+      <div class="dist-pdf">f(x) = λe^{−λx}, x≥0</div>
+      <p>Time until first event in Poisson process. E[X]=1/λ, Var=1/λ². Memoryless: P(X&gt;s+t|X&gt;s)=P(X&gt;t). MaxEnt on [0,∞) with fixed mean.</p>
+    </div>
+    <div class="dist-card" style="border-top-color:var(--amber)">
+      <div class="dist-name" style="color:var(--amber)">Gamma</div>
+      <div class="dist-pdf">f(x) ∝ x^{α−1}e^{−x/β}, x&gt;0</div>
+      <p>Sum of α independent Exp(1/β) RVs. E[X]=αβ, Var=αβ². Conjugate prior for Gaussian precision and Poisson rate. Generalizes exponential and chi-squared.</p>
+    </div>
+  </div>
+
+  <div class="sub">
+    <div class="sh v">The Exponential Family — Unifying Structure</div>
+    <div class="eq v">
+      <div class="eq-top"><span class="eq-name">Exponential Family Distribution</span><span class="eq-tag">General Form</span></div>
+      <div class="eq-body">
+        \[p(x;\eta) = h(x)\exp\!\left(\eta^T T(x) - A(\eta)\right)\]
+        <div class="eq-note">η = natural parameters, T(x) = sufficient statistics, A(η) = log partition function (ensures normalisation). All common distributions are exponential family. Properties: MLE of η has closed form (set mean of T(x) equal to E[T(x)]). Conjugate priors always exist. A(η) is convex, and ∇A(η) = E[T(X)], ∇²A(η) = Cov(T(X)). MaxEnt under moment constraints always gives exponential family.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ §12 ═════════════════════════════════════════════════ -->
+<div class="ch" id="c12">
+  <div class="ch-head">
+    <div class="ch-top"><div class="ch-num">12</div><span class="ch-badge e">Convergence</span></div>
+    <h2>Law of Large Numbers</h2>
+    <div class="ch-sub">// weak LLN · strong LLN · convergence in probability vs almost surely · iid requirement</div>
+  </div>
+
+  <p>The Law of Large Numbers formalizes the intuition that averages stabilize with more data. It is the mathematical foundation of Monte Carlo methods, empirical risk minimization, and every statistical estimator.</p>
+
+  <div class="sub">
+    <div class="sh e">Weak Law of Large Numbers</div>
+    <div class="eq e">
+      <div class="eq-top"><span class="eq-name">Weak LLN (Khinchin)</span><span class="eq-tag">Convergence in Probability</span></div>
+      <div class="eq-body">
+        \[\bar{X}_n = \frac{1}{n}\sum_{i=1}^n X_i \xrightarrow{p} \mu = \mathbb{E}[X] \quad\text{as } n\to\infty\]
+        \[\text{i.e., } \forall\epsilon &gt; 0:\quad \mathbb{P}(|\bar{X}_n - \mu| &gt; \epsilon) \to 0\]
+        <div class="eq-note">Requires X₁, X₂, ... to be iid with finite mean. Proof via Chebyshev's inequality: P(|X̄_n − μ| &gt; ε) ≤ Var(X̄_n)/ε² = σ²/(nε²) → 0. The Weak LLN justifies empirical risk minimization: the empirical average of losses converges to the expected loss as n → ∞.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sub">
+    <div class="sh v">Strong Law of Large Numbers</div>
+    <div class="eq v">
+      <div class="eq-top"><span class="eq-name">Strong LLN (Kolmogorov)</span><span class="eq-tag">Almost Sure Convergence</span></div>
+      <div class="eq-body">
+        \[\bar{X}_n \xrightarrow{a.s.} \mu \quad\text{i.e.}\quad \mathbb{P}\!\left(\lim_{n\to\infty}\bar{X}_n = \mu\right) = 1\]
+        <div class="eq-note">Stronger than Weak LLN: almost every path of sample averages converges to μ. Weak LLN: for any fixed ε, the probability of being outside ε-ball goes to 0. Strong LLN: with probability 1, you'll eventually stay inside every ε-ball forever. Requires finite E[|X|] (not just finite mean). The difference matters for ergodic theory and stochastic processes.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="lens e">
+    <div class="lens-mark">n</div>
+    <div class="lens-content">
+      <div class="lens-title">LLN in Machine Learning</div>
+      <p>The LLN justifies training on mini-batches: the average gradient over a batch converges to the true gradient as batch size grows. It justifies Monte Carlo integration: \(\hat{I} = \frac{1}{n}\sum_i f(x_i) \to \mathbb{E}[f(X)]\). It justifies empirical risk minimization: minimizing \(\frac{1}{n}\sum \ell(f(x_i),y_i)\) approximates minimizing the true risk \(\mathbb{E}[\ell(f(X),Y)]\). Everything in statistical learning theory uses the LLN as its foundation.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ══ §13 ═════════════════════════════════════════════════ -->
+<div class="ch" id="c13">
+  <div class="ch-head">
+    <div class="ch-top"><div class="ch-num">13</div><span class="ch-badge v">CLT</span></div>
+    <h2>Central Limit Theorem</h2>
+    <div class="ch-sub">// normal limit · rate √n · Berry-Esseen · CLT in ML · characteristic functions</div>
+  </div>
+
+  <p>The Central Limit Theorem (CLT) is the reason the Gaussian distribution appears everywhere in nature and algorithms. In Deep Learning, it justifies why aggregated gradients in a mini-batch behave predictably, why weight initialization schemes assume normality, and why ensemble methods like Random Forests successfully reduce model variance.</p>
+
+  <div class="thm">
+    <div class="thm-hdr"><div class="thm-icon">★</div><div class="thm-label">Central Limit Theorem (Lindeberg-Lévy)</div></div>
+    <p>Let \(X_1, X_2, \ldots\) be i.i.d. with \(\mathbb{E}[X_i] = \mu\) and \(\text{Var}(X_i) = \sigma^2 &lt; \infty\). Then:
+    \[\sqrt{n}\!\left(\bar{X}_n - \mu\right) \xrightarrow{d} \mathcal{N}(0, \sigma^2)\]
+    Equivalently: \(\frac{\bar{X}_n - \mu}{\sigma/\sqrt{n}} \xrightarrow{d} \mathcal{N}(0, 1)\) as \(n \to \infty\).</p>
+  </div>
+
+  <div class="sub">
+    <div class="sh o">Proof Sketch via Characteristic Functions</div>
+    <div class="drv">
+      <div class="drv-hdr">// CLT proof sketch using characteristic functions (moment generating functions)</div>
+      <div class="drv-row">
+        <span class="dn v">1</span>
+        <div>
+          Let \(Z_i = (X_i - \mu)/\sigma\). The standardized sum is \(S_n = \frac{1}{\sqrt{n}}\sum_{i=1}^n Z_i\). Characteristic function: \(\varphi_{Z_i}(t) = \mathbb{E}[e^{itZ_i}]\).
+        </div>
+      </div>
+      <div class="drv-row">
+        <span class="dn v">2</span>
+        <div>
+          By Taylor expansion near \(t=0\): \(\varphi_{Z_i}(t) = 1 + it\mathbb{E}[Z_i] - \frac{t^2}{2}\mathbb{E}[Z_i^2] + O(t^3) = 1 - \frac{t^2}{2} + O(t^3)\).
+          <div class="dnote">Since E[Z_i] = 0 (standardized) and E[Z_i²] = 1 (unit variance).</div>
+        </div>
+      </div>
+      <div class="drv-row">
+        <span class="dn v">3</span>
+        <div>
+          Since \(Z_i\) are independent: \(\varphi_{S_n}(t) = \left[\varphi_{Z_i}(t/\sqrt{n})\right]^n = \left[1 - \frac{t^2}{2n} + O(n^{-3/2})\right]^n\).
+        </div>
+      </div>
+      <div class="drv-row">
+        <span class="dn v">4</span>
+        <div>
+          Take \(n \to \infty\): \(\left(1 - \frac{t^2}{2n}\right)^n \to e^{-t^2/2}\). This is the characteristic function of \(\mathcal{N}(0,1)\). By Lévy's continuity theorem, \(S_n \xrightarrow{d} \mathcal{N}(0,1)\). ∎
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sub">
+    <div class="sh b">The Berry-Esseen Theorem — Rate of Convergence</div>
+    <div class="eq b">
+      <div class="eq-top"><span class="eq-name">Berry-Esseen Bound</span><span class="eq-tag">Quantitative CLT</span></div>
+      <div class="eq-body">
+        \[\sup_x \left|\mathbb{P}\!\left(\frac{\bar{X}_n-\mu}{\sigma/\sqrt{n}} \leq x\right) - \Phi(x)\right| \leq \frac{C\rho}{\sigma^3\sqrt{n}}\]
+        where \(\rho = \mathbb{E}[|X-\mu|^3]\) (third absolute moment), \(C \leq 0.4748\).
+        <div class="eq-note">The CLT convergence rate is O(1/√n). For n=100 and σ²=1, ρ=1: error ≤ 0.047. This quantitative bound justifies using the normal approximation in practice — and tells you exactly how large n must be for the approximation to be valid.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sub">
+    <div class="sh p">CLT in Machine Learning</div>
+    <ul class="fl p">
+      <li><strong>Confidence intervals for model metrics:</strong> The difference between two models' accuracies over \(n\) test examples is approximately \(\mathcal{N}(0, \sigma^2/n)\) — enabling statistical significance tests.</li>
+      <li><strong>Mini-batch gradient estimates:</strong> The mini-batch gradient is an average of \(B\) per-sample gradients. By CLT, its distribution is approximately Gaussian around the true gradient, with variance \(\sigma^2/B\).</li>
+      <li><strong>Justification for Gaussian likelihood:</strong> Many real-world measurements are sums of many small independent noise sources. By CLT, such sums are approximately Gaussian — justifying the Gaussian noise assumption in regression.</li>
+      <li><strong>Ensemble methods:</strong> The average prediction of many weak classifiers converges to a distribution with lower variance (rate \(1/\sqrt{n}\)) around the mean prediction.</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ══ §14 ═════════════════════════════════════════════════ -->
+<div class="ch" id="c14">
+  <div class="ch-head">
+    <div class="ch-top"><div class="ch-num">14</div><span class="ch-badge o">Bounds</span></div>
+    <h2>Concentration Inequalities</h2>
+    <div class="ch-sub">// Markov · Chebyshev · Hoeffding · sub-Gaussian · generalization bounds</div>
+  </div>
+
+  <p>Concentration inequalities bound the probability that a random variable deviates far from its mean. They are the mathematical core of statistical learning theory — generalization bounds, PAC learning, and bandit algorithms all rely on them.</p>
+
+  <div class="sub">
+    <div class="sh v">Markov's Inequality — The Weakest Bound</div>
+    <div class="eq v">
+      <div class="eq-top"><span class="eq-name">Markov's Inequality</span><span class="eq-tag">Non-Negative RV</span></div>
+      <div class="eq-body">
+        \[\text{For } X \geq 0:\quad \mathbb{P}(X \geq t) \leq \frac{\mathbb{E}[X]}{t}\]
+        <div class="eq-note">Proof: E[X] = E[X·1_{X≥t}] + E[X·1_{X&lt;t}] ≥ E[X·1_{X≥t}] ≥ t·P(X≥t). Requires only X ≥ 0 and finite mean. Basis for all other concentration inequalities (Chebyshev applies Markov to (X−μ)²). Tight: Bernoulli(μ/t) achieves equality.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sub">
+    <div class="sh o">Chebyshev's Inequality</div>
+    <div class="eq o">
+      <div class="eq-top"><span class="eq-name">Chebyshev's Inequality</span><span class="eq-tag">Two-Sided</span></div>
+      <div class="eq-body">
+        \[\mathbb{P}(|X - \mu| \geq t) \leq \frac{\sigma^2}{t^2} = \frac{\text{Var}(X)}{t^2}\]
+        <div class="eq-note">Apply Markov to Y = (X−μ)². P(|X−μ| ≥ t) = P((X−μ)² ≥ t²) ≤ E[(X−μ)²]/t² = σ²/t². Requires only finite variance. The "k-sigma rule": P(|X−μ| ≥ kσ) ≤ 1/k². So at least 75% of data within 2σ, 89% within 3σ (for ANY distribution — compare to Gaussian's 95% and 99.7%). Chebyshev gives distribution-free bounds.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sub">
+    <div class="sh e">Hoeffding's Inequality</div>
+    <div class="eq e">
+      <div class="eq-top"><span class="eq-name">Hoeffding's Inequality</span><span class="eq-tag">Bounded RVs</span></div>
+      <div class="eq-body">
+        \[\text{For } a_i \leq X_i \leq b_i \text{ independent, } \bar{X} = \frac{1}{n}\sum X_i:\]
+        \[\mathbb{P}\!\left(\bar{X} - \mathbb{E}[\bar{X}] \geq \epsilon\right) \leq \exp\!\left(-\frac{2n^2\epsilon^2}{\sum_{i=1}^n(b_i-a_i)^2}\right)\]
+        \[\text{For i.i.d. } a \leq X_i \leq b:\quad \mathbb{P}(|\bar{X} - \mu| \geq \epsilon) \leq 2\exp\!\left(-\frac{2n\epsilon^2}{(b-a)^2}\right)\]
+        <div class="eq-note">Exponentially tighter than Chebyshev for bounded random variables. Requires no assumption about the variance — only that X_i ∈ [a_i, b_i]. The probability decays exponentially in n and ε². Setting the bound to δ: with probability ≥ 1−δ, |X̄ − μ| ≤ (b−a)√(log(2/δ)/(2n)). This is a PAC bound — it says how many samples you need for accuracy ε with confidence 1−δ.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sub">
+    <div class="sh p">Sub-Gaussian Random Variables</div>
+    <div class="eq p">
+      <div class="eq-top"><span class="eq-name">Sub-Gaussian Distribution</span><span class="eq-tag">Heavy Tails</span></div>
+      <div class="eq-body">
+        \[X \text{ is sub-Gaussian with parameter } \sigma \text{ if: } \mathbb{E}[e^{tX}] \leq e^{\sigma^2 t^2/2} \;\;\forall t\in\mathbb{R}\]
+        \[\Rightarrow \mathbb{P}(X \geq \epsilon) \leq e^{-\epsilon^2/(2\sigma^2)} \quad\text{(Gaussian-like tail)}\]
+        <div class="eq-note">Gaussian(0,σ²) is sub-Gaussian with parameter σ. Any bounded [−B,B] RV is sub-Gaussian with σ = B. Sub-Gaussian is the right class for concentration: tails decay at least as fast as Gaussian. Heavy-tailed distributions (Cauchy, Pareto) are NOT sub-Gaussian. Most loss functions in ML are bounded → sub-Gaussian → Hoeffding applies.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="t-wrap">
+    <table>
+      <thead><tr><th>Inequality</th><th>Assumption</th><th>Bound</th><th>Decay Rate</th><th>Use Case</th></tr></thead>
+      <tbody>
+        <tr><td>Markov</td><td>X ≥ 0, finite E[X]</td><td>E[X]/t</td><td>O(1/t)</td><td>Weakest bound; proves others</td></tr>
+        <tr><td>Chebyshev</td><td>Finite variance</td><td>σ²/t²</td><td>O(1/t²)</td><td>Distribution-free; LLN proof</td></tr>
+        <tr><td>Hoeffding</td><td>Bounded, independent</td><td>2exp(−2nε²/range²)</td><td>Exponential in n</td><td>PAC learning, bandit algorithms</td></tr>
+        <tr><td>Sub-Gaussian</td><td>Sub-Gaussian tail</td><td>exp(−ε²/2σ²)</td><td>Exponential in ε²</td><td>Generalization bounds</td></tr>
+        <tr><td>McDiarmid</td><td>Bounded differences</td><td>2exp(−2ε²/Σcᵢ²)</td><td>Exponential in n</td><td>Functions of independent RVs</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ══ §15 ═════════════════════════════════════════════════ -->
+<div class="ch" id="c15">
+  <div class="ch-head">
+    <div class="ch-top"><div class="ch-num">15</div><span class="ch-badge a">ML View</span></div>
+    <h2>Probabilistic View of Machine Learning</h2>
+    <div class="ch-sub">// MLE · MAP · generative vs discriminative · probabilistic prediction</div>
+  </div>
+
+  <p>Every ML algorithm has a probabilistic interpretation. Recognizing this reveals what assumptions each method implicitly makes, how to improve it, and how to quantify uncertainty in its predictions.</p>
+
+  <div class="sub">
+    <div class="sh v">Maximum Likelihood Estimation</div>
+    <div class="eq v">
+      <div class="eq-top"><span class="eq-name">MLE — The Probabilistic Foundation of Training</span><span class="eq-tag">Estimation</span></div>
+      <div class="eq-body">
+        \[\hat{\theta}_{\text{MLE}} = \arg\max_\theta\,\prod_{i=1}^n p(x_i;\theta) = \arg\max_\theta\,\sum_{i=1}^n\log p(x_i;\theta)\]
+        <div class="eq-note">The switch to log-likelihood is valid because log is monotone. The log converts the product to a sum — numerically stable and analytically convenient. MLE minimizes KL(P̂_data ‖ P_θ) — it finds the model closest to the empirical data distribution in KL divergence.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sub">
+    <div class="sh o">Every Loss Function is a Log-Likelihood</div>
+    <div class="t-wrap">
+      <table>
+        <thead><tr><th>Loss Function</th><th>Noise Model</th><th>Probabilistic Interpretation</th></tr></thead>
+        <tbody>
+          <tr><td>MSE: \(\frac{1}{n}\sum(y_i-\hat{y}_i)^2\)</td><td>\(y|\mathbf{x},\theta \sim \mathcal{N}(\hat{y},\sigma^2)\)</td><td>MLE under Gaussian noise</td></tr>
+          <tr><td>Binary Cross-Entropy</td><td>\(y|\mathbf{x},\theta \sim \text{Bern}(\sigma(\hat{y}))\)</td><td>MLE under Bernoulli model</td></tr>
+          <tr><td>Categorical Cross-Entropy</td><td>\(y|\mathbf{x},\theta \sim \text{Cat}(\text{softmax}(\hat{\mathbf{y}}))\)</td><td>MLE under Categorical model</td></tr>
+          <tr><td>MAE: \(\frac{1}{n}\sum|y_i-\hat{y}_i|\)</td><td>\(y|\mathbf{x},\theta \sim \text{Laplace}(\hat{y}, b)\)</td><td>MLE under Laplace noise (robust)</td></tr>
+          <tr><td>L2 Regularization \(+\lambda\|\theta\|^2\)</td><td>\(\theta \sim \mathcal{N}(0, 1/(2\lambda))\)</td><td>MAP with Gaussian prior</td></tr>
+          <tr><td>L1 Regularization \(+\lambda\|\theta\|_1\)</td><td>\(\theta_j \sim \text{Laplace}(0, 1/\lambda)\)</td><td>MAP with Laplace prior (sparsity)</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="sub">
+    <div class="sh e">Generative vs Discriminative Models</div>
+    <div class="two">
+      <div class="tcol">
+        <h4 style="color:var(--violet)">Generative Models</h4>
+        <p>Model the joint distribution \(p(\mathbf{x}, y) = p(\mathbf{x}|y)\,p(y)\). Can generate new samples, handle missing data, and do density estimation. Predict via Bayes: \(p(y|\mathbf{x}) = p(\mathbf{x}|y)p(y)/p(\mathbf{x})\).</p>
+        <p>Examples: Naive Bayes, Gaussian Mixture Models, Hidden Markov Models, VAEs, GANs, Normalizing Flows.</p>
+      </div>
+      <div class="tcol">
+        <h4 style="color:var(--orange)">Discriminative Models</h4>
+        <p>Model the conditional distribution \(p(y|\mathbf{x})\) directly. Don't model \(p(\mathbf{x})\) — focus all capacity on the decision boundary. Usually more accurate when the task is classification/regression.</p>
+        <p>Examples: Logistic Regression, SVMs, Neural Networks, CNNs, Transformers, Random Forests.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ §16 ═════════════════════════════════════════════════ -->
+<div class="ch" id="c16">
+  <div class="ch-head">
+    <div class="ch-top"><div class="ch-num">16</div><span class="ch-badge v">Mental Model</span></div>
+    <h2>The Complete Mental Model</h2>
+    <div class="ch-sub">// everything connected · probability as a language · the full picture</div>
+  </div>
+
+  <div class="fig">
+    <div class="fig-box">
+      <svg viewBox="0 0 720 600" xmlns="http://www.w3.org/2000/svg" style="max-width:720px;width:100%">
+        <rect width="720" height="600" fill="#0c0614"/>
+        <defs>
+          <marker id="pma" markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto"><path d="M0,0 L0,5 L7,2.5z" fill="#311d4d"/></marker>
+          <marker id="pmv" markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto"><path d="M0,0 L0,5 L7,2.5z" fill="#c084fc"/></marker>
+          <marker id="pmo" markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto"><path d="M0,0 L0,5 L7,2.5z" fill="#fb923c"/></marker>
+          <marker id="pme" markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto"><path d="M0,0 L0,5 L7,2.5z" fill="#34d399"/></marker>
+          <marker id="pmp" markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto"><path d="M0,0 L0,5 L7,2.5z" fill="#f472b6"/></marker>
+        </defs>
+        <text x="360" y="22" text-anchor="middle" font-family="Fira Code" font-size="9" fill="#311d4d" letter-spacing=".28em">PROBABILITY THEORY FOR ML — COMPLETE MAP</text>
+
+        <!-- Row 1: Foundation -->
+        <rect x="220" y="38" width="280" height="56" rx="6" fill="#12091e" stroke="#c084fc" stroke-width="2"/>
+        <text x="360" y="61" text-anchor="middle" font-family="Raleway" font-size="12" fill="#c084fc" font-weight="800">(Ω, ℱ, ℙ)</text>
+        <text x="360" y="81" text-anchor="middle" font-family="Fira Code" font-size="8.5" fill="#6a5585">probability space · Kolmogorov axioms</text>
+
+        <!-- Row 2: Random Variables & Distributions -->
+        <rect x="28" y="148" width="185" height="50" rx="5" fill="#12091e" stroke="#fb923c" stroke-width="1.5"/>
+        <text x="120" y="168" text-anchor="middle" font-family="Raleway" font-size="10.5" fill="#fb923c" font-weight="700">RANDOM VARIABLE</text>
+        <text x="120" y="186" text-anchor="middle" font-family="Fira Code" font-size="8.5" fill="#6a5585">X: Ω → ℝ measurable</text>
+
+        <rect x="270" y="148" width="180" height="50" rx="5" fill="#12091e" stroke="#c084fc" stroke-width="1.5"/>
+        <text x="360" y="168" text-anchor="middle" font-family="Raleway" font-size="10.5" fill="#c084fc" font-weight="700">PMF / PDF / CDF</text>
+        <text x="360" y="186" text-anchor="middle" font-family="Fira Code" font-size="8.5" fill="#6a5585">discrete · continuous · universal</text>
+
+        <rect x="508" y="148" width="185" height="50" rx="5" fill="#12091e" stroke="#34d399" stroke-width="1.5"/>
+        <text x="600" y="168" text-anchor="middle" font-family="Raleway" font-size="10.5" fill="#34d399" font-weight="700">MOMENTS</text>
+        <text x="600" y="186" text-anchor="middle" font-family="Fira Code" font-size="8.5" fill="#6a5585">E[X] · Var(X) · Cov(X,Y)</text>
+
+        <!-- Arrows from foundation -->
+        <line x1="310" y1="94" x2="165" y2="146" stroke="#311d4d" stroke-width="1.2" stroke-dasharray="4,3" marker-end="url(#pma)"/>
+        <line x1="360" y1="94" x2="360" y2="146" stroke="#311d4d" stroke-width="1.2" stroke-dasharray="4,3" marker-end="url(#pma)"/>
+        <line x1="410" y1="94" x2="555" y2="146" stroke="#311d4d" stroke-width="1.2" stroke-dasharray="4,3" marker-end="url(#pma)"/>
+
+        <!-- Row 3: Conditioning & Independence -->
+        <rect x="28" y="256" width="185" height="50" rx="5" fill="#12091e" stroke="#f472b6" stroke-width="1.5"/>
+        <text x="120" y="277" text-anchor="middle" font-family="Raleway" font-size="10.5" fill="#f472b6" font-weight="700">CONDITIONAL PROB</text>
+        <text x="120" y="295" text-anchor="middle" font-family="Fira Code" font-size="8.5" fill="#6a5585">P(A|B) = P(A∩B)/P(B)</text>
+
+        <rect x="270" y="256" width="180" height="50" rx="5" fill="#12091e" stroke="#fb923c" stroke-width="1.8"/>
+        <text x="360" y="277" text-anchor="middle" font-family="Raleway" font-size="10.5" fill="#fb923c" font-weight="700">BAYES' RULE</text>
+        <text x="360" y="295" text-anchor="middle" font-family="Fira Code" font-size="8.5" fill="#6a5585">P(θ|D) ∝ P(D|θ)·P(θ)</text>
+
+        <rect x="508" y="256" width="185" height="50" rx="5" fill="#12091e" stroke="#c084fc" stroke-width="1.5"/>
+        <text x="600" y="277" text-anchor="middle" font-family="Raleway" font-size="10.5" fill="#c084fc" font-weight="700">JOINT DIST</text>
+        <text x="600" y="295" text-anchor="middle" font-family="Fira Code" font-size="8.5" fill="#6a5585">p(x,y) · marginals · independence</text>
+
+        <!-- Arrows to row 3 -->
+        <line x1="120" y1="198" x2="120" y2="254" stroke="#311d4d" stroke-width="1" stroke-dasharray="3,2" marker-end="url(#pma)"/>
+        <line x1="360" y1="198" x2="360" y2="254" stroke="#fb923c" stroke-width="1.2" stroke-dasharray="4,3" marker-end="url(#pmo)"/>
+        <line x1="600" y1="198" x2="600" y2="254" stroke="#311d4d" stroke-width="1" stroke-dasharray="3,2" marker-end="url(#pma)"/>
+
+        <!-- Row 4: Limit Theorems & Concentration -->
+        <rect x="28" y="364" width="185" height="50" rx="5" fill="#12091e" stroke="#34d399" stroke-width="1.5"/>
+        <text x="120" y="385" text-anchor="middle" font-family="Raleway" font-size="10.5" fill="#34d399" font-weight="700">LLN</text>
+        <text x="120" y="403" text-anchor="middle" font-family="Fira Code" font-size="8.5" fill="#6a5585">X̄_n → μ as n → ∞</text>
+
+        <rect x="270" y="364" width="180" height="50" rx="5" fill="#12091e" stroke="#c084fc" stroke-width="1.5"/>
+        <text x="360" y="385" text-anchor="middle" font-family="Raleway" font-size="10.5" fill="#c084fc" font-weight="700">CLT</text>
+        <text x="360" y="403" text-anchor="middle" font-family="Fira Code" font-size="8.5" fill="#6a5585">√n(X̄-μ) → 𝒩(0,σ²)</text>
+
+        <rect x="508" y="364" width="185" height="50" rx="5" fill="#12091e" stroke="#fb923c" stroke-width="1.5"/>
+        <text x="600" y="385" text-anchor="middle" font-family="Raleway" font-size="10.5" fill="#fb923c" font-weight="700">CONCENTRATION</text>
+        <text x="600" y="403" text-anchor="middle" font-family="Fira Code" font-size="8.5" fill="#6a5585">Markov·Chebyshev·Hoeffding</text>
+
+        <!-- Arrows to row 4 -->
+        <line x1="120" y1="306" x2="120" y2="362" stroke="#34d399" stroke-width="1.2" stroke-dasharray="4,3" marker-end="url(#pme)"/>
+        <line x1="360" y1="306" x2="360" y2="362" stroke="#c084fc" stroke-width="1.2" stroke-dasharray="4,3" marker-end="url(#pmv)"/>
+        <line x1="600" y1="306" x2="600" y2="362" stroke="#311d4d" stroke-width="1" stroke-dasharray="3,2" marker-end="url(#pma)"/>
+
+        <!-- ML Applications -->
+        <rect x="20" y="468" width="680" height="114" rx="6" fill="#0c0614" stroke="#241537" stroke-width="1"/>
+        <text x="360" y="488" text-anchor="middle" font-family="Fira Code" font-size="8.5" fill="#311d4d" letter-spacing=".2em">ML APPLICATIONS</text>
+        <text x="50" y="512" font-family="Fira Code" font-size="8.5" fill="#c084fc">MLE → training any model</text>
+        <text x="245" y="512" font-family="Fira Code" font-size="8.5" fill="#fb923c">Bayes → posterior inference</text>
+        <text x="450" y="512" font-family="Fira Code" font-size="8.5" fill="#34d399">LLN → mini-batch SGD</text>
+        <text x="50" y="532" font-family="Fira Code" font-size="8.5" fill="#f472b6">CLT → confidence intervals</text>
+        <text x="245" y="532" font-family="Fira Code" font-size="8.5" fill="#c084fc">Hoeffding → PAC bounds</text>
+        <text x="450" y="532" font-family="Fira Code" font-size="8.5" fill="#fb923c">Cov matrix → PCA/Gaussian</text>
+        <text x="50" y="552" font-family="Fira Code" font-size="8.5" fill="#34d399">Exp family → conjugate priors</text>
+        <text x="245" y="552" font-family="Fira Code" font-size="8.5" fill="#f472b6">Jensen → KL div ≥ 0 · ELBO</text>
+        <text x="450" y="552" font-family="Fira Code" font-size="8.5" fill="#c084fc">Chain rule → autoregressive LMs</text>
+        <text x="50" y="572" font-family="Fira Code" font-size="8.5" fill="#fb923c">Linearity of E → gradient linearity</text>
+        <text x="280" y="572" font-family="Fira Code" font-size="8.5" fill="#34d399">Independence → naive Bayes · iid assumption</text>
+
+        <!-- Arrows from limit theorems to ML -->
+        <line x1="120" y1="414" x2="120" y2="466" stroke="#311d4d" stroke-width="1" stroke-dasharray="3,2" marker-end="url(#pma)"/>
+        <line x1="360" y1="414" x2="360" y2="466" stroke="#311d4d" stroke-width="1" stroke-dasharray="3,2" marker-end="url(#pma)"/>
+        <line x1="600" y1="414" x2="600" y2="466" stroke="#311d4d" stroke-width="1" stroke-dasharray="3,2" marker-end="url(#pma)"/>
+      </svg>
+    </div>
+    <div class="fig-cap">Fig 1. Complete probability theory mental map — from Kolmogorov's axioms through random variables, conditioning, Bayes' rule, limit theorems, and out to every ML application.</div>
+  </div>
+
+  <p style="margin-top:clamp(22px,4vw,36px)">The complete story as one coherent thread:</p>
+
+  <ol style="padding-left:clamp(16px,3vw,24px);line-height:2.6;font-size:clamp(14px,1.9vw,16px)">
+    <li><strong>A probability space \((\Omega, \mathcal{F}, \mathbb{P})\)</strong> formalizes randomness: outcomes, measurable events, and a measure satisfying Kolmogorov's three axioms. Every probability rule you've ever used is a theorem derived from these axioms.</li>
+    <li><strong>Random variables</strong> are measurable functions \(X: \Omega \to \mathbb{R}\). They carry distributions — described by PMFs (discrete) or PDFs (continuous) — and their CDFs always exist and completely characterize the distribution.</li>
+    <li><strong>Expectation</strong> is the Lebesgue integral of \(X\) against \(\mathbb{P}\). It is linear (always), monotone, and satisfies LOTUS (no need to find the distribution of \(g(X)\) to compute \(\mathbb{E}[g(X)]\)). Jensen's inequality connects convexity to expectation inequalities.</li>
+    <li><strong>Variance and covariance</strong> measure spread and co-movement. The covariance matrix is symmetric PSD. PCA diagonalizes it. Every loss landscape in ML has a Hessian which is a covariance matrix in disguise.</li>
+    <li><strong>Conditional probability</strong> and Bayes' rule follow from the product rule. The chain rule of probability factorizes any joint distribution into conditionals — exactly what autoregressive LMs (GPT) compute when generating text token by token.</li>
+    <li><strong>The Law of Large Numbers</strong> guarantees empirical averages converge to expectations. This justifies SGD, mini-batch training, empirical risk minimization, and Monte Carlo integration — the entire computational machinery of ML.</li>
+    <li><strong>The Central Limit Theorem</strong> tells us that sums of independent random variables are approximately Gaussian, regardless of the original distribution. This justifies Gaussian likelihood assumptions and enables statistical inference on model metrics.</li>
+    <li><strong>Concentration inequalities</strong> — Markov, Chebyshev, Hoeffding, sub-Gaussian — give finite-sample bounds. They are the core of PAC learning theory: "with \(n\) samples and probability \(1-\delta\), the generalization gap is at most \(O(\sqrt{\log(1/\delta)/n})\)."</li>
+    <li><strong>Every ML model is a probabilistic model:</strong> the loss function is the negative log-likelihood, regularization is a log-prior, training is MLE or MAP, and the full Bayesian treatment gives a posterior over parameters and an honest predictive distribution.</li>
+  </ol>
+
+  <div class="thm" style="margin-top:clamp(24px,4vw,40px)">
+    <div class="thm-hdr"><div class="thm-icon">★</div><div class="thm-label">Probability is the Language of Uncertainty</div></div>
+    <p>Every algorithm in machine learning is a statement about probability: what distribution generated the data, what distribution we place over parameters, how distributions transform under operations. MSE loss assumes Gaussian noise. Cross-entropy assumes Bernoulli/Categorical output. L2 regularization assumes Gaussian prior. Dropout is approximate Bayesian inference. Batch normalization manipulates the distribution of activations. Attention is a soft probability distribution over positions. <strong>Understanding probability theory doesn't add a mathematical layer on top of ML — it reveals that probability is the substance of which every ML algorithm is made.</strong></p>
+  </div>
+</div>
+
+</div><!-- /page -->
+
+  <!-- ═══ FOOTER ═══ -->
+  <footer class="site-footer">
+    <div class="footer-content">
+      <div class="footer-main">
+        <div class="footer-left">
+          <p class="copyright">&copy; 2025 Shahid Ul Islam</p>
+          <p class="footer-meta">Data Scientist & AI Developer</p>
+        </div>
+        <div class="footer-right">
+          <div class="footer-links">
+            <a href="#" class="back-to-top">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="12" y1="19" x2="12" y2="5"></line>
+                <polyline points="5 12 12 5 19 12"></polyline>
+              </svg>
+              <span>Back to Top</span>
+            </a>
+            <div class="social-links11">
+              <a href="https://github.com/Khanz9664" target="_blank" class="social-link11">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path
+                    d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22" />
+                </svg>
+              </a>
+              <a href="https://linkedin.com/in/shahid-ul-islam-13650998" target="_blank" class="social-link11">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" />
+                  <rect x="2" y="9" width="4" height="12" />
+                  <circle cx="4" cy="4" r="2" />
+                </svg>
+              </a>
+              <a href="mailto:shahid9664@gmail.com" class="social-link11">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
+                  <polyline points="22,6 12,13 2,6" />
+                </svg>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="made-with">
+      <p>Crafted with <span class="heart-icon">❤️</span> By Shahid</p>
+    </div>
+  </footer>
+
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js"></script>
+</body>
+</html>

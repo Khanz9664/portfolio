@@ -732,6 +732,39 @@
     }
 }
 
+/* Probability Visual */
+.visual-probability .v-prob-wrapper {
+    position: absolute;
+    width: 250px;
+    height: 150px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.visual-probability .v-prob-svg {
+    width: 100%;
+    height: 100%;
+    color: var(--accent-cyan);
+    filter: drop-shadow(0 0 10px rgb(0 242 255 / 40%));
+}
+
+.visual-probability .v-bell {
+    stroke-dasharray: 400;
+    stroke-dashoffset: 400;
+    animation: drawBell 4s infinite alternate-reverse ease-in-out;
+}
+
+@keyframes drawBell {
+    0% {
+        stroke-dashoffset: 400;
+    }
+
+    100% {
+        stroke-dashoffset: 0;
+    }
+}
+
 .card-image-overlay {
     position: absolute;
     top: 0;

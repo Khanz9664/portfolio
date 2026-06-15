@@ -1,0 +1,1944 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Backpropagation | Shahid Ul Islam</title>
+  <meta name="description" content="The algorithm that trains every neural network" />
+  <meta name="author" content="Shahid Ul Islam" />
+  <link rel="icon" type="image/png" href="../img/plogo.png" />
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Sora:wght@100;200;300;400;500;600;700;800&family=Source+Sans+3:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=JetBrains+Mono:ital,wght@0,300;0,400;0,500;1,300;1,400&display=swap"
+    rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <link rel="stylesheet" href="../css/variables.css" />
+  <link rel="stylesheet" href="../css/navigation.css" />
+  <link rel="stylesheet" href="../css/footer.css" />
+  <link rel="stylesheet" href="css/backprop.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <script defer src="../js/common.js"></script>
+
+</head>
+
+<body>
+  <div class="top-bar">
+    <div class="logo">
+      <img src="../img/plogo.png" alt="Personal Logo" class="logo-icon">
+      <span class="logo-text">SHAHID<span class="logo-accent">||</span>Portfolio</span>
+    </div>
+    <nav class="nav-container">
+      <ul class="nav-links">
+        <li><a href="../index.html" class="nav-link">.Home</a></li>
+        <li><a href="../about.html" class="nav-link">.About</a></li>
+        <li><a href="../skills.html" class="nav-link">.Skills</a></li>
+        <li><a href="../projects.html" class="nav-link">.Projects</a></li>
+        <li><a href="../contact.html" class="nav-link">.Contact</a></li>
+        <li><a href="../articles.html" class="nav-link">.Articles</a></li>
+      </ul>
+      <div class="menu-toggle">
+        <div class="hamburger"></div>
+      </div>
+    </nav>
+  </div>
+
+
+  <!-- ══ HERO ════════════════════════════════════════════════ -->
+  <div class="hero">
+    <div class="hero-inner">
+      <div class="hero-kicker">
+        <span>Deep Learning</span> / <span>Optimization</span> / <span>Mathematical Foundations</span>
+      </div>
+      <div class="wc-badge">
+        <div class="wc-dot"></div>Foundation of all Deep Learning
+      </div>
+      <h1>
+        <span class="dim">the algorithm that trains every neural network</span>
+        <span>Back<span class="red">propagation</span></span>
+      </h1>
+      <p class="hero-deck">
+        From computational graphs and the chain rule to reverse-mode AD, Jacobians, VJPs, matrix calculus, PyTorch
+        autograd, and every modern trick. The most complete treatment of backpropagation ever written.
+      </p>
+      <div class="hero-tags">
+        <span class="htag r">Computational Graphs</span>
+        <span class="htag b">Chain Rule</span>
+        <span class="htag g">Reverse Mode AD</span>
+        <span class="htag p">Jacobians &amp; VJPs</span>
+        <span class="htag o">Matrix Calculus</span>
+        <span class="htag r">Full Network Derivation</span>
+        <span class="htag b">Softmax Gradients</span>
+        <span class="htag g">Cross-Entropy</span>
+        <span class="htag p">Batch Gradients</span>
+        <span class="htag o">Autograd</span>
+        <span class="htag r">PyTorch / TensorFlow</span>
+        <span class="htag b">Memory Efficiency</span>
+      </div>
+    </div>
+
+    <!-- Stats strip -->
+    <div class="hero-strip">
+      <div class="hs-cell">
+        <div class="hs-num">1986</div>
+        <div class="hs-label">Rumelhart et al.</div>
+      </div>
+      <div class="hs-cell">
+        <div class="hs-num">O(n)</div>
+        <div class="hs-label">vs O(n²) naive</div>
+      </div>
+      <div class="hs-cell">
+        <div class="hs-num">BP4</div>
+        <div class="hs-label">fundamental eqs</div>
+      </div>
+      <div class="hs-cell">
+        <div class="hs-num">VJP</div>
+        <div class="hs-label">key primitive</div>
+      </div>
+      <div class="hs-cell">
+        <div class="hs-num">∂L/∂W</div>
+        <div class="hs-label">the goal</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ TOC BAR ══════════════════════════════════════════════ -->
+  <div class="toc-bar">
+    <div class="toc-inner">
+      <div class="toc-item"><a href="#c1"><span class="toc-n">01/</span>Why Backprop</a></div>
+      <div class="toc-item"><a href="#c2"><span class="toc-n">02/</span>Comp Graphs</a></div>
+      <div class="toc-item"><a href="#c3"><span class="toc-n">03/</span>Chain Rule</a></div>
+      <div class="toc-item"><a href="#c4"><span class="toc-n">04/</span>Reverse Mode AD</a></div>
+      <div class="toc-item"><a href="#c5"><span class="toc-n">05/</span>Jacobians</a></div>
+      <div class="toc-item"><a href="#c6"><span class="toc-n">06/</span>VJPs</a></div>
+      <div class="toc-item"><a href="#c7"><span class="toc-n">07/</span>Matrix Calculus</a></div>
+      <div class="toc-item"><a href="#c8"><span class="toc-n">08/</span>Full Network</a></div>
+      <div class="toc-item"><a href="#c9"><span class="toc-n">09/</span>Softmax Grad</a></div>
+      <div class="toc-item"><a href="#c10"><span class="toc-n">10/</span>Cross-Entropy</a></div>
+      <div class="toc-item"><a href="#c11"><span class="toc-n">11/</span>Batch Grads</a></div>
+      <div class="toc-item"><a href="#c12"><span class="toc-n">12/</span>Memory</a></div>
+      <div class="toc-item"><a href="#c13"><span class="toc-n">13/</span>Auto Diff</a></div>
+      <div class="toc-item"><a href="#c14"><span class="toc-n">14/</span>Autograd</a></div>
+      <div class="toc-item"><a href="#c15"><span class="toc-n">15/</span>Modern Tricks</a></div>
+      <div class="toc-item"><a href="#c16"><span class="toc-n">16/</span>Mental Model</a></div>
+    </div>
+  </div>
+
+  <div class="page">
+
+    <!-- ══ §01 ═════════════════════════════════════════════════ -->
+    <div class="ch" id="c1">
+      <div class="ch-head">
+        <div class="ch-num-block">
+          <div class="ch-num">01</div>
+          <div class="ch-dash"></div>
+        </div>
+        <div class="ch-title-block">
+          <span class="ch-badge r">The Problem</span>
+          <h2>Why Backpropagation? The Gradient Problem</h2>
+          <div class="ch-sub">// the core question · naive vs efficient · what training actually needs</div>
+        </div>
+      </div>
+
+      <p>Training a neural network requires computing the gradient of the loss function with respect to every learnable
+        parameter. For a modern network with 175 billion parameters (GPT-3), this means computing 175,000,000,000
+        partial derivatives — on every single forward pass, thousands of times per second. The question is not whether
+        we can compute gradients, but how to do it with exactly one backward pass instead of 175 billion forward passes.
+      </p>
+
+      <div class="sub">
+        <div class="sh r">Three Approaches to Computing Gradients</div>
+        <div class="two">
+          <div class="tcol">
+            <h4 style="color:var(--red)">Numerical Differentiation</h4>
+            <p>Finite difference approximation: for each parameter \(\theta_j\), run two forward passes:</p>
+            <p>\[\frac{\partial \mathcal{L}}{\partial \theta_j} \approx \frac{\mathcal{L}(\theta_j+\epsilon) -
+              \mathcal{L}(\theta_j-\epsilon)}{2\epsilon}\]</p>
+            <p><strong>Cost:</strong> \(O(n)\) forward passes for \(n\) parameters. GPT-3: 350 billion evaluations per
+              gradient. Numerically unstable (truncation vs roundoff error tradeoff). Only used for gradient checking,
+              not production training.</p>
+          </div>
+          <div class="tcol">
+            <h4 style="color:var(--blue)">Symbolic Differentiation</h4>
+            <p>Apply calculus rules symbolically (like Wolfram Alpha). Result: an exact closed-form expression for the
+              gradient.</p>
+            <p><strong>Problem:</strong> Expression swell — the symbolic gradient can be exponentially larger than the
+              original expression. Doesn't handle loops or dynamic computation graphs. Only practical for small,
+              fixed-structure expressions.</p>
+          </div>
+        </div>
+        <div class="note g" style="margin-top:clamp(12px,2vw,18px)">
+          <div class="note-head">The Backpropagation Solution</div>
+          <p>Backpropagation computes the exact gradient using <em>one forward pass</em> (to cache intermediate values)
+            and <em>one backward pass</em> (to propagate gradients). Total cost: \(O(n)\) operations for \(n\)
+            parameters — the same order as a single forward pass. This is the efficiency that makes deep learning
+            computationally tractable.</p>
+        </div>
+      </div>
+
+      <div class="sub">
+        <div class="sh b">The Core Insight</div>
+        <div class="eq r">
+          <div class="eq-top"><span class="eq-name">The Goal of Backpropagation</span><span
+              class="eq-tag">Objective</span></div>
+          <div class="eq-body">
+            \[\nabla_\theta\mathcal{L} = \left[\frac{\partial\mathcal{L}}{\partial\theta_1},
+            \frac{\partial\mathcal{L}}{\partial\theta_2}, \ldots,
+            \frac{\partial\mathcal{L}}{\partial\theta_n}\right]^T\]
+            \[\text{Backprop achieves this in: } T_{\text{fwd}} + T_{\text{bwd}} \approx 2 \cdot T_{\text{fwd}} \quad
+            \text{(vs } n \cdot T_{\text{fwd}} \text{ for finite differences)}\]
+            <div class="eq-note">The backward pass costs roughly the same as the forward pass — not n times more. This
+              is the fundamental theorem underlying all deep learning training. Without it, modern neural networks with
+              millions or billions of parameters could not be trained.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ §02 ═════════════════════════════════════════════════ -->
+    <div class="ch" id="c2">
+      <div class="ch-head">
+        <div class="ch-num-block">
+          <div class="ch-num">02</div>
+          <div class="ch-dash"></div>
+        </div>
+        <div class="ch-title-block">
+          <span class="ch-badge b">Graphs</span>
+          <h2>Computational Graphs</h2>
+          <div class="ch-sub">// DAG structure · nodes · edges · caching · topological order</div>
+        </div>
+      </div>
+
+      <p>A computational graph is a Directed Acyclic Graph (DAG) where each node represents an operation and each
+        directed edge represents the flow of data (a tensor). The graph makes the structure of the computation explicit
+        — enabling automatic gradient computation through systematic traversal.</p>
+
+      <div class="sub">
+        <div class="sh r">Graph Structure for a Neural Layer</div>
+
+        <div class="fig">
+          <div class="fig-box">
+            <svg viewBox="0 0 700 220" xmlns="http://www.w3.org/2000/svg" style="max-width:700px;width:100%">
+              <rect width="700" height="220" fill="#fff" />
+              <defs>
+                <marker id="ga" markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto">
+                  <path d="M0,0 L0,5 L7,2.5z" fill="#bbb" />
+                </marker>
+                <marker id="gr" markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto">
+                  <path d="M0,0 L0,5 L7,2.5z" fill="#d90012" />
+                </marker>
+                <marker id="gb" markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto">
+                  <path d="M0,0 L0,5 L7,2.5z" fill="#1a56db" />
+                </marker>
+              </defs>
+
+              <!-- Input nodes -->
+              <circle cx="50" cy="80" r="22" fill="#f0f4ff" stroke="#1a56db" stroke-width="1.5" />
+              <text x="50" y="84" text-anchor="middle" font-family="JetBrains Mono" font-size="11" fill="#1a56db"
+                font-weight="500">x</text>
+              <circle cx="50" cy="140" r="22" fill="#f0f4ff" stroke="#1a56db" stroke-width="1.5" />
+              <text x="50" y="144" text-anchor="middle" font-family="JetBrains Mono" font-size="11" fill="#1a56db"
+                font-weight="500">W</text>
+              <circle cx="50" cy="200" r="16" fill="#f0f4ff" stroke="#1a56db" stroke-width="1.5" />
+              <text x="50" y="205" text-anchor="middle" font-family="JetBrains Mono" font-size="10"
+                fill="#1a56db">b</text>
+              <text x="50" y="20" text-anchor="middle" font-family="JetBrains Mono" font-size="9"
+                fill="#aaa">inputs</text>
+
+              <!-- MatMul node -->
+              <rect x="140" y="90" width="66" height="38" rx="6" fill="#fff3f3" stroke="#d90012" stroke-width="1.8" />
+              <text x="173" y="114" text-anchor="middle" font-family="JetBrains Mono" font-size="10" fill="#d90012"
+                font-weight="700">@</text>
+              <text x="173" y="78" text-anchor="middle" font-family="JetBrains Mono" font-size="9"
+                fill="#aaa">matmul</text>
+
+              <!-- Add node -->
+              <rect x="270" y="90" width="60" height="38" rx="6" fill="#f0fff4" stroke="#15803d" stroke-width="1.8" />
+              <text x="300" y="113" text-anchor="middle" font-family="JetBrains Mono" font-size="14" fill="#15803d"
+                font-weight="700">+</text>
+              <text x="300" y="78" text-anchor="middle" font-family="JetBrains Mono" font-size="9" fill="#aaa">add
+                bias</text>
+
+              <!-- z cache -->
+              <rect x="390" y="90" width="50" height="38" rx="4" fill="#fff" stroke="#aaa" stroke-width="1"
+                stroke-dasharray="4,3" />
+              <text x="415" y="113" text-anchor="middle" font-family="JetBrains Mono" font-size="10"
+                fill="#aaa">z</text>
+              <text x="415" y="78" text-anchor="middle" font-family="JetBrains Mono" font-size="9"
+                fill="#aaa">cached</text>
+
+              <!-- Activation node -->
+              <rect x="500" y="90" width="66" height="38" rx="6" fill="#fef9f0" stroke="#ea580c" stroke-width="1.8" />
+              <text x="533" y="113" text-anchor="middle" font-family="JetBrains Mono" font-size="10" fill="#ea580c"
+                font-weight="700">σ(z)</text>
+              <text x="533" y="78" text-anchor="middle" font-family="JetBrains Mono" font-size="9"
+                fill="#aaa">activation</text>
+
+              <!-- Output -->
+              <circle cx="645" cy="109" r="22" fill="#f5fff8" stroke="#15803d" stroke-width="1.5" />
+              <text x="645" y="113" text-anchor="middle" font-family="JetBrains Mono" font-size="11" fill="#15803d"
+                font-weight="500">a</text>
+              <text x="645" y="145" text-anchor="middle" font-family="JetBrains Mono" font-size="9"
+                fill="#aaa">output</text>
+
+              <!-- Forward arrows -->
+              <line x1="72" y1="85" x2="138" y2="105" stroke="#bbb" stroke-width="1.5" marker-end="url(#ga)" />
+              <line x1="72" y1="140" x2="138" y2="120" stroke="#bbb" stroke-width="1.5" marker-end="url(#ga)" />
+              <line x1="206" y1="109" x2="268" y2="109" stroke="#bbb" stroke-width="1.5" marker-end="url(#ga)" />
+              <line x1="62" y1="190" x2="268" y2="125" stroke="#bbb" stroke-width="1.2" marker-end="url(#ga)" />
+              <line x1="330" y1="109" x2="388" y2="109" stroke="#bbb" stroke-width="1.5" marker-end="url(#ga)" />
+              <line x1="440" y1="109" x2="498" y2="109" stroke="#bbb" stroke-width="1.5" marker-end="url(#ga)" />
+              <line x1="566" y1="109" x2="621" y2="109" stroke="#bbb" stroke-width="1.5" marker-end="url(#ga)" />
+
+              <!-- Backward arrows (red dashed) -->
+              <path d="M621,125 C600,155 565,170 533,160 C510,154 500,140 490,130" fill="none" stroke="#d90012"
+                stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#gr)" />
+              <path d="M498,130 C480,155 462,165 440,155 C430,150 420,140 415,130" fill="none" stroke="#d90012"
+                stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#gr)" />
+              <path d="M388,130 C365,160 340,165 300,155 C285,150 276,140 270,130" fill="none" stroke="#d90012"
+                stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#gr)" />
+              <text x="350" y="185" font-family="JetBrains Mono" font-size="9" fill="#d90012">← backward pass
+                (gradients)</text>
+            </svg>
+          </div>
+          <div class="fig-cap">Fig 1. Computational graph for one linear layer: x and W enter a matrix multiply (@),
+            bias b is added (+), then activation σ produces output a. Backward pass (red dashed) traverses this graph in
+            reverse, computing gradients via the chain rule at each node.</div>
+        </div>
+      </div>
+
+      <div class="sub">
+        <div class="sh b">Forward Pass: Topological Evaluation</div>
+        <p>The forward pass evaluates all nodes in topological order — each node is evaluated only after all its inputs
+          are ready. For a neural network with \(L\) layers, this is simply the sequential layer-by-layer computation.
+          Every intermediate value must be <span class="hr">cached</span> because the backward pass needs them.</p>
+
+        <div class="eq b">
+          <div class="eq-top"><span class="eq-name">What Gets Cached During Forward Pass</span><span
+              class="eq-tag">Memory</span></div>
+          <div class="eq-body">
+            \[\text{For each layer }\ell:\quad \text{Cache}\left\{\mathbf{Z}^{[\ell]},\, \mathbf{A}^{[\ell]}\right\}\]
+            \[\text{Total cache size: } O\!\left(m \cdot \sum_{\ell=1}^L n^{[\ell]}\right) = O(m \cdot L \cdot d)\]
+            <div class="eq-note">m = batch size, n[ℓ] = neurons in layer ℓ, L = depth. For GPT-3: 175B parameters, 96
+              layers, batch size 1024 — the activation cache alone requires ~350GB of GPU memory during training. This
+              is why activation checkpointing exists (§12).</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="sub">
+        <div class="sh g">Static vs Dynamic Graphs</div>
+        <div class="two">
+          <div class="tcol">
+            <h4 style="color:var(--blue)">Static Graph (TensorFlow v1)</h4>
+            <p>Graph is defined once, then compiled and executed repeatedly. More efficient: the compiler can optimize
+              the graph, fuse operations, and preallocate memory. Less flexible: can't use Python control flow
+              (if/while) inside the graph.</p>
+          </div>
+          <div class="tcol">
+            <h4 style="color:var(--red)">Dynamic Graph (PyTorch)</h4>
+            <p>Graph is built on-the-fly during each forward pass. Python control flow works naturally — the graph
+              changes with each forward pass. More flexible and debuggable. Slightly less efficient but the default in
+              modern research.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ §03 ═════════════════════════════════════════════════ -->
+    <div class="ch" id="c3">
+      <div class="ch-head">
+        <div class="ch-num-block">
+          <div class="ch-num">03</div>
+          <div class="ch-dash"></div>
+        </div>
+        <div class="ch-title-block">
+          <span class="ch-badge g">Mathematics</span>
+          <h2>The Chain Rule — The Foundation</h2>
+          <div class="ch-sub">// univariate · multivariate · vector chain rule · systematic application</div>
+        </div>
+      </div>
+
+      <p>Backpropagation is the chain rule of calculus applied systematically to a computational graph. Nothing more.
+        The beauty of backpropagation is not that it invents new mathematics — it's that it applies the chain rule
+        <em>efficiently</em> using the graph structure.
+      </p>
+
+      <div class="sub">
+        <div class="sh r">Univariate Chain Rule</div>
+        <div class="eq r">
+          <div class="eq-top"><span class="eq-name">Single-Variable Chain Rule</span><span class="eq-tag">Calculus
+              I</span></div>
+          <div class="eq-body">
+            \[\text{If } f = g(h(x)):\quad \frac{df}{dx} = \frac{dg}{dh} \cdot \frac{dh}{dx}\]
+            \[\text{For a chain } x \to u \to v \to w \to \mathcal{L}:\quad \frac{d\mathcal{L}}{dx} =
+            \frac{d\mathcal{L}}{dw}\cdot\frac{dw}{dv}\cdot\frac{dv}{du}\cdot\frac{du}{dx}\]
+            <div class="eq-note">The chain rule: to compute the derivative of the final output with respect to any
+              intermediate variable, multiply all the local derivatives along the path from that variable to the output.
+              In a neural network, the "path" goes from each parameter through all subsequent layers to the loss.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="sub">
+        <div class="sh b">Multivariate Chain Rule</div>
+        <p>In neural networks, intermediate values are tensors, and one upstream variable may depend on multiple
+          intermediate nodes. The multivariate chain rule sums over all paths:</p>
+
+        <div class="eq b">
+          <div class="eq-top"><span class="eq-name">Multivariate Chain Rule</span><span class="eq-tag">General
+              Form</span></div>
+          <div class="eq-body">
+            \[\frac{\partial \mathcal{L}}{\partial x} = \sum_j \frac{\partial \mathcal{L}}{\partial
+            y_j}\cdot\frac{\partial y_j}{\partial x}\]
+            <p style="font-family:'JetBrains Mono',monospace;font-size:.83em;color:var(--muted);margin-top:10px">where
+              the sum is over all immediate downstream nodes y_j that depend on x.</p>
+            <div class="eq-note">This sum-over-paths is exactly what "gradient accumulation" means in practice — when a
+              parameter is used in multiple places (e.g., tied weights), its gradient is the sum of contributions from
+              all paths to the loss. PyTorch's .grad accumulates (+=) rather than overwrites, implementing this formula.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="sub">
+        <div class="sh g">Why Backprop Is Efficient</div>
+        <div class="note g">
+          <div class="note-head">The Key Efficiency</div>
+          <p>Naive application of the chain rule would recompute all intermediate values for each parameter.
+            Backpropagation avoids this by computing the chain rule in <em>reverse topological order</em>, reusing each
+            intermediate gradient \(\partial\mathcal{L}/\partial z\) for all upstream parameters that depend on \(z\).
+            Each gradient is computed exactly once and shared across all paths. This is why backprop is \(O(n)\) rather
+            than \(O(n^2)\).</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ §04 ═════════════════════════════════════════════════ -->
+    <div class="ch" id="c4">
+      <div class="ch-head">
+        <div class="ch-num-block">
+          <div class="ch-num">04</div>
+          <div class="ch-dash"></div>
+        </div>
+        <div class="ch-title-block">
+          <span class="ch-badge p">AD Theory</span>
+          <h2>Reverse Mode Automatic Differentiation</h2>
+          <div class="ch-sub">// forward mode vs reverse mode · the adjoint · cotangent · accumulation order</div>
+        </div>
+      </div>
+
+      <p>Automatic differentiation (AD) is the general framework; backpropagation is its instantiation for neural
+        networks. AD has two modes — and the choice between them determines computational complexity.</p>
+
+      <div class="sub">
+        <div class="sh p">Forward Mode vs Reverse Mode</div>
+        <div class="two">
+          <div class="tcol">
+            <h4 style="color:var(--blue)">Forward Mode AD</h4>
+            <p>Computes \(\frac{\partial \mathbf{y}}{\partial x_i}\) for one specific input \(x_i\). Propagates a
+              <em>tangent vector</em> \(\dot{v}\) forward alongside the primal values.
+            </p>
+            <p><strong>Cost:</strong> One forward pass per input dimension. For \(n\) inputs: \(O(n)\) forward passes.
+            </p>
+            <p><strong>Best when:</strong> \(n_{\text{inputs}} \ll n_{\text{outputs}}\). Rare in ML — usually
+              \(n_{\text{params}} \gg 1\).</p>
+            <p><strong>Used in:</strong> Jacobian-vector products (JVPs), second-order optimization, physics
+              simulations.</p>
+          </div>
+          <div class="tcol">
+            <h4 style="color:var(--red)">Reverse Mode AD (Backprop)</h4>
+            <p>Computes \(\frac{\partial \mathcal{L}}{\partial x_i}\) for all inputs simultaneously. Propagates an
+              <em>adjoint vector</em> \(\bar{v}\) backward through the graph.
+            </p>
+            <p><strong>Cost:</strong> One forward + one backward pass. For \(n\) inputs: still \(O(1)\) passes.</p>
+            <p><strong>Best when:</strong> \(n_{\text{outputs}} \ll n_{\text{inputs}}\). ML: one scalar loss, millions
+              of parameters.</p>
+            <p><strong>Used in:</strong> All neural network training. The reason deep learning is computationally
+              feasible.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="sub">
+        <div class="sh r">The Adjoint Variable</div>
+        <p>In reverse mode AD, we define the <span class="hr">adjoint</span> (or cotangent) of each node \(v\) as the
+          derivative of the loss with respect to that node's value:</p>
+
+        <div class="eq r">
+          <div class="eq-top"><span class="eq-name">Adjoint (Cotangent) Definition</span><span class="eq-tag">Reverse
+              Mode</span></div>
+          <div class="eq-body">
+            \[\bar{v} \triangleq \frac{\partial \mathcal{L}}{\partial v}\]
+            \[\text{Initialization: } \bar{\mathcal{L}} = 1 \quad \text{(the loss's adjoint w.r.t. itself)}\]
+            \[\text{Propagation: } \bar{v} = \sum_{j:\, v \in \text{inputs}(j)} \bar{w}_j \cdot \frac{\partial
+            w_j}{\partial v}\]
+            <div class="eq-note">For each upstream node w_j that uses v as an input: the contribution to v̄ is the
+              adjoint of w_j times the local Jacobian ∂w_j/∂v. Summing over all downstream nodes gives the total
+              adjoint. This is the multivariate chain rule in adjoint form. The final adjoints ∂L/∂θ for all parameters
+              θ are the gradients we use for SGD.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="sub">
+        <div class="sh b">The Reverse Accumulation Algorithm</div>
+        <div class="cb">
+          <div class="cb-bar">
+            <div class="cb-dots">
+              <div class="cb-dot" style="background:#ff5f57"></div>
+              <div class="cb-dot" style="background:#febc2e"></div>
+              <div class="cb-dot" style="background:#28c840"></div>
+            </div>
+            <div class="cb-lang">Reverse Mode AD — Core Algorithm</div>
+          </div>
+          <div class="cb-body">
+            <span class="cmt"># Forward pass: evaluate all nodes, cache values</span><br>
+            values = <span class="fn">topological_sort</span>(graph)<br>
+            <span class="kw">for</span> node <span class="kw">in</span> values:<br>
+            &nbsp;&nbsp;node.value = <span class="fn">evaluate</span>(node.op, node.inputs)<br><br>
+            <span class="cmt"># Initialize adjoints</span><br>
+            adjoints = {node: <span class="dec">0.0</span> <span class="kw">for</span> node <span class="kw">in</span>
+            graph}<br>
+            adjoints[loss_node] = <span class="dec">1.0</span> &nbsp;<span class="cmt"># dL/dL = 1</span><br><br>
+            <span class="cmt"># Backward pass: propagate adjoints in reverse topo order</span><br>
+            <span class="kw">for</span> node <span class="kw">in</span> <span class="fn">reversed</span>(values):<br>
+            &nbsp;&nbsp;<span class="cmt"># node has adjoint bar_v = dL/d(node)</span><br>
+            &nbsp;&nbsp;<span class="kw">for</span> i, inp <span class="kw">in</span> <span
+              class="fn">enumerate</span>(node.inputs):<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;<span class="cmt"># local Jacobian: d(node)/d(inp) evaluated at cached
+              values</span><br>
+            &nbsp;&nbsp;&nbsp;&nbsp;local_grad = <span class="fn">jacobian</span>(node.op, wrt=i,
+            at=node.cached_inputs)<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;<span class="cmt"># Adjoint accumulation: bar_inp += bar_v * local_grad</span><br>
+            &nbsp;&nbsp;&nbsp;&nbsp;adjoints[inp] += adjoints[node] * local_grad<br><br>
+            <span class="cmt"># Result: adjoints[param] = dL/d(param) for all parameters</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ §05 ═════════════════════════════════════════════════ -->
+    <div class="ch" id="c5">
+      <div class="ch-head">
+        <div class="ch-num-block">
+          <div class="ch-num">05</div>
+          <div class="ch-dash"></div>
+        </div>
+        <div class="ch-title-block">
+          <span class="ch-badge o">Linear Algebra</span>
+          <h2>Jacobians</h2>
+          <div class="ch-sub">// the derivative of a vector function · shape · why it's a matrix · computational cost
+          </div>
+        </div>
+      </div>
+
+      <p>Neural network layers map vectors to vectors. The derivative of a vector-valued function with respect to a
+        vector input is a matrix called the <span class="hr">Jacobian</span>. Understanding Jacobians is the key to
+        understanding why backprop works for vector and tensor operations.</p>
+
+      <div class="eq o">
+        <div class="eq-top"><span class="eq-name">The Jacobian Matrix</span><span class="eq-tag">Definition</span></div>
+        <div class="eq-body">
+          \[\mathbf{f}: \mathbb{R}^n \to \mathbb{R}^m, \quad \mathbf{y} = \mathbf{f}(\mathbf{x})\]
+          \[J_\mathbf{f}(\mathbf{x}) = \frac{\partial \mathbf{y}}{\partial \mathbf{x}} = \begin{pmatrix}\frac{\partial
+          y_1}{\partial x_1} & \cdots & \frac{\partial y_1}{\partial x_n} \\ \vdots & \ddots & \vdots \\ \frac{\partial
+          y_m}{\partial x_1} & \cdots & \frac{\partial y_m}{\partial x_n}\end{pmatrix} \in \mathbb{R}^{m \times n}\]
+          <div class="eq-note">The (i,j) entry is ∂yᵢ/∂xⱼ — how much the i-th output changes when the j-th input
+            changes. The Jacobian fully describes the local linear approximation of f at x: f(x+δ) ≈ f(x) + J_f(x)·δ.
+            For a scalar function (m=1), the Jacobian reduces to the gradient row vector ∇f^T.</div>
+        </div>
+      </div>
+
+      <div class="sub">
+        <div class="sh r">Chain Rule for Vector Functions</div>
+        <div class="eq r">
+          <div class="eq-top"><span class="eq-name">Vector Chain Rule via Jacobians</span><span class="eq-tag">Matrix
+              Multiplication</span></div>
+          <div class="eq-body">
+            \[\text{If } \mathbf{z} = g(\mathbf{f}(\mathbf{x})):\quad J_{\mathbf{z}}(\mathbf{x}) =
+            J_g(\mathbf{f}(\mathbf{x})) \cdot J_\mathbf{f}(\mathbf{x})\]
+            \[\frac{\partial \mathcal{L}}{\partial \mathbf{x}} = \frac{\partial \mathcal{L}}{\partial \mathbf{z}}
+            J_{\mathbf{z}}(\mathbf{x}) = \frac{\partial \mathcal{L}}{\partial \mathbf{z}} J_g J_\mathbf{f}\]
+            <div class="eq-note">For the special case where L is a scalar (which is always true in neural network
+              training): ∂L/∂x is a row vector of shape (1×n), J is (m×n), and ∂L/∂z is a row vector of shape (1×m). The
+              product (1×m)·(m×n) = (1×n). This is the vector-Jacobian product (VJP).</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="sub">
+        <div class="sh b">Jacobian Examples for Common Operations</div>
+        <div class="t-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Operation</th>
+                <th>Forward</th>
+                <th>Jacobian</th>
+                <th>Shape</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Linear</td>
+                <td>\(\mathbf{y} = \mathbf{Wx}\)</td>
+                <td>\(J = \mathbf{W}\)</td>
+                <td>\(m\times n\)</td>
+              </tr>
+              <tr>
+                <td>ReLU</td>
+                <td>\(\mathbf{y} = \max(0,\mathbf{x})\)</td>
+                <td>\(J = \text{diag}(\mathbf{1}[\mathbf{x}&gt;0])\)</td>
+                <td>\(n\times n\) diagonal</td>
+              </tr>
+              <tr>
+                <td>Softmax</td>
+                <td>\(\mathbf{y} = \text{softmax}(\mathbf{x})\)</td>
+                <td>\(J = \text{diag}(\mathbf{y}) - \mathbf{y}\mathbf{y}^T\)</td>
+                <td>\(n\times n\)</td>
+              </tr>
+              <tr>
+                <td>Sigmoid</td>
+                <td>\(y_i = \sigma(x_i)\)</td>
+                <td>\(J = \text{diag}(\sigma'(x_i))\)</td>
+                <td>\(n\times n\) diagonal</td>
+              </tr>
+              <tr>
+                <td>Elementwise \(f\)</td>
+                <td>\(y_i = f(x_i)\)</td>
+                <td>\(J = \text{diag}(f'(\mathbf{x}))\)</td>
+                <td>\(n\times n\) diagonal</td>
+              </tr>
+              <tr>
+                <td>Sum</td>
+                <td>\(y = \sum_i x_i\)</td>
+                <td>\(J = \mathbf{1}^T\)</td>
+                <td>\(1\times n\)</td>
+              </tr>
+              <tr>
+                <td>L2 norm squared</td>
+                <td>\(y = \|\mathbf{x}\|^2\)</td>
+                <td>\(J = 2\mathbf{x}^T\)</td>
+                <td>\(1\times n\)</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="note r">
+        <div class="note-head">The Jacobian Is Usually Never Materialized</div>
+        <p>For a layer with \(n\) inputs and \(m\) outputs, the Jacobian has \(mn\) entries. For a 4096-dimensional
+          layer: 16 million entries per Jacobian, per layer. Computing and storing full Jacobians is infeasible.
+          Instead, we only ever need the <strong>Jacobian-vector product</strong> (JVP) for forward mode or the
+          <strong>vector-Jacobian product</strong> (VJP) for reverse mode — both computable in \(O(n)\) without forming
+          the full Jacobian.
+        </p>
+      </div>
+    </div>
+
+    <!-- ══ §06 ═════════════════════════════════════════════════ -->
+    <div class="ch" id="c6">
+      <div class="ch-head">
+        <div class="ch-num-block">
+          <div class="ch-num">06</div>
+          <div class="ch-dash"></div>
+        </div>
+        <div class="ch-title-block">
+          <span class="ch-badge r">Core Primitive</span>
+          <h2>Vector-Jacobian Products (VJPs)</h2>
+          <div class="ch-sub">// the fundamental operation · why we don't need the Jacobian · examples · efficiency
+          </div>
+        </div>
+      </div>
+
+      <p>The vector-Jacobian product is the <em>fundamental primitive</em> of reverse-mode AD. Every backpropagation
+        rule reduces to computing a VJP for that specific operation. Defining how to compute the VJP for each operation
+        is equivalent to defining backpropagation for that operation.</p>
+
+      <div class="eq r">
+        <div class="eq-top"><span class="eq-name">VJP — Definition</span><span class="eq-tag">Core Primitive</span>
+        </div>
+        <div class="eq-body">
+          \[\text{VJP}(f, \bar{\mathbf{y}}) = \bar{\mathbf{y}}^T J_f = \frac{\partial \mathcal{L}}{\partial
+          \mathbf{y}}^T \cdot \frac{\partial \mathbf{y}}{\partial \mathbf{x}} = \frac{\partial \mathcal{L}}{\partial
+          \mathbf{x}}^T\]
+          <div class="eq-note">ȳ = ∂L/∂y is the "upstream gradient" — the adjoint from all downstream nodes. VJP(f, ȳ)
+            computes ∂L/∂x without ever forming J_f. Cost: same order as one forward pass through f. This is why
+            backpropagation is efficient: each backward operation is as cheap as the corresponding forward operation.
+          </div>
+        </div>
+      </div>
+
+      <div class="sub">
+        <div class="sh b">VJPs for Key Operations</div>
+
+        <div class="drv">
+          <div class="drv-hdr">// VJP derivations for the most common neural network operations</div>
+
+          <div class="drv-row">
+            <span class="dn r">MatMul</span>
+            <div>
+              \[\mathbf{y} = \mathbf{W}\mathbf{x}, \quad J = \mathbf{W}\]
+              \[\text{VJP w.r.t. } \mathbf{x}: \quad \bar{\mathbf{x}} = \bar{\mathbf{y}}^T\mathbf{W} =
+              \mathbf{W}^T\bar{\mathbf{y}}\]
+              \[\text{VJP w.r.t. } \mathbf{W}: \quad \bar{\mathbf{W}} = \bar{\mathbf{y}}\mathbf{x}^T\]
+              <div class="dnote">For Wx: the VJP w.r.t. x is W^T ȳ (transpose the weight matrix). The VJP w.r.t. W is
+                the outer product ȳ x^T. These are the standard backprop rules for linear layers — now derived from
+                first principles via VJPs.</div>
+            </div>
+          </div>
+
+          <div class="drv-row">
+            <span class="dn b">Elementwise</span>
+            <div>
+              \[\mathbf{y} = f(\mathbf{x}), \quad J = \text{diag}(f'(\mathbf{x}))\]
+              \[\text{VJP}: \quad \bar{\mathbf{x}} = \bar{\mathbf{y}}^T \text{diag}(f'(\mathbf{x})) = \bar{\mathbf{y}}
+              \odot f'(\mathbf{x})\]
+              <div class="dnote">For elementwise functions: the Jacobian is diagonal, so the VJP is just the elementwise
+                product ⊙ (Hadamard product) of the upstream gradient and the elementwise derivative. ReLU: x̄ = ȳ ⊙
+                1[x&gt;0]. Sigmoid: x̄ = ȳ ⊙ σ(x)(1−σ(x)).</div>
+            </div>
+          </div>
+
+          <div class="drv-row">
+            <span class="dn g">Sum</span>
+            <div>
+              \[y = \sum_i x_i, \quad J = \mathbf{1}^T\]
+              \[\text{VJP}: \quad \bar{\mathbf{x}} = \bar{y} \cdot \mathbf{1}\]
+              <div class="dnote">The gradient of a sum with respect to each input is 1 — the upstream scalar is
+                broadcast to all inputs. This is why in batch normalization: the gradient through the sum broadcasts to
+                all elements.</div>
+            </div>
+          </div>
+
+          <div class="drv-row">
+            <span class="dn p">Log</span>
+            <div>
+              \[y = \log x, \quad \frac{dy}{dx} = 1/x\]
+              \[\text{VJP}: \quad \bar{x} = \bar{y}/x\]
+              <div class="dnote">The cross-entropy loss involves log — so during backward, we divide by the predicted
+                probability. This is why near-zero predictions cause numerical instability: 1/ε is very large. log(ε +
+                1e-8) clipping or LogSumExp are used to stabilize this.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="sub">
+        <div class="sh o">JVP vs VJP — When to Use Which</div>
+        <div class="eq o">
+          <div class="eq-top"><span class="eq-name">JVP vs VJP Comparison</span><span class="eq-tag">Mode
+              Selection</span></div>
+          <div class="eq-body">
+            \[\text{JVP}(f, \dot{\mathbf{x}}) = J_f \dot{\mathbf{x}} \quad \text{(tangent vector }
+            \dot{\mathbf{x}}\text{, forward mode)}\]
+            \[\text{VJP}(f, \bar{\mathbf{y}}) = J_f^T \bar{\mathbf{y}} \quad \text{(cotangent vector }
+            \bar{\mathbf{y}}\text{, reverse mode)}\]
+            \[\text{Reverse mode: } O(1) \text{ VJP calls to get } \nabla_{\mathbf{x}}\mathcal{L} \text{ for scalar
+            }\mathcal{L}\]
+            \[\text{Forward mode: } O(n) \text{ JVP calls to get all of } J_f\]
+            <div class="eq-note">Conclusion: for a scalar loss and many parameters (ML training), use reverse mode. For
+              vector outputs and few inputs (Jacobian estimation, sensitivity analysis), use forward mode. JAX supports
+              both natively via jax.vjp() and jax.jvp().</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ §07 ═════════════════════════════════════════════════ -->
+    <div class="ch" id="c7">
+      <div class="ch-head">
+        <div class="ch-num-block">
+          <div class="ch-num">07</div>
+          <div class="ch-dash"></div>
+        </div>
+        <div class="ch-title-block">
+          <span class="ch-badge a">Calculus</span>
+          <h2>Matrix Calculus</h2>
+          <div class="ch-sub">// layout conventions · scalar-by-matrix · trace trick · key identities</div>
+        </div>
+      </div>
+
+      <p>Neural networks involve matrix operations. Matrix calculus provides the rules for differentiating functions
+        that take matrices as inputs or produce matrices as outputs. Two layout conventions exist — the choice affects
+        the shape of the result and leads to constant confusion in the literature.</p>
+
+      <div class="sub">
+        <div class="sh a">Layout Conventions</div>
+        <div class="two">
+          <div class="tcol">
+            <h4 style="color:var(--amber)">Numerator Layout</h4>
+            <p>The gradient \(\partial y/\partial \mathbf{x}\) has the same shape as \(y\) "in the numerator." For
+              scalar \(y\) and vector \(\mathbf{x} \in \mathbb{R}^n\): the gradient is a <em>row</em> vector \(\in
+              \mathbb{R}^{1\times n}\).</p>
+            <p>For vector \(\mathbf{y} \in \mathbb{R}^m\) and vector \(\mathbf{x} \in \mathbb{R}^n\): result is
+              \(\mathbb{R}^{m\times n}\) Jacobian.</p>
+            <p>Used by: Bishop's PRML, most numerical analysis texts.</p>
+          </div>
+          <div class="tcol">
+            <h4 style="color:var(--red)">Denominator Layout</h4>
+            <p>The gradient \(\partial y/\partial \mathbf{x}\) has the same shape as the "denominator" \(\mathbf{x}\).
+              For scalar \(y\) and vector \(\mathbf{x} \in \mathbb{R}^n\): the gradient is a <em>column</em> vector
+              \(\in \mathbb{R}^{n\times 1}\).</p>
+            <p>The ML convention: \(\nabla_\mathbf{x}\mathcal{L}\) is a column vector matching \(\mathbf{x}\).</p>
+            <p>Used by: Most ML textbooks, Goodfellow's DL book, standard practice.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="sub">
+        <div class="sh r">Key Matrix Calculus Identities</div>
+        <div class="eq r">
+          <div class="eq-top"><span class="eq-name">Essential Identities for Neural Network Backprop</span><span
+              class="eq-tag">Reference</span></div>
+          <div class="eq-body">
+            \[\frac{\partial}{\partial \mathbf{x}}(\mathbf{a}^T\mathbf{x}) = \mathbf{a}\]
+            \[\frac{\partial}{\partial \mathbf{x}}(\mathbf{x}^T\mathbf{A}\mathbf{x}) = (\mathbf{A} +
+            \mathbf{A}^T)\mathbf{x} \quad\Rightarrow\quad 2\mathbf{A}\mathbf{x} \text{ if }\mathbf{A}=\mathbf{A}^T\]
+            \[\frac{\partial}{\partial \mathbf{X}}\text{tr}(\mathbf{A}\mathbf{X}) = \mathbf{A}^T\]
+            \[\frac{\partial}{\partial \mathbf{X}}\text{tr}(\mathbf{X}^T\mathbf{A}) = \mathbf{A}\]
+            \[\frac{\partial}{\partial \mathbf{X}}\text{tr}(\mathbf{A}\mathbf{X}\mathbf{B}) = \mathbf{A}^T\mathbf{B}^T\]
+            \[\frac{\partial}{\partial \mathbf{X}}\log|\mathbf{X}| = \mathbf{X}^{-T}\]
+            <div class="eq-note">The trace trick: tr(A^T B) = vec(A)^T vec(B) — converts matrix inner products to scalar
+              inner products. Essential for computing ∂L/∂W when L involves matrix operations. Most backprop derivations
+              for linear layers use ∂tr(X^T A)/∂X = A.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="sub">
+        <div class="sh b">Deriving Linear Layer Gradients via Matrix Calculus</div>
+        <div class="drv">
+          <div class="drv-hdr">// Deriving ∂L/∂W and ∂L/∂x for y = Wx using matrix calculus trace trick</div>
+          <div class="drv-row">
+            <span class="dn r">Setup</span>
+            <div>
+              \[\mathbf{y} = \mathbf{W}\mathbf{x},\quad \mathcal{L} = f(\mathbf{y})\]
+              Use the differential approach: \(d\mathcal{L} =
+              \text{tr}\!\left(\left(\frac{\partial\mathcal{L}}{\partial\mathbf{y}}\right)^T d\mathbf{y}\right) =
+              \bar{\mathbf{y}}^T\, d\mathbf{y}\)
+            </div>
+          </div>
+          <div class="drv-row">
+            <span class="dn r">∂L/∂W</span>
+            <div>
+              \[d\mathbf{y} = (d\mathbf{W})\mathbf{x} \Rightarrow d\mathcal{L} =
+              \bar{\mathbf{y}}^T(d\mathbf{W})\mathbf{x} = \text{tr}(\bar{\mathbf{y}}^T(d\mathbf{W})\mathbf{x}) =
+              \text{tr}(\mathbf{x}\bar{\mathbf{y}}^T\, d\mathbf{W})\]
+              \[\therefore\quad \frac{\partial\mathcal{L}}{\partial\mathbf{W}} = (\mathbf{x}\bar{\mathbf{y}}^T)^T =
+              \bar{\mathbf{y}}\mathbf{x}^T\]
+              <div class="dnote">Using tr(A d B) → ∂/∂B = A^T. The outer product ȳ x^T matches the shape of W exactly.
+              </div>
+            </div>
+          </div>
+          <div class="drv-row">
+            <span class="dn r">∂L/∂x</span>
+            <div>
+              \[d\mathbf{y} = \mathbf{W}(d\mathbf{x}) \Rightarrow d\mathcal{L} =
+              \bar{\mathbf{y}}^T\mathbf{W}(d\mathbf{x}) = (\mathbf{W}^T\bar{\mathbf{y}})^T\, d\mathbf{x}\]
+              \[\therefore\quad \frac{\partial\mathcal{L}}{\partial\mathbf{x}} = \mathbf{W}^T\bar{\mathbf{y}}\]
+              <div class="dnote">The key rule: for y = Wx, backprop through x is W^T ȳ (transpose the weight). This is
+                the most important single formula in all of deep learning. ∎</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ §08 ═════════════════════════════════════════════════ -->
+    <div class="ch" id="c8">
+      <div class="ch-head">
+        <div class="ch-num-block">
+          <div class="ch-num">08</div>
+          <div class="ch-dash"></div>
+        </div>
+        <div class="ch-title-block">
+          <span class="ch-badge r">Full Derivation</span>
+          <h2>Full Network Backpropagation Derivation</h2>
+          <div class="ch-sub">// notation · BP1 through BP4 · full vectorized proof · every gradient computed</div>
+        </div>
+      </div>
+
+      <p>We now derive the four fundamental equations of backpropagation for a general \(L\)-layer neural network with
+        arbitrary activation functions. These four equations are the complete specification of backpropagation —
+        everything else is an application of them.</p>
+
+      <div class="sub">
+        <div class="sh r">Notation and Setup</div>
+        <div class="eq b">
+          <div class="eq-top"><span class="eq-name">Network Notation</span><span class="eq-tag">Setup</span></div>
+          <div class="eq-body">
+            \[\mathbf{a}^{[0]} = \mathbf{x},\quad \mathbf{z}^{[\ell]} = \mathbf{W}^{[\ell]}\mathbf{a}^{[\ell-1]} +
+            \mathbf{b}^{[\ell]},\quad \mathbf{a}^{[\ell]} = \sigma^{[\ell]}(\mathbf{z}^{[\ell]})\]
+            \[\boldsymbol{\delta}^{[\ell]} \triangleq \frac{\partial\mathcal{L}}{\partial\mathbf{z}^{[\ell]}}
+            \quad\text{(error signal / adjoint at layer }\ell\text{)}\]
+          </div>
+        </div>
+      </div>
+
+      <div class="sub">
+        <div class="sh r">The Four Equations</div>
+        <div class="drv">
+          <div class="drv-hdr">// Complete derivation of BP1–BP4 from first principles</div>
+
+          <div class="drv-row">
+            <span class="dn r">BP1</span>
+            <div>
+              <strong>Output layer error:</strong>
+              \[\boldsymbol{\delta}^{[L]} = \frac{\partial\mathcal{L}}{\partial\mathbf{z}^{[L]}} =
+              \frac{\partial\mathcal{L}}{\partial\mathbf{a}^{[L]}} \odot \sigma'^{[L]}(\mathbf{z}^{[L]})\]
+              <em>Derivation:</em> Apply chain rule: \(\partial\mathcal{L}/\partial z_k^{[L]} = \sum_j
+              (\partial\mathcal{L}/\partial a_j^{[L]})(\partial a_j^{[L]}/\partial z_k^{[L]})\). Since \(a_j^{[L]} =
+              \sigma(z_j^{[L]})\) and activation is applied elementwise: \(\partial a_j/\partial z_k =
+              \sigma'(z_j)\delta_{jk}\). Therefore \(\partial\mathcal{L}/\partial z_k^{[L]} =
+              (\partial\mathcal{L}/\partial a_k^{[L]})\sigma'(z_k^{[L]})\).
+              <div class="dnote">For Softmax + CCE: δ[L] = ŷ − y (the elegant cancellation — see §10). For Sigmoid +
+                BCE: also δ[L] = ŷ − y.</div>
+            </div>
+          </div>
+
+          <div class="drv-row">
+            <span class="dn b">BP2</span>
+            <div>
+              <strong>Error propagation backward:</strong>
+              \[\boldsymbol{\delta}^{[\ell]} = \left(\mathbf{W}^{[\ell+1]T}\boldsymbol{\delta}^{[\ell+1]}\right) \odot
+              \sigma'^{[\ell]}(\mathbf{z}^{[\ell]})\]
+              <em>Derivation:</em> \(\partial\mathcal{L}/\partial z_k^{[\ell]} = \sum_j (\partial\mathcal{L}/\partial
+              z_j^{[\ell+1]})(\partial z_j^{[\ell+1]}/\partial z_k^{[\ell]})\). Now \(z_j^{[\ell+1]} = \sum_i
+              W_{ji}^{[\ell+1]}a_i^{[\ell]}\) and \(a_i^{[\ell]} = \sigma(z_i^{[\ell]})\). So:
+              \[\frac{\partial z_j^{[\ell+1]}}{\partial z_k^{[\ell]}} = W_{jk}^{[\ell+1]}\sigma'(z_k^{[\ell]})\]
+              \[\therefore\quad \delta_k^{[\ell]} = \sigma'(z_k^{[\ell]})\sum_j W_{jk}^{[\ell+1]}\delta_j^{[\ell+1]} =
+              \sigma'(z_k^{[\ell]})\cdot[\mathbf{W}^{[\ell+1]T}\boldsymbol{\delta}^{[\ell+1]}]_k\]
+              <div class="dnote">The transpose W^[ℓ+1]T is not a coincidence — it's the VJP of the linear operation z =
+                Wa. Multiply by the adjoint from the right: the "backward weight matrix" is the transpose of the forward
+                weight matrix. ∎</div>
+            </div>
+          </div>
+
+          <div class="drv-row">
+            <span class="dn g">BP3</span>
+            <div>
+              <strong>Gradient of the weights:</strong>
+              \[\frac{\partial\mathcal{L}}{\partial\mathbf{W}^{[\ell]}} =
+              \boldsymbol{\delta}^{[\ell]}(\mathbf{a}^{[\ell-1]})^T\]
+              <em>Derivation:</em> \(z_j^{[\ell]} = \sum_k W_{jk}^{[\ell]}a_k^{[\ell-1]}\), so \(\partial
+              z_j^{[\ell]}/\partial W_{jk}^{[\ell]} = a_k^{[\ell-1]}\) and \(\partial z_{j'}^{[\ell]}/\partial
+              W_{jk}^{[\ell]} = 0\) for \(j'\neq j\). Therefore:
+              \[\frac{\partial\mathcal{L}}{\partial W_{jk}^{[\ell]}} = \frac{\partial\mathcal{L}}{\partial
+              z_j^{[\ell]}}\cdot a_k^{[\ell-1]} = \delta_j^{[\ell]}\cdot a_k^{[\ell-1]}\]
+              <div class="dnote">In matrix form: ∂L/∂W[ℓ] = δ[ℓ](a[ℓ-1])^T — the outer product of the error signal and
+                the previous layer's activation. Shape: n[ℓ] × n[ℓ-1], matching W[ℓ]. ∎</div>
+            </div>
+          </div>
+
+          <div class="drv-row">
+            <span class="dn o">BP4</span>
+            <div>
+              <strong>Gradient of the biases:</strong>
+              \[\frac{\partial\mathcal{L}}{\partial\mathbf{b}^{[\ell]}} = \boldsymbol{\delta}^{[\ell]}\]
+              <em>Derivation:</em> \(z_j^{[\ell]} = \sum_k W_{jk}a_k + b_j\), so \(\partial z_j^{[\ell]}/\partial
+              b_j^{[\ell]} = 1\) and zero otherwise. Therefore \(\partial\mathcal{L}/\partial b_j^{[\ell]} =
+              \delta_j^{[\ell]}\cdot 1 = \delta_j^{[\ell]}\). ∎
+              <div class="dnote">The bias gradient is simply the error signal — the bias acts as a shift with derivative
+                1, so it just passes the error through unchanged.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="thm">
+          <div class="thm-badge">The Four Fundamental Equations of Backpropagation</div>
+          <p>
+            \[\mathbf{BP1:}\quad \boldsymbol{\delta}^{[L]} = \nabla_{\mathbf{a}^{[L]}}\mathcal{L} \odot
+            \sigma'^{[L]}(\mathbf{z}^{[L]})\]
+            \[\mathbf{BP2:}\quad \boldsymbol{\delta}^{[\ell]} = (\mathbf{W}^{[\ell+1]T}\boldsymbol{\delta}^{[\ell+1]})
+            \odot \sigma'^{[\ell]}(\mathbf{z}^{[\ell]})\]
+            \[\mathbf{BP3:}\quad \nabla_{\mathbf{W}^{[\ell]}}\mathcal{L} =
+            \boldsymbol{\delta}^{[\ell]}(\mathbf{a}^{[\ell-1]})^T\]
+            \[\mathbf{BP4:}\quad \nabla_{\mathbf{b}^{[\ell]}}\mathcal{L} = \boldsymbol{\delta}^{[\ell]}\]
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ §09 ═════════════════════════════════════════════════ -->
+    <div class="ch" id="c9">
+      <div class="ch-head">
+        <div class="ch-num-block">
+          <div class="ch-num">09</div>
+          <div class="ch-dash"></div>
+        </div>
+        <div class="ch-title-block">
+          <span class="ch-badge p">Output Layer</span>
+          <h2>Softmax Gradients — The Full Jacobian</h2>
+          <div class="ch-sub">// the softmax Jacobian · diagonal minus outer product · numerical stability</div>
+        </div>
+      </div>
+
+      <p>The softmax function maps a vector to a probability distribution. Its Jacobian is not diagonal (unlike ReLU or
+        sigmoid) — each output depends on every input through the normalization constant. Computing the softmax Jacobian
+        correctly is essential for the output layer.</p>
+
+      <div class="eq p">
+        <div class="eq-top"><span class="eq-name">Softmax Jacobian Derivation</span><span class="eq-tag">Output
+            Layer</span></div>
+        <div class="eq-body">
+          \[\text{softmax}(\mathbf{z})_i = \hat{y}_i = \frac{e^{z_i}}{\sum_k e^{z_k}}\]
+          \[\frac{\partial \hat{y}_i}{\partial z_j} = \begin{cases}\hat{y}_i(1-\hat{y}_i) & i = j \\ -\hat{y}_i\hat{y}_j
+          & i \neq j\end{cases}\]
+          \[J_{\text{softmax}} = \text{diag}(\hat{\mathbf{y}}) - \hat{\mathbf{y}}\hat{\mathbf{y}}^T \in
+          \mathbb{R}^{K\times K}\]
+          <div class="eq-note">Derivation for i≠j: ∂(eᶻⁱ/Σₖeᶻᵏ)/∂zⱼ = 0/Σ − eᶻⁱeᶻʲ/Σ² = −ŷᵢŷⱼ. For i=j: ∂ŷᵢ/∂zᵢ = (eᶻⁱΣ
+            − eᶻⁱeᶻⁱ)/Σ² = ŷᵢ − ŷᵢ² = ŷᵢ(1−ŷᵢ). In matrix form: J = diag(ŷ) − ŷŷ^T.</div>
+        </div>
+      </div>
+
+      <div class="sub">
+        <div class="sh r">The VJP of Softmax</div>
+        <p>The VJP \(\bar{\mathbf{z}} = J_{\text{softmax}}^T \bar{\mathbf{y}}\) can be computed without materializing
+          the full \(K\times K\) Jacobian:</p>
+        <div class="eq r">
+          <div class="eq-top"><span class="eq-name">Efficient Softmax VJP</span><span class="eq-tag">O(K) not
+              O(K²)</span></div>
+          <div class="eq-body">
+            \[\bar{\mathbf{z}} = J_{\text{softmax}}^T\bar{\mathbf{y}} = (\text{diag}(\hat{\mathbf{y}}) -
+            \hat{\mathbf{y}}\hat{\mathbf{y}}^T)\bar{\mathbf{y}}\]
+            \[= \hat{\mathbf{y}} \odot \bar{\mathbf{y}} - \hat{\mathbf{y}}(\hat{\mathbf{y}}^T\bar{\mathbf{y}})\]
+            \[= \hat{\mathbf{y}} \odot \left(\bar{\mathbf{y}} - \mathbf{1}\cdot\hat{\mathbf{y}}^T\bar{\mathbf{y}}\right)
+            = \hat{\mathbf{y}} \odot (\bar{\mathbf{y}} - \bar{y}_{\text{sum}})\]
+            <div class="eq-note">where ȳ_sum = ŷ^T ȳ is a scalar. The VJP reduces to: subtract the scalar dot product
+              ŷ^T ȳ from each component of ȳ, then multiply elementwise by ŷ. Total cost: O(K), not O(K²). This
+              efficient form is what PyTorch implements internally.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ §10 ═════════════════════════════════════════════════ -->
+    <div class="ch" id="c10">
+      <div class="ch-head">
+        <div class="ch-num-block">
+          <div class="ch-num">10</div>
+          <div class="ch-dash"></div>
+        </div>
+        <div class="ch-title-block">
+          <span class="ch-badge g">Elegant Result</span>
+          <h2>Cross-Entropy + Softmax — The Cancellation</h2>
+          <div class="ch-sub">// the combined gradient · why it simplifies · MLE connection · numerical stability</div>
+        </div>
+      </div>
+
+      <p>When softmax is used with categorical cross-entropy loss, the combined gradient
+        \(\partial\mathcal{L}/\partial\mathbf{z}^{[L]}\) has an extraordinarily clean form. This cancellation is not
+        coincidence — it's a consequence of the exponential family structure of the categorical distribution.</p>
+
+      <div class="drv">
+        <div class="drv-hdr">// Deriving the combined softmax + CCE gradient</div>
+        <div class="drv-row">
+          <span class="dn g">Setup</span>
+          <div>
+            \[\mathcal{L}_{\text{CCE}} = -\sum_{k=1}^K y_k\log\hat{y}_k \quad\text{(one-hot label: } y_c=1, y_{k\neq
+            c}=0\text{)}\]
+            \[= -\log\hat{y}_c\]
+          </div>
+        </div>
+        <div class="drv-row">
+          <span class="dn g">∂L/∂ŷ</span>
+          <div>
+            \[\frac{\partial\mathcal{L}}{\partial\hat{y}_k} = -\frac{y_k}{\hat{y}_k}\]
+          </div>
+        </div>
+        <div class="drv-row">
+          <span class="dn g">Chain</span>
+          <div>
+            Apply chain rule through softmax:
+            \[\frac{\partial\mathcal{L}}{\partial z_j} = \sum_k
+            \frac{\partial\mathcal{L}}{\partial\hat{y}_k}\cdot\frac{\partial\hat{y}_k}{\partial z_j} =
+            \sum_k\left(-\frac{y_k}{\hat{y}_k}\right)\frac{\partial\hat{y}_k}{\partial z_j}\]
+          </div>
+        </div>
+        <div class="drv-row">
+          <span class="dn g">Expand</span>
+          <div>
+            Split into \(k=j\) and \(k\neq j\) terms:
+            \[= -\frac{y_j}{\hat{y}_j}\hat{y}_j(1-\hat{y}_j) + \sum_{k\neq j}\frac{y_k}{\hat{y}_k}\hat{y}_k\hat{y}_j\]
+            \[= -y_j(1-\hat{y}_j) + \hat{y}_j\sum_{k\neq j}y_k = -y_j + y_j\hat{y}_j + \hat{y}_j(1-y_j) = \hat{y}_j -
+            y_j\]
+            <div class="dnote">Using Σₖ yₖ = 1 (one-hot labels sum to 1) and Σₖ≠ⱼ yₖ = 1 − yⱼ. The remarkable
+              cancellation: the softmax Jacobian exactly "cancels" the division by ŷₖ in the cross-entropy derivative. ∎
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="thm">
+        <div class="thm-badge">Softmax + Cross-Entropy Gradient</div>
+        <p>\[\boxed{\frac{\partial\mathcal{L}_{\text{CCE}}}{\partial\mathbf{z}^{[L]}} = \hat{\mathbf{y}} - \mathbf{y}}\]
+          The gradient with respect to the pre-softmax logits is simply <em>predicted probability minus true label</em>.
+          This is the most important single formula in deep learning training — the error signal for every neural
+          network classifier.</p>
+      </div>
+
+      <div class="sub">
+        <div class="sh b">Numerical Stability</div>
+        <p>Computing \(\text{softmax}(\mathbf{z})_k = e^{z_k}/\sum_j e^{z_j}\) directly can overflow when \(z_k\) is
+          large. The numerically stable version subtracts the maximum before exponentiation:</p>
+        <div class="eq b">
+          <div class="eq-top"><span class="eq-name">Numerically Stable Softmax</span><span
+              class="eq-tag">Stability</span></div>
+          <div class="eq-body">
+            \[\text{softmax}(\mathbf{z})_k = \frac{e^{z_k - z_{\max}}}{\sum_j e^{z_j - z_{\max}}}\]
+            <div class="eq-note">Subtracting the maximum doesn't change the result (it cancels in numerator and
+              denominator) but prevents overflow. The largest exp becomes exp(0) = 1; all others are smaller. The loss:
+              -log(softmax(z)_c) = -(z_c − z_max) + log(Σ_j exp(z_j − z_max)) — this is the log-sum-exp computation,
+              computed stably in PyTorch as F.cross_entropy(), which combines log_softmax + nll_loss numerically.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ §11 ═════════════════════════════════════════════════ -->
+    <div class="ch" id="c11">
+      <div class="ch-head">
+        <div class="ch-num-block">
+          <div class="ch-num">11</div>
+          <div class="ch-dash"></div>
+        </div>
+        <div class="ch-title-block">
+          <span class="ch-badge o">Mini-Batch</span>
+          <h2>Batch Gradients</h2>
+          <div class="ch-sub">// single to batch · vectorized form · 1/m averaging · efficient GPU computation</div>
+        </div>
+      </div>
+
+      <div class="eq o">
+        <div class="eq-top"><span class="eq-name">Vectorized Mini-Batch Backpropagation</span><span class="eq-tag">Batch
+            Form</span></div>
+        <div class="eq-body">
+          \[\mathbf{X} \in \mathbb{R}^{n^{[0]}\times m},\quad \mathbf{Z}^{[\ell]} \in \mathbb{R}^{n^{[\ell]}\times
+          m},\quad \boldsymbol{\Delta}^{[\ell]} \in \mathbb{R}^{n^{[\ell]}\times m}\]
+          \[\mathbf{BP1}:\quad \boldsymbol{\Delta}^{[L]} = \hat{\mathbf{Y}} - \mathbf{Y} \in \mathbb{R}^{K\times m}\]
+          \[\mathbf{BP2}:\quad \boldsymbol{\Delta}^{[\ell]} = (\mathbf{W}^{[\ell+1]T}\boldsymbol{\Delta}^{[\ell+1]})
+          \odot \sigma'^{[\ell]}(\mathbf{Z}^{[\ell]})\]
+          \[\mathbf{BP3}:\quad \frac{\partial\mathcal{L}}{\partial\mathbf{W}^{[\ell]}} =
+          \frac{1}{m}\boldsymbol{\Delta}^{[\ell]}(\mathbf{A}^{[\ell-1]})^T\]
+          \[\mathbf{BP4}:\quad \frac{\partial\mathcal{L}}{\partial\mathbf{b}^{[\ell]}} =
+          \frac{1}{m}\sum_{i=1}^m\boldsymbol{\Delta}^{[\ell]}_{:,i} =
+          \frac{1}{m}\boldsymbol{\Delta}^{[\ell]}\mathbf{1}\]
+          <div class="eq-note">The batch form processes all m samples simultaneously via matrix operations — maximally
+            parallelizable on GPUs. The 1/m factor averages the gradient over the batch. BP4 requires summing over the
+            batch dimension — a sum/reduction operation — to get the bias gradient, since the bias is shared across all
+            samples.</div>
+        </div>
+      </div>
+
+      <div class="sub">
+        <div class="sh r">Why Batch Size Matters for Gradients</div>
+        <ul class="fl r">
+          <li><strong>Large batch:</strong> More accurate gradient estimate (lower variance). But the gradient direction
+            barely improves beyond batch size ~1000 for most problems (see large-batch training literature).</li>
+          <li><strong>Small batch:</strong> Noisier gradients, but the noise acts as regularization (implicit noise in
+            SGD helps escape sharp minima). Usually reaches better minima than large-batch training at the same number
+            of epochs.</li>
+          <li><strong>Gradient variance:</strong> \(\text{Var}(\hat{g}) = \sigma^2_g/m\) — variance decreases as
+            \(1/m\). But the computational cost grows linearly in \(m\). For large \(m\), you pay full compute for
+            diminishing variance reduction.</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- ══ §12 ═════════════════════════════════════════════════ -->
+    <div class="ch" id="c12">
+      <div class="ch-head">
+        <div class="ch-num-block">
+          <div class="ch-num">12</div>
+          <div class="ch-dash"></div>
+        </div>
+        <div class="ch-title-block">
+          <span class="ch-badge b">Engineering</span>
+          <h2>Memory-Efficiency Tradeoffs</h2>
+          <div class="ch-sub">// activation checkpointing · gradient accumulation · AMP · memory breakdown</div>
+        </div>
+      </div>
+
+      <p>In practice, training large neural networks is limited not by compute but by GPU memory. The standard
+        backpropagation algorithm requires storing all intermediate activations, which can exceed GPU memory for large
+        models or sequences.</p>
+
+      <div class="sub">
+        <div class="sh r">Memory Breakdown During Training</div>
+        <div class="t-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Component</th>
+                <th>Memory</th>
+                <th>Notes</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Parameters (weights + biases)</td>
+                <td>\(O(P)\)</td>
+                <td>Fixed; FP32: 4 bytes/param. GPT-3: 700GB</td>
+              </tr>
+              <tr>
+                <td>Gradients</td>
+                <td>\(O(P)\)</td>
+                <td>Same shape as parameters</td>
+              </tr>
+              <tr>
+                <td>Optimizer states (Adam)</td>
+                <td>\(O(2P)\)</td>
+                <td>m_t and v_t for each parameter</td>
+              </tr>
+              <tr>
+                <td>Activations (forward cache)</td>
+                <td>\(O(m \cdot L \cdot d)\)</td>
+                <td>Grows with batch size × depth × width</td>
+              </tr>
+              <tr>
+                <td>Input data</td>
+                <td>\(O(m \cdot n)\)</td>
+                <td>Usually small relative to activations</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="sub">
+        <div class="sh b">Activation Checkpointing</div>
+        <p>Instead of caching all intermediate activations, recompute them on demand during the backward pass. Trade
+          compute for memory:</p>
+        <div class="eq b">
+          <div class="eq-top"><span class="eq-name">Activation Checkpointing — Memory/Compute Tradeoff</span><span
+              class="eq-tag">Algorithm</span></div>
+          <div class="eq-body">
+            \[\text{Standard backprop: } O(L\cdot d\cdot m) \text{ memory}, \quad O(2\cdot T_{\text{fwd}}) \text{
+            compute}\]
+            \[\text{Checkpointing: } O(\sqrt{L}\cdot d\cdot m) \text{ memory}, \quad O(3\cdot T_{\text{fwd}}) \text{
+            compute}\]
+            <div class="eq-note">With checkpointing: save activations only at every √L-th layer (the "checkpoints").
+              During backward, recompute from the nearest checkpoint. Memory scales as √L instead of L — for a 100-layer
+              network, memory reduces 10×. PyTorch: torch.utils.checkpoint.checkpoint(). Used in training LLMs with very
+              long sequences.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="sub">
+        <div class="sh g">Gradient Accumulation</div>
+        <p>To simulate a large effective batch size with limited GPU memory, accumulate gradients over multiple small
+          batches before taking an optimizer step:</p>
+        <div class="cb">
+          <div class="cb-bar">
+            <div class="cb-dots">
+              <div class="cb-dot" style="background:#ff5f57"></div>
+              <div class="cb-dot" style="background:#febc2e"></div>
+              <div class="cb-dot" style="background:#28c840"></div>
+            </div>
+            <div class="cb-lang">Gradient Accumulation — PyTorch</div>
+          </div>
+          <div class="cb-body">
+            <span class="dec">accumulation_steps</span> = <span class="num">8</span> &nbsp;<span class="cmt"># simulate
+              batch_size * 8</span><br>
+            optimizer.<span class="fn">zero_grad</span>()<br><br>
+            <span class="kw">for</span> i, (x, y) <span class="kw">in</span> <span
+              class="fn">enumerate</span>(dataloader):<br>
+            &nbsp;&nbsp;loss = model(x, y) / accumulation_steps<br>
+            &nbsp;&nbsp;loss.<span class="fn">backward</span>() &nbsp;<span class="cmt"># gradients accumulate in
+              .grad</span><br><br>
+            &nbsp;&nbsp;<span class="kw">if</span> (i + <span class="num">1</span>) % accumulation_steps == <span
+              class="num">0</span>:<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;optimizer.<span class="fn">step</span>() &nbsp;&nbsp;<span class="cmt"># update with
+              accumulated gradients</span><br>
+            &nbsp;&nbsp;&nbsp;&nbsp;optimizer.<span class="fn">zero_grad</span>()<br><br>
+            <span class="cmt"># Effectively processes 8x larger batches with 1x memory</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="sub">
+        <div class="sh p">Automatic Mixed Precision (AMP)</div>
+        <div class="eq p">
+          <div class="eq-top"><span class="eq-name">AMP — Gradient Scaling</span><span class="eq-tag">FP16
+              Training</span></div>
+          <div class="eq-body">
+            \[\text{FP32 params and gradients: 4 bytes/value}\]
+            \[\text{FP16 forward pass: 2 bytes/value (2× faster on Tensor Cores)}\]
+            \[\text{Gradient scaling: } \hat{g} = s \cdot g_{\text{FP16}}, \quad g_{\text{FP32}} = \hat{g}/s\]
+            <div class="eq-note">FP16 has limited range (max ~65504) — small gradients underflow to 0. Solution:
+              multiply loss by a large scale factor s before backward, then divide the accumulated gradients by s.
+              PyTorch GradScaler handles this automatically. AMP reduces memory ~2× and increases throughput ~2-3× on
+              modern GPUs with no accuracy loss.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ §13 ═════════════════════════════════════════════════ -->
+    <div class="ch" id="c13">
+      <div class="ch-head">
+        <div class="ch-num-block">
+          <div class="ch-num">13</div>
+          <div class="ch-dash"></div>
+        </div>
+        <div class="ch-title-block">
+          <span class="ch-badge g">AD Framework</span>
+          <h2>Automatic Differentiation — The Theory</h2>
+          <div class="ch-sub">// three flavors of differentiation · operator overloading · tape-based AD</div>
+        </div>
+      </div>
+
+      <p>Automatic differentiation is the umbrella framework. It is distinct from both numerical differentiation (finite
+        differences) and symbolic differentiation (computer algebra). It computes exact derivatives efficiently using
+        the structure of the program.</p>
+
+      <div class="sub">
+        <div class="sh r">Three Flavors of Differentiation</div>
+        <div class="t-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Method</th>
+                <th>How</th>
+                <th>Exact?</th>
+                <th>Cost</th>
+                <th>When Used</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Numerical (finite diff)</td>
+                <td>\((f(x+ε) - f(x-ε))/2ε\)</td>
+                <td>No — approx \(O(ε^2)\)</td>
+                <td>\(O(n)\) passes</td>
+                <td>Gradient checking only</td>
+              </tr>
+              <tr>
+                <td>Symbolic (CAS)</td>
+                <td>Derive closed-form expression</td>
+                <td>Yes</td>
+                <td>Expr swell; static only</td>
+                <td>Toy problems, paper derivations</td>
+              </tr>
+              <tr>
+                <td>Forward AD</td>
+                <td>Dual numbers, JVPs</td>
+                <td>Yes</td>
+                <td>\(O(n)\) passes for full J</td>
+                <td>Few inputs, many outputs</td>
+              </tr>
+              <tr>
+                <td>Reverse AD (Backprop)</td>
+                <td>Tape + VJPs</td>
+                <td>Yes</td>
+                <td>\(O(1)\) pass for scalar loss</td>
+                <td>All neural network training</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="sub">
+        <div class="sh b">Operator Overloading</div>
+        <p>The most common AD implementation technique: overload mathematical operators (+, *, sin, etc.) on a special
+          number type that tracks both the primal value and the derivative information:</p>
+
+        <div class="cb">
+          <div class="cb-bar">
+            <div class="cb-dots">
+              <div class="cb-dot" style="background:#ff5f57"></div>
+              <div class="cb-dot" style="background:#febc2e"></div>
+              <div class="cb-dot" style="background:#28c840"></div>
+            </div>
+            <div class="cb-lang">Dual Numbers — Forward Mode AD (Python)</div>
+          </div>
+          <div class="cb-body">
+            <span class="kw">class</span> <span class="dec">Dual</span>:<br>
+            &nbsp;&nbsp;<span class="kw">def</span> <span class="fn">__init__</span>(self, <span
+              class="var">real</span>, <span class="var">dual</span>=<span class="num">0.0</span>):<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;self.<span class="var">real</span> = <span class="var">real</span> &nbsp;&nbsp;<span
+              class="cmt"># f(x) — primal value</span><br>
+            &nbsp;&nbsp;&nbsp;&nbsp;self.<span class="var">dual</span> = <span class="var">dual</span> &nbsp;&nbsp;<span
+              class="cmt"># f'(x)·ẋ — tangent</span><br><br>
+            &nbsp;&nbsp;<span class="kw">def</span> <span class="fn">__mul__</span>(self, other):<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;<span class="cmt"># Product rule: (f·g)' = f'·g + f·g'</span><br>
+            &nbsp;&nbsp;&nbsp;&nbsp;<span class="kw">return</span> <span class="dec">Dual</span>(self.<span
+              class="var">real</span>*other.<span class="var">real</span>,<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;self.<span
+              class="var">dual</span>*other.<span class="var">real</span> + self.<span
+              class="var">real</span>*other.<span class="var">dual</span>)<br><br>
+            &nbsp;&nbsp;<span class="kw">def</span> <span class="fn">__add__</span>(self, other):<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;<span class="kw">return</span> <span class="dec">Dual</span>(self.<span
+              class="var">real</span>+other.<span class="var">real</span>, self.<span
+              class="var">dual</span>+other.<span class="var">dual</span>)<br><br>
+            <span class="cmt"># Differentiate f(x) = x*x + x at x=3</span><br>
+            x = <span class="dec">Dual</span>(<span class="num">3.0</span>, <span class="num">1.0</span>) &nbsp;<span
+              class="cmt"># x=3, ẋ=1 (seed the tangent)</span><br>
+            result = x*x + x<br>
+            <span class="fn">print</span>(result.<span class="var">dual</span>) &nbsp;<span class="cmt"># f'(3) = 2*3 +
+              1 = 7 ✓</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="sub">
+        <div class="sh p">Tape-Based Reverse Mode AD</div>
+        <p>PyTorch's autograd and TensorFlow use a <span class="hp">tape</span> (Wengert list): a record of every
+          operation performed during the forward pass, including enough information to compute the VJP for each
+          operation during the backward pass:</p>
+        <div class="cb">
+          <div class="cb-bar">
+            <div class="cb-dots">
+              <div class="cb-dot" style="background:#ff5f57"></div>
+              <div class="cb-dot" style="background:#febc2e"></div>
+              <div class="cb-dot" style="background:#28c840"></div>
+            </div>
+            <div class="cb-lang">Tape-Based AD — Minimal Implementation</div>
+          </div>
+          <div class="cb-body">
+            <span class="kw">class</span> <span class="dec">Tensor</span>:<br>
+            &nbsp;&nbsp;<span class="kw">def</span> <span class="fn">__init__</span>(self, <span
+              class="var">data</span>, <span class="var">_children</span>=(), <span
+              class="var">_backward_fn</span>=<span class="kw">None</span>):<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;self.<span class="var">data</span> = <span class="var">data</span><br>
+            &nbsp;&nbsp;&nbsp;&nbsp;self.<span class="var">grad</span> = <span class="num">0.0</span>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span
+              class="cmt"># accumulates ∂L/∂self</span><br>
+            &nbsp;&nbsp;&nbsp;&nbsp;self.<span class="var">_children</span> = <span class="var">_children</span>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="cmt"># inputs to this node</span><br>
+            &nbsp;&nbsp;&nbsp;&nbsp;self.<span class="var">_backward</span> = <span class="var">_backward_fn</span>
+            <span class="kw">or</span> (<span class="kw">lambda</span>: <span class="kw">None</span>)<br><br>
+            &nbsp;&nbsp;<span class="kw">def</span> <span class="fn">__mul__</span>(self, other):<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;out = <span class="dec">Tensor</span>(self.<span class="var">data</span> *
+            other.<span class="var">data</span>, (self, other))<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;<span class="kw">def</span> _bwd():<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="cmt"># VJP of multiply: ∂(a*b)/∂a = b, ∂(a*b)/∂b =
+              a</span><br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;self.<span class="var">grad</span> += out.<span class="var">grad</span>
+            * other.<span class="var">data</span> &nbsp;<span class="cmt"># accumulate!</span><br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;other.<span class="var">grad</span> += out.<span class="var">grad</span>
+            * self.<span class="var">data</span><br>
+            &nbsp;&nbsp;&nbsp;&nbsp;out.<span class="var">_backward</span> = _bwd<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;<span class="kw">return</span> out<br><br>
+            &nbsp;&nbsp;<span class="kw">def</span> <span class="fn">backward</span>(self):<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;self.<span class="var">grad</span> = <span class="num">1.0</span>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span
+              class="cmt"># dL/dL = 1</span><br>
+            &nbsp;&nbsp;&nbsp;&nbsp;<span class="kw">for</span> node <span class="kw">in</span> <span
+              class="fn">topological_sort</span>(self): <span class="cmt"># reverse topo</span><br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;node.<span class="var">_backward</span>()
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ §14 ═════════════════════════════════════════════════ -->
+    <div class="ch" id="c14">
+      <div class="ch-head">
+        <div class="ch-num-block">
+          <div class="ch-num">14</div>
+          <div class="ch-dash"></div>
+        </div>
+        <div class="ch-title-block">
+          <span class="ch-badge r">Frameworks</span>
+          <h2>PyTorch &amp; TensorFlow Autograd</h2>
+          <div class="ch-sub">// dynamic graph · GradientTape · retain_graph · custom backward · hooks</div>
+        </div>
+      </div>
+
+      <div class="sub">
+        <div class="sh r">PyTorch Autograd — Dynamic Graph</div>
+        <div class="cb">
+          <div class="cb-bar">
+            <div class="cb-dots">
+              <div class="cb-dot" style="background:#ff5f57"></div>
+              <div class="cb-dot" style="background:#febc2e"></div>
+              <div class="cb-dot" style="background:#28c840"></div>
+            </div>
+            <div class="cb-lang">PyTorch Autograd — Everything You Need to Know</div>
+          </div>
+          <div class="cb-body">
+            <span class="kw">import</span> torch<br><br>
+            <span class="cmt"># 1. requires_grad=True enables gradient tracking</span><br>
+            x = torch.<span class="fn">randn</span>(<span class="num">3</span>, <span class="num">4</span>,
+            requires_grad=<span class="kw">True</span>)<br>
+            W = torch.<span class="fn">randn</span>(<span class="num">4</span>, <span class="num">5</span>,
+            requires_grad=<span class="kw">True</span>)<br><br>
+            <span class="cmt"># 2. Forward pass builds the computational graph automatically</span><br>
+            z = x @ W &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="cmt"># graph:
+              z.grad_fn = MmBackward</span><br>
+            loss = z.<span class="fn">sum</span>()<br><br>
+            <span class="cmt"># 3. Backward pass computes all gradients</span><br>
+            loss.<span class="fn">backward</span>() &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="cmt"># default: free the
+              graph after backward</span><br>
+            <span class="fn">print</span>(W.<span class="var">grad</span>)
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="cmt"># dL/dW — shape (4,5)</span><br><br>
+            <span class="cmt"># 4. retain_graph=True: keep graph for multiple backward passes</span><br>
+            loss.<span class="fn">backward</span>(retain_graph=<span class="kw">True</span>) &nbsp;<span class="cmt">#
+              needed for higher-order grads</span><br><br>
+            <span class="cmt"># 5. Gradient accumulation: .grad ADDS (doesn't replace)</span><br>
+            optimizer.<span class="fn">zero_grad</span>() &nbsp;<span class="cmt"># must zero before next
+              backward!</span><br><br>
+            <span class="cmt"># 6. torch.no_grad(): disable tracking for inference</span><br>
+            <span class="kw">with</span> torch.<span class="fn">no_grad</span>():<br>
+            &nbsp;&nbsp;y_pred = model(x_test) &nbsp;<span class="cmt"># 2x faster, no memory overhead</span><br><br>
+            <span class="cmt"># 7. detach(): remove tensor from graph</span><br>
+            target = output.<span class="fn">detach</span>() &nbsp;<span class="cmt"># treat as constant, stop grad
+              flow</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="sub">
+        <div class="sh b">TensorFlow GradientTape</div>
+        <div class="cb">
+          <div class="cb-bar">
+            <div class="cb-dots">
+              <div class="cb-dot" style="background:#ff5f57"></div>
+              <div class="cb-dot" style="background:#febc2e"></div>
+              <div class="cb-dot" style="background:#28c840"></div>
+            </div>
+            <div class="cb-lang">TensorFlow 2.x GradientTape</div>
+          </div>
+          <div class="cb-body">
+            <span class="kw">import</span> tensorflow <span class="kw">as</span> tf<br><br>
+            <span class="cmt"># 1. GradientTape records forward pass operations</span><br>
+            x = tf.<span class="fn">Variable</span>(tf.<span class="fn">random.normal</span>([<span
+              class="num">3</span>, <span class="num">4</span>]))<br>
+            W = tf.<span class="fn">Variable</span>(tf.<span class="fn">random.normal</span>([<span
+              class="num">4</span>, <span class="num">5</span>]))<br><br>
+            <span class="kw">with</span> tf.<span class="dec">GradientTape</span>() <span class="kw">as</span> tape:<br>
+            &nbsp;&nbsp;z = tf.<span class="fn">matmul</span>(x, W) &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="cmt">#
+              recorded on tape</span><br>
+            &nbsp;&nbsp;loss = tf.<span class="fn">reduce_sum</span>(z) &nbsp;<span class="cmt"># recorded on
+              tape</span><br><br>
+            <span class="cmt"># 2. Compute gradients by replaying the tape backward</span><br>
+            grads = tape.<span class="fn">gradient</span>(loss, [x, W]) &nbsp;<span class="cmt"># [dL/dx,
+              dL/dW]</span><br><br>
+            <span class="cmt"># 3. persistent=True: call gradient() multiple times</span><br>
+            <span class="kw">with</span> tf.<span class="dec">GradientTape</span>(persistent=<span
+              class="kw">True</span>) <span class="kw">as</span> tape:<br>
+            &nbsp;&nbsp;loss = <span class="fn">compute_loss</span>()<br>
+            dL_dx = tape.<span class="fn">gradient</span>(loss, x)<br>
+            dL_dW = tape.<span class="fn">gradient</span>(loss, W) <span class="cmt"># tape still alive</span><br>
+            <span class="kw">del</span> tape <span class="cmt"># must delete manually</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="sub">
+        <div class="sh g">Custom Backward Functions in PyTorch</div>
+        <div class="cb">
+          <div class="cb-bar">
+            <div class="cb-dots">
+              <div class="cb-dot" style="background:#ff5f57"></div>
+              <div class="cb-dot" style="background:#febc2e"></div>
+              <div class="cb-dot" style="background:#28c840"></div>
+            </div>
+            <div class="cb-lang">torch.autograd.Function — Custom Backward</div>
+          </div>
+          <div class="cb-body">
+            <span class="kw">class</span> <span class="dec">StraightThroughEstimator</span>(torch.autograd.<span
+              class="dec">Function</span>):<br>
+            &nbsp;&nbsp;<span class="cmt">"""Example: gradient through a non-differentiable op"""</span><br><br>
+            &nbsp;&nbsp;<span class="kw">@staticmethod</span><br>
+            &nbsp;&nbsp;<span class="kw">def</span> <span class="fn">forward</span>(ctx, x):<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;ctx.<span class="fn">save_for_backward</span>(x) &nbsp;<span class="cmt"># cache
+              what backward needs</span><br>
+            &nbsp;&nbsp;&nbsp;&nbsp;<span class="kw">return</span> (x &gt; <span class="num">0</span>).<span
+              class="fn">float</span>() &nbsp;&nbsp;&nbsp;<span class="cmt"># non-differentiable step</span><br><br>
+            &nbsp;&nbsp;<span class="kw">@staticmethod</span><br>
+            &nbsp;&nbsp;<span class="kw">def</span> <span class="fn">backward</span>(ctx, grad_output):<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;x, = ctx.<span class="var">saved_tensors</span><br>
+            &nbsp;&nbsp;&nbsp;&nbsp;<span class="cmt"># Straight-through: pass gradient as-is (pretend forward =
+              identity)</span><br>
+            &nbsp;&nbsp;&nbsp;&nbsp;<span class="kw">return</span> grad_output * (x.<span class="fn">abs</span>() &lt;=
+            <span class="num">1</span>).<span class="fn">float</span>()<br><br>
+            <span class="cmt"># Use it like a regular function:</span><br>
+            y = <span class="dec">StraightThroughEstimator</span>.<span class="fn">apply</span>(x)
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ §15 ═════════════════════════════════════════════════ -->
+    <div class="ch" id="c15">
+      <div class="ch-head">
+        <div class="ch-num-block">
+          <div class="ch-num">15</div>
+          <div class="ch-dash"></div>
+        </div>
+        <div class="ch-title-block">
+          <span class="ch-badge p">Advanced</span>
+          <h2>Modern Backprop Tricks</h2>
+          <div class="ch-sub">// gradient clipping · second-order · higher-order grads · grad checkpointing in depth
+          </div>
+        </div>
+      </div>
+
+      <div class="sub">
+        <div class="sh r">Gradient Clipping</div>
+        <p>Exploding gradients (common in RNNs and deep networks) are handled by clipping the gradient norm:</p>
+        <div class="eq r">
+          <div class="eq-top"><span class="eq-name">Global Norm Clipping</span><span class="eq-tag">Stability</span>
+          </div>
+          <div class="eq-body">
+            \[\mathbf{g} \leftarrow \begin{cases}\mathbf{g} & \|\mathbf{g}\|_2 \leq \text{max\_norm} \\
+            \text{max\_norm}\cdot\frac{\mathbf{g}}{\|\mathbf{g}\|_2} & \text{otherwise}\end{cases}\]
+            <div class="eq-note">Global norm clipping scales all gradients uniformly — preserving the direction, only
+              reducing the magnitude. Value clipping (clip each gradient independently to [−c, c]) is different and less
+              principled. PyTorch: torch.nn.utils.clip_grad_norm_(model.parameters(), max_norm=1.0). Typical max_norm:
+              0.5–5.0 depending on the model.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="sub">
+        <div class="sh b">Higher-Order Gradients</div>
+        <p>Since the gradient computation is itself a differentiable computation, you can differentiate through the
+          backward pass to get second (or higher) order derivatives:</p>
+
+        <div class="cb">
+          <div class="cb-bar">
+            <div class="cb-dots">
+              <div class="cb-dot" style="background:#ff5f57"></div>
+              <div class="cb-dot" style="background:#febc2e"></div>
+              <div class="cb-dot" style="background:#28c840"></div>
+            </div>
+            <div class="cb-lang">Higher-Order Gradients — MAML / Hessian-Vector Products</div>
+          </div>
+          <div class="cb-body">
+            <span class="cmt"># Second-order gradient (gradient of gradient)</span><br>
+            x = torch.<span class="fn">randn</span>(<span class="num">3</span>, requires_grad=<span
+              class="kw">True</span>)<br>
+            y = (x ** <span class="num">2</span>).<span class="fn">sum</span>()
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="cmt"># y =
+              ||x||²</span><br><br>
+            <span class="cmt"># First derivative</span><br>
+            dy_dx = torch.<span class="fn">autograd.grad</span>(y, x, create_graph=<span class="kw">True</span>)[<span
+              class="num">0</span>]<br>
+            <span class="cmt"># dy/dx = 2x — create_graph=True keeps the gradient graph</span><br><br>
+            <span class="cmt"># Second derivative (Hessian diagonal)</span><br>
+            d2y_dx2 = torch.<span class="fn">autograd.grad</span>(dy_dx.<span class="fn">sum</span>(), x)[<span
+              class="num">0</span>]<br>
+            <span class="cmt"># d²y/dx² = 2 ✓</span><br><br>
+            <span class="cmt"># Hessian-Vector Product (efficient second order)</span><br>
+            v = torch.<span class="fn">ones_like</span>(x)<br>
+            hvp = torch.<span class="fn">autograd.grad</span>(dy_dx, x, grad_outputs=v)[<span class="num">0</span>]<br>
+            <span class="cmt"># Computes H·v in O(n) without materializing H (n×n)</span>
+          </div>
+        </div>
+
+        <ul class="fl p">
+          <li><strong>MAML (Meta-Learning):</strong> Differentiates through multiple gradient steps to find
+            initialization that quickly adapts. Requires second-order gradients (gradient through gradient).</li>
+          <li><strong>Hessian-Vector Products (HVPs):</strong> Used in second-order optimization (Newton's method,
+            Hessian-free optimization, K-FAC). Computable in \(O(n)\) — same cost as a gradient — without forming the
+            \(O(n^2)\) Hessian.</li>
+          <li><strong>Implicit differentiation:</strong> Differentiate through the solution of an optimization problem.
+            Used in meta-learning, hyperparameter optimization, and neural ODEs.</li>
+        </ul>
+      </div>
+
+      <div class="sub">
+        <div class="sh g">Gradient Checkpointing — Deep Dive</div>
+        <div class="cb">
+          <div class="cb-bar">
+            <div class="cb-dots">
+              <div class="cb-dot" style="background:#ff5f57"></div>
+              <div class="cb-dot" style="background:#febc2e"></div>
+              <div class="cb-dot" style="background:#28c840"></div>
+            </div>
+            <div class="cb-lang">torch.utils.checkpoint — Activation Recomputation</div>
+          </div>
+          <div class="cb-body">
+            <span class="kw">import</span> torch.utils.checkpoint <span class="kw">as</span> cp<br><br>
+            <span class="kw">class</span> <span class="dec">CheckpointedModel</span>(nn.<span
+              class="dec">Module</span>):<br>
+            &nbsp;&nbsp;<span class="kw">def</span> <span class="fn">forward</span>(self, x):<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;<span class="cmt"># Without checkpointing: all activations cached (high
+              memory)</span><br>
+            &nbsp;&nbsp;&nbsp;&nbsp;<span class="cmt"># With checkpointing: recomputes on backward (low
+              memory)</span><br>
+            &nbsp;&nbsp;&nbsp;&nbsp;x = cp.<span class="fn">checkpoint</span>(self.layer1, x) &nbsp;<span class="cmt">#
+              don't cache layer1 activations</span><br>
+            &nbsp;&nbsp;&nbsp;&nbsp;x = cp.<span class="fn">checkpoint</span>(self.layer2, x) &nbsp;<span class="cmt">#
+              recompute from input on backward</span><br>
+            &nbsp;&nbsp;&nbsp;&nbsp;x = self.layer3(x)
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span
+              class="cmt"># last layer: always cached</span><br>
+            &nbsp;&nbsp;&nbsp;&nbsp;<span class="kw">return</span> x<br><br>
+            <span class="cmt"># Memory: O(√L) instead of O(L) — 10x reduction for 100 layers</span><br>
+            <span class="cmt"># Compute: ~33% overhead (recomputes each checkpoint once on bwd)</span><br>
+            <span class="cmt"># Enables 2-3x larger models or longer sequences</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="sub">
+        <div class="sh a">Gradient Noise and Perturbation</div>
+        <ul class="fl a">
+          <li><strong>Label smoothing:</strong> Replaces one-hot targets with soft targets — the gradient signal is
+            \(\hat{y} - y_{\text{smooth}}\) where \(y_{\text{smooth}} = (1-\epsilon)y + \epsilon/K\). Prevents
+            overconfident predictions.</li>
+          <li><strong>Stochastic depth:</strong> Randomly drop entire residual branches during training. The gradient
+            paths change randomly each step, acting as an ensemble of shallower networks.</li>
+          <li><strong>Noise injection:</strong> Add Gaussian noise to gradients (Langevin dynamics). Helps escape sharp
+            local minima. Formally equivalent to sampling from the Bayesian posterior.</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- ══ §16 ═════════════════════════════════════════════════ -->
+    <div class="ch" id="c16">
+      <div class="ch-head">
+        <div class="ch-num-block">
+          <div class="ch-num">16</div>
+          <div class="ch-dash"></div>
+        </div>
+        <div class="ch-title-block">
+          <span class="ch-badge r">Synthesis</span>
+          <h2>The Complete Mental Model</h2>
+          <div class="ch-sub">// everything unified · one diagram · one algorithm · the whole picture</div>
+        </div>
+      </div>
+
+      <div class="fig">
+        <div class="fig-box">
+          <svg viewBox="0 0 720 580" xmlns="http://www.w3.org/2000/svg" style="max-width:720px;width:100%">
+            <rect width="720" height="580" fill="#fff" />
+            <defs>
+              <marker id="ba" markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto">
+                <path d="M0,0 L0,5 L7,2.5z" fill="#aaa" />
+              </marker>
+              <marker id="rb" markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto">
+                <path d="M0,0 L0,5 L7,2.5z" fill="#d90012" />
+              </marker>
+              <marker id="bb" markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto">
+                <path d="M0,0 L0,5 L7,2.5z" fill="#1a56db" />
+              </marker>
+              <marker id="gb2" markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto">
+                <path d="M0,0 L0,5 L7,2.5z" fill="#15803d" />
+              </marker>
+            </defs>
+            <text x="360" y="22" text-anchor="middle" font-family="Sora" font-size="10" fill="#ccc" font-weight="600"
+              letter-spacing=".22em">BACKPROPAGATION — COMPLETE MENTAL MAP</text>
+
+            <!-- PROBLEM -->
+            <rect x="200" y="36" width="320" height="54" rx="6" fill="#fff8f8" stroke="#d90012" stroke-width="2" />
+            <text x="360" y="58" text-anchor="middle" font-family="Sora" font-size="12" fill="#d90012"
+              font-weight="700">THE GOAL: ∂L/∂θ for all parameters θ</text>
+            <text x="360" y="78" text-anchor="middle" font-family="JetBrains Mono" font-size="9" fill="#aaa">one forward
+              + one backward = O(n) total</text>
+
+            <!-- FORWARD -->
+            <rect x="28" y="148" width="200" height="52" rx="5" fill="#f0f8ff" stroke="#1a56db" stroke-width="1.5" />
+            <text x="128" y="169" text-anchor="middle" font-family="Sora" font-size="11" fill="#1a56db"
+              font-weight="700">FORWARD PASS</text>
+            <text x="128" y="188" text-anchor="middle" font-family="JetBrains Mono" font-size="8.5" fill="#aaa">compute
+              &amp; cache z[ℓ], a[ℓ]</text>
+
+            <!-- COMP GRAPH -->
+            <rect x="280" y="148" width="200" height="52" rx="5" fill="#fffbf0" stroke="#b45309" stroke-width="1.5" />
+            <text x="380" y="169" text-anchor="middle" font-family="Sora" font-size="11" fill="#b45309"
+              font-weight="700">COMP. GRAPH</text>
+            <text x="380" y="188" text-anchor="middle" font-family="JetBrains Mono" font-size="8.5" fill="#aaa">DAG ·
+              topological order</text>
+
+            <!-- CHAIN RULE -->
+            <rect x="492" y="148" width="200" height="52" rx="5" fill="#f0fff4" stroke="#15803d" stroke-width="1.5" />
+            <text x="592" y="169" text-anchor="middle" font-family="Sora" font-size="11" fill="#15803d"
+              font-weight="700">CHAIN RULE</text>
+            <text x="592" y="188" text-anchor="middle" font-family="JetBrains Mono" font-size="8.5" fill="#aaa">∂L/∂x =
+              Σ (∂L/∂y)·(∂y/∂x)</text>
+
+            <line x1="280" y1="90" x2="168" y2="146" stroke="#aaa" stroke-width="1.2" stroke-dasharray="4,3"
+              marker-end="url(#ba)" />
+            <line x1="360" y1="90" x2="380" y2="146" stroke="#aaa" stroke-width="1.2" stroke-dasharray="4,3"
+              marker-end="url(#ba)" />
+            <line x1="440" y1="90" x2="552" y2="146" stroke="#aaa" stroke-width="1.2" stroke-dasharray="4,3"
+              marker-end="url(#ba)" />
+
+            <!-- FOUR BP EQUATIONS -->
+            <rect x="28" y="258" width="660" height="64" rx="6" fill="#fff8f8" stroke="#d90012" stroke-width="2" />
+            <text x="360" y="278" text-anchor="middle" font-family="Sora" font-size="11" fill="#d90012"
+              font-weight="700">THE FOUR EQUATIONS — BP1 through BP4</text>
+            <text x="66" y="304" font-family="JetBrains Mono" font-size="9" fill="#555">BP1: δ[L]=∇ₐL⊙σ'</text>
+            <text x="215" y="304" font-family="JetBrains Mono" font-size="9" fill="#555">BP2:
+              δ[ℓ]=W[ℓ+1]ᵀδ[ℓ+1]⊙σ'</text>
+            <text x="436" y="304" font-family="JetBrains Mono" font-size="9" fill="#555">BP3: ∂L/∂W=δa^T</text>
+            <text x="590" y="304" font-family="JetBrains Mono" font-size="9" fill="#555">BP4: ∂L/∂b=δ</text>
+
+            <line x1="128" y1="200" x2="200" y2="256" stroke="#1a56db" stroke-width="1.2" stroke-dasharray="4,3"
+              marker-end="url(#bb)" />
+            <line x1="380" y1="200" x2="360" y2="256" stroke="#b45309" stroke-width="1.2" stroke-dasharray="4,3"
+              marker-end="url(#ba)" />
+            <line x1="592" y1="200" x2="520" y2="256" stroke="#15803d" stroke-width="1.2" stroke-dasharray="4,3"
+              marker-end="url(#gb2)" />
+
+            <!-- VJPs -->
+            <rect x="28" y="378" width="195" height="50" rx="5" fill="#fff" stroke="#7c3aed" stroke-width="1.5" />
+            <text x="125" y="398" text-anchor="middle" font-family="Sora" font-size="10.5" fill="#7c3aed"
+              font-weight="700">VJPs / JACOBIANS</text>
+            <text x="125" y="416" text-anchor="middle" font-family="JetBrains Mono" font-size="8.5" fill="#aaa">local
+              grad primitives</text>
+
+            <!-- AUTOGRAD -->
+            <rect x="263" y="378" width="195" height="50" rx="5" fill="#fff" stroke="#1a56db" stroke-width="1.5" />
+            <text x="360" y="398" text-anchor="middle" font-family="Sora" font-size="10.5" fill="#1a56db"
+              font-weight="700">AUTOGRAD ENGINE</text>
+            <text x="360" y="416" text-anchor="middle" font-family="JetBrains Mono" font-size="8.5" fill="#aaa">tape ·
+              operator overload</text>
+
+            <!-- MEMORY -->
+            <rect x="498" y="378" width="195" height="50" rx="5" fill="#fff" stroke="#15803d" stroke-width="1.5" />
+            <text x="595" y="398" text-anchor="middle" font-family="Sora" font-size="10.5" fill="#15803d"
+              font-weight="700">MEMORY TRICKS</text>
+            <text x="595" y="416" text-anchor="middle" font-family="JetBrains Mono" font-size="8.5"
+              fill="#aaa">checkpointing · AMP · accum</text>
+
+            <line x1="200" y1="322" x2="140" y2="376" stroke="#aaa" stroke-width="1" stroke-dasharray="3,2"
+              marker-end="url(#ba)" />
+            <line x1="360" y1="322" x2="360" y2="376" stroke="#aaa" stroke-width="1" stroke-dasharray="3,2"
+              marker-end="url(#ba)" />
+            <line x1="520" y1="322" x2="580" y2="376" stroke="#aaa" stroke-width="1" stroke-dasharray="3,2"
+              marker-end="url(#ba)" />
+
+            <!-- Final gradient update -->
+            <rect x="28" y="476" width="660" height="86" rx="6" fill="#111" />
+            <text x="360" y="498" text-anchor="middle" font-family="JetBrains Mono" font-size="9" fill="#555"
+              letter-spacing=".2em">GRADIENT UPDATE</text>
+            <text x="60" y="522" font-family="JetBrains Mono" font-size="8.5" fill="#d90012">∂L/∂W[L] = δ[L] ·
+              a[L-1]^T</text>
+            <text x="60" y="540" font-family="JetBrains Mono" font-size="8.5" fill="#1a56db">∂L/∂W[L-1] = δ[L-1] ·
+              a[L-2]^T</text>
+            <text x="370" y="522" font-family="JetBrains Mono" font-size="8.5" fill="#7c3aed">∂L/∂W[1] = δ[1] ·
+              x^T</text>
+            <text x="370" y="540" font-family="JetBrains Mono" font-size="8.5" fill="#15803d">θ ← θ − α · ∂L/∂θ
+              (optimizer step)</text>
+            <text x="60" y="558" font-family="JetBrains Mono" font-size="8" fill="#333">All computed in one backward
+              pass · O(n) total · GPU parallel · AMP optional</text>
+
+            <line x1="125" y1="428" x2="150" y2="474" stroke="#aaa" stroke-width="1" stroke-dasharray="3,2"
+              marker-end="url(#ba)" />
+            <line x1="360" y1="428" x2="360" y2="474" stroke="#aaa" stroke-width="1" stroke-dasharray="3,2"
+              marker-end="url(#ba)" />
+            <line x1="595" y1="428" x2="570" y2="474" stroke="#aaa" stroke-width="1" stroke-dasharray="3,2"
+              marker-end="url(#ba)" />
+          </svg>
+        </div>
+        <div class="fig-cap">Fig 2. Complete backpropagation mental map — from the computational goal through the four
+          fundamental equations to the gradient update that trains every neural network.</div>
+      </div>
+
+      <p style="margin-top:clamp(22px,4vw,36px)">The complete story in one coherent thread:</p>
+
+      <ol style="padding-left:clamp(16px,3vw,24px);line-height:2.6;font-size:clamp(14px,1.9vw,16px)">
+        <li><strong>The problem:</strong> We need \(\partial\mathcal{L}/\partial\theta_j\) for every parameter
+          \(\theta_j\). Finite differences require \(O(n)\) forward passes. Backpropagation computes all gradients
+          simultaneously in one forward + one backward pass — \(O(1)\) passes regardless of \(n\).</li>
+        <li><strong>Computational graphs</strong> represent computation as a DAG. The forward pass evaluates nodes in
+          topological order, caching all intermediate values. The graph makes the chain rule application systematic and
+          automatic.</li>
+        <li><strong>Backpropagation is the chain rule</strong> applied in reverse topological order, reusing each
+          computed gradient \(\partial\mathcal{L}/\partial z\) for all upstream parameters that depend on \(z\). This
+          sharing is the source of the \(O(n)\) efficiency.</li>
+        <li><strong>Reverse mode AD</strong> propagates adjoint variables \(\bar{v} = \partial\mathcal{L}/\partial v\)
+          backward through the graph. Initialization: \(\bar{\mathcal{L}} = 1\). Each node computes the VJP for its
+          operation and accumulates the result into its input adjoints.</li>
+        <li><strong>VJPs are the primitive</strong>: each operation need only define its VJP (how to propagate a
+          cotangent backward), not its full Jacobian. The Jacobian is never formed — only its product with a vector.
+          Cost: same order as the forward operation.</li>
+        <li><strong>Matrix calculus</strong> gives us the VJP rules for common operations: for \(\mathbf{y} =
+          \mathbf{Wx}\), the VJP w.r.t. \(\mathbf{W}\) is \(\bar{\mathbf{y}}\mathbf{x}^T\) (outer product), and w.r.t.
+          \(\mathbf{x}\) is \(\mathbf{W}^T\bar{\mathbf{y}}\) (transpose times cotangent).</li>
+        <li><strong>The four BP equations</strong> follow directly from applying VJPs to the specific structure of a
+          layered neural network. BP1 gives the output error; BP2 propagates it backward; BP3 and BP4 give weight and
+          bias gradients.</li>
+        <li><strong>Softmax + CCE gives the cleanest gradient</strong>: \(\partial\mathcal{L}/\partial\mathbf{z}^{[L]} =
+          \hat{\mathbf{y}} - \mathbf{y}\). This follows from the exponential family structure of the categorical
+          distribution and is not a coincidence.</li>
+        <li><strong>Memory is the bottleneck</strong> for large models. Activation checkpointing reduces cached memory
+          from \(O(L)\) to \(O(\sqrt{L})\) by recomputing activations on demand. Gradient accumulation and AMP are the
+          other two key techniques for fitting large models into GPU memory.</li>
+        <li><strong>Modern autograd engines</strong> (PyTorch, JAX, TensorFlow) implement tape-based reverse mode AD via
+          operator overloading. Every operation records its VJP. The backward pass replays the tape in reverse,
+          computing all parameter gradients automatically.</li>
+      </ol>
+
+      <div class="thm">
+        <div class="thm-badge">The One Algorithm That Trains Everything</div>
+        <p>Backpropagation is not a clever trick or an approximation — it is the <em>exact, optimal</em> algorithm for
+          computing gradients of a scalar loss with respect to all parameters of a computation. It is a direct
+          consequence of the chain rule of calculus, applied systematically using the structure of the computational
+          graph. Every neural network ever trained — from the 1986 XOR network to GPT-4 with 1.8 trillion parameters —
+          was trained by exactly this algorithm. The equations are the same; only the graph grew larger. Understanding
+          backpropagation is not merely understanding a technique — it is understanding the mathematical mechanism by
+          which machines learn.</p>
+      </div>
+    </div>
+
+  </div><!-- /page -->
+
+  <!-- ═══ FOOTER ═══ -->
+  <footer class="site-footer">
+    <div class="footer-content">
+      <div class="footer-main">
+        <div class="footer-left">
+          <p class="copyright">&copy; 2025 Shahid Ul Islam</p>
+          <p class="footer-meta">Data Scientist & AI Developer</p>
+        </div>
+        <div class="footer-right">
+          <div class="footer-links">
+            <a href="#" class="back-to-top">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="12" y1="19" x2="12" y2="5"></line>
+                <polyline points="5 12 12 5 19 12"></polyline>
+              </svg>
+              <span>Back to Top</span>
+            </a>
+            <div class="social-links11">
+              <a href="https://github.com/Khanz9664" target="_blank" class="social-link11">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path
+                    d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22" />
+                </svg>
+              </a>
+              <a href="https://linkedin.com/in/shahid-ul-islam-13650998" target="_blank" class="social-link11">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" />
+                  <rect x="2" y="9" width="4" height="12" />
+                  <circle cx="4" cy="4" r="2" />
+                </svg>
+              </a>
+              <a href="mailto:shahid9664@gmail.com" class="social-link11">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
+                  <polyline points="22,6 12,13 2,6" />
+                </svg>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="made-with">
+      <p>Crafted with <span class="heart-icon">❤️</span> By Shahid</p>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js"></script>
+</body>
+
+</html>

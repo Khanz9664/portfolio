@@ -266,15 +266,15 @@
 @keyframes descend {
     0%,
     100% {
-        transform: translate(40px, -40px);
-        opacity: 0.8;
-    }
+    transform: translate(40px, -40px);
+    opacity: 0.8;
+}
 
     50% {
-        transform: translate(0, 0);
-        opacity: 1;
-        scale: 1.2;
-    }
+    transform: translate(0, 0);
+    opacity: 1;
+    scale: 1.2;
+}
 }
 
 /* Procedural Visual Components (General) */
@@ -379,53 +379,74 @@
 }
 
 @keyframes targetPulse {
-    0%, 100% { border-color: rgb(0 242 255 / 5%); }
-    50% { border-color: rgb(0 242 255 / 15%); }
+    0%, 100% {
+    border-color: rgb(0 242 255 / 5%);
+}
+
+    50% {
+    border-color: rgb(0 242 255 / 15%);
+}
 }
 
 @keyframes shiftCluster {
     0%,
     100% {
-        transform: translate(0, 0) scale(1.5);
-        opacity: 0.4;
-    } /* High Variance, Centered */
+    transform: translate(0, 0) scale(1.5);
+    opacity: 0.4;
+} /* High Variance, Centered */
     25% {
-        transform: translate(45px, -45px) scale(0.6);
-        opacity: 1;
-    } /* Low Variance, High Bias */
+    transform: translate(45px, -45px) scale(0.6);
+    opacity: 1;
+} /* Low Variance, High Bias */
     50% {
-        transform: translate(0, 0) scale(1.5);
-        opacity: 0.4;
-    }
+    transform: translate(0, 0) scale(1.5);
+    opacity: 0.4;
+}
 
     75% {
-        transform: translate(-35px, 25px) scale(0.6);
-        opacity: 1;
-    }
+    transform: translate(-35px, 25px) scale(0.6);
+    opacity: 1;
+}
 }
 
 @keyframes jitter1 {
     0%,
-    100% { transform: translate(0, 0); }
-    50% { transform: translate(8px, -4px); }
+    100% { transform: translate(0, 0);
+}
+
+    50% {
+    transform: translate(8px, -4px);
+}
 }
 
 @keyframes jitter2 {
     0%,
-    100% { transform: translate(0, 0); }
-    50% { transform: translate(-6px, 10px); }
+    100% { transform: translate(0, 0);
+}
+
+    50% {
+    transform: translate(-6px, 10px);
+}
 }
 
 @keyframes jitter3 {
     0%,
-    100% { transform: translate(0, 0); }
-    50% { transform: translate(4px, 12px); }
+    100% { transform: translate(0, 0);
+}
+
+    50% {
+    transform: translate(4px, 12px);
+}
 }
 
 @keyframes jitter4 {
     0%,
-    100% { transform: translate(0, 0); }
-    50% { transform: translate(-10px, -6px); }
+    100% { transform: translate(0, 0);
+}
+
+    50% {
+    transform: translate(-10px, -6px);
+}
 }
 
 /* Linear Regression Visual */
@@ -486,22 +507,22 @@
 
 @keyframes drawSigmoid {
     0% {
-        stroke-dashoffset: 1000;
-        opacity: 0;
-    }
+    stroke-dashoffset: 1000;
+    opacity: 0;
+}
 
     20% {
-        opacity: 1;
-    }
+    opacity: 1;
+}
 
     80% {
-        opacity: 1;
-    }
+    opacity: 1;
+}
 
     100% {
-        stroke-dashoffset: 0;
-        opacity: 0;
-    }
+    stroke-dashoffset: 0;
+    opacity: 0;
+}
 }
 
 /* Neural Networks Visual */
@@ -535,14 +556,14 @@
 
 @keyframes pulseNetwork {
     0% {
-        opacity: 0.5;
-        filter: drop-shadow(0 0 5px #c8f135);
-    }
+    opacity: 0.5;
+    filter: drop-shadow(0 0 5px #c8f135);
+}
 
     100% {
-        opacity: 1;
-        filter: drop-shadow(0 0 20px #c8f135);
-    }
+    opacity: 1;
+    filter: drop-shadow(0 0 20px #c8f135);
+}
 }
 
 /* PCA Visual */
@@ -573,8 +594,13 @@
 }
 
 @keyframes drawPCAxis {
-    0% { stroke-dashoffset: 200; }
-    100% { stroke-dashoffset: 0; }
+    0% {
+    stroke-dashoffset: 200;
+}
+
+    100% {
+    stroke-dashoffset: 0;
+}
 }
 
 /* Information Theory Visual */
@@ -604,22 +630,27 @@
 }
 
 @keyframes drawEntropy {
-    0% { stroke-dashoffset: 250; }
-    100% { stroke-dashoffset: 0; }
+    0% {
+    stroke-dashoffset: 250;
+}
+
+    100% {
+    stroke-dashoffset: 0;
+}
 }
 
 @keyframes pulseDot {
     0%, 20% {
-        opacity: 0;
-        transform: scale(0.5);
-        transform-origin: 100px 30px;
-    }
+    opacity: 0;
+    transform: scale(0.5);
+    transform-origin: 100px 30px;
+}
 
     80%, 100% {
-        opacity: 1;
-        transform: scale(1.5);
-        transform-origin: 100px 30px;
-    }
+    opacity: 1;
+    transform: scale(1.5);
+    transform-origin: 100px 30px;
+}
 }
 
 /* SVD Visual */
@@ -659,8 +690,13 @@
 }
 
 @keyframes floatMatrix {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-5px); }
+    0%, 100% {
+    transform: translateY(0);
+}
+
+    50% {
+    transform: translateY(-5px);
+}
 }
 
 /* Bayesian Visual */
@@ -695,8 +731,13 @@
 }
 
 @keyframes drawBayesian {
-    0% { stroke-dashoffset: 300; }
-    100% { stroke-dashoffset: 0; }
+    0% {
+    stroke-dashoffset: 300;
+}
+
+    100% {
+    stroke-dashoffset: 0;
+}
 }
 
 /* Transformers Visual */
@@ -722,14 +763,14 @@
 
 @keyframes pulseCell {
     0% {
-        transform: scale(0.95);
-        filter: brightness(0.8);
-    }
+    transform: scale(0.95);
+    filter: brightness(0.8);
+}
 
     100% {
-        transform: scale(1.05);
-        filter: brightness(1.2);
-    }
+    transform: scale(1.05);
+    filter: brightness(1.2);
+}
 }
 
 /* Probability Visual */
@@ -757,12 +798,73 @@
 
 @keyframes drawBell {
     0% {
-        stroke-dashoffset: 400;
-    }
+    stroke-dashoffset: 400;
+}
 
     100% {
-        stroke-dashoffset: 0;
-    }
+    stroke-dashoffset: 0;
+}
+}
+
+/* Backpropagation Visual */
+.visual-backprop .v-backprop-wrapper {
+    position: absolute;
+    width: 250px;
+    height: 150px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.visual-backprop .v-backprop-svg {
+    width: 100%;
+    height: 100%;
+    color: var(--card-accent, #c8f135);
+    filter: drop-shadow(0 0 10px rgb(200 241 53 / 30%));
+}
+
+.visual-backprop .v-bp-node {
+    animation: bpNodePulse 2.4s infinite alternate ease-in-out;
+}
+
+@keyframes bpNodePulse {
+    0% {
+    stroke-width: 1.4;
+    opacity: 0.5;
+}
+
+    100% {
+    stroke-width: 2.4;
+    opacity: 1;
+}
+}
+
+.visual-backprop .v-bp-grad {
+    stroke-dasharray: 120;
+    stroke-dashoffset: 120;
+    animation: drawGrad 2.6s infinite ease-in-out;
+}
+
+@keyframes drawGrad {
+    0% {
+    stroke-dashoffset: 120;
+    opacity: 0;
+}
+
+    40% {
+    stroke-dashoffset: 0;
+    opacity: 0.85;
+}
+
+    80% {
+    stroke-dashoffset: 0;
+    opacity: 0.85;
+}
+
+    100% {
+    stroke-dashoffset: 120;
+    opacity: 0;
+}
 }
 
 .card-image-overlay {
@@ -968,8 +1070,8 @@
     }
 
     .article-card h3 {
-        font-size: 1.6rem;
-    }
+    font-size: 1.6rem;
+}
 
     .hub-title-main {
         font-size: clamp(2.5rem, 10vw, 4rem);

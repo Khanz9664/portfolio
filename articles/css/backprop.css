@@ -101,8 +101,7 @@ body {
   display: flex;
   align-items: center;
   flex-wrap: wrap;
-  row-gap: 4px;
-  gap: 12px;
+  gap: 4px 12px;
   font-family: 'JetBrains Mono', monospace;
   font-size: clamp(9px, 1.3vw, 10.5px);
   letter-spacing: .28em;

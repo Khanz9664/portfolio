@@ -100,7 +100,8 @@ body {
 .hero-kicker {
   display: flex;
   align-items: center;
-  gap: 12px;
+  flex-wrap: wrap;
+  gap: 4px 12px;
   font-family: 'JetBrains Mono', monospace;
   font-size: clamp(9px, 1.3vw, 10.5px);
   letter-spacing: .28em;
@@ -115,7 +116,7 @@ body {
 
 .hero h1 {
   font-family: Sora, sans-serif;
-  font-size: clamp(3rem, 9.5vw, 8rem);
+  font-size: clamp(1.5rem, 9.5vw, 8rem);
   font-weight: 800;
   line-height: .92;
   letter-spacing: -.05em;

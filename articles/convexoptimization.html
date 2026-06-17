@@ -1,0 +1,1469 @@
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Convex Optimization | Shahid Ul Islam</title>
+  <meta name="description" content="A complete masterclass on Convex Optimization in Machine Learning." />
+  <meta name="author" content="Shahid Ul Islam" />
+  <link rel="icon" type="image/png" href="../img/plogo.png" />
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400;1,6..72,500&family=IBM+Plex+Mono:ital,wght@0,300;0,400;0,500;1,300;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/convexoptimization.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <link rel="stylesheet" href="../css/variables.css" />
+  <link rel="stylesheet" href="../css/navigation.css" />
+  <link rel="stylesheet" href="../css/footer.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <script defer src="../js/common.js"></script>
+
+</head>
+
+<body>
+  <div class="top-bar">
+    <div class="logo">
+      <img src="../img/plogo.png" alt="Personal Logo" class="logo-icon">
+      <span class="logo-text">SHAHID<span class="logo-accent">||</span>Portfolio</span>
+    </div>
+    <nav class="nav-container">
+      <ul class="nav-links">
+        <li><a href="../index.html" class="nav-link">.Home</a></li>
+        <li><a href="../about.html" class="nav-link">.About</a></li>
+        <li><a href="../skills.html" class="nav-link">.Skills</a></li>
+        <li><a href="../projects.html" class="nav-link">.Projects</a></li>
+        <li><a href="../contact.html" class="nav-link">.Contact</a></li>
+        <li><a href="../articles.html" class="nav-link">.Articles</a></li>
+      </ul>
+      <div class="menu-toggle">
+        <div class="hamburger"></div>
+      </div>
+    </nav>
+  </div>
+
+<!-- ══ HERO ════════════════════════════════════════════════ -->
+<div class="hero">
+  <div class="hero-inner">
+    <div>
+      <div class="hero-kicker">Mathematics · Optimization Theory · The Bridge</div>
+      <h1>
+        <span class="it">the geometry of the optimum</span>
+        Convex <span class="accent">Optimization</span>
+      </h1>
+      <p class="hero-byline">
+        Convex sets and functions, Jensen's inequality, first- and second-order
+        conditions, strong convexity, duality, KKT, subgradients, proximal
+        and interior-point methods — the rigorous bridge between gradient
+        descent and Lagrange multipliers.
+      </p>
+      <div class="hero-bridge">
+        ⊳ Builds directly on <a href="https://khanz9664.github.io/portfolio/articles/gradient-descent.html">Gradient Descent</a> (first-order local methods) and <a href="https://khanz9664.github.io/portfolio/articles/lagrange-multipliers.html">Lagrange Multipliers</a> (constrained stationarity) — convexity is the property that makes both of these methods provably correct, not just locally optimal but <em>globally</em> optimal.
+      </div>
+      <div class="hero-tags">
+        <span class="htag n">Convex Sets &amp; Functions</span>
+        <span class="htag r">Jensen's Inequality</span>
+        <span class="htag t">1st &amp; 2nd Order Conditions</span>
+        <span class="htag p">Strong Convexity</span>
+        <span class="htag o">Lipschitz Continuity</span>
+        <span class="htag s">Duality &amp; KKT</span>
+        <span class="htag n">Subgradients</span>
+        <span class="htag r">Proximal Methods</span>
+        <span class="htag t">Interior Point</span>
+        <span class="htag p">Convergence Rates</span>
+      </div>
+    </div>
+    <div class="hero-art">
+      <!-- Convex set / supporting hyperplane diagram -->
+      <svg width="clamp(220px,26vw,300px)" height="clamp(220px,26vw,300px)" viewBox="0 0 280 280" xmlns="http://www.w3.org/2000/svg" style="display:block">
+        <rect width="280" height="280" fill="#fff" rx="6" stroke="#c2b696" stroke-width="1"/>
+        <!-- convex region (blob) -->
+        <path d="M70,200 C50,180 45,140 60,110 C75,80 110,60 150,65 C190,70 220,95 225,130 C230,165 210,200 175,215 C140,230 95,225 70,200 Z" fill="rgba(29,78,107,0.08)" stroke="#1d4e6b" stroke-width="2"/>
+        <!-- chord between two points (Jensen) -->
+        <circle cx="90" cy="180" r="4" fill="#b8552f"/>
+        <circle cx="190" cy="100" r="4" fill="#b8552f"/>
+        <line x1="90" y1="180" x2="190" y2="100" stroke="#b8552f" stroke-width="1.8" stroke-dasharray="5,3"/>
+        <circle cx="140" cy="140" r="3.5" fill="#2c8079"/>
+        <text x="96" y="195" font-family="IBM Plex Mono" font-size="10" fill="#b8552f">x</text>
+        <text x="195" y="95" font-family="IBM Plex Mono" font-size="10" fill="#b8552f">y</text>
+        <text x="148" y="155" font-family="IBM Plex Mono" font-size="9" fill="#2c8079">λx+(1−λ)y</text>
+        <!-- supporting hyperplane -->
+        <line x1="30" y1="250" x2="245" y2="40" stroke="#7a4a6e" stroke-width="1.5" stroke-dasharray="2,2"/>
+        <text x="242" y="36" text-anchor="end" font-family="Newsreader" font-size="11" fill="#7a4a6e" font-style="italic">supporting hyperplane</text>
+        <!-- label -->
+        <text x="140" y="155" text-anchor="middle" font-family="Newsreader" font-size="14" fill="#1d4e6b" font-style="italic" opacity="0">C</text>
+        <text x="155" y="170" text-anchor="middle" font-family="Newsreader" font-size="16" fill="#1d4e6b" font-style="italic">C</text>
+      </svg>
+    </div>
+  </div>
+
+  <!-- Stats strip -->
+  <div class="hero-strip">
+    <div class="hs-cell"><div class="hs-num">⊆</div><div class="hs-label">Convex Sets</div></div>
+    <div class="hs-cell"><div class="hs-num">∇²f≥0</div><div class="hs-label">2nd Order</div></div>
+    <div class="hs-cell"><div class="hs-num">KKT</div><div class="hs-label">Optimality</div></div>
+    <div class="hs-cell"><div class="hs-num">O(1/k)</div><div class="hs-label">Convergence</div></div>
+    <div class="hs-cell"><div class="hs-num">prox</div><div class="hs-label">Operators</div></div>
+  </div>
+</div>
+
+<!-- ══ TOC ══════════════════════════════════════════════════ -->
+<div class="toc-outer">
+  <div class="toc-grid">
+    <div class="toc-cell"><a href="#c1"><span class="toc-i">01</span>Convex Sets</a></div>
+    <div class="toc-cell"><a href="#c2"><span class="toc-i">02</span>Convex Functions</a></div>
+    <div class="toc-cell"><a href="#c3"><span class="toc-i">03</span>Jensen's Inequality</a></div>
+    <div class="toc-cell"><a href="#c4"><span class="toc-i">04</span>First-Order Conditions</a></div>
+    <div class="toc-cell"><a href="#c5"><span class="toc-i">05</span>Second-Order Conditions</a></div>
+    <div class="toc-cell"><a href="#c6"><span class="toc-i">06</span>Strong Convexity</a></div>
+    <div class="toc-cell"><a href="#c7"><span class="toc-i">07</span>Lipschitz Continuity</a></div>
+    <div class="toc-cell"><a href="#c8"><span class="toc-i">08</span>Duality Theory</a></div>
+    <div class="toc-cell"><a href="#c9"><span class="toc-i">09</span>KKT Revisited</a></div>
+    <div class="toc-cell"><a href="#c10"><span class="toc-i">10</span>Subgradients</a></div>
+    <div class="toc-cell"><a href="#c11"><span class="toc-i">11</span>Proximal Methods</a></div>
+    <div class="toc-cell"><a href="#c12"><span class="toc-i">12</span>Coordinate Descent</a></div>
+    <div class="toc-cell"><a href="#c13"><span class="toc-i">13</span>Interior Point Methods</a></div>
+    <div class="toc-cell"><a href="#c14"><span class="toc-i">14</span>Convergence Guarantees</a></div>
+    <div class="toc-cell"><a href="#c15"><span class="toc-i">15</span>Optimization in ML</a></div>
+    <div class="toc-cell"><a href="#c16"><span class="toc-i">16</span>Complete Mental Model</a></div>
+  </div>
+</div>
+
+<div class="page">
+
+<!-- ══ §01 ═════════════════════════════════════════════════ -->
+<div class="ch" id="c1">
+  <div class="ch-head">
+    <div class="ch-top"><div class="ch-num">01</div><span class="ch-badge n">Geometry</span></div>
+    <h2>Convex Sets</h2>
+    <div class="ch-sub">// definition · examples · operations preserving convexity · why shape matters</div>
+  </div>
+
+  <p>Convexity is fundamentally a statement about <em>shape</em>. A convex set has no "dents" — if you pick any two points in the set, the entire straight line segment between them stays inside the set. This simple geometric property has enormous consequences for optimization.</p>
+
+  <div class="sub">
+    <div class="sh n">Definition</div>
+    <div class="eq n">
+      <div class="eq-top"><span class="eq-name">Convex Set</span><span class="eq-tag">Definition</span></div>
+      <div class="eq-body">
+        \[C \subseteq \mathbb{R}^n \text{ is convex} \iff \forall \mathbf{x},\mathbf{y}\in C,\;\forall\lambda\in[0,1]:\quad \lambda\mathbf{x} + (1-\lambda)\mathbf{y} \in C\]
+        <div class="eq-note">The point λx + (1−λ)y is a convex combination of x and y — it traces the line segment from y (λ=0) to x (λ=1) as λ varies. The definition says: this entire segment must lie in C. Equivalently, C contains every convex combination of its points.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sub">
+    <div class="sh r">Canonical Examples</div>
+    <div class="t-wrap">
+      <table>
+        <thead><tr><th>Set</th><th>Definition</th><th>Convex?</th></tr></thead>
+        <tbody>
+          <tr><td>Hyperplane</td><td>\(\{x: \mathbf{a}^T\mathbf{x}=b\}\)</td><td>Yes — affine</td></tr>
+          <tr><td>Halfspace</td><td>\(\{x: \mathbf{a}^T\mathbf{x}\leq b\}\)</td><td>Yes</td></tr>
+          <tr><td>Ball</td><td>\(\{x: \|x-x_0\|\leq r\}\)</td><td>Yes</td></tr>
+          <tr><td>Polyhedron</td><td>\(\{x: A\mathbf{x}\leq b\}\) (intersection of halfspaces)</td><td>Yes</td></tr>
+          <tr><td>Positive semidefinite cone</td><td>\(\{X\in\mathbb{S}^n: X\succeq 0\}\)</td><td>Yes</td></tr>
+          <tr><td>Annulus</td><td>\(\{x: 1\leq\|x\|\leq2\}\)</td><td>No — has a hole</td></tr>
+          <tr><td>Union of two disjoint balls</td><td>\(B_1 \cup B_2\)</td><td>No — line segment exits</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="sub">
+    <div class="sh t">Operations That Preserve Convexity</div>
+    <ul class="fl t">
+      <li><strong>Intersection:</strong> If \(C_1, C_2\) are convex, so is \(C_1 \cap C_2\). This is why a polyhedron (intersection of halfspaces) is always convex — and why feasible regions in linear programs (intersections of linear constraints) are convex.</li>
+      <li><strong>Affine images:</strong> If \(C\) is convex and \(f(\mathbf{x}) = A\mathbf{x}+\mathbf{b}\), then \(f(C) = \{f(\mathbf{x}):\mathbf{x}\in C\}\) is convex. Scaling, rotation, translation, and projection all preserve convexity.</li>
+      <li><strong>Minkowski sum:</strong> \(C_1 + C_2 = \{x_1+x_2: x_1\in C_1, x_2\in C_2\}\) is convex if \(C_1, C_2\) are convex.</li>
+      <li><strong>Cartesian product:</strong> \(C_1 \times C_2\) is convex if \(C_1, C_2\) are convex — used to combine independent constraint sets.</li>
+    </ul>
+
+    <div class="note n">
+      <div class="note-tag">Note</div>
+      <div class="note-body"><p>Union of convex sets is generally <em>not</em> convex. This is why feasible regions defined by OR conditions (e.g., "x ≤ 0 OR x ≥ 1") are typically non-convex, and why such constraints make optimization problems combinatorially hard (mixed-integer programming).</p></div>
+    </div>
+  </div>
+
+  <div class="sub">
+    <div class="sh p">Convex Hull and Extreme Points</div>
+    <div class="eq p">
+      <div class="eq-top"><span class="eq-name">Convex Hull</span><span class="eq-tag">Construction</span></div>
+      <div class="eq-body">
+        \[\text{conv}(S) = \left\{\sum_{i=1}^k\lambda_i\mathbf{x}_i : \mathbf{x}_i\in S,\;\lambda_i\geq0,\;\sum_i\lambda_i=1\right\}\]
+        <div class="eq-note">The convex hull of S is the smallest convex set containing S — the set of all convex combinations of points in S. Geometrically: stretch a rubber band around the points. Extreme points (vertices) of a polyhedron are points that cannot be written as a convex combination of other points in the set — these are the candidate optimal points for linear programs.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ §02 ═════════════════════════════════════════════════ -->
+<div class="ch" id="c2">
+  <div class="ch-head">
+    <div class="ch-top"><div class="ch-num">02</div><span class="ch-badge r">Functions</span></div>
+    <h2>Convex Functions</h2>
+    <div class="ch-sub">// epigraph · definition · examples · convexity-preserving operations</div>
+  </div>
+
+  <p>A function is convex if its graph "curves upward" — every chord connecting two points on the graph lies above (or on) the graph. This single property guarantees that any local minimum is a global minimum.</p>
+
+  <div class="sub">
+    <div class="sh r">Definition via Chords</div>
+    <div class="eq r">
+      <div class="eq-top"><span class="eq-name">Convex Function — Definition</span><span class="eq-tag">Core Definition</span></div>
+      <div class="eq-body">
+        \[f: \mathbb{R}^n \to \mathbb{R} \text{ is convex if } \text{dom}(f) \text{ is convex and}\]
+        \[f(\lambda\mathbf{x}+(1-\lambda)\mathbf{y}) \leq \lambda f(\mathbf{x}) + (1-\lambda)f(\mathbf{y}) \quad \forall \mathbf{x},\mathbf{y}\in\text{dom}(f),\;\lambda\in[0,1]\]
+        \[\text{Strictly convex if strict inequality holds for } \mathbf{x}\neq\mathbf{y},\;\lambda\in(0,1)\]
+        \[\text{Concave: } -f \text{ is convex} \quad\text{(reverse inequality)}\]
+        <div class="eq-note">The value of f at the convex combination is at most the convex combination of the values — the function value at any point on the chord is below the chord itself. Strict convexity rules out flat segments; it guarantees a unique minimizer if one exists.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sub">
+    <div class="sh n">The Epigraph — Functions as Sets</div>
+    <div class="eq n">
+      <div class="eq-top"><span class="eq-name">Epigraph</span><span class="eq-tag">Geometric View</span></div>
+      <div class="eq-body">
+        \[\text{epi}(f) = \{(\mathbf{x},t)\in\mathbb{R}^{n+1} : t\geq f(\mathbf{x})\}\]
+        \[f \text{ is convex} \iff \text{epi}(f) \text{ is a convex set}\]
+        <div class="eq-note">The epigraph is the region "above" the function's graph. This identity translates every fact about convex sets into a fact about convex functions, and vice versa — it's the bridge between §01 and §02. A function is convex exactly when the region above its graph is a convex set (no dents from above).</div>
+      </div>
+    </div>
+
+    <div class="fig">
+      <div class="fig-box">
+        <svg viewBox="0 0 640 220" xmlns="http://www.w3.org/2000/svg" style="max-width:640px;width:100%">
+          <rect width="640" height="220" fill="#fff"/>
+          <!-- Convex function panel -->
+          <text x="160" y="20" text-anchor="middle" font-family="IBM Plex Mono" font-size="10" fill="#1d4e6b" letter-spacing=".1em">CONVEX f — epigraph shaded</text>
+          <line x1="40" y1="190" x2="290" y2="190" stroke="#c2b696" stroke-width="1.2"/>
+          <line x1="40" y1="190" x2="40" y2="30" stroke="#c2b696" stroke-width="1.2"/>
+          <!-- parabola-like convex curve y = (x-160)^2/100 + 60, shaded above -->
+          <path d="M60,170 Q160,40 270,170 L270,40 L60,40 Z" fill="rgba(29,78,107,0.07)"/>
+          <path d="M60,170 Q160,40 270,170" fill="none" stroke="#1d4e6b" stroke-width="2.5"/>
+          <!-- chord -->
+          <line x1="90" y1="145" x2="240" y2="145" stroke="#b8552f" stroke-width="1.8" stroke-dasharray="4,3"/>
+          <circle cx="90" cy="145" r="3.5" fill="#b8552f"/>
+          <circle cx="240" cy="145" r="3.5" fill="#b8552f"/>
+          <text x="90" y="135" font-family="IBM Plex Mono" font-size="9" fill="#b8552f">f(x)</text>
+          <text x="240" y="135" font-family="IBM Plex Mono" font-size="9" fill="#b8552f">f(y)</text>
+          <text x="165" y="200" text-anchor="middle" font-family="Newsreader" font-size="11" fill="#8a8470" font-style="italic">chord lies above graph</text>
+
+          <!-- Non-convex panel -->
+          <text x="480" y="20" text-anchor="middle" font-family="IBM Plex Mono" font-size="10" fill="#b8552f" letter-spacing=".1em">NON-CONVEX — counterexample</text>
+          <line x1="360" y1="190" x2="610" y2="190" stroke="#c2b696" stroke-width="1.2"/>
+          <line x1="360" y1="190" x2="360" y2="30" stroke="#c2b696" stroke-width="1.2"/>
+          <!-- wiggly non-convex curve -->
+          <path d="M380,160 C420,60 450,170 485,90 C510,40 540,140 590,80" fill="none" stroke="#b8552f" stroke-width="2.5"/>
+          <!-- chord cutting below curve -->
+          <line x1="410" y1="118" x2="555" y2="100" stroke="#1d4e6b" stroke-width="1.8" stroke-dasharray="4,3"/>
+          <circle cx="410" cy="118" r="3.5" fill="#1d4e6b"/>
+          <circle cx="555" cy="100" r="3.5" fill="#1d4e6b"/>
+          <!-- highlight violation point -->
+          <circle cx="485" cy="90" r="4" fill="#b8552f"/>
+          <line x1="485" y1="90" x2="485" y2="110" stroke="#b8552f" stroke-width="1.2" stroke-dasharray="2,2"/>
+          <text x="485" y="125" text-anchor="middle" font-family="IBM Plex Mono" font-size="9" fill="#b8552f">f(z) &gt; chord!</text>
+          <text x="485" y="200" text-anchor="middle" font-family="Newsreader" font-size="11" fill="#8a8470" font-style="italic">graph pokes above the chord</text>
+        </svg>
+      </div>
+      <div class="fig-cap">Fig 1. Left: a convex function — every chord lies above (or on) the graph; the epigraph (shaded) is a convex set. Right: a non-convex function — at point z, the function exceeds the chord, violating the definition.</div>
+    </div>
+  </div>
+
+  <div class="sub">
+    <div class="sh t">Convexity-Preserving Operations</div>
+    <div class="t-wrap">
+      <table>
+        <thead><tr><th>Operation</th><th>Rule</th><th>Why It Matters</th></tr></thead>
+        <tbody>
+          <tr><td>Non-negative weighted sum</td><td>\(f = \sum w_if_i,\;w_i\geq0,\;f_i\) convex</td><td>Sum of losses + regularizers stays convex</td></tr>
+          <tr><td>Composition with affine map</td><td>\(g(\mathbf{x}) = f(A\mathbf{x}+b)\) convex if \(f\) convex</td><td>Linear models preserve convexity of the loss</td></tr>
+          <tr><td>Pointwise maximum</td><td>\(f(\mathbf{x}) = \max_i f_i(\mathbf{x})\)</td><td>Hinge loss, max-margin formulations</td></tr>
+          <tr><td>Partial minimization</td><td>\(g(\mathbf{x}) = \min_\mathbf{y} f(\mathbf{x},\mathbf{y})\), \(f\) jointly convex</td><td>Used in proximal operators (§11)</td></tr>
+          <tr><td>Composition \(h(g(\mathbf{x}))\)</td><td>\(h\) convex non-decreasing, \(g\) convex (or \(h\) convex non-increasing, \(g\) concave)</td><td>\(e^{f(\mathbf{x})}\) convex if \(f\) convex</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ══ §03 ═════════════════════════════════════════════════ -->
+<div class="ch" id="c3">
+  <div class="ch-head">
+    <div class="ch-top"><div class="ch-num">03</div><span class="ch-badge t">Inequality</span></div>
+    <h2>Jensen's Inequality</h2>
+    <div class="ch-sub">// generalization to expectations · proof · applications across ML</div>
+  </div>
+
+  <p>Jensen's inequality generalizes the definition of convexity from two-point convex combinations to arbitrary probability distributions. It is one of the most widely-used inequalities across all of mathematics and machine learning.</p>
+
+  <div class="eq t">
+    <div class="eq-top"><span class="eq-name">Jensen's Inequality</span><span class="eq-tag">Generalization</span></div>
+    <div class="eq-body">
+      \[f \text{ convex} \;\Rightarrow\; f(\mathbb{E}[X]) \leq \mathbb{E}[f(X)]\]
+      \[f \text{ concave} \;\Rightarrow\; f(\mathbb{E}[X]) \geq \mathbb{E}[f(X)]\]
+      <div class="eq-note">The two-point definition is the special case where X takes value x with probability λ and y with probability 1−λ: f(λx+(1−λ)y) ≤ λf(x)+(1−λ)f(y) becomes f(E[X]) ≤ E[f(X)]. Jensen's inequality extends this to any random variable and any convex function.</div>
+    </div>
+  </div>
+
+  <div class="sub">
+    <div class="sh t">Proof via Supporting Hyperplane</div>
+    <div class="drv">
+      <div class="drv-hdr">// Proof of Jensen's inequality using the supporting hyperplane (tangent line)</div>
+      <div class="drv-row">
+        <span class="dn t">1</span>
+        <div>
+          Since \(f\) is convex and differentiable, at the point \(\mu = \mathbb{E}[X]\), the tangent line is a global underestimator:
+          \[f(x) \geq f(\mu) + \nabla f(\mu)^T(x-\mu) \quad \forall x\]
+          <div class="dnote">This is the first-order condition for convexity (§04) — the tangent line at any point lies entirely below the graph.</div>
+        </div>
+      </div>
+      <div class="drv-row">
+        <span class="dn t">2</span>
+        <div>
+          Substitute \(x = X\) (random variable) and take expectations of both sides:
+          \[\mathbb{E}[f(X)] \geq \mathbb{E}[f(\mu) + \nabla f(\mu)^T(X-\mu)] = f(\mu) + \nabla f(\mu)^T(\mathbb{E}[X]-\mu)\]
+        </div>
+      </div>
+      <div class="drv-row">
+        <span class="dn t">3</span>
+        <div>
+          Since \(\mu = \mathbb{E}[X]\): \(\mathbb{E}[X] - \mu = 0\), so the second term vanishes:
+          \[\mathbb{E}[f(X)] \geq f(\mu) = f(\mathbb{E}[X]) \quad\blacksquare\]
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sub">
+    <div class="sh r">Applications Throughout ML</div>
+    <ul class="fl r">
+      <li><strong>KL divergence ≥ 0:</strong> Applying Jensen with \(f = -\log\) (convex) to \(\mathbb{E}_{p}[q(x)/p(x)]\) proves \(D_{\text{KL}}(p\|q) \geq 0\) — the Gibbs inequality.</li>
+      <li><strong>ELBO (Evidence Lower Bound):</strong> \(\log p(x) = \log\mathbb{E}_q[p(x,z)/q(z)] \geq \mathbb{E}_q[\log(p(x,z)/q(z))]\) — Jensen applied to \(\log\) (concave) gives the variational lower bound used in VAEs.</li>
+      <li><strong>Variance non-negativity:</strong> \(\mathbb{E}[X^2] \geq (\mathbb{E}[X])^2\) follows from Jensen with \(f(x)=x^2\) (convex) — hence \(\text{Var}(X) = \mathbb{E}[X^2]-(\mathbb{E}[X])^2 \geq 0\).</li>
+      <li><strong>AM-GM inequality:</strong> Applying Jensen to \(f = -\log\) and uniform weights gives the arithmetic mean ≥ geometric mean inequality — fundamental to many ML proofs.</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ══ §04 ═════════════════════════════════════════════════ -->
+<div class="ch" id="c4">
+  <div class="ch-head">
+    <div class="ch-top"><div class="ch-num">04</div><span class="ch-badge p">Calculus</span></div>
+    <h2>First-Order Conditions</h2>
+    <div class="ch-sub">// global underestimator · gradient inequality · optimality for unconstrained problems</div>
+  </div>
+
+  <p>If \(f\) is differentiable, convexity has an equivalent characterization in terms of the gradient: the tangent hyperplane at any point lies entirely below (or on) the graph of \(f\). This is the property used in the proof of Jensen's inequality above.</p>
+
+  <div class="eq p">
+    <div class="eq-top"><span class="eq-name">First-Order Convexity Condition</span><span class="eq-tag">Equivalent Definition</span></div>
+    <div class="eq-body">
+      \[f \text{ (differentiable) is convex} \iff f(\mathbf{y}) \geq f(\mathbf{x}) + \nabla f(\mathbf{x})^T(\mathbf{y}-\mathbf{x}) \quad \forall \mathbf{x},\mathbf{y}\in\text{dom}(f)\]
+      <div class="eq-note">Geometric meaning: the first-order Taylor approximation at any point x is a global underestimator of f. No matter where you linearize, the linear approximation never overshoots the true function value anywhere else.</div>
+    </div>
+  </div>
+
+  <div class="sub">
+    <div class="sh p">Proof of Equivalence with the Chord Definition</div>
+    <div class="drv">
+      <div class="drv-hdr">// Showing chord definition ⟹ gradient inequality</div>
+      <div class="drv-row">
+        <span class="dn p">1</span>
+        <div>
+          From the chord definition with \(\mathbf{z} = \mathbf{x}+t(\mathbf{y}-\mathbf{x})\) for \(t\in(0,1)\):
+          \[f(\mathbf{x}+t(\mathbf{y}-\mathbf{x})) \leq (1-t)f(\mathbf{x}) + tf(\mathbf{y})\]
+        </div>
+      </div>
+      <div class="drv-row">
+        <span class="dn p">2</span>
+        <div>
+          Rearrange:
+          \[\frac{f(\mathbf{x}+t(\mathbf{y}-\mathbf{x})) - f(\mathbf{x})}{t} \leq f(\mathbf{y}) - f(\mathbf{x})\]
+        </div>
+      </div>
+      <div class="drv-row">
+        <span class="dn p">3</span>
+        <div>
+          Take \(t \to 0^+\): the left side becomes the directional derivative \(\nabla f(\mathbf{x})^T(\mathbf{y}-\mathbf{x})\):
+          \[\nabla f(\mathbf{x})^T(\mathbf{y}-\mathbf{x}) \leq f(\mathbf{y}) - f(\mathbf{x})\]
+          \[\therefore\quad f(\mathbf{y}) \geq f(\mathbf{x}) + \nabla f(\mathbf{x})^T(\mathbf{y}-\mathbf{x}) \quad\blacksquare\]
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sub">
+    <div class="sh n">The First-Order Optimality Condition</div>
+    <div class="thm">
+      <div class="thm-badge">First-Order Optimality — Unconstrained Convex Problems</div>
+      <p>For a convex differentiable \(f\), \(\mathbf{x}^*\) is a global minimizer if and only if \(\nabla f(\mathbf{x}^*) = \mathbf{0}\). Proof: by the gradient inequality, \(f(\mathbf{y}) \geq f(\mathbf{x}^*) + \nabla f(\mathbf{x}^*)^T(\mathbf{y}-\mathbf{x}^*) = f(\mathbf{x}^*)\) for all \(\mathbf{y}\), since the gradient term vanishes. This is the foundation of gradient descent: \(\nabla f = \mathbf{0}\) is both necessary AND sufficient for convex problems — unlike non-convex problems where it only identifies stationary points (which may be saddle points or local minima).</p>
+    </div>
+  </div>
+
+  <div class="sub">
+    <div class="sh r">For Constrained Problems</div>
+    <div class="eq r">
+      <div class="eq-top"><span class="eq-name">First-Order Optimality — Constrained Case</span><span class="eq-tag">Generalization</span></div>
+      <div class="eq-body">
+        \[\mathbf{x}^* = \arg\min_{\mathbf{x}\in C} f(\mathbf{x}) \iff \nabla f(\mathbf{x}^*)^T(\mathbf{y}-\mathbf{x}^*) \geq 0 \quad \forall \mathbf{y}\in C\]
+        <div class="eq-note">At the optimum, the gradient cannot point into the feasible set — every feasible direction (y − x*) makes a non-negative angle with the gradient. If x* is in the interior of C, this reduces to ∇f(x*)=0. If x* is on the boundary, the gradient may be non-zero but must point "outward" — this is the geometric origin of KKT conditions (§09).</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ §05 ═════════════════════════════════════════════════ -->
+<div class="ch" id="c5">
+  <div class="ch-head">
+    <div class="ch-top"><div class="ch-num">05</div><span class="ch-badge o">Curvature</span></div>
+    <h2>Second-Order Conditions</h2>
+    <div class="ch-sub">// Hessian · positive semidefiniteness · curvature interpretation · examples</div>
+  </div>
+
+  <p>The second-order condition characterizes convexity through curvature: a twice-differentiable function is convex if and only if it curves "upward" in every direction, at every point — formalized via the Hessian matrix.</p>
+
+  <div class="eq o">
+    <div class="eq-top"><span class="eq-name">Second-Order Convexity Condition</span><span class="eq-tag">Hessian Test</span></div>
+    <div class="eq-body">
+      \[f \text{ (twice differentiable) is convex} \iff \nabla^2 f(\mathbf{x}) \succeq 0 \quad \forall \mathbf{x}\in\text{dom}(f)\]
+      \[\text{i.e.}\quad \mathbf{v}^T\nabla^2f(\mathbf{x})\mathbf{v} \geq 0 \quad \forall \mathbf{v}\in\mathbb{R}^n\]
+      <div class="eq-note">∇²f(x) ⪰ 0 means the Hessian is positive semidefinite — all its eigenvalues are ≥ 0. Strictly convex (sufficient, not necessary): ∇²f(x) ≻ 0 (positive definite, eigenvalues > 0). The Hessian eigenvalues measure curvature in each eigenvector direction — convexity requires non-negative curvature everywhere.</div>
+    </div>
+  </div>
+
+  <div class="sub">
+    <div class="sh o">Verifying Convexity for Common ML Losses</div>
+    <div class="drv">
+      <div class="drv-hdr">// Hessian computations for standard loss functions</div>
+      <div class="drv-row">
+        <span class="dn o">MSE</span>
+        <div>
+          \(f(\mathbf{w}) = \|\mathbf{Xw}-\mathbf{y}\|^2\). Gradient: \(\nabla f = 2\mathbf{X}^T(\mathbf{Xw}-\mathbf{y})\). Hessian:
+          \[\nabla^2 f(\mathbf{w}) = 2\mathbf{X}^T\mathbf{X}\]
+          <div class="dnote">X^T X is always PSD: v^T(X^TX)v = ‖Xv‖² ≥ 0 for all v. Therefore MSE is always convex — regardless of the data. Strictly convex iff X has full column rank (no collinear features).</div>
+        </div>
+      </div>
+      <div class="drv-row">
+        <span class="dn o">Logistic Regression</span>
+        <div>
+          \(f(\mathbf{w}) = -\sum_i[y_i\log\sigma(\mathbf{w}^T\mathbf{x}_i) + (1-y_i)\log(1-\sigma(\mathbf{w}^T\mathbf{x}_i))]\). Hessian:
+          \[\nabla^2 f(\mathbf{w}) = \sum_i \sigma_i(1-\sigma_i)\mathbf{x}_i\mathbf{x}_i^T = \mathbf{X}^T\mathbf{D}\mathbf{X}, \quad D_{ii}=\sigma_i(1-\sigma_i)>0\]
+          <div class="dnote">D has positive diagonal entries (σ(1-σ) > 0 always), so X^T D X is PSD by the same argument as MSE. Logistic regression's cross-entropy loss is always convex — this is precisely why it has no local minima other than the global one.</div>
+        </div>
+      </div>
+      <div class="drv-row">
+        <span class="dn o">Neural Network (counter-example)</span>
+        <div>
+          \(f(\mathbf{w}) = \frac{1}{2}(\sigma(w_2\sigma(w_1x))-y)^2\) for a 2-layer network. The composition of nonlinear activations with weight products makes the Hessian indefinite (mixed positive and negative eigenvalues) almost everywhere.
+          <div class="dnote">This is THE fundamental reason deep learning is non-convex: products of weights w₁w₂ create saddle points and multiple local minima. Convexity theory still informs us (Lipschitz smoothness, local convergence rates) but global optimality guarantees are lost.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sub">
+    <div class="sh n">Curvature Interpretation</div>
+    <div class="note n">
+      <div class="note-tag">Insight</div>
+      <div class="note-body"><p>The Hessian eigenvalues directly determine the shape of level sets near a minimum: large eigenvalue → steep curvature → narrow valley in that direction. Small eigenvalue → shallow curvature → wide, flat valley. The <em>condition number</em> \(\kappa = \lambda_{\max}/\lambda_{\min}\) of the Hessian determines how elongated the level sets are — and directly controls the convergence rate of gradient descent (covered in the Gradient Descent masterclass).</p></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ §06 ═════════════════════════════════════════════════ -->
+<div class="ch" id="c6">
+  <div class="ch-head">
+    <div class="ch-top"><div class="ch-num">06</div><span class="ch-badge s">Strength</span></div>
+    <h2>Strong Convexity</h2>
+    <div class="ch-sub">// quantified curvature · unique minimizer · linear convergence rates</div>
+  </div>
+
+  <p>Plain convexity guarantees a global minimum exists (if the problem is bounded) but says nothing about <em>how fast</em> we can find it, or whether it's unique. Strong convexity adds a quantitative lower bound on curvature — and this single number controls convergence rates.</p>
+
+  <div class="eq s">
+    <div class="eq-top"><span class="eq-name">Strong Convexity — Definition</span><span class="eq-tag">Quantified Curvature</span></div>
+    <div class="eq-body">
+      \[f \text{ is } \mu\text{-strongly convex} \iff f(\mathbf{x}) - \frac{\mu}{2}\|\mathbf{x}\|^2 \text{ is convex}, \quad \mu > 0\]
+      \[\text{Equivalent gradient inequality:}\quad f(\mathbf{y}) \geq f(\mathbf{x}) + \nabla f(\mathbf{x})^T(\mathbf{y}-\mathbf{x}) + \frac{\mu}{2}\|\mathbf{y}-\mathbf{x}\|^2\]
+      \[\text{Equivalent Hessian condition:}\quad \nabla^2 f(\mathbf{x}) \succeq \mu \mathbf{I} \quad \forall \mathbf{x}\]
+      <div class="eq-note">Strong convexity means: the function lies above a quadratic lower bound everywhere (not just a linear one as in plain convexity). μ measures the minimum curvature — every eigenvalue of the Hessian is at least μ. Plain convexity is the limiting case μ=0.</div>
+    </div>
+  </div>
+
+  <div class="sub">
+    <div class="sh s">Consequences of Strong Convexity</div>
+    <ul class="fl s">
+      <li><strong>Unique minimizer:</strong> Strong convexity implies strict convexity, which implies (if a minimizer exists) it is unique. A strongly convex function cannot have flat regions or multiple minima.</li>
+      <li><strong>Quadratic growth:</strong> \(f(\mathbf{x}) \geq f(\mathbf{x}^*) + \frac{\mu}{2}\|\mathbf{x}-\mathbf{x}^*\|^2\) — the suboptimality gap grows at least quadratically with distance from the optimum. This directly bounds how far from optimal you are given the function value.</li>
+      <li><strong>Linear convergence:</strong> Gradient descent on a \(\mu\)-strongly convex, \(L\)-smooth function converges linearly: \(f(\mathbf{x}_k) - f(\mathbf{x}^*) \leq (1-\mu/L)^k(f(\mathbf{x}_0)-f(\mathbf{x}^*))\). Without strong convexity, only sublinear rates \(O(1/k)\) are guaranteed.</li>
+      <li><strong>Polyak-Łojasiewicz (PL) condition:</strong> A weaker condition than strong convexity that still guarantees linear convergence: \(\frac{1}{2}\|\nabla f(\mathbf{x})\|^2 \geq \mu(f(\mathbf{x})-f^*)\). Many non-convex deep learning loss landscapes satisfy PL locally — explaining why SGD converges quickly despite non-convexity.</li>
+    </ul>
+  </div>
+
+  <div class="sub">
+    <div class="sh n">Practical Example: Ridge Regression</div>
+    <div class="eq n">
+      <div class="eq-top"><span class="eq-name">Ridge Regression — Guaranteed Strong Convexity</span><span class="eq-tag">Practical</span></div>
+      <div class="eq-body">
+        \[f(\mathbf{w}) = \|\mathbf{Xw}-\mathbf{y}\|^2 + \lambda\|\mathbf{w}\|^2\]
+        \[\nabla^2 f(\mathbf{w}) = 2\mathbf{X}^T\mathbf{X} + 2\lambda\mathbf{I} \succeq 2\lambda\mathbf{I} \quad\Rightarrow\quad \mu = 2\lambda\]
+        <div class="eq-note">Even if X^TX is singular (e.g., d > n, more features than samples), adding λ‖w‖² guarantees μ = 2λ > 0 strong convexity. This is one of the deepest reasons L2 regularization helps: it converts a merely convex (possibly flat or unbounded) problem into a strongly convex one with a unique solution and linear convergence guarantees.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ §07 ═════════════════════════════════════════════════ -->
+<div class="ch" id="c7">
+  <div class="ch-head">
+    <div class="ch-top"><div class="ch-num">07</div><span class="ch-badge t">Smoothness</span></div>
+    <h2>Lipschitz Continuity</h2>
+    <div class="ch-sub">// bounded rate of change · L-smoothness · the descent lemma · step size selection</div>
+  </div>
+
+  <p>Lipschitz continuity bounds how fast a function (or its gradient) can change. Combined with strong convexity, it forms the pair of constants (\(\mu, L\)) that completely characterizes the convergence behavior of first-order optimization methods.</p>
+
+  <div class="sub">
+    <div class="sh t">Lipschitz Continuity of the Function</div>
+    <div class="eq t">
+      <div class="eq-top"><span class="eq-name">Lipschitz Continuous Function</span><span class="eq-tag">Bounded Change</span></div>
+      <div class="eq-body">
+        \[|f(\mathbf{x}) - f(\mathbf{y})| \leq G\|\mathbf{x}-\mathbf{y}\| \quad \forall \mathbf{x},\mathbf{y}\]
+        <div class="eq-note">G bounds the maximum rate of change of f. Equivalent to: ‖∇f(x)‖ ≤ G everywhere (if differentiable). Used in subgradient methods (§10) where the convergence rate depends on G.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sub">
+    <div class="sh r">L-Smoothness (Lipschitz Gradient)</div>
+    <div class="eq r">
+      <div class="eq-top"><span class="eq-name">L-Smooth Function</span><span class="eq-tag">Lipschitz Gradient</span></div>
+      <div class="eq-body">
+        \[\|\nabla f(\mathbf{x}) - \nabla f(\mathbf{y})\| \leq L\|\mathbf{x}-\mathbf{y}\| \quad \forall \mathbf{x},\mathbf{y}\]
+        \[\text{Equivalent (if twice differentiable): }\quad \nabla^2 f(\mathbf{x}) \preceq L\mathbf{I} \quad \forall \mathbf{x}\]
+        <div class="eq-note">L bounds the maximum curvature — the largest eigenvalue of the Hessian is at most L. Combined with §06 (μ ≤ ∇²f ≤ L), the function's Hessian eigenvalues all lie in [μ, L]. The ratio κ = L/μ is the condition number that governs gradient descent's convergence rate.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sub">
+    <div class="sh n">The Descent Lemma</div>
+    <div class="drv">
+      <div class="drv-hdr">// Deriving the descent lemma — the key tool for step size selection</div>
+      <div class="drv-row">
+        <span class="dn n">1</span>
+        <div>
+          By the fundamental theorem of calculus and L-smoothness, for any \(\mathbf{x},\mathbf{y}\):
+          \[f(\mathbf{y}) = f(\mathbf{x}) + \int_0^1\nabla f(\mathbf{x}+t(\mathbf{y}-\mathbf{x}))^T(\mathbf{y}-\mathbf{x})\,dt\]
+        </div>
+      </div>
+      <div class="drv-row">
+        <span class="dn n">2</span>
+        <div>
+          Add and subtract \(\nabla f(\mathbf{x})^T(\mathbf{y}-\mathbf{x})\), then bound the difference using L-smoothness and Cauchy-Schwarz:
+          \[f(\mathbf{y}) \leq f(\mathbf{x}) + \nabla f(\mathbf{x})^T(\mathbf{y}-\mathbf{x}) + \frac{L}{2}\|\mathbf{y}-\mathbf{x}\|^2\]
+        </div>
+      </div>
+      <div class="drv-row">
+        <span class="dn n">3</span>
+        <div>
+          <strong>Apply to gradient descent:</strong> set \(\mathbf{y}=\mathbf{x}-\alpha\nabla f(\mathbf{x})\):
+          \[f(\mathbf{x}-\alpha\nabla f(\mathbf{x})) \leq f(\mathbf{x}) - \alpha\left(1-\frac{L\alpha}{2}\right)\|\nabla f(\mathbf{x})\|^2\]
+          <div class="dnote">For the right-hand side to guarantee decrease, we need (1 − Lα/2) &gt; 0, i.e. α &lt; 2/L. The optimal fixed step size is α = 1/L — this directly proves why the famous "step size ≤ 1/L" rule for gradient descent guarantees monotonic decrease. ∎</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="thm">
+      <div class="thm-badge">The Descent Lemma — Foundation of Step Size Selection</div>
+      <p>\[f(\mathbf{x}-\tfrac{1}{L}\nabla f(\mathbf{x})) \leq f(\mathbf{x}) - \frac{1}{2L}\|\nabla f(\mathbf{x})\|^2\]
+      Every step of gradient descent with \(\alpha = 1/L\) decreases the function value by at least \(\frac{1}{2L}\|\nabla f\|^2\). This is the inequality that drives all convergence rate proofs for gradient descent — \(O(1/k)\) for convex, linear for strongly convex \((\mu>0)\).</p>
+    </div>
+  </div>
+</div>
+
+<!-- ══ §08 ═════════════════════════════════════════════════ -->
+<div class="ch" id="c8">
+  <div class="ch-head">
+    <div class="ch-top"><div class="ch-num">08</div><span class="ch-badge p">Duality</span></div>
+    <h2>Duality Theory</h2>
+    <div class="ch-sub">// the Lagrangian dual · weak duality · strong duality · Slater's condition · geometric interpretation</div>
+  </div>
+
+  <p>Every constrained optimization problem (the "primal") has an associated "dual" problem. The dual provides a lower bound on the primal's optimal value — and under convexity, this bound becomes tight, transforming the original problem into an equivalent, often easier one.</p>
+
+  <div class="sub">
+    <div class="sh p">The Lagrangian and Dual Function</div>
+    <div class="eq p">
+      <div class="eq-top"><span class="eq-name">Primal Problem and Lagrangian</span><span class="eq-tag">Setup</span></div>
+      <div class="eq-body">
+        \[\text{Primal: } \quad p^* = \min_\mathbf{x}\; f(\mathbf{x}) \quad \text{s.t.}\quad g_i(\mathbf{x})\leq0\;(i=1..m),\;\; h_j(\mathbf{x})=0\;(j=1..p)\]
+        \[\mathcal{L}(\mathbf{x},\boldsymbol{\lambda},\boldsymbol{\nu}) = f(\mathbf{x}) + \sum_{i=1}^m\lambda_ig_i(\mathbf{x}) + \sum_{j=1}^p\nu_jh_j(\mathbf{x}), \quad \lambda_i\geq0\]
+        \[\text{Dual function: }\quad d(\boldsymbol{\lambda},\boldsymbol{\nu}) = \inf_\mathbf{x}\mathcal{L}(\mathbf{x},\boldsymbol{\lambda},\boldsymbol{\nu})\]
+        \[\text{Dual problem: }\quad d^* = \max_{\boldsymbol{\lambda}\geq0,\boldsymbol{\nu}}\; d(\boldsymbol{\lambda},\boldsymbol{\nu})\]
+        <div class="eq-note">The dual function d(λ,ν) is always concave (it's an infimum of affine functions of (λ,ν)) — even if the primal is non-convex! This means the dual problem is always a concave maximization, often much easier to solve.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sub">
+    <div class="sh r">Weak Duality — Always True</div>
+    <div class="eq r">
+      <div class="eq-top"><span class="eq-name">Weak Duality</span><span class="eq-tag">Universal</span></div>
+      <div class="eq-body">
+        \[d^* \leq p^* \quad\text{(always — even for non-convex problems)}\]
+        <div class="eq-note">Proof sketch: for feasible x and any λ≥0, ν: L(x,λ,ν) = f(x) + Σλᵢgᵢ(x) + Σνⱼhⱼ(x) ≤ f(x) since gᵢ(x)≤0, λᵢ≥0, hⱼ(x)=0. So d(λ,ν) = inf_x L(x,λ,ν) ≤ L(x*,λ,ν) ≤ f(x*) = p*. The gap p* − d* ≥ 0 is called the duality gap.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sub">
+    <div class="sh t">Strong Duality — Under Convexity + Slater</div>
+    <div class="eq t">
+      <div class="eq-top"><span class="eq-name">Strong Duality (Slater's Condition)</span><span class="eq-tag">Convex Problems</span></div>
+      <div class="eq-body">
+        \[\text{If } f,g_i \text{ convex}, h_j \text{ affine, and } \exists\,\mathbf{x} \text{ strictly feasible } (g_i(\mathbf{x})<0\;\forall i):\]
+        \[d^* = p^* \quad\text{(zero duality gap)}\]
+        <div class="eq-note">Slater's condition: there exists a strictly feasible point (inequality constraints satisfied with strict inequality). This is a constraint qualification — it rules out degenerate geometries where the constraint boundary "kisses" the objective in a pathological way. Under Slater's condition, solving the dual problem is EQUIVALENT to solving the primal — and the dual is often much easier (e.g., SVM dual is a quadratic program in fewer variables).</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sub">
+    <div class="sh n">Geometric Interpretation</div>
+    <div class="fig">
+      <div class="fig-box">
+        <svg viewBox="0 0 600 220" xmlns="http://www.w3.org/2000/svg" style="max-width:600px;width:100%">
+          <rect width="600" height="220" fill="#fff"/>
+          <!-- axes -->
+          <line x1="60" y1="190" x2="560" y2="190" stroke="#c2b696" stroke-width="1.2"/>
+          <line x1="60" y1="190" x2="60" y2="20" stroke="#c2b696" stroke-width="1.2"/>
+          <text x="565" y="195" font-family="IBM Plex Mono" font-size="10" fill="#8a8470">g(x) — constraint value</text>
+          <text x="40" y="15" font-family="IBM Plex Mono" font-size="10" fill="#8a8470">f(x) — objective</text>
+
+          <!-- Feasible region (g<=0, left of vertical line) -->
+          <rect x="60" y="20" width="240" height="170" fill="rgba(44,128,121,0.06)"/>
+          <line x1="300" y1="20" x2="300" y2="190" stroke="#2c8079" stroke-width="1.5" stroke-dasharray="4,3"/>
+          <text x="305" y="35" font-family="IBM Plex Mono" font-size="9" fill="#2c8079">g(x)=0</text>
+          <text x="150" y="35" font-family="IBM Plex Mono" font-size="9" fill="#2c8079">feasible (g≤0)</text>
+
+          <!-- Set G of achievable (g,f) pairs -->
+          <path d="M90,150 C150,60 250,40 400,90 C480,120 540,160 540,180 L90,180 Z" fill="rgba(184,85,47,0.07)" stroke="#b8552f" stroke-width="1.5"/>
+          <text x="380" y="75" font-family="Newsreader" font-size="13" fill="#b8552f" font-style="italic">𝒢 = {(g(x),f(x)): x}</text>
+
+          <!-- p* point: minimum f where g<=0 -->
+          <circle cx="180" cy="62" r="4" fill="#1d4e6b"/>
+          <text x="190" y="58" font-family="IBM Plex Mono" font-size="10" fill="#1d4e6b">p* (primal optimum)</text>
+          <line x1="180" y1="62" x2="180" y2="190" stroke="#1d4e6b" stroke-width="1" stroke-dasharray="2,2"/>
+
+          <!-- supporting hyperplane (dual) -->
+          <line x1="60" y1="55" x2="540" y2="175" stroke="#7a4a6e" stroke-width="1.8" stroke-dasharray="5,3"/>
+          <text x="420" y="160" font-family="IBM Plex Mono" font-size="9" fill="#7a4a6e">slope = −λ*</text>
+          <circle cx="300" cy="95" r="4" fill="#7a4a6e"/>
+          <text x="310" y="105" font-family="IBM Plex Mono" font-size="10" fill="#7a4a6e">d* (dual optimum)</text>
+        </svg>
+      </div>
+      <div class="fig-cap">Fig 2. Geometric duality: the set 𝒢 of achievable (constraint, objective) pairs. p* is the minimum f over the feasible half g≤0. The dual finds the best supporting hyperplane (slope −λ*) — under strong duality, this hyperplane touches exactly at p*, so d*=p*.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ §09 ═════════════════════════════════════════════════ -->
+<div class="ch" id="c9">
+  <div class="ch-head">
+    <div class="ch-top"><div class="ch-num">09</div><span class="ch-badge n">Optimality</span></div>
+    <h2>KKT Conditions — Revisited</h2>
+    <div class="ch-sub">// from Lagrange multipliers to KKT · complementary slackness · sufficiency under convexity</div>
+  </div>
+
+  <p>The Lagrange Multipliers masterclass introduced KKT as necessary conditions for constrained optimality. Here we close the loop: under convexity, KKT conditions become both <em>necessary and sufficient</em> — solving the KKT system solves the original problem completely.</p>
+
+  <div class="eq n">
+    <div class="eq-top"><span class="eq-name">The KKT Conditions — Complete Statement</span><span class="eq-tag">Optimality System</span></div>
+    <div class="eq-body">
+      \[\text{(1) Primal feasibility:}\quad g_i(\mathbf{x}^*)\leq0,\quad h_j(\mathbf{x}^*)=0\]
+      \[\text{(2) Dual feasibility:}\quad \lambda_i^*\geq0\]
+      \[\text{(3) Complementary slackness:}\quad \lambda_i^*g_i(\mathbf{x}^*)=0 \quad\forall i\]
+      \[\text{(4) Stationarity:}\quad \nabla f(\mathbf{x}^*) + \sum_i\lambda_i^*\nabla g_i(\mathbf{x}^*) + \sum_j\nu_j^*\nabla h_j(\mathbf{x}^*) = \mathbf{0}\]
+      <div class="eq-note">Complementary slackness is the bridge to economic/geometric interpretation: either a constraint is "active" (gᵢ(x*)=0, the boundary binds, λᵢ* can be positive) OR it's "inactive" (gᵢ(x*)&lt;0, doesn't bind, λᵢ*=0 necessarily). You can never have both a strictly-satisfied constraint AND a positive multiplier.</div>
+    </div>
+  </div>
+
+  <div class="sub">
+    <div class="sh r">KKT as Necessary AND Sufficient — The Convex Case</div>
+    <div class="thm">
+      <div class="thm-badge">KKT Sufficiency Theorem</div>
+      <p>If \(f, g_i\) are convex and \(h_j\) affine, then any point \((\mathbf{x}^*,\boldsymbol{\lambda}^*,\boldsymbol{\nu}^*)\) satisfying the KKT conditions is a global optimum of the primal AND dual — with zero duality gap. <strong>This is the precise statement of "the bridge"</strong>: for general (non-convex) problems, KKT gives candidate stationary points that <em>might</em> be optima — checking second-order conditions and comparing values is still needed. For convex problems, KKT is the complete answer — find a KKT point and you're done, no further checking required.</p>
+    </div>
+  </div>
+
+  <div class="sub">
+    <div class="sh t">Worked Example — SVM Dual Derivation</div>
+    <div class="drv">
+      <div class="drv-hdr">// SVM: from primal QP to dual via KKT — the canonical example</div>
+      <div class="drv-row">
+        <span class="dn t">Primal</span>
+        <div>
+          \[\min_{\mathbf{w},b}\;\frac{1}{2}\|\mathbf{w}\|^2 \quad\text{s.t.}\quad y_i(\mathbf{w}^T\mathbf{x}_i+b)\geq1\;\;\forall i\]
+        </div>
+      </div>
+      <div class="drv-row">
+        <span class="dn t">Lagrangian</span>
+        <div>
+          \[\mathcal{L}(\mathbf{w},b,\boldsymbol{\alpha}) = \frac{1}{2}\|\mathbf{w}\|^2 - \sum_i\alpha_i[y_i(\mathbf{w}^T\mathbf{x}_i+b)-1], \quad \alpha_i\geq0\]
+        </div>
+      </div>
+      <div class="drv-row">
+        <span class="dn t">Stationarity</span>
+        <div>
+          \[\nabla_\mathbf{w}\mathcal{L}=\mathbf{w}-\sum_i\alpha_iy_i\mathbf{x}_i=0 \Rightarrow \mathbf{w}=\sum_i\alpha_iy_i\mathbf{x}_i\]
+          \[\nabla_b\mathcal{L}=-\sum_i\alpha_iy_i=0 \Rightarrow \sum_i\alpha_iy_i=0\]
+        </div>
+      </div>
+      <div class="drv-row">
+        <span class="dn t">Dual</span>
+        <div>
+          Substitute back into \(\mathcal{L}\):
+          \[\max_{\boldsymbol{\alpha}\geq0}\; \sum_i\alpha_i - \frac{1}{2}\sum_{i,j}\alpha_i\alpha_jy_iy_j\mathbf{x}_i^T\mathbf{x}_j \quad\text{s.t.}\quad \sum_i\alpha_iy_i=0\]
+          <div class="dnote">Complementary slackness: αᵢ[yᵢ(w^Tx_i+b)−1]=0 — αᵢ&gt;0 only for points exactly on the margin (support vectors!). This is why most αᵢ are zero — the solution is "sparse" in the dual variables, and the kernel trick (x_i^T x_j → k(x_i,x_j)) is only possible because the dual depends on the data only through inner products.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ §10 ═════════════════════════════════════════════════ -->
+<div class="ch" id="c10">
+  <div class="ch-head">
+    <div class="ch-top"><div class="ch-num">10</div><span class="ch-badge o">Non-Smooth</span></div>
+    <h2>Subgradients</h2>
+    <div class="ch-sub">// generalizing the gradient · subgradient set · non-differentiable optimization · subgradient descent</div>
+  </div>
+
+  <p>Many important functions in ML — \(\ell_1\) norm, hinge loss, ReLU at zero — are convex but not differentiable everywhere. Subgradients generalize the gradient to handle these "kinks," preserving the gradient inequality from §04.</p>
+
+  <div class="eq o">
+    <div class="eq-top"><span class="eq-name">Subgradient — Definition</span><span class="eq-tag">Generalized Derivative</span></div>
+    <div class="eq-body">
+      \[\mathbf{g} \text{ is a subgradient of } f \text{ at } \mathbf{x} \iff f(\mathbf{y}) \geq f(\mathbf{x}) + \mathbf{g}^T(\mathbf{y}-\mathbf{x}) \quad \forall\mathbf{y}\]
+      \[\partial f(\mathbf{x}) = \{\mathbf{g} : \mathbf{g} \text{ is a subgradient of } f \text{ at } \mathbf{x}\} \quad\text{(subdifferential — a SET)}\]
+      <div class="eq-note">At points where f is differentiable: ∂f(x) = {∇f(x)} — a single element. At "kinks" (non-differentiable points), ∂f(x) is a whole set of valid slopes — any line through (x,f(x)) that stays below the graph everywhere. Optimality condition generalizes elegantly: x* is a global min iff 0 ∈ ∂f(x*).</div>
+    </div>
+  </div>
+
+  <div class="sub">
+    <div class="sh r">Subdifferentials of Common Functions</div>
+    <div class="t-wrap">
+      <table>
+        <thead><tr><th>Function</th><th>Subdifferential</th><th>Notes</th></tr></thead>
+        <tbody>
+          <tr><td>\(f(x)=|x|\)</td><td>\(\partial f(0) = [-1,1]\)</td><td>At x=0: any slope between −1 and 1 stays below |x|</td></tr>
+          <tr><td>\(f(x)=\max(0,x)\) (ReLU)</td><td>\(\partial f(0)=[0,1]\)</td><td>Convention: PyTorch uses 0 (subgradient choice)</td></tr>
+          <tr><td>\(f(\mathbf{x})=\|\mathbf{x}\|_1\)</td><td>\(\partial f(\mathbf{x})_i = \text{sign}(x_i)\) if \(x_i\neq0\), else \([-1,1]\)</td><td>Used in LASSO optimality conditions</td></tr>
+          <tr><td>\(f(\mathbf{x})=\max(f_1(\mathbf{x}),f_2(\mathbf{x}))\)</td><td>\(\partial f = \text{conv}(\partial f_1 \cup \partial f_2)\) at tie points</td><td>Hinge loss, max-margin formulations</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="sub">
+    <div class="sh n">Subgradient Descent</div>
+    <div class="eq n">
+      <div class="eq-top"><span class="eq-name">Subgradient Method</span><span class="eq-tag">Update Rule</span></div>
+      <div class="eq-body">
+        \[\mathbf{x}_{k+1} = \mathbf{x}_k - \alpha_k\mathbf{g}_k, \quad \mathbf{g}_k \in \partial f(\mathbf{x}_k)\]
+        \[\text{Convergence: } O(1/\sqrt{k}) \text{ with } \alpha_k = O(1/\sqrt{k}) \quad\text{(much slower than smooth case!)}\]
+        <div class="eq-note">Unlike gradient descent on smooth functions (O(1/k) or linear), subgradient descent is NOT a descent method — f(x_{k+1}) can be larger than f(x_k) at any single step. Only the BEST iterate over the trajectory is guaranteed to converge, and the rate O(1/√k) is fundamentally slower. This motivates proximal methods (§11) which handle non-smoothness more gracefully.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ §11 ═════════════════════════════════════════════════ -->
+<div class="ch" id="c11">
+  <div class="ch-head">
+    <div class="ch-top"><div class="ch-num">11</div><span class="ch-badge r">Splitting</span></div>
+    <h2>Proximal Methods</h2>
+    <div class="ch-sub">// proximal operator · proximal gradient · ISTA/FISTA · LASSO soft-thresholding</div>
+  </div>
+
+  <p>Many ML problems have an objective \(f(\mathbf{x}) = g(\mathbf{x}) + h(\mathbf{x})\) where \(g\) is smooth (e.g., squared loss) but \(h\) is non-smooth (e.g., \(\ell_1\) penalty for sparsity). Proximal methods exploit this structure to handle the non-smooth part exactly while gradient-stepping on the smooth part — achieving the same convergence rates as gradient descent on purely smooth problems.</p>
+
+  <div class="eq r">
+    <div class="eq-top"><span class="eq-name">The Proximal Operator</span><span class="eq-tag">Core Definition</span></div>
+    <div class="eq-body">
+      \[\text{prox}_{\alpha h}(\mathbf{v}) = \arg\min_{\mathbf{x}}\left\{h(\mathbf{x}) + \frac{1}{2\alpha}\|\mathbf{x}-\mathbf{v}\|^2\right\}\]
+      <div class="eq-note">The proximal operator finds a point close to \(\mathbf{v}\) that also has small \(h\). It's a generalized projection: if \(h\) is the indicator function of a convex set \(C\) (0 inside, ∞ outside), \(\text{prox}_h(\mathbf{v})\) is the orthogonal projection of \(\mathbf{v}\) onto \(C\). For \(h=0\), \(\text{prox}(\mathbf{v})=\mathbf{v}\) (identity).</div>
+    </div>
+  </div>
+
+  <div class="sub">
+    <div class="sh r">Proximal Gradient Method (ISTA)</div>
+    <p>To understand proximal gradient, think in terms of <strong>majorization-minimization (MM)</strong>: we construct a quadratic upper bound (majorizer) of \(f\) at \(\mathbf{x}_k\) and minimize that instead.</p>
+
+    <div class="drv">
+      <div class="drv-hdr">// Majorization-Minimization for Proximal Gradient</div>
+      <div class="drv-row">
+        <span class="dn r">1</span>
+        <div>
+          Since \(g\) is \(L\)-smooth, the descent lemma gives:
+          \[g(\mathbf{y}) \leq g(\mathbf{x}_k) + \nabla g(\mathbf{x}_k)^T(\mathbf{y}-\mathbf{x}_k) + \frac{L}{2}\|\mathbf{y}-\mathbf{x}_k\|^2\]
+          <div class="dnote">This is a quadratic upper bound on \(g\).</div>
+        </div>
+      </div>
+      <div class="drv-row">
+        <span class="dn r">2</span>
+        <div>
+          Adding \(h(\mathbf{y})\) to both sides gives a majorizer of \(f = g + h\):
+          \[f(\mathbf{y}) \leq \underbrace{g(\mathbf{x}_k) + \nabla g(\mathbf{x}_k)^T(\mathbf{y}-\mathbf{x}_k) + \frac{L}{2}\|\mathbf{y}-\mathbf{x}_k\|^2 + h(\mathbf{y})}_{Q(\mathbf{y}, \mathbf{x}_k)}\]
+        </div>
+      </div>
+      <div class="drv-row">
+        <span class="dn r">3</span>
+        <div>
+          Dropping the constant term \(g(\mathbf{x}_k)\) and completing the square:
+          \[Q(\mathbf{y}, \mathbf{x}_k) \propto h(\mathbf{y}) + \frac{L}{2}\left\|\mathbf{y} - \left(\mathbf{x}_k - \frac{1}{L}\nabla g(\mathbf{x}_k)\right)\right\|^2\]
+        </div>
+      </div>
+      <div class="drv-row">
+        <span class="dn r">4</span>
+        <div>
+          Minimizing \(Q\) is exactly evaluating the proximal operator with \(\alpha=1/L\):
+          \[\mathbf{x}_{k+1} = \text{prox}_{(1/L) h}\left(\mathbf{x}_k - \frac{1}{L}\nabla g(\mathbf{x}_k)\right)\]
+        </div>
+      </div>
+    </div>
+
+    <div class="eq r">
+      <div class="eq-top"><span class="eq-name">Proximal Gradient Algorithm (ISTA)</span><span class="eq-tag">Splitting Method</span></div>
+      <div class="eq-body">
+        \[\mathbf{x}_{k+1} = \text{prox}_{\alpha h}\!\left(\mathbf{x}_k - \alpha\nabla g(\mathbf{x}_k)\right)\]
+        <div class="eq-note">Two steps: (1) gradient step on the smooth part \(g\), (2) proximal step on the non-smooth part \(h\). Crucially, if \(g\) is \(L\)-smooth, ISTA converges at the same rate as gradient descent on smooth functions: \(O(1/k)\). For strongly convex \(g\), ISTA converges linearly.</div>
+      </div>
+    </div>
+
+    <div class="note r">
+      <div class="note-tag">ISTA</div>
+      <div class="note-body"><p>ISTA = Iterative Shrinkage-Thresholding Algorithm. The "shrinkage" refers to the soft-thresholding step for \(\ell_1\) regularization.</p></div>
+    </div>
+  </div>
+
+  <div class="sub">
+    <div class="sh n">Accelerated Proximal Gradient (FISTA)</div>
+    <p>Just as Nesterov acceleration improves gradient descent from \(O(1/k)\) to \(O(1/k^2)\), we can accelerate ISTA to get FISTA — the optimal first-order method for composite convex optimization.</p>
+
+    <div class="eq n">
+      <div class="eq-top"><span class="eq-name">FISTA — Accelerated Proximal Gradient</span><span class="eq-tag">Optimal Rate</span></div>
+      <div class="eq-body">
+        \[
+        \begin{cases}
+        \mathbf{y}_k = \mathbf{x}_k + \frac{t_{k-1} - 1}{t_k}(\mathbf{x}_k - \mathbf{x}_{k-1}) \\
+        \mathbf{x}_{k+1} = \text{prox}_{\alpha h}\!\left(\mathbf{y}_k - \alpha\nabla g(\mathbf{y}_k)\right) \\
+        t_{k+1} = \frac{1 + \sqrt{1 + 4t_k^2}}{2}
+        \end{cases}
+        \]
+        <div class="eq-note">FISTA uses a momentum-like extrapolation step with the sequence \(t_k\). It achieves the optimal \(O(1/k^2)\) convergence rate — a factor of \(k\) faster than ISTA — with no increase in per-iteration cost.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sub">
+    <div class="sh p">Soft-Thresholding — Deriving the \(\ell_1\) Proximal Operator</div>
+    <p>Let's prove that the proximal operator for \(h(\mathbf{x}) = \lambda\|\mathbf{x}\|_1\) is indeed the soft-thresholding operator. Since \(\ell_1\) is separable, we can solve for each coordinate independently.</p>
+
+    <div class="drv">
+      <div class="drv-hdr">// Deriving Soft-Thresholding</div>
+      <div class="drv-row">
+        <span class="dn p">1</span>
+        <div>
+          The 1D proximal problem for coordinate \(i\):
+          \[\min_{z} \left\{\lambda |z| + \frac{1}{2\alpha}(z - v_i)^2\right\}\]
+        </div>
+      </div>
+      <div class="drv-row">
+        <span class="dn p">2</span>
+        <div>
+          <strong>Case 1: \(z > 0\).</strong> Then \(|z| = z\), and the derivative is \(\lambda + \frac{1}{\alpha}(z - v_i) = 0\). Solving:
+          \[z = v_i - \alpha\lambda\]
+          <div class="dnote">Valid only if \(v_i - \alpha\lambda > 0 \implies v_i > \alpha\lambda\).</div>
+        </div>
+      </div>
+      <div class="drv-row">
+        <span class="dn p">3</span>
+        <div>
+          <strong>Case 2: \(z < 0\).</strong> Then \(|z| = -z\), and the derivative is \(-\lambda + \frac{1}{\alpha}(z - v_i) = 0\). Solving:
+          \[z = v_i + \alpha\lambda\]
+          <div class="dnote">Valid only if \(v_i + \alpha\lambda < 0 \implies v_i < -\alpha\lambda\).</div>
+        </div>
+      </div>
+      <div class="drv-row">
+        <span class="dn p">4</span>
+        <div>
+          <strong>Case 3: \(z = 0\).</strong> The subgradient condition for optimality is \(0 \in \partial\left(\lambda|z| + \frac{1}{2\alpha}(z-v_i)^2\right)\). At \(z=0\):
+          \[0 \in [-\alpha\lambda, \alpha\lambda] - v_i \implies v_i \in [-\alpha\lambda, \alpha\lambda]\]
+        </div>
+      </div>
+    </div>
+
+    <div class="eq p">
+      <div class="eq-top"><span class="eq-name">Soft-Thresholding Operator</span><span class="eq-tag">L1 Prox</span></div>
+      <div class="eq-body">
+        \[\text{prox}_{\lambda \|\cdot\|_1}(\mathbf{v})_i = S_\lambda(v_i) = \text{sign}(v_i)\max(0, |v_i|-\lambda)\]
+        <div class="eq-note">This is the most famous proximal operator. It pulls each coordinate toward zero by \(\lambda\), setting it to zero if its magnitude is less than \(\lambda\). This is the exact reason \(\ell_1\) regularization induces sparsity — the proximal step literally zeros out small components.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sub">
+    <div class="sh t">Concrete Example: LASSO via ISTA/FISTA</div>
+    <p>The LASSO problem is:
+    \[\min_{\mathbf{w}} \frac{1}{2}\|\mathbf{Xw} - \mathbf{y}\|^2 + \lambda\|\mathbf{w}\|_1\]
+    Here, \(g(\mathbf{w}) = \frac{1}{2}\|\mathbf{Xw} - \mathbf{y}\|^2\) (smooth, \(L = \sigma_{\text{max}}(\mathbf{X}^T\mathbf{X})\)) and \(h(\mathbf{w}) = \lambda\|\mathbf{w}\|_1\) (non-smooth).</p>
+
+    <div class="cb">
+      <div class="cb-bar">
+        <div class="cb-dots">
+          <span class="cb-dot" style="background:#e8a87c;"></span>
+          <span class="cb-dot" style="background:#7fc8ba;"></span>
+          <span class="cb-dot" style="background:#a8c8e0;"></span>
+        </div>
+        <div class="cb-lang">PSEUDOCODE</div>
+      </div>
+      <div class="cb-body">
+        <span class="cmt"># ISTA for LASSO</span><br>
+        <span class="kw">function</span> <span class="fn">ISTA_LASSO</span>(<span class="var">X</span>, <span class="var">y</span>, <span class="var">λ</span>, <span class="var">max_iter</span>):<br>
+        &nbsp;&nbsp;<span class="var">L</span> = <span class="fn">spectral_norm</span>(<span class="var">X</span><span class="op">@</span><span class="var">X</span>.<span class="fn">T</span>)  <span class="cmt"># Lipschitz constant of ∇g</span><br>
+        &nbsp;&nbsp;<span class="var">α</span> = <span class="num">1</span> / <span class="var">L</span><br>
+        &nbsp;&nbsp;<span class="var">w</span> = <span class="var">zeros</span>(<span class="var">p</span>)  <span class="cmt"># p = number of features</span><br>
+        &nbsp;&nbsp;<span class="kw">for</span> <span class="var">k</span> <span class="kw">in</span> <span class="num">1</span> <span class="kw">to</span> <span class="var">max_iter</span>:<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;<span class="var">gradient</span> = <span class="var">X</span>.<span class="fn">T</span> <span class="op">@</span> (<span class="var">X</span> <span class="op">@</span> <span class="var">w</span> <span class="op">-</span> <span class="var">y</span>)<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;<span class="var">w</span> = <span class="fn">soft_threshold</span>(<span class="var">w</span> <span class="op">-</span> <span class="var">α</span> <span class="op">*</span> <span class="var">gradient</span>, <span class="var">α</span> <span class="op">*</span> <span class="var">λ</span>)<br>
+        &nbsp;&nbsp;<span class="kw">return</span> <span class="var">w</span><br><br>
+        <span class="kw">function</span> <span class="fn">soft_threshold</span>(<span class="var">v</span>, <span class="var">λ</span>):<br>
+        &nbsp;&nbsp;<span class="kw">return</span> <span class="var">sign</span>(<span class="var">v</span>) <span class="op">*</span> <span class="fn">max</span>(<span class="num">0</span>, <span class="fn">abs</span>(<span class="var">v</span>) <span class="op">-</span> <span class="var">λ</span>)
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ §12 ═════════════════════════════════════════════════ -->
+<div class="ch" id="c12">
+  <div class="ch-head">
+    <div class="ch-top"><div class="ch-num">12</div><span class="ch-badge t">Coordinate</span></div>
+    <h2>Coordinate Descent</h2>
+    <div class="ch-sub">// alternating optimization · Gauss-Seidel updates · efficiency for big data</div>
+  </div>
+
+  <p>Coordinate descent (CD) simplifies high-dimensional optimization by updating one variable (or block) at a time while keeping others fixed. While not always faster than gradient methods, it is exceptionally efficient for problems with specific structural separability — especially when the 1D subproblems have closed-form solutions.</p>
+
+  <div class="sub">
+    <div class="sh t">The Update Rule — Gauss-Seidel vs Randomized</div>
+    <div class="eq t">
+      <div class="eq-top"><span class="eq-name">Coordinate Update</span><span class="eq-tag">Algorithm</span></div>
+      <div class="eq-body">
+        \[x_i^{(k+1)} = \arg\min_{z} f(x_1^{(k+1)}, \dots, x_{i-1}^{(k+1)}, z, x_{i+1}^{(k)}, \dots, x_n^{(k)})\]
+        <div class="eq-note">
+          <strong>Gauss-Seidel CD:</strong> Cycle through coordinates in a fixed order, using the most recent values of previously updated coordinates.<br>
+          <strong>Randomized CD:</strong> Select coordinates uniformly at random (or with priority) — often faster in practice and easier to analyze theoretically.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sub">
+    <div class="sh r">Concrete Example: Coordinate Descent for LASSO</div>
+    <p>Let's derive the coordinate update for LASSO, which is the workhorse of the `glmnet` package. The LASSO problem is:
+    \[\min_{\mathbf{w}} \frac{1}{2}\|\mathbf{y} - \mathbf{Xw}\|^2 + \lambda\|\mathbf{w}\|_1\]
+    Let \(x_j\) be the j-th column of \(\mathbf{X}\), and let \(r = \mathbf{y} - \sum_{k \neq j} \mathbf{X}_k w_k\) be the residual excluding the j-th coordinate.</p>
+
+    <div class="drv">
+      <div class="drv-hdr">// LASSO Coordinate Update Derivation</div>
+      <div class="drv-row">
+        <span class="dn r">1</span>
+        <div>
+          The objective as a function of \(w_j\) alone is:
+          \[\min_{w_j} \frac{1}{2}\|r - x_j w_j\|^2 + \lambda|w_j|\]
+        </div>
+      </div>
+      <div class="drv-row">
+        <span class="dn r">2</span>
+        <div>
+          Let \(s_j = x_j^T r\) (the partial residual) and \(d_j = x_j^T x_j\) (the squared norm of the j-th feature). Then:
+          \[\min_{w_j} \frac{1}{2}d_j w_j^2 - s_j w_j + \lambda|w_j|\]
+        </div>
+      </div>
+      <div class="drv-row">
+        <span class="dn r">3</span>
+        <div>
+          This is exactly the 1D proximal problem for \(\ell_1\)! The solution is the soft-thresholding operator:
+          \[w_j^{(k+1)} = S_{\lambda/d_j}\left(\frac{s_j}{d_j}\right) = \text{sign}\left(\frac{s_j}{d_j}\right)\max\left(0, \left|\frac{s_j}{d_j}\right| - \frac{\lambda}{d_j}\right)\]
+        </div>
+      </div>
+    </div>
+
+    <div class="cb">
+      <div class="cb-bar">
+        <div class="cb-dots">
+          <span class="cb-dot" style="background:#e8a87c;"></span>
+          <span class="cb-dot" style="background:#7fc8ba;"></span>
+          <span class="cb-dot" style="background:#a8c8e0;"></span>
+        </div>
+        <div class="cb-lang">PSEUDOCODE</div>
+      </div>
+      <div class="cb-body">
+        <span class="cmt"># Coordinate Descent for LASSO (Gauss-Seidel)</span><br>
+        <span class="kw">function</span> <span class="fn">LASSO_CD</span>(<span class="var">X</span>, <span class="var">y</span>, <span class="var">λ</span>, <span class="var">max_iter</span>):<br>
+        &nbsp;&nbsp;<span class="var">n</span>, <span class="var">p</span> = <span class="var">X</span>.<span class="fn">shape</span><br>
+        &nbsp;&nbsp;<span class="var">w</span> = <span class="var">zeros</span>(<span class="var">p</span>)<br>
+        &nbsp;&nbsp;<span class="var">d</span> = <span class="var">sum</span>(<span class="var">X</span><span class="op">**</span><span class="num">2</span>, <span class="kw">axis</span>=<span class="num">0</span>)  <span class="cmt"># precompute squared norms</span><br>
+        &nbsp;&nbsp;<span class="kw">for</span> <span class="var">iter</span> <span class="kw">in</span> <span class="num">1</span> <span class="kw">to</span> <span class="var">max_iter</span>:<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;<span class="kw">for</span> <span class="var">j</span> <span class="kw">in</span> <span class="num">1</span> <span class="kw">to</span> <span class="var">p</span>:<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="cmt"># partial residual without j-th feature</span><br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="var">r</span> = <span class="var">y</span> <span class="op">-</span> <span class="var">X</span> <span class="op">@</span> <span class="var">w</span> <span class="op">+</span> <span class="var">X</span>[:, <span class="var">j</span>] <span class="op">*</span> <span class="var">w</span>[<span class="var">j</span>]<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="var">s_j</span> = <span class="var">X</span>[:, <span class="var">j</span>].<span class="fn">T</span> <span class="op">@</span> <span class="var">r</span><br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="cmt"># soft-thresholding update</span><br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="var">w</span>[<span class="var">j</span>] = <span class="fn">soft_threshold</span>(<span class="var">s_j</span> / <span class="var">d</span>[<span class="var">j</span>], <span class="var">λ</span> / <span class="var">d</span>[<span class="var">j</span>])<br>
+        &nbsp;&nbsp;<span class="kw">return</span> <span class="var">w</span>
+      </div>
+    </div>
+
+    <div class="note r">
+      <div class="note-tag">Sparsity</div>
+      <div class="note-body"><p>Coordinate descent for LASSO naturally maintains sparsity: once a coordinate is set to zero, it often stays zero for many iterations. This makes it extremely fast for high-dimensional problems where most features are irrelevant.</p></div>
+    </div>
+  </div>
+
+  <div class="sub">
+     <div class="sh n">Why and When it Works</div>
+     <ul class="fl n">
+       <li><strong>Separability:</strong> Works best when the objective is "smooth + separable": \(f(\mathbf{x}) = g(\mathbf{x}) + \sum h_i(x_i)\).</li>
+       <li><strong>Non-smooth catch:</strong> CD can get stuck at "corners" for general non-smooth functions. It requires the non-smooth part to be coordinate-wise separable (like \(\ell_1\)).</li>
+       <li><strong>Big Data:</strong> For very high-dimensional sparse problems (like text classification with millions of features), CD is often the state-of-the-art solver (used in `glmnet` and `liblinear`).</li>
+       <li><strong>Line search free:</strong> Unlike gradient descent, coordinate descent often requires no step-size tuning — the 1D optimizations are exact.</li>
+     </ul>
+   </div>
+ </div>
+
+<!-- ══ §13 ═════════════════════════════════════════════════ -->
+<div class="ch" id="c13">
+  <div class="ch-head">
+    <div class="ch-top"><div class="ch-num">13</div><span class="ch-badge p">Barriers</span></div>
+    <h2>Interior Point Methods</h2>
+    <div class="ch-sub">// logarithmic barrier · central path · Newton's method for constrained problems</div>
+  </div>
+
+  <p>Interior point methods (IPMs) solve constrained problems by approximating them with a sequence of unconstrained problems. They "smooth out" the constraints using a barrier function that goes to infinity as you approach the boundary — ensuring we always stay strictly feasible.</p>
+
+  <div class="sub">
+    <div class="sh p">The Log-Barrier and Central Path</div>
+    <div class="eq p">
+      <div class="eq-top"><span class="eq-name">Logarithmic Barrier Function</span><span class="eq-tag">Barrier</span></div>
+      <div class="eq-body">
+        \[\phi(\mathbf{x}) = -\sum_{i=1}^m \log(-g_i(\mathbf{x}))\]
+        \[\min_\mathbf{x}\; t f(\mathbf{x}) + \phi(\mathbf{x})\]
+        <div class="eq-note">As \(g_i(\mathbf{x}) \to 0^-\), \(-\log(-g_i(\mathbf{x})) \to \infty\). The parameter \(t > 0\) controls the barrier strength: small \(t\) emphasizes the barrier (staying away from boundaries), large \(t\) emphasizes the original objective.</div>
+      </div>
+    </div>
+
+    <p>For each \(t\), let \(\mathbf{x}^*(t)\) denote the minimizer of the barrier problem. The set \(\{\mathbf{x}^*(t) \mid t > 0\}\) is called the <strong>central path</strong>. As \(t \to \infty\), \(\mathbf{x}^*(t) \to \mathbf{x}^*\) — the true solution of the original constrained problem.</p>
+  </div>
+
+  <div class="sub">
+    <div class="sh n">The Interior Point Algorithm</div>
+    <p>The standard path-following IPM alternates between two steps:
+    <ol>
+      <li><strong>Newton step:</strong> Solve the current barrier problem with a Newton step.</li>
+      <li><strong>Update t:</strong> Increase \(t\) by a factor (e.g., \(t \leftarrow 1.5t\)).</li>
+    </ol>
+    </p>
+
+    <div class="cb">
+      <div class="cb-bar">
+        <div class="cb-dots">
+          <span class="cb-dot" style="background:#e8a87c;"></span>
+          <span class="cb-dot" style="background:#7fc8ba;"></span>
+          <span class="cb-dot" style="background:#a8c8e0;"></span>
+        </div>
+        <div class="cb-lang">PSEUDOCODE</div>
+      </div>
+      <div class="cb-body">
+        <span class="cmt"># Primal Interior Point Method (sketch)</span><br>
+        <span class="kw">function</span> <span class="fn">IPM</span>(<span class="var">f</span>, <span class="var">g</span>, <span class="var">x0</span>):<br>
+        &nbsp;&nbsp;<span class="var">t</span> = <span class="num">1</span><br>
+        &nbsp;&nbsp;<span class="var">x</span> = <span class="var">x0</span>  <span class="cmt"># must be strictly feasible: g_i(x) < 0</span><br>
+        &nbsp;&nbsp;<span class="kw">for</span> <span class="var">k</span> <span class="kw">in</span> <span class="num">1</span> <span class="kw">to</span> <span class="var">max_iter</span>:<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;<span class="cmt"># 1. Newton step on t*f + phi</span><br>
+        &nbsp;&nbsp;&nbsp;&nbsp;<span class="var">grad</span> = <span class="var">t</span> * <span class="fn">∇f</span>(<span class="var">x</span>) + <span class="fn">∇φ</span>(<span class="var">x</span>)<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;<span class="var">hess</span> = <span class="var">t</span> * <span class="fn">∇²f</span>(<span class="var">x</span>) + <span class="fn">∇²φ</span>(<span class="var">x</span>)<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;<span class="var">dx</span> = <span class="fn">solve</span>(<span class="var">hess</span>, <span class="op">-</span><span class="var">grad</span>)<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;<span class="cmt"># 2. Line search to stay feasible</span><br>
+        &nbsp;&nbsp;&nbsp;&nbsp;<span class="var">x</span> = <span class="var">x</span> + <span class="var">alpha</span> * <span class="var">dx</span><br>
+        &nbsp;&nbsp;&nbsp;&nbsp;<span class="cmt"># 3. Increase barrier parameter</span><br>
+        &nbsp;&nbsp;&nbsp;&nbsp;<span class="var">t</span> = <span class="var">t</span> * <span class="num">1.2</span><br>
+        &nbsp;&nbsp;<span class="kw">return</span> <span class="var">x</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="sub">
+    <div class="sh r">Why use IPMs?</div>
+    <ul class="fl r">
+      <li><strong>Polynomial Complexity:</strong> The path-following IPM is theoretically polynomial-time (O(m³√log(1/ε))) for linear programming — a landmark result in optimization.</li>
+      <li><strong>High Precision:</strong> Unlike first-order methods (gradient descent), IPMs use second-order info (Newton steps) and can reach machine precision in very few iterations (usually 10-50).</li>
+      <li><strong>Small-Medium Scale:</strong> Because they require computing and inverting the Hessian, they are best for problems with a few thousand variables, not millions.</li>
+      <li><strong>Reliability:</strong> IPMs are the engine behind commercial solvers like Gurobi and Mosek for LPs, QPs, and SOCPs.</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ══ §14 ═════════════════════════════════════════════════ -->
+<div class="ch" id="c14">
+  <div class="ch-head">
+    <div class="ch-top"><div class="ch-num">14</div><span class="ch-badge s">Guarantees</span></div>
+    <h2>Convergence Guarantees</h2>
+    <div class="ch-sub">// complexity classes · O(1/k) vs O(1/k²) vs linear · optimal rates</div>
+  </div>
+
+  <p>Convergence analysis tells us how many iterations \(k\) are needed to reach an \(\epsilon\)-optimal solution: \(f(\mathbf{x}_k) - f(\mathbf{x}^*) \leq \epsilon\). This hierarchy of rates is the "speed limit" of optimization — and convexity is what lets us prove these guarantees.</p>
+
+  <div class="sub">
+    <div class="sh s">Convergence Rate Hierarchy</div>
+    <div class="t-wrap">
+      <table>
+        <thead><tr><th>Assumption</th><th>Method</th><th>Rate</th><th>Iterations for \(\epsilon\)</th></tr></thead>
+        <tbody>
+          <tr><td>Convex, G-Lipschitz</td><td>Subgradient</td><td>\(O(1/\sqrt{k})\)</td><td>\(O(1/\epsilon^2)\)</td></tr>
+          <tr><td>Convex, L-smooth</td><td>Gradient Descent</td><td>\(O(1/k)\)</td><td>\(O(1/\epsilon)\)</td></tr>
+          <tr><td>Convex, L-smooth</td><td>Accelerated (Nesterov)</td><td>\(O(1/k^2)\)</td><td>\(O(1/\sqrt{\epsilon})\)</td></tr>
+          <tr><td>Strongly Convex, L-smooth</td><td>Gradient Descent</td><td>\(O(e^{-k/\kappa})\)</td><td>\(O(\kappa \log(1/\epsilon))\)</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="sub">
+    <div class="sh n">Convergence Proof Sketch — Smooth Convex Case</div>
+    <p>Let's see why gradient descent converges at \(O(1/k)\) for L-smooth convex functions. The key tool is the descent lemma from Section 7.</p>
+
+    <div class="drv">
+      <div class="drv-hdr">// Gradient Descent Convergence (Smooth Convex)</div>
+      <div class="drv-row">
+        <span class="dn n">1</span>
+        <div>
+          From the descent lemma with \(\alpha = 1/L\):
+          \[f(\mathbf{x}_{k+1}) \leq f(\mathbf{x}_k) - \frac{1}{2L}\|\nabla f(\mathbf{x}_k)\|^2\]
+        </div>
+      </div>
+      <div class="drv-row">
+        <span class="dn n">2</span>
+        <div>
+          From convexity (gradient inequality):
+          \[f(\mathbf{x}^*) \geq f(\mathbf{x}_k) + \nabla f(\mathbf{x}_k)^T(\mathbf{x}^* - \mathbf{x}_k)\]
+        </div>
+      </div>
+      <div class="drv-row">
+        <span class="dn n">3</span>
+        <div>
+          Let \(r_k = \|\mathbf{x}_k - \mathbf{x}^*\|\). With some algebra (see textbooks), we can show:
+          \[f(\mathbf{x}_k) - f(\mathbf{x}^*) \leq \frac{2L r_0^2}{k}\]
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sub">
+    <div class="sh r">Key Concepts</div>
+    <ul class="fl r">
+      <li><strong>Sublinear Convergence:</strong> Rates like \(O(1/k)\) or \(O(1/k^2)\) — the error decreases, but the number of iterations needed for each new decimal of precision grows.</li>
+      <li><strong>Linear Convergence:</strong> Error decreases geometrically (\(O(e^{-k/\kappa})\)) — each iteration roughly halves the error (for good condition numbers). This is much faster!</li>
+      <li><strong>Condition Number (\(\kappa = L/\mu\)):</strong> The ratio of smoothness to strong convexity. Large \(\kappa\) means slow linear convergence (ill-conditioned problems, like narrow valleys).</li>
+      <li><strong>Optimal Rates:</strong> Nesterov's accelerated gradient achieves the best possible rate for first-order methods on smooth convex problems — you can't do better than \(O(1/k^2)\) without using second-order information.</li>
+    </ul>
+  </div>
+
+  <div class="note s">
+     <div class="note-tag">Linear</div>
+     <div class="note-body"><p>"Linear convergence" (counter-intuitively) means the error decreases geometrically, like \(0.9^k\). On a log-scale plot, this looks like a straight line. It is much faster than "sublinear" rates like \(1/k\). Strong convexity is the magic ingredient that turns sublinear convergence into linear convergence.</p></div>
+   </div>
+ </div>
+
+<!-- ══ §15 ═════════════════════════════════════════════════ -->
+<div class="ch" id="c15">
+  <div class="ch-head">
+    <div class="ch-top"><div class="ch-num">15</div><span class="ch-badge r">ML Context</span></div>
+    <h2>Optimization in ML</h2>
+    <div class="ch-sub">// empirical risk minimization · regularizers · why convexity is the baseline</div>
+  </div>
+
+  <p>In Machine Learning, optimization is the engine of learning. The central problem is <strong>Empirical Risk Minimization (ERM)</strong>:
+  \[\min_\mathbf{w}\; \underbrace{\frac{1}{n}\sum_{i=1}^n L(y_i, f(\mathbf{w}, \mathbf{x}_i))}_{\text{Empirical Risk}} + \underbrace{\lambda \Omega(\mathbf{w})}_{\text{Regularizer}}\]
+  </p>
+
+  <div class="sub">
+    <div class="sh r">Convexity in Classical ML Models</div>
+    <p>All your favorite classical ML models are convex — and that's why they're reliable!</p>
+
+    <div class="two">
+      <div class="tcol">
+        <h4>Linear Regression</h4>
+        <p>Least squares is a quadratic program with a unique global minimum (if \(X^T X\) is positive definite). Even with L2 regularization (Ridge), it's still convex and strongly convex.</p>
+      </div>
+      <div class="tcol">
+        <h4>Logistic Regression</h4>
+        <p>The log-loss is convex (negative log-likelihood for a Bernoulli model). The gradient is Lipschitz continuous, so gradient descent converges at \(O(1/k)\).</p>
+      </div>
+    </div>
+
+    <div class="two" style="margin-top: 16px;">
+      <div class="tcol">
+        <h4>SVM (Hinge Loss)</h4>
+        <p>The hinge loss is convex, and the dual problem is a QP. The KKT conditions tell us that only support vectors matter — a beautiful result of convex duality.</p>
+      </div>
+      <div class="tcol">
+        <h4>LASSO</h4>
+        <p>L1 regularization makes the objective non-differentiable but still convex. Proximal methods or coordinate descent work perfectly here, and the solution is sparse!</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="sub">
+    <div class="sh n">Why Convexity Matters in ML</div>
+    <ul class="fl n">
+      <li><strong>No Local Minima:</strong> Every local minimum is a global minimum — no need to worry about getting stuck!</li>
+      <li><strong>Worst-Case Guarantees:</strong> We know exactly how fast our algorithms will converge.</li>
+      <li><strong>Interpretability:</strong> Duality gives insight into constraints and support vectors (SVMs, LASSO).</li>
+      <li><strong>Hyperparameter Robustness:</strong> Convex solvers are less sensitive to step sizes and initializations (though still important!).</li>
+    </ul>
+  </div>
+
+  <div class="sub">
+    <div class="sh p">Convex vs Non-Convex in ML</div>
+    <div class="two">
+      <div class="tcol">
+        <h4>The Convex Era (Classical ML)</h4>
+        <p>Models like Linear Regression, SVMs, Logistic Regression, and Lasso are convex. We have <strong>global guarantees</strong>. We can trust our solvers to find the absolute best parameters. This is why classical ML is so reliable!</p>
+      </div>
+      <div class="tcol">
+        <h4>The Non-Convex Era (Deep Learning)</h4>
+        <p>Neural networks are non-convex (compositions of ReLUs/sigmoids, weight products). We lose global guarantees, but convexity theory still provides the <strong>local analysis</strong> (smoothness, gradients, Lipschitz constants) that makes SGD/Adam work. Many techniques (batch norm, warmup) are inspired by convex optimization!</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ §16 ═════════════════════════════════════════════════ -->
+<div class="ch" id="c16">
+  <div class="ch-head">
+    <div class="ch-top"><div class="ch-num">16</div><span class="ch-badge n">Model</span></div>
+    <h2>Complete Mental Model</h2>
+    <div class="ch-sub">// synthesis · the big picture · when to use what</div>
+  </div>
+
+  <div class="figure">
+    <svg viewBox="0 0 640 640" xmlns="http://www.w3.org/2000/svg" style="max-width:640px;display:block;margin:0 auto;">
+      <rect width="640" height="640" fill="#f5f1e6" rx="10"/>
+
+      <defs>
+        <marker id="arrowhead" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+          <path d="M0,0 L7,3.5 L0,7 Z" fill="#8a8470" />
+        </marker>
+        <filter id="shadow" x="-5%" y="-5%" width="110%" height="110%">
+          <feDropShadow dx="1" dy="1" stdDeviation="1" flood-opacity="0.1"/>
+        </filter>
+      </defs>
+
+      <!-- Title -->
+      <text x="320" y="35" text-anchor="middle" font-family="IBM Plex Mono" font-size="12" fill="#8a8470" letter-spacing="0.2em" font-weight="600">CONVEX OPTIMIZATION — COMPLETE TAXONOMY</text>
+
+      <!-- 1. CORE CONCEPT -->
+      <g filter="url(#shadow)">
+        <rect x="200" y="65" width="240" height="65" rx="4" fill="#efe9da" stroke="#1d4e6b" stroke-width="2"/>
+        <text x="320" y="92" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" fill="#1d4e6b" font-weight="700">CONVEXITY</text>
+        <text x="320" y="112" text-anchor="middle" font-family="IBM Plex Mono" font-size="10" fill="#3a4d58">Sets · Functions · Optimality</text>
+      </g>
+
+      <!-- Master Flow Lines -->
+      <path d="M320,130 L320,155" stroke="#d2c8ae" stroke-width="1.5" marker-end="url(#arrowhead)" fill="none" />
+      <path d="M320,140 L85,140 L85,155" stroke="#d2c8ae" stroke-width="1.5" marker-end="url(#arrowhead)" fill="none" />
+      <path d="M320,140 L555,140 L555,155" stroke="#d2c8ae" stroke-width="1.5" marker-end="url(#arrowhead)" fill="none" />
+      <path d="M320,140 L235,140 L235,155" stroke="#d2c8ae" stroke-width="1.5" marker-end="url(#arrowhead)" fill="none" />
+      <path d="M320,140 L395,140 L395,155" stroke="#d2c8ae" stroke-width="1.5" marker-end="url(#arrowhead)" fill="none" />
+
+      <!-- 2. PROBLEM TYPES -->
+      <g font-family="IBM Plex Mono" font-size="9" text-anchor="middle">
+        <!-- Unconstrained -->
+        <rect x="20" y="160" width="130" height="50" rx="3" fill="#fff" stroke="#b8552f" stroke-width="1.2" stroke-dasharray="4,2"/>
+        <text x="85" y="182" font-size="10" font-weight="600" fill="#b8552f">Unconstrained</text>
+        <text x="85" y="196" fill="#8a8470">min f(x)</text>
+
+        <!-- Equality -->
+        <rect x="165" y="160" width="140" height="50" rx="3" fill="#fff" stroke="#b8552f" stroke-width="1.2" stroke-dasharray="4,2"/>
+        <text x="235" y="182" font-size="10" font-weight="600" fill="#b8552f">Equality Cons.</text>
+        <text x="235" y="196" fill="#8a8470">Ax = b</text>
+
+        <!-- Inequality -->
+        <rect x="325" y="160" width="140" height="50" rx="3" fill="#fff" stroke="#b8552f" stroke-width="1.2" stroke-dasharray="4,2"/>
+        <text x="395" y="182" font-size="10" font-weight="600" fill="#b8552f">Inequality Cons.</text>
+        <text x="395" y="196" fill="#8a8470">g_i(x) ≤ 0</text>
+
+        <!-- Composite -->
+        <rect x="490" y="160" width="130" height="50" rx="3" fill="#fff" stroke="#b8552f" stroke-width="1.2" stroke-dasharray="4,2"/>
+        <text x="555" y="182" font-size="10" font-weight="600" fill="#b8552f">Composite</text>
+        <text x="555" y="196" fill="#8a8470">f + non-smooth h</text>
+      </g>
+
+      <!-- Downward Arrows to Solvers -->
+      <path d="M85,210 L85,240" stroke="#d2c8ae" stroke-width="1.5" marker-end="url(#arrowhead)" fill="none" />
+      <path d="M235,210 L235,240" stroke="#d2c8ae" stroke-width="1.5" marker-end="url(#arrowhead)" fill="none" />
+      <path d="M395,210 L395,240" stroke="#d2c8ae" stroke-width="1.5" marker-end="url(#arrowhead)" fill="none" />
+      <path d="M555,210 L555,240" stroke="#d2c8ae" stroke-width="1.5" marker-end="url(#arrowhead)" fill="none" />
+
+      <!-- 3. SOLVERS -->
+      <g font-family="IBM Plex Mono" font-size="9" text-anchor="middle">
+        <!-- First-Order -->
+        <rect x="15" y="245" width="150" height="75" rx="3" fill="#efe9da" stroke="#2c8079" stroke-width="1.5"/>
+        <text x="90" y="265" font-size="10" font-weight="700" fill="#2c8079">First-Order</text>
+        <text x="90" y="280" fill="#3a4d58">GD · Nesterov</text>
+        <text x="90" y="292" fill="#3a4d58">Subgradient · Proximal</text>
+        <text x="90" y="304" fill="#3a4d58">ISTA / FISTA</text>
+
+        <!-- Second-Order -->
+        <rect x="175" y="245" width="140" height="75" rx="3" fill="#efe9da" stroke="#7a4a6e" stroke-width="1.5"/>
+        <text x="245" y="265" font-size="10" font-weight="700" fill="#7a4a6e">Second-Order</text>
+        <text x="245" y="285" fill="#3a4d58">Newton's Method</text>
+        <text x="245" y="300" fill="#3a4d58">Quasi-Newton (L-BFGS)</text>
+
+        <!-- Dual & Interior -->
+        <rect x="325" y="245" width="140" height="75" rx="3" fill="#efe9da" stroke="#b8862f" stroke-width="1.5"/>
+        <text x="395" y="265" font-size="10" font-weight="700" fill="#b8862f">Dual & Interior</text>
+        <text x="395" y="285" fill="#3a4d58">KKT · Dual QP</text>
+        <text x="395" y="300" fill="#3a4d58">Barrier · Central Path</text>
+
+        <!-- Coordinate -->
+        <rect x="475" y="245" width="150" height="75" rx="3" fill="#efe9da" stroke="#5c7a4a" stroke-width="1.5"/>
+        <text x="550" y="265" font-size="10" font-weight="700" fill="#5c7a4a">Coordinate Descent</text>
+        <text x="550" y="285" fill="#3a4d58">Gauss-Seidel Updates</text>
+        <text x="550" y="300" fill="#3a4d58">Efficient for Sparse Data</text>
+      </g>
+
+      <!-- Central Arrow to Convergence -->
+      <path d="M320,320 L320,350" stroke="#d2c8ae" stroke-width="1.5" marker-end="url(#arrowhead)" fill="none" />
+
+      <!-- 4. CONVERGENCE HIERARCHY -->
+      <g>
+        <rect x="100" y="355" width="440" height="115" rx="4" fill="#fff" stroke="#d2c8ae" stroke-width="1"/>
+        <text x="320" y="378" text-anchor="middle" font-family="IBM Plex Mono" font-size="10" fill="#8a8470" letter-spacing="0.1em" font-weight="600">CONVERGENCE HIERARCHY</text>
+        
+        <g font-family="IBM Plex Mono" font-size="10" text-anchor="start">
+          <text x="140" y="405" fill="#5c7a4a" font-weight="700">Linear:</text>
+          <text x="240" y="405" fill="#3a4d58">O(e^-k) — Strongly Convex</text>
+          
+          <text x="140" y="423" fill="#2c8079" font-weight="700">Accelerated:</text>
+          <text x="240" y="423" fill="#3a4d58">O(1/k²) — Nesterov / FISTA</text>
+          
+          <text x="140" y="441" fill="#1d4e6b" font-weight="700">Sublinear:</text>
+          <text x="240" y="441" fill="#3a4d58">O(1/k) — Smooth Convex GD</text>
+
+          <text x="140" y="458" fill="#8a8470" font-weight="700">Slowest:</text>
+          <text x="240" y="458" fill="#3a4d58">O(1/√k) — Subgradient Descent</text>
+        </g>
+      </g>
+
+      <!-- Central Arrow to ML Context -->
+      <path d="M320,470 L320,500" stroke="#d2c8ae" stroke-width="1.5" marker-end="url(#arrowhead)" fill="none" />
+
+      <!-- 5. ML APPLICATIONS -->
+      <g filter="url(#shadow)">
+        <rect x="140" y="505" width="360" height="85" rx="4" fill="#efe9da" stroke="#1d4e6b" stroke-width="2"/>
+        <text x="320" y="530" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" fill="#1d4e6b" font-weight="700">MACHINE LEARNING CONTEXT</text>
+        <text x="320" y="552" text-anchor="middle" font-family="IBM Plex Mono" font-size="10" fill="#3a4d58">Linear & Logistic Regression · SVM · LASSO</text>
+        <text x="320" y="572" text-anchor="middle" font-family="IBM Plex Mono" font-size="10" fill="#b8552f" font-style="italic">Foundation for local analysis in Deep Learning</text>
+      </g>
+    </svg>
+    <div class="fig-cap">Fig 4. Complete taxonomy of convex optimization — from theoretical foundations to problem types, specialized solvers, convergence guarantees, and their deployment in classical and modern machine learning.</div>
+  </div>
+
+  <p style="margin-top: 36px;">The complete unified narrative:</p>
+
+  <ol style="padding-left:24px; line-height: 2.4; font-size: 16px;">
+    <li><strong>Start with Convex Sets:</strong> A set is convex if every line segment between two points in the set stays in the set. This is the foundation — without convex sets, we can't define convex functions.</li>
+    <li><strong>Convex Functions:</strong> A function is convex if its epigraph is a convex set (or equivalently, if the chord lies above the graph). This guarantees that any local minimum is a global minimum!</li>
+    <li><strong>First-Order Condition:</strong> For differentiable functions, convexity is equivalent to the gradient inequality: the tangent line is a global underestimator.</li>
+    <li><strong>Second-Order Condition:</strong> For twice differentiable functions, convexity is equivalent to the Hessian being positive semidefinite (PSD) everywhere — all curvature is non-negative.</li>
+    <li><strong>Jensen's Inequality:</strong> Convexity extends to expectations: \(f(\mathbb{E}[X]) \leq \mathbb{E}[f(X)]\). This is the engine behind AM-GM, ELBO, and many ML proofs.</li>
+    <li><strong>Strong Convexity & Smoothness:</strong> These two conditions control convergence speed. Strong convexity (\(\mu I \leq \nabla^2 f\)) gives a quadratic lower bound. Smoothness (\(\nabla^2 f \leq L I\)) gives a quadratic upper bound. Their ratio is the condition number \(\kappa = L/\mu\).</li>
+    <li><strong>Constraints & Duality:</strong> For constrained problems, we form the Lagrangian, derive the KKT conditions, and use duality to find a dual problem that's often easier to solve (like SVM dual).</li>
+    <li><strong>Non-Smooth Problems:</strong> Use subgradients (generalized gradients) or better, proximal methods — split into smooth + non-smooth parts and use proximal gradient (ISTA/FISTA).</li>
+    <li><strong>Choose Your Solver:</strong> If small: IPM/Newton. If smooth: Nesterov. If composite: ISTA/FISTA. If high-dimensional sparse: coordinate descent.</li>
+    <li><strong>ML is Convex (Mostly):</strong> Classical ML (linear regression, SVM, logistic, LASSO) is all convex. Deep learning is non-convex, but we still use convex principles (SGD, momentum, smoothness) locally!</li>
+  </ol>
+
+  <div class="thm">
+    <div class="thm-badge">The Single Most Important Takeaway</div>
+    <p>Convex optimization is not just a set of algorithms — it is a <strong>mathematical guarantee</strong>. When a problem is convex, you know exactly what you're getting: a global minimizer, convergence rates, and no surprises. Even when you leave convexity (deep learning), convexity theory is still the best guide you have.</p>
+  </div>
+</div>
+
+</div> <!-- end page -->
+
+  <!-- ═══ FOOTER ═══ -->
+  <footer class="site-footer">
+    <div class="footer-content">
+      <div class="footer-main">
+        <div class="footer-left">
+          <p class="copyright">&copy; 2025 Shahid Ul Islam</p>
+          <p class="footer-meta">Data Scientist & AI Developer</p>
+        </div>
+        <div class="footer-right">
+          <div class="footer-links">
+            <a href="#" class="back-to-top">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="12" y1="19" x2="12" y2="5"></line>
+                <polyline points="5 12 12 5 19 12"></polyline>
+              </svg>
+              <span>Back to Top</span>
+            </a>
+            <div class="social-links11">
+              <a href="https://github.com/Khanz9664" target="_blank" class="social-link11">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path
+                    d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22" />
+                </svg>
+              </a>
+              <a href="https://linkedin.com/in/shahid-ul-islam-13650998" target="_blank" class="social-link11">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" />
+                  <rect x="2" y="9" width="4" height="12" />
+                  <circle cx="4" cy="4" r="2" />
+                </svg>
+              </a>
+              <a href="mailto:shahid9664@gmail.com" class="social-link11">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
+                  <polyline points="22,6 12,13 2,6" />
+                </svg>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="made-with">
+      <p>Crafted with <span class="heart-icon">❤️</span> By Shahid</p>
+    </div>
+  </footer>
+
+</body>
+</html>

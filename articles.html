@@ -340,8 +340,52 @@
 
 
       <!-- Article 08 -->
-      <a href="articles/svd.html" class="article-card" data-category="mathematics">
+      <a href="articles/convexoptimization.html" class="article-card" data-category="optimization">
         <div class="card-index">08</div>
+        <div class="card-image-wrapper">
+          <div class="card-visual-header visual-convex">
+            <div class="v-convex-wrapper">
+              <svg viewBox="0 0 200 150" class="v-convex-svg">
+                <!-- Convex region -->
+                <path d="M40,120 C30,100 28,70 42,50 C56,30 85,22 115,26 C145,30 165,52 168,78 C171,104 155,125 125,134 C95,143 55,142 40,120 Z"
+                  fill="none" stroke="currentColor" stroke-width="2" opacity="0.6" class="v-convex-boundary"/>
+                <!-- Supporting hyperplane -->
+                <line x1="15" y1="138" x2="165" y2="20" stroke="currentColor" stroke-width="1.5"
+                  stroke-dasharray="4,3" opacity="0.4" class="v-hyperplane"/>
+                <!-- Chord between two points -->
+                <circle cx="62" cy="108" r="3.5" fill="currentColor" opacity="0.9" class="v-chord-pt"/>
+                <circle cx="148" cy="60" r="3.5" fill="currentColor" opacity="0.9" class="v-chord-pt"/>
+                <line x1="62" y1="108" x2="148" y2="60" stroke="currentColor" stroke-width="1.8"
+                  stroke-dasharray="5,3" opacity="0.55" class="v-chord"/>
+                <!-- Midpoint inside convex set -->
+                <circle cx="105" cy="84" r="3" fill="currentColor" opacity="0.7" class="v-mid"/>
+              </svg>
+            </div>
+          </div>
+          <div class="card-image-overlay"></div>
+        </div>
+        <div class="card-glare"></div>
+        <div class="card-content-glass">
+          <div class="card-noise"></div>
+          <div class="card-top">
+            <span class="category-tag">Optimization</span>
+            <div class="tech-spec">[ CONVEX // V1.0 ]</div>
+          </div>
+          <div class="card-body">
+            <h3>Convex Optimization</h3>
+            <p>Convex sets, Jensen's inequality, duality, KKT conditions, proximal methods — the rigorous bridge between gradient descent and Lagrange multipliers.</p>
+          </div>
+          <div class="card-bottom">
+            <span class="read-time"><i class="far fa-clock"></i> 35 min read</span>
+            <span class="read-more">Analyze <i class="fas fa-chevron-right"></i></span>
+          </div>
+        </div>
+      </a>
+
+
+      <!-- Article 09 -->
+      <a href="articles/svd.html" class="article-card" data-category="mathematics">
+        <div class="card-index">09</div>
         <div class="card-image-wrapper">
           <div class="card-visual-header visual-svd">
             <div class="v-svd-wrapper">
@@ -386,9 +430,9 @@
       </a>
 
 
-      <!-- Article 09 -->
+      <!-- Article 10 -->
       <a href="articles/pca.html" class="article-card" data-category="models">
-        <div class="card-index">09</div>
+        <div class="card-index">10</div>
         <div class="card-image-wrapper">
           <div class="card-visual-header visual-pca">
             <div class="v-pca-wrapper">
@@ -423,9 +467,9 @@
       </a>
 
 
-      <!-- Article 10 -->
+      <!-- Article 11 -->
       <a href="articles/bayesian.html" class="article-card" data-category="models">
-        <div class="card-index">10</div>
+        <div class="card-index">11</div>
         <div class="card-image-wrapper">
           <div class="card-visual-header visual-bayesian">
             <div class="v-bayesian-wrapper">
@@ -459,9 +503,9 @@
       </a>
 
 
-      <!-- Article 11 -->
+      <!-- Article 12 -->
       <a href="articles/neuralnets.html" class="article-card" data-category="deep-learning">
-        <div class="card-index">11</div>
+        <div class="card-index">12</div>
         <div class="card-image-wrapper">
           <div class="card-visual-header visual-neural-networks">
             <div class="v-grid-nn"></div>
@@ -506,9 +550,9 @@
       </a>
 
 
-      <!-- Article 12 -->
+      <!-- Article 13 -->
       <a href="articles/backprop.html" class="article-card" data-category="deep-learning">
-        <div class="card-index">12</div>
+        <div class="card-index">13</div>
         <div class="card-image-wrapper">
           <div class="card-visual-header visual-backprop">
             <div class="v-backprop-wrapper">
@@ -560,9 +604,9 @@
       </a>
 
 
-      <!-- Article 13 -->
+      <!-- Article 14 -->
       <a href="articles/transformers.html" class="article-card" data-category="deep-learning">
-        <div class="card-index">13</div>
+        <div class="card-index">14</div>
         <div class="card-image-wrapper">
           <div class="card-visual-header visual-transformers">
             <div class="v-transformers-wrapper">
@@ -601,6 +645,7 @@
           </div>
         </div>
       </a>
+
 
     </section>
 

@@ -435,7 +435,7 @@
     <div class="eq-body">
       \[f \text{ (twice differentiable) is convex} \iff \nabla^2 f(\mathbf{x}) \succeq 0 \quad \forall \mathbf{x}\in\text{dom}(f)\]
       \[\text{i.e.}\quad \mathbf{v}^T\nabla^2f(\mathbf{x})\mathbf{v} \geq 0 \quad \forall \mathbf{v}\in\mathbb{R}^n\]
-      <div class="eq-note">∇²f(x) ⪰ 0 means the Hessian is positive semidefinite — all its eigenvalues are ≥ 0. Strictly convex (sufficient, not necessary): ∇²f(x) ≻ 0 (positive definite, eigenvalues > 0). The Hessian eigenvalues measure curvature in each eigenvector direction — convexity requires non-negative curvature everywhere.</div>
+      <div class="eq-note">∇²f(x) ⪰ 0 means the Hessian is positive semidefinite — all its eigenvalues are ≥ 0. Strictly convex (sufficient, not necessary): ∇²f(x) ≻ 0 (positive definite, eigenvalues &gt; 0). The Hessian eigenvalues measure curvature in each eigenvector direction — convexity requires non-negative curvature everywhere.</div>
     </div>
   </div>
 
@@ -455,8 +455,8 @@
         <span class="dn o">Logistic Regression</span>
         <div>
           \(f(\mathbf{w}) = -\sum_i[y_i\log\sigma(\mathbf{w}^T\mathbf{x}_i) + (1-y_i)\log(1-\sigma(\mathbf{w}^T\mathbf{x}_i))]\). Hessian:
-          \[\nabla^2 f(\mathbf{w}) = \sum_i \sigma_i(1-\sigma_i)\mathbf{x}_i\mathbf{x}_i^T = \mathbf{X}^T\mathbf{D}\mathbf{X}, \quad D_{ii}=\sigma_i(1-\sigma_i)>0\]
-          <div class="dnote">D has positive diagonal entries (σ(1-σ) > 0 always), so X^T D X is PSD by the same argument as MSE. Logistic regression's cross-entropy loss is always convex — this is precisely why it has no local minima other than the global one.</div>
+          \[\nabla^2 f(\mathbf{w}) = \sum_i \sigma_i(1-\sigma_i)\mathbf{x}_i\mathbf{x}_i^T = \mathbf{X}^T\mathbf{D}\mathbf{X}, \quad D_{ii}=\sigma_i(1-\sigma_i)&gt;0\]
+          <div class="dnote">D has positive diagonal entries (σ(1-σ) &gt; 0 always), so X^T D X is PSD by the same argument as MSE. Logistic regression's cross-entropy loss is always convex — this is precisely why it has no local minima other than the global one.</div>
         </div>
       </div>
       <div class="drv-row">
@@ -491,7 +491,7 @@
   <div class="eq s">
     <div class="eq-top"><span class="eq-name">Strong Convexity — Definition</span><span class="eq-tag">Quantified Curvature</span></div>
     <div class="eq-body">
-      \[f \text{ is } \mu\text{-strongly convex} \iff f(\mathbf{x}) - \frac{\mu}{2}\|\mathbf{x}\|^2 \text{ is convex}, \quad \mu > 0\]
+      \[f \text{ is } \mu\text{-strongly convex} \iff f(\mathbf{x}) - \frac{\mu}{2}\|\mathbf{x}\|^2 \text{ is convex}, \quad \mu &gt; 0\]
       \[\text{Equivalent gradient inequality:}\quad f(\mathbf{y}) \geq f(\mathbf{x}) + \nabla f(\mathbf{x})^T(\mathbf{y}-\mathbf{x}) + \frac{\mu}{2}\|\mathbf{y}-\mathbf{x}\|^2\]
       \[\text{Equivalent Hessian condition:}\quad \nabla^2 f(\mathbf{x}) \succeq \mu \mathbf{I} \quad \forall \mathbf{x}\]
       <div class="eq-note">Strong convexity means: the function lies above a quadratic lower bound everywhere (not just a linear one as in plain convexity). μ measures the minimum curvature — every eigenvalue of the Hessian is at least μ. Plain convexity is the limiting case μ=0.</div>
@@ -515,7 +515,7 @@
       <div class="eq-body">
         \[f(\mathbf{w}) = \|\mathbf{Xw}-\mathbf{y}\|^2 + \lambda\|\mathbf{w}\|^2\]
         \[\nabla^2 f(\mathbf{w}) = 2\mathbf{X}^T\mathbf{X} + 2\lambda\mathbf{I} \succeq 2\lambda\mathbf{I} \quad\Rightarrow\quad \mu = 2\lambda\]
-        <div class="eq-note">Even if X^TX is singular (e.g., d > n, more features than samples), adding λ‖w‖² guarantees μ = 2λ > 0 strong convexity. This is one of the deepest reasons L2 regularization helps: it converts a merely convex (possibly flat or unbounded) problem into a strongly convex one with a unique solution and linear convergence guarantees.</div>
+        <div class="eq-note">Even if X^TX is singular (e.g., d &gt; n, more features than samples), adding λ‖w‖² guarantees μ = 2λ &gt; 0 strong convexity. This is one of the deepest reasons L2 regularization helps: it converts a merely convex (possibly flat or unbounded) problem into a strongly convex one with a unique solution and linear convergence guarantees.</div>
       </div>
     </div>
   </div>
@@ -585,7 +585,7 @@
     <div class="thm">
       <div class="thm-badge">The Descent Lemma — Foundation of Step Size Selection</div>
       <p>\[f(\mathbf{x}-\tfrac{1}{L}\nabla f(\mathbf{x})) \leq f(\mathbf{x}) - \frac{1}{2L}\|\nabla f(\mathbf{x})\|^2\]
-      Every step of gradient descent with \(\alpha = 1/L\) decreases the function value by at least \(\frac{1}{2L}\|\nabla f\|^2\). This is the inequality that drives all convergence rate proofs for gradient descent — \(O(1/k)\) for convex, linear for strongly convex \((\mu>0)\).</p>
+      Every step of gradient descent with \(\alpha = 1/L\) decreases the function value by at least \(\frac{1}{2L}\|\nabla f\|^2\). This is the inequality that drives all convergence rate proofs for gradient descent — \(O(1/k)\) for convex, linear for strongly convex \((\mu&gt;0)\).</p>
     </div>
   </div>
 </div>
@@ -630,7 +630,7 @@
     <div class="eq t">
       <div class="eq-top"><span class="eq-name">Strong Duality (Slater's Condition)</span><span class="eq-tag">Convex Problems</span></div>
       <div class="eq-body">
-        \[\text{If } f,g_i \text{ convex}, h_j \text{ affine, and } \exists\,\mathbf{x} \text{ strictly feasible } (g_i(\mathbf{x})<0\;\forall i):\]
+        \[\text{If } f,g_i \text{ convex}, h_j \text{ affine, and } \exists\,\mathbf{x} \text{ strictly feasible } (g_i(\mathbf{x})&lt;0\;\forall i):\]
         \[d^* = p^* \quad\text{(zero duality gap)}\]
         <div class="eq-note">Slater's condition: there exists a strictly feasible point (inequality constraints satisfied with strict inequality). This is a constraint qualification — it rules out degenerate geometries where the constraint boundary "kisses" the objective in a pathological way. Under Slater's condition, solving the dual problem is EQUIVALENT to solving the primal — and the dual is often much easier (e.g., SVM dual is a quadratic program in fewer variables).</div>
       </div>
@@ -891,17 +891,17 @@
       <div class="drv-row">
         <span class="dn p">2</span>
         <div>
-          <strong>Case 1: \(z > 0\).</strong> Then \(|z| = z\), and the derivative is \(\lambda + \frac{1}{\alpha}(z - v_i) = 0\). Solving:
+          <strong>Case 1: \(z &gt; 0\).</strong> Then \(|z| = z\), and the derivative is \(\lambda + \frac{1}{\alpha}(z - v_i) = 0\). Solving:
           \[z = v_i - \alpha\lambda\]
-          <div class="dnote">Valid only if \(v_i - \alpha\lambda > 0 \implies v_i > \alpha\lambda\).</div>
+          <div class="dnote">Valid only if \(v_i - \alpha\lambda &gt; 0 \implies v_i &gt; \alpha\lambda\).</div>
         </div>
       </div>
       <div class="drv-row">
         <span class="dn p">3</span>
         <div>
-          <strong>Case 2: \(z < 0\).</strong> Then \(|z| = -z\), and the derivative is \(-\lambda + \frac{1}{\alpha}(z - v_i) = 0\). Solving:
+          <strong>Case 2: \(z &lt; 0\).</strong> Then \(|z| = -z\), and the derivative is \(-\lambda + \frac{1}{\alpha}(z - v_i) = 0\). Solving:
           \[z = v_i + \alpha\lambda\]
-          <div class="dnote">Valid only if \(v_i + \alpha\lambda < 0 \implies v_i < -\alpha\lambda\).</div>
+          <div class="dnote">Valid only if \(v_i + \alpha\lambda &lt; 0 \implies v_i &lt; -\alpha\lambda\).</div>
         </div>
       </div>
       <div class="drv-row">
@@ -1069,11 +1069,11 @@
       <div class="eq-body">
         \[\phi(\mathbf{x}) = -\sum_{i=1}^m \log(-g_i(\mathbf{x}))\]
         \[\min_\mathbf{x}\; t f(\mathbf{x}) + \phi(\mathbf{x})\]
-        <div class="eq-note">As \(g_i(\mathbf{x}) \to 0^-\), \(-\log(-g_i(\mathbf{x})) \to \infty\). The parameter \(t > 0\) controls the barrier strength: small \(t\) emphasizes the barrier (staying away from boundaries), large \(t\) emphasizes the original objective.</div>
+        <div class="eq-note">As \(g_i(\mathbf{x}) \to 0^-\), \(-\log(-g_i(\mathbf{x})) \to \infty\). The parameter \(t &gt; 0\) controls the barrier strength: small \(t\) emphasizes the barrier (staying away from boundaries), large \(t\) emphasizes the original objective.</div>
       </div>
     </div>
 
-    <p>For each \(t\), let \(\mathbf{x}^*(t)\) denote the minimizer of the barrier problem. The set \(\{\mathbf{x}^*(t) \mid t > 0\}\) is called the <strong>central path</strong>. As \(t \to \infty\), \(\mathbf{x}^*(t) \to \mathbf{x}^*\) — the true solution of the original constrained problem.</p>
+    <p>For each \(t\), let \(\mathbf{x}^*(t)\) denote the minimizer of the barrier problem. The set \(\{\mathbf{x}^*(t) \mid t &gt; 0\}\) is called the <strong>central path</strong>. As \(t \to \infty\), \(\mathbf{x}^*(t) \to \mathbf{x}^*\) — the true solution of the original constrained problem.</p>
   </div>
 
   <div class="sub">
@@ -1098,7 +1098,7 @@
         <span class="cmt"># Primal Interior Point Method (sketch)</span><br>
         <span class="kw">function</span> <span class="fn">IPM</span>(<span class="var">f</span>, <span class="var">g</span>, <span class="var">x0</span>):<br>
         &nbsp;&nbsp;<span class="var">t</span> = <span class="num">1</span><br>
-        &nbsp;&nbsp;<span class="var">x</span> = <span class="var">x0</span>  <span class="cmt"># must be strictly feasible: g_i(x) < 0</span><br>
+        &nbsp;&nbsp;<span class="var">x</span> = <span class="var">x0</span>  <span class="cmt"># must be strictly feasible: g_i(x) &lt; 0</span><br>
         &nbsp;&nbsp;<span class="kw">for</span> <span class="var">k</span> <span class="kw">in</span> <span class="num">1</span> <span class="kw">to</span> <span class="var">max_iter</span>:<br>
         &nbsp;&nbsp;&nbsp;&nbsp;<span class="cmt"># 1. Newton step on t*f + phi</span><br>
         &nbsp;&nbsp;&nbsp;&nbsp;<span class="var">grad</span> = <span class="var">t</span> * <span class="fn">∇f</span>(<span class="var">x</span>) + <span class="fn">∇φ</span>(<span class="var">x</span>)<br>

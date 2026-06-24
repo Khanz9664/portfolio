@@ -1,0 +1,1655 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Matrix Calculus</title>
+  <meta name="description" content="∂y/∂x for every shape" />
+  <meta name="author" content="Shahid Ul Islam" />
+  <link rel="icon" type="image/png" href="../img/plogo.png" />
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Sora:wght@100;200;300;400;500;600;700;800&family=Source+Sans+3:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=JetBrains+Mono:ital,wght@0,300;0,400;0,500;1,300;1,400&display=swap"
+    rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <link rel="stylesheet" href="../css/variables.css" />
+  <link rel="stylesheet" href="../css/navigation.css" />
+  <link rel="stylesheet" href="../css/footer.css" />
+  <link rel="stylesheet" href="css/matrixcalculus.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <script defer src="../js/common.js"></script>
+
+</head>
+
+<body>
+  <div class="top-bar">
+    <div class="logo">
+      <img src="../img/plogo.png" alt="Personal Logo" class="logo-icon">
+      <span class="logo-text">SHAHID<span class="logo-accent">||</span>Portfolio</span>
+    </div>
+    <nav class="nav-container">
+      <ul class="nav-links">
+        <li><a href="../index.html" class="nav-link">.Home</a></li>
+        <li><a href="../about.html" class="nav-link">.About</a></li>
+        <li><a href="../skills.html" class="nav-link">.Skills</a></li>
+        <li><a href="../projects.html" class="nav-link">.Projects</a></li>
+        <li><a href="../contact.html" class="nav-link">.Contact</a></li>
+        <li><a href="../articles.html" class="nav-link">.Articles</a></li>
+      </ul>
+      <div class="menu-toggle">
+        <div class="hamburger"></div>
+      </div>
+    </nav>
+  </div>
+
+
+  <!-- ══ HERO ════════════════════════════════════════════════ -->
+  <div class="hero">
+    <div class="hero-inner">
+      <div>
+        <div class="hero-prompt">matrix_calculus --reference --full</div>
+        <h1>
+          <span class="mono">∂y/∂x for every shape</span>
+          <span class="grad">Matrix Calculus</span>
+        </h1>
+        <p class="hero-byline">
+          Scalars to tensors, differentials to Jacobians, trace tricks to full
+          derivations of linear regression, logistic regression, PCA, and
+          backprop. The complete reference for every gradient you'll ever need.
+        </p>
+        <div class="hero-tags">
+          <span class="htag g">Differential Viewpoint</span>
+          <span class="htag a">Jacobian &amp; Hessian</span>
+          <span class="htag c">Chain Rule for Vectors</span>
+          <span class="htag cy">Trace Tricks</span>
+          <span class="htag v">Quadratic Forms</span>
+          <span class="htag r">Linear &amp; Logistic Regression</span>
+          <span class="htag g">PCA Derivation</span>
+          <span class="htag a">Backprop</span>
+          <span class="htag c">Autodiff</span>
+          <span class="htag cy">Cheat Sheet</span>
+        </div>
+      </div>
+      <div class="hero-art">
+        <!-- Matrix derivative shape diagram -->
+        <svg width="clamp(200px,24vw,290px)" height="clamp(200px,24vw,290px)" viewBox="0 0 260 260"
+          xmlns="http://www.w3.org/2000/svg" style="display:block">
+          <defs>
+            <linearGradient id="mg" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="#5fdd9d" stop-opacity=".9" />
+              <stop offset="100%" stop-color="#7dd3fc" stop-opacity=".5" />
+            </linearGradient>
+          </defs>
+          <!-- scalar -->
+          <circle cx="40" cy="50" r="14" fill="none" stroke="#5fdd9d" stroke-width="2" />
+          <text x="40" y="55" text-anchor="middle" font-family="Space Mono" font-size="13" fill="#5fdd9d">f</text>
+          <text x="40" y="80" text-anchor="middle" font-family="Space Mono" font-size="9" fill="#5f8270">scalar</text>
+
+          <!-- arrow -->
+          <text x="80" y="55" font-family="Space Mono" font-size="14" fill="#5f8270">→</text>
+
+          <!-- vector ∂f/∂x -->
+          <rect x="105" y="25" width="22" height="60" rx="3" fill="none" stroke="#ffb86b" stroke-width="2" />
+          <line x1="105" y1="40" x2="127" y2="40" stroke="#ffb86b" stroke-width="1" />
+          <line x1="105" y1="55" x2="127" y2="55" stroke="#ffb86b" stroke-width="1" />
+          <line x1="105" y1="70" x2="127" y2="70" stroke="#ffb86b" stroke-width="1" />
+          <text x="116" y="105" text-anchor="middle" font-family="Space Mono" font-size="9" fill="#ffb86b">∂f/∂x
+            (n×1)</text>
+
+          <!-- Jacobian matrix ∂y/∂x -->
+          <rect x="40" y="140" width="80" height="60" rx="3" fill="none" stroke="#ff6b6b" stroke-width="2" />
+          <line x1="60" y1="140" x2="60" y2="200" stroke="#ff6b6b" stroke-width="1" />
+          <line x1="80" y1="140" x2="80" y2="200" stroke="#ff6b6b" stroke-width="1" />
+          <line x1="100" y1="140" x2="100" y2="200" stroke="#ff6b6b" stroke-width="1" />
+          <line x1="40" y1="160" x2="120" y2="160" stroke="#ff6b6b" stroke-width="1" />
+          <line x1="40" y1="180" x2="120" y2="180" stroke="#ff6b6b" stroke-width="1" />
+          <text x="80" y="225" text-anchor="middle" font-family="Space Mono" font-size="9" fill="#ff6b6b">J = ∂y/∂x
+            (m×n)</text>
+
+          <!-- Hessian -->
+          <rect x="155" y="140" width="80" height="80" rx="3" fill="none" stroke="#c4a7e7" stroke-width="2" />
+          <line x1="175" y1="140" x2="175" y2="220" stroke="#c4a7e7" stroke-width="1" />
+          <line x1="195" y1="140" x2="195" y2="220" stroke="#c4a7e7" stroke-width="1" />
+          <line x1="215" y1="140" x2="215" y2="220" stroke="#c4a7e7" stroke-width="1" />
+          <line x1="155" y1="160" x2="235" y2="160" stroke="#c4a7e7" stroke-width="1" />
+          <line x1="155" y1="180" x2="235" y2="180" stroke="#c4a7e7" stroke-width="1" />
+          <line x1="155" y1="200" x2="235" y2="200" stroke="#c4a7e7" stroke-width="1" />
+          <!-- symmetric diagonal highlight -->
+          <line x1="155" y1="140" x2="235" y2="220" stroke="#c4a7e7" stroke-width="1.5" stroke-dasharray="3,2"
+            opacity=".5" />
+          <text x="195" y="245" text-anchor="middle" font-family="Space Mono" font-size="9" fill="#c4a7e7">H = ∇²f (n×n,
+            sym)</text>
+        </svg>
+      </div>
+    </div>
+
+    <!-- Reference banner -->
+    <div class="hero-banner">
+      <div class="hb-cell">
+        <div class="hb-eq">df</div>
+        <div class="hb-label">Differentials</div>
+      </div>
+      <div class="hb-cell">
+        <div class="hb-eq">∂y/∂x</div>
+        <div class="hb-label">Jacobian</div>
+      </div>
+      <div class="hb-cell">
+        <div class="hb-eq">tr()</div>
+        <div class="hb-label">Trace Tricks</div>
+      </div>
+      <div class="hb-cell">
+        <div class="hb-eq">x^TAx</div>
+        <div class="hb-label">Quad Forms</div>
+      </div>
+      <div class="hb-cell">
+        <div class="hb-eq">∇²f</div>
+        <div class="hb-label">Hessian</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ TOC ══════════════════════════════════════════════════ -->
+  <div class="toc-outer">
+    <div class="toc-grid">
+      <div class="toc-cell"><a href="#c1"><span class="toc-i">01</span>Scalars, Vectors, Matrices</a></div>
+      <div class="toc-cell"><a href="#c2"><span class="toc-i">02</span>Differential Viewpoint</a></div>
+      <div class="toc-cell"><a href="#c3"><span class="toc-i">03</span>Jacobian Matrix</a></div>
+      <div class="toc-cell"><a href="#c4"><span class="toc-i">04</span>Hessian Matrix</a></div>
+      <div class="toc-cell"><a href="#c5"><span class="toc-i">05</span>Chain Rule for Vectors</a></div>
+      <div class="toc-cell"><a href="#c6"><span class="toc-i">06</span>Matrix Derivatives</a></div>
+      <div class="toc-cell"><a href="#c7"><span class="toc-i">07</span>Trace Tricks</a></div>
+      <div class="toc-cell"><a href="#c8"><span class="toc-i">08</span>Quadratic Forms</a></div>
+      <div class="toc-cell"><a href="#c9"><span class="toc-i">09</span>Deriving Linear Regression</a></div>
+      <div class="toc-cell"><a href="#c10"><span class="toc-i">10</span>Deriving Logistic Regression</a></div>
+      <div class="toc-cell"><a href="#c11"><span class="toc-i">11</span>Deriving PCA</a></div>
+      <div class="toc-cell"><a href="#c12"><span class="toc-i">12</span>Deriving Backprop</a></div>
+      <div class="toc-cell"><a href="#c13"><span class="toc-i">13</span>Automatic Differentiation</a></div>
+      <div class="toc-cell"><a href="#c14"><span class="toc-i">14</span>Common Pitfalls</a></div>
+      <div class="toc-cell"><a href="#c15"><span class="toc-i">15</span>Cheat Sheet</a></div>
+      <div class="toc-cell"><a href="#c16"><span class="toc-i">16</span>Complete Mental Model</a></div>
+    </div>
+  </div>
+
+  <div class="page">
+
+    <!-- ══ §01 ═════════════════════════════════════════════════ -->
+    <div class="ch" id="c1">
+      <div class="ch-head">
+        <div class="ch-top">
+          <div class="ch-num">01</div><span class="ch-badge g">Notation</span>
+        </div>
+        <h2>Scalars, Vectors, Matrices</h2>
+        <div class="ch-sub">// notation conventions · dimension bookkeeping · numerator vs denominator layout</div>
+      </div>
+
+      <p>Matrix calculus extends ordinary calculus to functions whose inputs and/or outputs are vectors or matrices. The
+        single biggest source of confusion in the field is not the calculus itself — it's <em>notation</em>. Before any
+        derivative is computed, fix the shapes and the layout convention.</p>
+
+      <div class="sub">
+        <div class="sh g">The Four Cases</div>
+        <div class="t-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Input</th>
+                <th>Output</th>
+                <th>Derivative Object</th>
+                <th>Shape</th>
+                <th>Example</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>scalar \(x\)</td>
+                <td>scalar \(y\)</td>
+                <td>\(dy/dx\)</td>
+                <td>scalar</td>
+                <td>\(y=x^2 \Rightarrow dy/dx=2x\)</td>
+              </tr>
+              <tr>
+                <td>vector \(\mathbf{x}\in\mathbb{R}^n\)</td>
+                <td>scalar \(y\)</td>
+                <td>gradient \(\nabla_\mathbf{x}y\)</td>
+                <td>\(n\times1\)</td>
+                <td>\(y=\mathbf{a}^T\mathbf{x} \Rightarrow \nabla y=\mathbf{a}\)</td>
+              </tr>
+              <tr>
+                <td>vector \(\mathbf{x}\in\mathbb{R}^n\)</td>
+                <td>vector \(\mathbf{y}\in\mathbb{R}^m\)</td>
+                <td>Jacobian \(J\)</td>
+                <td>\(m\times n\)</td>
+                <td>\(\mathbf{y}=\mathbf{Ax} \Rightarrow J=\mathbf{A}\)</td>
+              </tr>
+              <tr>
+                <td>matrix \(\mathbf{X}\in\mathbb{R}^{m\times n}\)</td>
+                <td>scalar \(y\)</td>
+                <td>matrix gradient \(\partial y/\partial\mathbf{X}\)</td>
+                <td>\(m\times n\)</td>
+                <td>\(y=\text{tr}(\mathbf{AX})\Rightarrow \partial y/\partial\mathbf{X}=\mathbf{A}^T\)</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="sub">
+        <div class="sh a">Numerator vs Denominator Layout</div>
+        <div class="two">
+          <div class="tcol">
+            <h4 style="color:var(--amber)">Numerator Layout</h4>
+            <p>The shape of \(\partial y/\partial\mathbf{x}\) matches the shape of \(y\) "stacked over" \(\mathbf{x}\):
+              for scalar \(y\) and \(\mathbf{x}\in\mathbb{R}^n\), the gradient is a <em>row</em> vector
+              \(\in\mathbb{R}^{1\times n}\).</p>
+            <p>For \(\mathbf{y}\in\mathbb{R}^m\), \(\mathbf{x}\in\mathbb{R}^n\): the Jacobian is \(m\times n\) — rows
+              index outputs, columns index inputs. This is mathematically elegant because it preserves the chain rule
+              as simple matrix multiplication \(J_{g \circ f} = J_g J_f\).</p>
+          </div>
+          <div class="tcol">
+            <h4 style="color:var(--coral)">Denominator Layout (ML convention)</h4>
+            <p>The shape of \(\partial y/\partial\mathbf{x}\) matches the shape of \(\mathbf{x}\): for scalar \(y\), the
+              gradient \(\nabla_\mathbf{x}y\) is a <em>column</em> vector \(\in\mathbb{R}^{n\times1}\), same shape as
+              \(\mathbf{x}\) itself.</p>
+            <p>This is the convention used throughout deep learning: <code>w.grad</code> always has the same shape as
+              <code>w</code>, which makes gradient descent updates \(\mathbf{w} \leftarrow \mathbf{w} - \eta \nabla_\mathbf{w} \mathcal{L}\)
+              dimensionally consistent without transposing. This page uses denominator layout unless explicitly stated.
+            </p>
+          </div>
+        </div>
+
+        <div class="note g">
+          <div class="note-icon">▣</div>
+          <div class="note-body">
+            <div class="note-title">The Golden Rule</div>
+            <p>Whatever convention you pick, <strong>the gradient of a scalar w.r.t. any tensor has the same shape as
+                that tensor</strong>. If \(\partial \mathcal{L}/\partial \mathbf{W}\) doesn't have the same shape as
+              \(\mathbf{W}\), something is transposed wrong. This single check catches the majority of matrix calculus
+              bugs — and is exactly what PyTorch enforces for every <code>.grad</code> attribute.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="sub">
+        <div class="sh c">Notation Used Throughout This Page</div>
+        <ul class="fl c">
+          <li>Scalars: lowercase italic — \(x, y, \alpha, \lambda\)</li>
+          <li>Vectors: lowercase bold — \(\mathbf{x}, \mathbf{w}, \mathbf{a}\) (column vectors by default)</li>
+          <li>Matrices: uppercase bold — \(\mathbf{X}, \mathbf{W}, \mathbf{A}\)</li>
+          <li>Gradient of scalar \(f\) w.r.t. vector \(\mathbf{x}\): \(\nabla_\mathbf{x}f\) or \(\partial
+            f/\partial\mathbf{x}\) — always same shape as \(\mathbf{x}\)</li>
+          <li>Jacobian of vector \(\mathbf{y}\) w.r.t. vector \(\mathbf{x}\): \(J =
+            \partial\mathbf{y}/\partial\mathbf{x} \in \mathbb{R}^{m\times n}\), entry \((i,j) = \partial y_i/\partial
+            x_j\)</li>
+          <li>Hessian of scalar \(f\) w.r.t. vector \(\mathbf{x}\): \(\nabla^2 f \in \mathbb{R}^{n\times n}\), entry
+            \((i,j) = \partial^2 f/\partial x_i\partial x_j\)</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- ══ §02 ═════════════════════════════════════════════════ -->
+    <div class="ch" id="c2">
+      <div class="ch-head">
+        <div class="ch-top">
+          <div class="ch-num">02</div><span class="ch-badge a">Differentials</span>
+        </div>
+        <h2>The Differential Viewpoint</h2>
+        <div class="ch-sub">// total differential · why differentials beat index chasing · the workflow</div>
+      </div>
+
+      <p>The single most powerful technique in matrix calculus is to stop thinking in terms of \(\partial y/\partial
+        x_{ij}\) (index chasing) and start thinking in terms of <span class="ha">differentials</span> \(df\) — small
+        linear perturbations. Differentials are the matrix-notation version of “first-order Taylor”: they keep only the
+        linear (in \(d\mathbf{x}\)) part of the change, so you can manipulate derivatives with the same algebra you
+        already know. Differentials obey simple algebraic rules and translate directly into gradients via the <strong>Identification Theorem</strong>.</p>
+
+      <div class="eq a">
+        <div class="eq-top"><span class="eq-name">The Total Differential &amp; Identification</span><span class="eq-tag">Core Idea</span>
+        </div>
+        <div class="eq-body">
+          \[df = \sum_{i}\frac{\partial f}{\partial x_i}dx_i = \nabla f(\mathbf{x})^T d\mathbf{x} \quad\text{(vector case)}\]
+          \[df = \text{tr}\left(\left(\frac{\partial f}{\partial \mathbf{X}}\right)^T d\mathbf{X}\right) \quad\text{(matrix case)}\]
+          <div class="eq-note">The Identification Theorem (Magnus &amp; Neudecker) states that if you can massage your 
+            differential into the form \(df = \mathbf{a}^T d\mathbf{x}\), then \(\nabla \mathbf{x} = \mathbf{a}\). 
+            If it's in the form \(df = \text{tr}(\mathbf{A} d\mathbf{X})\), then \(\partial f/\partial \mathbf{X} = \mathbf{A}^T\). 
+            This turns calculus into pure algebraic rearrangement.</div>
+        </div>
+      </div>
+
+      <div class="sub">
+        <div class="sh a">Differential Rules (Algebra of d)</div>
+        <div class="eq a">
+          <div class="eq-top"><span class="eq-name">Rules for Manipulating Differentials</span><span
+              class="eq-tag">Algebra</span></div>
+          <div class="eq-body">
+            \[d(A+B) = dA + dB \qquad d(\alpha A) = \alpha\, dA\]
+            \[d(AB) = (dA)B + A(dB) \quad\text{(product rule — order matters!)}\]
+            \[d(\text{tr}(A)) = \text{tr}(dA) \qquad d(A^{-1}) = -A^{-1}(dA)A^{-1}\]
+            \[d(\log\det A) = \text{tr}(A^{-1}dA)\]
+            <div class="eq-note">These rules look exactly like scalar calculus rules — because they ARE the scalar rules
+              applied entrywise, just packaged into matrix notation. The product rule d(AB)=(dA)B+A(dB) preserves the
+              ORDER of multiplication (matrices don't commute) — this is the only real new thing to remember.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="sub">
+        <div class="sh g">Worked Example: \(f(\mathbf{x}) = \mathbf{x}^T\mathbf{A}\mathbf{x}\)</div>
+        <div class="drv">
+          <div class="drv-hdr">// The differential workflow, end to end</div>
+          <div class="drv-row">
+            <span class="dn g">1</span>
+            <div>
+              Write the differential using the product rule:
+              \[df = d(\mathbf{x}^T\mathbf{A}\mathbf{x}) = (d\mathbf{x})^T\mathbf{A}\mathbf{x} +
+              \mathbf{x}^T\mathbf{A}(d\mathbf{x})\]
+            </div>
+          </div>
+          <div class="drv-row">
+            <span class="dn g">2</span>
+            <div>
+              Both terms are scalars, so each equals its own transpose. Transpose the first term:
+              \[(d\mathbf{x})^T\mathbf{A}\mathbf{x} = (\mathbf{x}^T\mathbf{A}^T(d\mathbf{x}))^T =
+              \mathbf{x}^T\mathbf{A}^T d\mathbf{x} \quad\text{(scalar = its transpose)}\]
+            </div>
+          </div>
+          <div class="drv-row">
+            <span class="dn g">3</span>
+            <div>
+              Combine:
+              \[df = \mathbf{x}^T\mathbf{A}^Td\mathbf{x} + \mathbf{x}^T\mathbf{A}\,d\mathbf{x} =
+              \mathbf{x}^T(\mathbf{A}+\mathbf{A}^T)d\mathbf{x} =
+              \left[(\mathbf{A}+\mathbf{A}^T)\mathbf{x}\right]^Td\mathbf{x}\]
+              \[\therefore\quad \nabla_\mathbf{x}f = (\mathbf{A}+\mathbf{A}^T)\mathbf{x}\]
+              <div class="dnote">Read off the gradient directly as the coefficient of dx (transposed to match
+                denominator layout). If A is symmetric: ∇f = 2Ax. No index sums, no Kronecker deltas — pure algebra. ∎
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ §03 ═════════════════════════════════════════════════ -->
+    <div class="ch" id="c3">
+      <div class="ch-head">
+        <div class="ch-top">
+          <div class="ch-num">03</div><span class="ch-badge c">Vector Calc</span>
+        </div>
+        <h2>The Jacobian Matrix</h2>
+        <div class="ch-sub">// definition · examples · geometric meaning · special diagonal cases</div>
+      </div>
+
+      <p>The Jacobian is the matrix of all first-order partial derivatives of a vector-valued function. It generalizes
+        the scalar derivative to the multivariate, multi-output case and is the local linear approximation of
+        \(\mathbf{f}\) at a point. Conceptually, it represents the linear transformation that maps the tangent space 
+        of the input space to the tangent space of the output space.</p>
+
+      <div class="eq c">
+        <div class="eq-top"><span class="eq-name">The Jacobian Matrix</span><span class="eq-tag">Definition</span></div>
+        <div class="eq-body">
+          \[\mathbf{f}:\mathbb{R}^n\to\mathbb{R}^m, \quad J_\mathbf{f}(\mathbf{x}) = \frac{\partial
+          \mathbf{f}}{\partial\mathbf{x}} = \begin{pmatrix}\frac{\partial f_1}{\partial x_1} & \cdots & \frac{\partial
+          f_1}{\partial x_n}\\ \vdots & \ddots & \vdots \\ \frac{\partial f_m}{\partial x_1} & \cdots & \frac{\partial
+          f_m}{\partial x_n}\end{pmatrix}\in\mathbb{R}^{m\times n}\]
+          \[\mathbf{f}(\mathbf{x}+\boldsymbol{\delta}) \approx \mathbf{f}(\mathbf{x}) +
+          J_\mathbf{f}(\mathbf{x})\boldsymbol{\delta} \quad\text{(local linear approximation)}\]
+          <div class="eq-note">Row i, column j is ∂fᵢ/∂xⱼ — how output i changes per unit change in input j. The
+            Jacobian is the best linear approximation to f near x. For m=1 (scalar output), the Jacobian is a 1×n row
+            vector — the transpose of the gradient in denominator layout.</div>
+        </div>
+      </div>
+
+      <div class="sub">
+        <div class="sh c">Jacobians of Building-Block Operations</div>
+        <div class="t-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Function</th>
+                <th>Jacobian</th>
+                <th>Structure</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>\(\mathbf{y}=\mathbf{Ax}\) (linear)</td>
+                <td>\(J=\mathbf{A}\)</td>
+                <td>\(m\times n\), constant</td>
+              </tr>
+              <tr>
+                <td>\(\mathbf{y}=\mathbf{x}+\mathbf{b}\)</td>
+                <td>\(J=\mathbf{I}\)</td>
+                <td>\(n\times n\) identity</td>
+              </tr>
+              <tr>
+                <td>\(y_i=\sigma(x_i)\) (elementwise)</td>
+                <td>\(J=\text{diag}(\sigma'(x_i))\)</td>
+                <td>diagonal — cheap!</td>
+              </tr>
+              <tr>
+                <td>\(\mathbf{y}=\text{softmax}(\mathbf{x})\)</td>
+                <td>\(J=\text{diag}(\mathbf{y})-\mathbf{yy}^T\)</td>
+                <td>dense, low-rank correction — reflects the "sum-to-one" constraint.</td>
+              </tr>
+              <tr>
+                <td>\(y=\|\mathbf{x}\|^2\)</td>
+                <td>\(J=2\mathbf{x}^T\)</td>
+                <td>\(1\times n\)</td>
+              </tr>
+              <tr>
+                <td>\(\mathbf{y}=\mathbf{x}\odot\mathbf{z}\) (Hadamard)</td>
+                <td>\(\partial\mathbf{y}/\partial\mathbf{x}=\text{diag}(\mathbf{z})\)</td>
+                <td>diagonal</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="note a">
+        <div class="note-icon">▣</div>
+        <div class="note-body">
+          <div class="note-title">Why Diagonal Jacobians Matter</div>
+          <p>Elementwise operations (activations, dropout masks, Hadamard products) always have <em>diagonal</em>
+            Jacobians — full \(n\times n\) matrices that are mostly zero. In practice these are never materialized; the
+            Jacobian-vector product reduces to a simple elementwise multiply: \(J\mathbf{v} =
+            f'(\mathbf{x})\odot\mathbf{v}\). This is why elementwise nonlinearities are computationally "free" in
+            backprop.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ §04 ═════════════════════════════════════════════════ -->
+    <div class="ch" id="c4">
+      <div class="ch-head">
+        <div class="ch-top">
+          <div class="ch-num">04</div><span class="ch-badge v">Curvature</span>
+        </div>
+        <h2>The Hessian Matrix</h2>
+        <div class="ch-sub">// second derivatives · symmetry · quadratic approximation · eigenvalue interpretation</div>
+      </div>
+
+      <p>The Hessian is the Jacobian of the gradient — the matrix of all second-order partial derivatives of a scalar
+        function. It describes local curvature and is the basis of Newton's method, convexity analysis, and second-order
+        optimization. In high-dimensional deep learning landscapes, the Hessian helps identify not just minima and maxima, 
+        but also <strong>saddle points</strong>, which are the primary obstacles to gradient-based optimization.</p>
+
+      <div class="eq v">
+        <div class="eq-top"><span class="eq-name">The Hessian Matrix</span><span class="eq-tag">Definition</span></div>
+        <div class="eq-body">
+          \[f:\mathbb{R}^n\to\mathbb{R}, \quad \nabla^2f(\mathbf{x}) = \begin{pmatrix}\frac{\partial^2f}{\partial x_1^2}
+          & \cdots & \frac{\partial^2f}{\partial x_1\partial x_n}\\ \vdots & \ddots & \vdots \\
+          \frac{\partial^2f}{\partial x_n\partial x_1} & \cdots & \frac{\partial^2f}{\partial
+          x_n^2}\end{pmatrix}\in\mathbb{R}^{n\times n}\]
+          \[f(\mathbf{x}+\boldsymbol{\delta}) \approx f(\mathbf{x}) + \nabla f(\mathbf{x})^T\boldsymbol{\delta} +
+          \frac{1}{2}\boldsymbol{\delta}^T\nabla^2f(\mathbf{x})\boldsymbol{\delta} \quad\text{(2nd-order Taylor)}\]
+          <div class="eq-note">By Clairaut's/Schwarz's theorem, if f is C² (continuous second partials), the Hessian is
+            always SYMMETRIC: ∂²f/∂xᵢ∂xⱼ = ∂²f/∂xⱼ∂xᵢ. This symmetry is exploited everywhere — eigendecomposition,
+            Cholesky factorization for Newton steps, and the convexity test ∇²f ⪰ 0.</div>
+        </div>
+      </div>
+
+      <div class="sub">
+        <div class="sh v">Hessian Examples</div>
+        <div class="t-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Function</th>
+                <th>Gradient</th>
+                <th>Hessian</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>\(f=\mathbf{a}^T\mathbf{x}\)</td>
+                <td>\(\nabla f=\mathbf{a}\)</td>
+                <td>\(\nabla^2f=\mathbf{0}\)</td>
+              </tr>
+              <tr>
+                <td>\(f=\mathbf{x}^T\mathbf{A}\mathbf{x}\) (\(A\) sym.)</td>
+                <td>\(\nabla f=2\mathbf{Ax}\)</td>
+                <td>\(\nabla^2f=2\mathbf{A}\)</td>
+              </tr>
+              <tr>
+                <td>\(f=\|\mathbf{Xw}-\mathbf{y}\|^2\)</td>
+                <td>\(\nabla f=2\mathbf{X}^T(\mathbf{Xw}-\mathbf{y})\)</td>
+                <td>\(\nabla^2f=2\mathbf{X}^T\mathbf{X}\)</td>
+              </tr>
+              <tr>
+                <td>\(f=-\sum y_i\log\sigma(\mathbf{w}^T\mathbf{x}_i)+\ldots\)</td>
+                <td>\(\nabla f=\mathbf{X}^T(\hat{\mathbf{y}}-\mathbf{y})\)</td>
+                <td>\(\nabla^2f=\mathbf{X}^T\mathbf{D}\mathbf{X}\), \(D_{ii}=\hat y_i(1-\hat y_i)\)</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="sub">
+        <div class="sh c">Eigenvalues and Curvature</div>
+        <div class="note c">
+          <div class="note-icon">▣</div>
+          <div class="note-body">
+            <div class="note-title">Geometric Reading of the Hessian</div>
+            <p>Diagonalize \(\nabla^2f = \mathbf{Q}\boldsymbol{\Lambda}\mathbf{Q}^T\). Along eigenvector
+              \(\mathbf{q}_i\), the function locally looks like a 1-D parabola with curvature \(\lambda_i\):
+              \(f(\mathbf{x}+t\mathbf{q}_i)\approx f(\mathbf{x})+t\nabla f^T\mathbf{q}_i+\frac{1}{2}\lambda_it^2\). All
+              \(\lambda_i&gt;0\): local min (bowl). All \(\lambda_i&lt;0\): local max. Mixed signs: saddle point. This
+              is precisely the second-order condition for convexity from the Convex Optimization masterclass:
+              \(\nabla^2f\succeq0 \iff\) all \(\lambda_i\geq0\) everywhere.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ §05 ═════════════════════════════════════════════════ -->
+    <div class="ch" id="c5">
+      <div class="ch-head">
+        <div class="ch-top">
+          <div class="ch-num">05</div><span class="ch-badge r">Composition</span>
+        </div>
+        <h2>Chain Rule for Vectors</h2>
+        <div class="ch-sub">// composing Jacobians · shape bookkeeping · the backprop connection</div>
+      </div>
+
+      <p>The chain rule for vector functions composes Jacobians via matrix multiplication. Getting the order and
+        transposes right is purely a matter of shape bookkeeping — and shape bookkeeping is the entire content of
+        backpropagation. When a variable influences the loss through multiple paths, the <strong>Multivariate Chain Rule</strong> 
+        requires summing the contributions from each path: \(\nabla_{\mathbf{x}} \mathcal{L} = \sum_{k} J_{\mathbf{f}_k}(\mathbf{x})^T \nabla_{\mathbf{f}_k} \mathcal{L}\).</p>
+
+      <div class="eq r">
+        <div class="eq-top"><span class="eq-name">Vector Chain Rule</span><span class="eq-tag">Jacobian
+            Composition</span></div>
+        <div class="eq-body">
+          \[\mathbf{z}=g(\mathbf{f}(\mathbf{x})), \quad
+          \mathbf{x}\in\mathbb{R}^n,\;\mathbf{f}(\mathbf{x})\in\mathbb{R}^m,\;\mathbf{z}\in\mathbb{R}^p\]
+          \[J_\mathbf{z}(\mathbf{x}) = J_g(\mathbf{f}(\mathbf{x}))\cdot J_\mathbf{f}(\mathbf{x}) \in\mathbb{R}^{p\times
+          n} = (p\times m)(m\times n)\]
+          <div class="eq-note">The shapes must "telescope": (p×m)·(m×n) = (p×n) — the inner dimension m cancels. If your
+            matrix dimensions don't telescope, you have an error. This single shape-check is the most useful debugging
+            tool in matrix calculus.</div>
+        </div>
+      </div>
+
+      <div class="sub">
+        <div class="sh r">Special Case: Scalar Loss (the Backprop Case)</div>
+        <div class="eq r">
+          <div class="eq-top"><span class="eq-name">Chain Rule for a Scalar Loss</span><span class="eq-tag">Most Common
+              Case</span></div>
+          <div class="eq-body">
+            \[\mathcal{L}=g(\mathbf{f}(\mathbf{x})), \quad \mathcal{L}\in\mathbb{R} \;\Rightarrow\; p=1\]
+            \[\frac{\partial\mathcal{L}}{\partial\mathbf{x}}^T =
+            \frac{\partial\mathcal{L}}{\partial\mathbf{f}}^TJ_\mathbf{f}(\mathbf{x}) \quad\text{(row vector = row vector
+            × matrix)}\]
+            \[\text{In denominator (column) layout:}\quad \nabla_\mathbf{x}\mathcal{L} =
+            J_\mathbf{f}(\mathbf{x})^T\nabla_\mathbf{f}\mathcal{L}\]
+            <div class="eq-note">This is the vector-Jacobian product (VJP) — the fundamental operation of reverse-mode
+              autodiff (§13). ∇_x L is obtained by left-multiplying the upstream gradient ∇_f L by the TRANSPOSED
+              Jacobian J_f^T. Every backprop rule is an instance of this formula with a specific f.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="sub">
+        <div class="sh g">Worked Example: Two-Layer Composition</div>
+        <div class="drv">
+          <div class="drv-hdr">// z = Wx, a = σ(z), L = ℓ(a) — chain rule through two layers</div>
+          <div class="drv-row">
+            <span class="dn g">1</span>
+            <div>
+              Forward: \(\mathbf{z}=\mathbf{Wx}\in\mathbb{R}^m\), \(\mathbf{a}=\sigma(\mathbf{z})\in\mathbb{R}^m\),
+              \(\mathcal{L}=\ell(\mathbf{a})\in\mathbb{R}\).
+            </div>
+          </div>
+          <div class="drv-row">
+            <span class="dn g">2</span>
+            <div>
+              Backward through \(\sigma\) (diagonal Jacobian):
+              \[\frac{\partial\mathcal{L}}{\partial\mathbf{z}} =
+              J_\sigma^T\frac{\partial\mathcal{L}}{\partial\mathbf{a}} =
+              \text{diag}(\sigma'(\mathbf{z}))\frac{\partial\mathcal{L}}{\partial\mathbf{a}} =
+              \sigma'(\mathbf{z})\odot\frac{\partial\mathcal{L}}{\partial\mathbf{a}}\]
+            </div>
+          </div>
+          <div class="drv-row">
+            <span class="dn g">3</span>
+            <div>
+              Backward through \(\mathbf{z}=\mathbf{Wx}\): \(J_\mathbf{z}(\mathbf{x})=\mathbf{W}\), so:
+              \[\frac{\partial\mathcal{L}}{\partial\mathbf{x}} =
+              \mathbf{W}^T\frac{\partial\mathcal{L}}{\partial\mathbf{z}}, \qquad
+              \frac{\partial\mathcal{L}}{\partial\mathbf{W}} =
+              \frac{\partial\mathcal{L}}{\partial\mathbf{z}}\mathbf{x}^T\]
+              <div class="dnote">∂L/∂x uses W^T (chain rule through x). ∂L/∂W is the outer product δzᵀ x^T — a different
+                rule because W is the "parameter," not a chained variable. Both follow from the same Jacobian-transpose
+                logic applied to different "input" roles. This is BP2/BP3 from the Backpropagation masterclass.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ §06 ═════════════════════════════════════════════════ -->
+    <div class="ch" id="c6">
+      <div class="ch-head">
+        <div class="ch-top">
+          <div class="ch-num">06</div><span class="ch-badge cy">Identities</span>
+        </div>
+        <h2>Matrix Derivatives</h2>
+        <div class="ch-sub">// derivatives w.r.t. a matrix · trace, determinant, inverse · key building blocks</div>
+      </div>
+
+      <p>When the input is itself a matrix \(\mathbf{X}\), the derivative \(\partial f/\partial\mathbf{X}\) is a matrix
+        of the same shape as \(\mathbf{X}\), with entry \((i,j)\) equal to \(\partial f/\partial X_{ij}\). A handful of
+        identities cover almost every case that arises in ML.</p>
+
+      <div class="eq cy">
+        <div class="eq-top"><span class="eq-name">Core Matrix Derivative Identities</span><span class="eq-tag">Building
+            Blocks</span></div>
+        <div class="eq-body">
+          \[\frac{\partial}{\partial\mathbf{X}}\text{tr}(\mathbf{AX}) = \mathbf{A}^T \qquad
+          \frac{\partial}{\partial\mathbf{X}}\text{tr}(\mathbf{X}^T\mathbf{A}) = \mathbf{A}\]
+          \[\frac{\partial}{\partial\mathbf{X}}\text{tr}(\mathbf{AXB}) = \mathbf{A}^T\mathbf{B}^T \qquad
+          \frac{\partial}{\partial\mathbf{X}}\text{tr}(\mathbf{X}^T\mathbf{AX}) = (\mathbf{A}+\mathbf{A}^T)\mathbf{X}\]
+          \[\frac{\partial}{\partial\mathbf{X}}\log|\det\mathbf{X}| = (\mathbf{X}^{-1})^T = (\mathbf{X}^T)^{-1}\]
+          \[\frac{\partial}{\partial\mathbf{X}}\text{tr}(\mathbf{A}\mathbf{X}^{-1}\mathbf{B}) =
+          -(\mathbf{X}^{-1})^T\mathbf{A}^T\mathbf{B}^T(\mathbf{X}^{-1})^T\]
+          <div class="eq-note">tr(AX) and tr(X^TA) are the two most common patterns — they cover any "linear in X"
+            scalar. tr(X^TAX) covers quadratic forms. log|det X| appears in Gaussian log-likelihoods (covariance
+            determinant terms) — its derivative is the (transposed) inverse, central to the EM algorithm and Gaussian
+            MLE.</div>
+        </div>
+      </div>
+
+      <div class="sub">
+        <div class="sh cy">Worked Derivation: \(\partial\,\text{tr}(\mathbf{AX})/\partial\mathbf{X}\)</div>
+        <div class="drv">
+          <div class="drv-hdr">// Direct index computation — verifying the trace identity</div>
+          <div class="drv-row">
+            <span class="dn cy">1</span>
+            <div>
+              \(\text{tr}(\mathbf{AX}) = \sum_i(\mathbf{AX})_{ii} = \sum_i\sum_j A_{ij}X_{ji}\)
+            </div>
+          </div>
+          <div class="drv-row">
+            <span class="dn cy">2</span>
+            <div>
+              Differentiate w.r.t. a single entry \(X_{kl}\): only the term with \(j=k, i=l\) survives:
+              \[\frac{\partial\,\text{tr}(\mathbf{AX})}{\partial X_{kl}} = A_{lk}\]
+            </div>
+          </div>
+          <div class="drv-row">
+            <span class="dn cy">3</span>
+            <div>
+              Assembling all entries: \(\left[\frac{\partial\,\text{tr}(\mathbf{AX})}{\partial\mathbf{X}}\right]_{kl} =
+              A_{lk} = (\mathbf{A}^T)_{kl}\)
+              \[\therefore\quad \frac{\partial\,\text{tr}(\mathbf{AX})}{\partial\mathbf{X}} = \mathbf{A}^T
+              \quad\blacksquare\]
+              <div class="dnote">This single index computation justifies the entire trace-trick toolbox in §07 — every
+                other identity reduces to this one via cyclic permutation and the chain rule.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ §07 ═════════════════════════════════════════════════ -->
+    <div class="ch" id="c7">
+      <div class="ch-head">
+        <div class="ch-top">
+          <div class="ch-num">07</div><span class="ch-badge g">Technique</span>
+        </div>
+        <h2>Trace Tricks</h2>
+        <div class="ch-sub">// converting scalars to traces · cyclic property · the universal technique</div>
+      </div>
+
+      <p>Any scalar can be written as the trace of a 1×1 matrix — and once in trace form, the cyclic property of the
+        trace lets you rearrange products freely. This is the single most useful trick for deriving matrix gradients of
+        scalar objectives. It also bridges the gap between matrix norms and linear algebra, most notably with the 
+        <strong>Frobenius norm</strong>: \(\|\mathbf{A}\|_F^2 = \text{tr}(\mathbf{A}^T\mathbf{A}) = \sum_{i,j} A_{ij}^2\).</p>
+
+      <div class="eq g">
+        <div class="eq-top"><span class="eq-name">The Trace Trick</span><span class="eq-tag">Universal Technique</span>
+        </div>
+        <div class="eq-body">
+          \[\text{Any scalar } a = \text{tr}(a) \qquad \mathbf{u}^T\mathbf{v} = \text{tr}(\mathbf{u}^T\mathbf{v}) =
+          \text{tr}(\mathbf{v}\mathbf{u}^T)\]
+          \[\text{Cyclic property: } \text{tr}(\mathbf{ABC}) = \text{tr}(\mathbf{BCA}) = \text{tr}(\mathbf{CAB})\]
+          \[\text{(NOT } \text{tr}(\mathbf{ABC})=\text{tr}(\mathbf{ACB}) \text{ — order within the cycle matters!)}\]
+          <div class="eq-note">The cyclic property lets you move the matrix you're differentiating with respect to into
+            the "tr(AX)" position, where the identity from §06 applies directly. This is how you derive ∂/∂X tr(X^T AX)
+            = (A+A^T)X: write d(tr(X^TAX)) = tr((dX)^TAX) + tr(X^TA dX) = tr((AX)^T dX) + tr((A^TX)^TdX) — wait,
+            cleaner: use cyclic + transpose properties together.</div>
+        </div>
+      </div>
+
+      <div class="sub">
+        <div class="sh g">Worked Example: Deriving \(\partial/\partial\mathbf{X}\,\text{tr}(\mathbf{X}^T\mathbf{AX})\)
+        </div>
+        <div class="drv">
+          <div class="drv-hdr">// Combining differentials with the trace trick</div>
+          <div class="drv-row">
+            <span class="dn g">1</span>
+            <div>
+              Take the differential:
+              \[d(\text{tr}(\mathbf{X}^T\mathbf{AX})) = \text{tr}(d(\mathbf{X}^T\mathbf{AX})) =
+              \text{tr}((d\mathbf{X})^T\mathbf{AX} + \mathbf{X}^T\mathbf{A}\,d\mathbf{X})\]
+            </div>
+          </div>
+          <div class="drv-row">
+            <span class="dn g">2</span>
+            <div>
+              Use \(\text{tr}((d\mathbf{X})^T\mathbf{AX}) = \text{tr}((\mathbf{AX})^Td\mathbf{X})\) (transpose inside
+              trace doesn't change value for scalars... more precisely tr(B^T) = tr(B), and (d\mathbf{X})^T\mathbf{AX}
+              is the transpose of \(\mathbf{X}^T\mathbf{A}^Td\mathbf{X}\)):
+              \[\text{tr}((d\mathbf{X})^T\mathbf{AX}) = \text{tr}(\mathbf{X}^T\mathbf{A}^Td\mathbf{X})\]
+            </div>
+          </div>
+          <div class="drv-row">
+            <span class="dn g">3</span>
+            <div>
+              Combine both terms:
+              \[d(\text{tr}(\mathbf{X}^T\mathbf{AX})) = \text{tr}(\mathbf{X}^T\mathbf{A}^Td\mathbf{X}) +
+              \text{tr}(\mathbf{X}^T\mathbf{A}\,d\mathbf{X}) =
+              \text{tr}(\mathbf{X}^T(\mathbf{A}+\mathbf{A}^T)d\mathbf{X})\]
+              \[\therefore\quad \frac{\partial}{\partial\mathbf{X}}\text{tr}(\mathbf{X}^T\mathbf{AX}) =
+              (\mathbf{A}+\mathbf{A}^T)\mathbf{X} \quad\blacksquare\]
+              <div class="dnote">Pattern: tr(X^TBX) where the result is (B+B^T)X. For symmetric A: result is 2AX. This
+                identity is THE workhorse for deriving gradients of quadratic objectives w.r.t. matrices — used directly
+                in §11 (PCA).</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="sub">
+        <div class="sh a">Quick-Reference Trace Identity Table</div>
+        <div class="t-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Scalar Expression</th>
+                <th>Trace Form</th>
+                <th>Gradient w.r.t. X</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>\(\mathbf{a}^T\mathbf{X}\mathbf{b}\)</td>
+                <td>\(\text{tr}(\mathbf{b}\mathbf{a}^T\mathbf{X})\)</td>
+                <td>\(\mathbf{a}\mathbf{b}^T\)</td>
+              </tr>
+              <tr>
+                <td>\(\mathbf{a}^T\mathbf{X}^T\mathbf{b}\)</td>
+                <td>\(\text{tr}(\mathbf{a}\mathbf{b}^T\mathbf{X})\)... wait,
+                  \(\text{tr}(\mathbf{b}^T\mathbf{X}^T\mathbf{a})\)</td>
+                <td>\(\mathbf{b}\mathbf{a}^T\)</td>
+              </tr>
+              <tr>
+                <td>\(\|\mathbf{X}\|_F^2=\text{tr}(\mathbf{X}^T\mathbf{X})\)</td>
+                <td>—</td>
+                <td>\(2\mathbf{X}\)</td>
+              </tr>
+              <tr>
+                <td>\(\text{tr}(\mathbf{X}^T\mathbf{AX})\)</td>
+                <td>—</td>
+                <td>\((\mathbf{A}+\mathbf{A}^T)\mathbf{X}\)</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ §08 ═════════════════════════════════════════════════ -->
+    <div class="ch" id="c8">
+      <div class="ch-head">
+        <div class="ch-top">
+          <div class="ch-num">08</div><span class="ch-badge r">Forms</span>
+        </div>
+        <h2>Quadratic Forms</h2>
+        <div class="ch-sub">// x^TAx · gradients and Hessians · symmetric vs general A · connections to optimization
+        </div>
+      </div>
+
+      <p>Quadratic forms \(\mathbf{x}^T\mathbf{A}\mathbf{x}\) are everywhere in ML — squared losses, regularizers,
+        covariance terms, Gaussian exponents, Newton steps. Their derivatives are simple, fixed formulas worth
+        memorizing completely. Crucially, notice that only the symmetric part of \(\mathbf{A}\) contributes to the value: 
+        \(\mathbf{x}^T\mathbf{A}\mathbf{x} = \mathbf{x}^T \left( \frac{\mathbf{A} + \mathbf{A}^T}{2} \right) \mathbf{x}\), 
+        which is why we almost always assume \(\mathbf{A}\) is symmetric when discussing quadratic forms.</p>
+
+      <div class="eq r">
+        <div class="eq-top"><span class="eq-name">Quadratic Form Derivatives</span><span class="eq-tag">Memorize
+            These</span></div>
+        <div class="eq-body">
+          \[f(\mathbf{x})=\mathbf{x}^T\mathbf{A}\mathbf{x}\;\Rightarrow\; \nabla f=(\mathbf{A}+\mathbf{A}^T)\mathbf{x},
+          \quad \nabla^2f=\mathbf{A}+\mathbf{A}^T\]
+          \[\text{If } \mathbf{A}=\mathbf{A}^T\text{ (symmetric):}\quad \nabla f = 2\mathbf{A}\mathbf{x}, \quad
+          \nabla^2f=2\mathbf{A}\]
+          \[g(\mathbf{x})=\mathbf{a}^T\mathbf{x}\;\Rightarrow\;\nabla g=\mathbf{a},\quad \nabla^2g=\mathbf{0}\]
+          \[h(\mathbf{x})=\|\mathbf{x}\|^2=\mathbf{x}^T\mathbf{x}\;\Rightarrow\;\nabla
+          h=2\mathbf{x},\quad\nabla^2h=2\mathbf{I}\]
+          <div class="eq-note">Almost every "matrix calculus derivation" in ML reduces to applying these four formulas
+            to the appropriate A, a, or combination. The general-A→symmetric simplification matters: in practice, if A
+            isn't symmetric, you can always replace it with (A+A^T)/2 without changing x^TAx — so WLOG assume A
+            symmetric.</div>
+        </div>
+      </div>
+
+      <div class="sub">
+        <div class="sh r">Worked Example: Mahalanobis Distance</div>
+        <div class="eq r">
+          <div class="eq-top"><span class="eq-name">Gradient of Mahalanobis Distance</span><span
+              class="eq-tag">Application</span></div>
+          <div class="eq-body">
+            \[d^2(\mathbf{x}) = (\mathbf{x}-\boldsymbol{\mu})^T\boldsymbol{\Sigma}^{-1}(\mathbf{x}-\boldsymbol{\mu})\]
+            \[\nabla_\mathbf{x}d^2 = 2\boldsymbol{\Sigma}^{-1}(\mathbf{x}-\boldsymbol{\mu}) \quad\text{(since
+            }\boldsymbol{\Sigma}^{-1}\text{ symmetric)}\]
+            <div class="eq-note">Substitute u=x−μ (constant shift doesn't affect the gradient w.r.t. x, since ∂u/∂x = I)
+              and apply the symmetric quadratic form rule with A=Σ^{-1}. This gradient appears directly in the
+              multivariate Gaussian log-likelihood — and its negative is the "pull toward the mean, scaled by inverse
+              covariance" direction used in Mahalanobis-distance-based anomaly detection.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="sub">
+        <div class="sh g">Newton's Method as a Quadratic-Form Minimization</div>
+        <div class="note g">
+          <div class="note-icon">▣</div>
+          <div class="note-body">
+            <div class="note-title">Why Quadratic Forms Are THE Local Model</div>
+            <p>Every twice-differentiable function looks locally like a quadratic form:
+              \(f(\mathbf{x}+\boldsymbol{\delta})\approx f(\mathbf{x})+\nabla
+              f^T\boldsymbol{\delta}+\frac{1}{2}\boldsymbol{\delta}^T\nabla^2f\,\boldsymbol{\delta}\). Minimizing this
+              quadratic model over \(\boldsymbol{\delta}\) (set gradient w.r.t. \(\boldsymbol{\delta}\) to zero, using
+              \(\nabla f+\nabla^2f\,\boldsymbol{\delta}=0\)) gives the Newton step
+              \(\boldsymbol{\delta}=-(\nabla^2f)^{-1}\nabla f\). Every second-order optimization method is, at its core,
+              "solve the quadratic-form gradient formula above for the local model."</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ §09 ═════════════════════════════════════════════════ -->
+    <div class="ch" id="c9">
+      <div class="ch-head">
+        <div class="ch-top">
+          <div class="ch-num">09</div><span class="ch-badge a">Application</span>
+        </div>
+        <h2>Deriving Linear Regression</h2>
+        <div class="ch-sub">// the normal equations · full matrix calculus derivation · geometric interpretation</div>
+      </div>
+
+      <p>Linear regression is the cleanest possible application of matrix calculus: a quadratic objective, a linear
+        model, and a closed-form solution that follows from setting the gradient to zero.</p>
+
+      <div class="drv">
+        <div class="drv-hdr">// Deriving the Normal Equations from scratch</div>
+        <div class="drv-row">
+          <span class="dn a">1</span>
+          <div>
+            Objective:
+            \(\mathcal{L}(\mathbf{w})=\|\mathbf{Xw}-\mathbf{y}\|^2=(\mathbf{Xw}-\mathbf{y})^T(\mathbf{Xw}-\mathbf{y})\).
+            Expand:
+            \[\mathcal{L}(\mathbf{w}) = \mathbf{w}^T\mathbf{X}^T\mathbf{Xw} - 2\mathbf{y}^T\mathbf{Xw} +
+            \mathbf{y}^T\mathbf{y}\]
+          </div>
+        </div>
+        <div class="drv-row">
+          <span class="dn a">2</span>
+          <div>
+            Apply the quadratic-form rule (§08) to the first term with \(\mathbf{A}=\mathbf{X}^T\mathbf{X}\)
+            (symmetric), and the linear rule to the second term:
+            \[\nabla_\mathbf{w}(\mathbf{w}^T\mathbf{X}^T\mathbf{Xw}) = 2\mathbf{X}^T\mathbf{Xw}, \qquad
+            \nabla_\mathbf{w}(-2\mathbf{y}^T\mathbf{Xw}) = -2\mathbf{X}^T\mathbf{y}\]
+          </div>
+        </div>
+        <div class="drv-row">
+          <span class="dn a">3</span>
+          <div>
+            Combine:
+            \[\nabla_\mathbf{w}\mathcal{L} = 2\mathbf{X}^T\mathbf{Xw} - 2\mathbf{X}^T\mathbf{y}\]
+          </div>
+        </div>
+        <div class="drv-row">
+          <span class="dn a">4</span>
+          <div>
+            Set \(\nabla_\mathbf{w}\mathcal{L}=\mathbf{0}\):
+            \[\mathbf{X}^T\mathbf{Xw} = \mathbf{X}^T\mathbf{y} \quad\Rightarrow\quad \boxed{\mathbf{w}^* =
+            (\mathbf{X}^T\mathbf{X})^{-1}\mathbf{X}^T\mathbf{y}}\]
+            <div class="dnote">The Normal Equations. Since ∇²L = 2X^TX ⪰ 0 (always PSD, §06 of Convex Optimization), L
+              is convex — this stationary point is a GLOBAL minimum. If X^TX is singular (rank-deficient), use the
+              pseudoinverse w* = X^+y. ∎</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="sub">
+        <div class="sh a">Geometric Interpretation — Orthogonal Projection</div>
+        <div class="eq a">
+          <div class="eq-top"><span class="eq-name">Normal Equations as Orthogonality</span><span
+              class="eq-tag">Geometry</span></div>
+          <div class="eq-body">
+            \[\mathbf{X}^T(\mathbf{Xw}^*-\mathbf{y}) = \mathbf{0} \quad\Leftrightarrow\quad \text{residual }
+            (\mathbf{Xw}^*-\mathbf{y}) \perp \text{Col}(\mathbf{X})\]
+            \[\hat{\mathbf{y}} = \mathbf{Xw}^* = \mathbf{X}(\mathbf{X}^T\mathbf{X})^{-1}\mathbf{X}^T\mathbf{y} = \mathbf{H}\mathbf{y}\]
+            <div class="eq-note">The Normal Equations literally say: the residual vector is orthogonal to every column
+              of X — i.e., orthogonal to the entire column space. \(\mathbf{Xw}^*\) is the orthogonal projection of \(\mathbf{y}\) onto \(\text{Col}(\mathbf{X})\).
+              The matrix \(\mathbf{X}^\dagger = (\mathbf{X}^T\mathbf{X})^{-1}\mathbf{X}^T\) is the <strong>Moore-Penrose Pseudoinverse</strong> of \(\mathbf{X}\).
+              The matrix \(\mathbf{H} = \mathbf{X}\mathbf{X}^\dagger\) is known as the <strong>Hat Matrix</strong> because it 
+              "puts a hat" on \(\mathbf{y}\). It is an idempotent matrix (\(\mathbf{H}^2 = \mathbf{H}\)), a hallmark of projection operators.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ §10 ═════════════════════════════════════════════════ -->
+    <div class="ch" id="c10">
+      <div class="ch-head">
+        <div class="ch-top">
+          <div class="ch-num">10</div><span class="ch-badge c">Application</span>
+        </div>
+        <h2>Deriving Logistic Regression</h2>
+        <div class="ch-sub">// sigmoid · cross-entropy · gradient and Hessian via the chain rule</div>
+      </div>
+
+      <p>Logistic regression composes a linear map, the sigmoid, and the binary cross-entropy loss. Its gradient and
+        Hessian follow directly from the chain rule (§05) plus two elementary derivative facts about the sigmoid.</p>
+
+      <div class="sub">
+        <div class="sh c">Setup and the Sigmoid Derivative</div>
+        <div class="eq c">
+          <div class="eq-top"><span class="eq-name">Logistic Regression — Setup</span><span class="eq-tag">Model</span>
+          </div>
+          <div class="eq-body">
+            \[\hat{y}_i=\sigma(z_i),\;\; z_i=\mathbf{w}^T\mathbf{x}_i, \quad \sigma(z)=\frac{1}{1+e^{-z}}, \quad
+            \sigma'(z)=\sigma(z)(1-\sigma(z))\]
+            \[\mathcal{L}=-\sum_i\left[y_i\log\hat{y}_i+(1-y_i)\log(1-\hat{y}_i)\right]\]
+            <div class="eq-note">σ'(z) = σ(z)(1−σ(z)) is the single most important fact about the sigmoid for matrix
+              calculus — proven by direct differentiation: d/dz[1/(1+e^{-z})] = e^{-z}/(1+e^{-z})² = σ(z)·(1−σ(z)).
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="sub">
+        <div class="sh c">Deriving the Gradient</div>
+        <div class="drv">
+          <div class="drv-hdr">// Chain rule: L → ŷᵢ → zᵢ → w</div>
+          <div class="drv-row">
+            <span class="dn c">1</span>
+            <div>
+              \(\partial\mathcal{L}/\partial\hat{y}_i = -y_i/\hat{y}_i + (1-y_i)/(1-\hat{y}_i)\)
+            </div>
+          </div>
+          <div class="drv-row">
+            <span class="dn c">2</span>
+            <div>
+              Chain through \(\sigma\): \(\partial\mathcal{L}/\partial z_i =
+              (\partial\mathcal{L}/\partial\hat{y}_i)\sigma'(z_i)\). Substitute and simplify (the same cancellation as
+              softmax+CCE in the Backpropagation masterclass):
+              \[\frac{\partial\mathcal{L}}{\partial z_i} =
+              \left(-\frac{y_i}{\hat{y}_i}+\frac{1-y_i}{1-\hat{y}_i}\right)\hat{y}_i(1-\hat{y}_i) = \hat{y}_i-y_i\]
+            </div>
+          </div>
+          <div class="drv-row">
+            <span class="dn c">3</span>
+            <div>
+              Chain through \(z_i=\mathbf{w}^T\mathbf{x}_i\) (so \(\partial z_i/\partial\mathbf{w}=\mathbf{x}_i\)) and
+              sum over samples:
+              \[\nabla_\mathbf{w}\mathcal{L} = \sum_i(\hat{y}_i-y_i)\mathbf{x}_i =
+              \mathbf{X}^T(\hat{\mathbf{y}}-\mathbf{y})\]
+              <div class="dnote">Identical "prediction minus label" form as softmax+CCE — both are exponential-family
+                GLMs, and the gradient of any GLM negative log-likelihood w.r.t. the linear predictor is always
+                (prediction − target). ∎</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="sub">
+        <div class="sh r">Deriving the Hessian</div>
+        <div class="eq r">
+          <div class="eq-top"><span class="eq-name">Logistic Regression Hessian</span><span
+              class="eq-tag">Curvature</span></div>
+          <div class="eq-body">
+            \[\nabla^2_\mathbf{w}\mathcal{L} =
+            \frac{\partial}{\partial\mathbf{w}}\left[\mathbf{X}^T(\hat{\mathbf{y}}-\mathbf{y})\right] =
+            \mathbf{X}^T\frac{\partial\hat{\mathbf{y}}}{\partial\mathbf{w}} =
+            \mathbf{X}^T\text{diag}(\hat{y}_i(1-\hat{y}_i))\mathbf{X} = \mathbf{X}^T\mathbf{D}\mathbf{X}\]
+            <div class="eq-note">D = diag(ŷᵢ(1−ŷᵢ)) has strictly positive diagonal entries (0 &lt; ŷᵢ &lt; 1 always), so
+              X^TDX is PSD by the same v^T(X^TDX)v = ‖D^{1/2}Xv‖² ≥ 0 argument as MSE. Convex — guaranteed global
+              optimum. This Hessian is also the Fisher Information Matrix for logistic regression, and is used directly
+              in Newton's method (Iteratively Reweighted Least Squares, IRLS).</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ §11 ═════════════════════════════════════════════════ -->
+    <div class="ch" id="c11">
+      <div class="ch-head">
+        <div class="ch-top">
+          <div class="ch-num">11</div><span class="ch-badge v">Application</span>
+        </div>
+        <h2>Deriving PCA</h2>
+        <div class="ch-sub">// constrained optimization · Lagrangian · matrix calculus → eigenvalue problem</div>
+      </div>
+
+      <p>PCA asks: find the unit direction \(\mathbf{v}\) along which the projected data has maximum variance. This is a
+        constrained optimization problem — and matrix calculus plus a Lagrange multiplier turns it directly into an
+        eigenvalue problem. Intuitively, maximizing the variance of the projection is equivalent to minimizing the 
+        mean-squared distance (reconstruction error) between the original data points and their projections, a result 
+        of the Pythagorean theorem.</p>
+
+      <div class="drv">
+        <div class="drv-hdr">// From variance maximization to the eigenvalue equation</div>
+        <div class="drv-row">
+          <span class="dn v">1</span>
+          <div>
+            Variance of data projected onto direction \(\mathbf{v}\) (data centered, covariance \(\mathbf{S}\)):
+            \[\text{Var}(\mathbf{Xv}) = \mathbf{v}^T\mathbf{S}\mathbf{v}, \quad
+            \mathbf{S}=\frac{1}{n}\mathbf{X}^T\mathbf{X}\]
+            Maximize subject to \(\|\mathbf{v}\|=1\) (otherwise variance is unbounded — scale v up arbitrarily).
+          </div>
+        </div>
+        <div class="drv-row">
+          <span class="dn v">2</span>
+          <div>
+            Form the Lagrangian (bridging to the Lagrange Multipliers masterclass):
+            \[\mathcal{L}(\mathbf{v},\lambda) = \mathbf{v}^T\mathbf{S}\mathbf{v} - \lambda(\mathbf{v}^T\mathbf{v}-1)\]
+          </div>
+        </div>
+        <div class="drv-row">
+          <span class="dn v">3</span>
+          <div>
+            Apply the symmetric quadratic-form gradient rule (§08) to both terms:
+            \[\nabla_\mathbf{v}\mathcal{L} = 2\mathbf{S}\mathbf{v} - 2\lambda\mathbf{v} = \mathbf{0}\]
+          </div>
+        </div>
+        <div class="drv-row">
+          <span class="dn v">4</span>
+          <div>
+            Simplify:
+            \[\boxed{\mathbf{S}\mathbf{v}=\lambda\mathbf{v}}\]
+            <div class="dnote">The stationarity condition for variance maximization is EXACTLY the eigenvalue equation.
+              v must be an eigenvector of S, and λ is the corresponding eigenvalue. Substituting back: Var(Xv) = v^TSv =
+              v^T(λv) = λ‖v‖² = λ. The variance along v equals its eigenvalue — so the maximum-variance direction is the
+              eigenvector with the LARGEST eigenvalue. ∎</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="thm">
+        <div class="thm-badge">PCA: Two Lines of Matrix Calculus</div>
+        <p>The entire derivation of PCA's first principal component is: (1) write the Lagrangian for constrained
+          variance maximization, (2) differentiate using the symmetric quadratic-form rule from §08. The result — that
+          principal components are eigenvectors of the covariance matrix, ordered by eigenvalue — falls out as a direct
+          algebraic consequence, with no additional machinery. This is the same Lagrangian framework as the Lagrange
+          Multipliers masterclass, applied to a quadratic objective via matrix calculus.</p>
+      </div>
+
+      <div class="sub">
+        <div class="sh v">Subsequent Components — Sequential Deflation</div>
+        <div class="note v">
+          <div class="note-icon">▣</div>
+          <div class="note-body">
+            <div class="note-title">Why All Eigenvectors Solve the Same Equation</div>
+            <p>To find the second principal component, maximize \(\mathbf{v}^T\mathbf{S}\mathbf{v}\) subject to
+              \(\|\mathbf{v}\|=1\) AND \(\mathbf{v}\perp\mathbf{v}_1\) (orthogonal to the first PC). Adding this
+              orthogonality constraint with another Lagrange multiplier and differentiating yields the same equation
+              \(\mathbf{S}\mathbf{v}=\lambda\mathbf{v}\) — but restricted to the subspace orthogonal to
+              \(\mathbf{v}_1\), which (since \(\mathbf{S}\) is symmetric) is automatically satisfied by the eigenvector
+              with the second-largest eigenvalue. By induction, all principal components are simply all eigenvectors of
+              \(\mathbf{S}\), sorted by eigenvalue — the Spectral Theorem guarantees they exist, are real, and are
+              mutually orthogonal.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ §12 ═════════════════════════════════════════════════ -->
+    <div class="ch" id="c12">
+      <div class="ch-head">
+        <div class="ch-top">
+          <div class="ch-num">12</div><span class="ch-badge a">Application</span>
+        </div>
+        <h2>Deriving Backprop</h2>
+        <div class="ch-sub">// the chain rule for matrices, applied to a full layer · recap via matrix calculus</div>
+      </div>
+
+      <p>Backpropagation (covered in full depth in its own masterclass) is, at its mathematical core, repeated
+        application of the vector chain rule from §05 — with the matrix derivative identities from §06–08 supplying the
+        rules for linear layers.</p>
+
+      <div class="eq a">
+        <div class="eq-top"><span class="eq-name">One Layer, Derived via Matrix Calculus</span><span
+            class="eq-tag">Backprop Recap</span></div>
+        <div class="eq-body">
+          \[\mathbf{z}=\mathbf{Wx}+\mathbf{b}, \quad \mathbf{a}=\sigma(\mathbf{z}), \quad \mathcal{L}=\ell(\mathbf{a})\]
+          \[\boldsymbol{\delta} \triangleq \frac{\partial\mathcal{L}}{\partial\mathbf{z}} =
+          \sigma'(\mathbf{z})\odot\frac{\partial\mathcal{L}}{\partial\mathbf{a}} \quad\text{(diagonal Jacobian VJP,
+          §03)}\]
+          \[\frac{\partial\mathcal{L}}{\partial\mathbf{W}} = \boldsymbol{\delta}\,\mathbf{x}^T \quad\text{(from
+          }d\mathcal{L}=\boldsymbol{\delta}^Td\mathbf{z}=\boldsymbol{\delta}^T(d\mathbf{W})\mathbf{x}=\text{tr}(\mathbf{x}\boldsymbol{\delta}^Td\mathbf{W})\text{,
+          §07 trace trick)}\]
+          \[\frac{\partial\mathcal{L}}{\partial\mathbf{x}} = \mathbf{W}^T\boldsymbol{\delta} \quad\text{(vector chain
+          rule, §05)}\]
+          \[\frac{\partial\mathcal{L}}{\partial\mathbf{b}} = \boldsymbol{\delta}
+          \quad\text{(}\partial\mathbf{z}/\partial\mathbf{b}=\mathbf{I}\text{)}\]
+          <div class="eq-note">Every one of these four lines is a direct instance of an identity already established:
+            diagonal-Jacobian VJP (§03), the trace trick applied to a differential (§07), the vector chain rule with a
+            linear Jacobian (§05), and the identity Jacobian. Backpropagation invents NO new mathematics — it is matrix
+            calculus applied systematically, layer by layer, via the chain rule.</div>
+        </div>
+      </div>
+
+      <div class="sub">
+        <div class="sh a">The ∂L/∂W Derivation via Trace Trick — In Full</div>
+        <div class="drv">
+          <div class="drv-hdr">// Deriving ∂L/∂W = δxᵀ using differentials and the trace trick</div>
+          <div class="drv-row">
+            <span class="dn a">1</span>
+            <div>
+              Write the differential of the loss through \(\mathbf{z}\):
+              \[d\mathcal{L} = \boldsymbol{\delta}^Td\mathbf{z} = \boldsymbol{\delta}^T(d\mathbf{W})\mathbf{x}\]
+            </div>
+          </div>
+          <div class="drv-row">
+            <span class="dn a">2</span>
+            <div>
+              \(\boldsymbol{\delta}^T(d\mathbf{W})\mathbf{x}\) is a scalar, so it equals its own trace:
+              \[d\mathcal{L} = \text{tr}(\boldsymbol{\delta}^T(d\mathbf{W})\mathbf{x}) =
+              \text{tr}(\mathbf{x}\boldsymbol{\delta}^Td\mathbf{W}) \quad\text{(cyclic property, §07)}\]
+            </div>
+          </div>
+          <div class="drv-row">
+            <span class="dn a">3</span>
+            <div>
+              Match against \(d\mathcal{L}=\text{tr}(\mathbf{A}\,d\mathbf{W}) \Rightarrow
+              \partial\mathcal{L}/\partial\mathbf{W}=\mathbf{A}^T\) (§06):
+              \[\frac{\partial\mathcal{L}}{\partial\mathbf{W}} = (\mathbf{x}\boldsymbol{\delta}^T)^T =
+              \boldsymbol{\delta}\mathbf{x}^T \quad\blacksquare\]
+              <div class="dnote">This is BP3 from the Backpropagation masterclass, now derived purely from the
+                differential + trace-trick toolkit built in this page.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ §13 ═════════════════════════════════════════════════ -->
+    <div class="ch" id="c13">
+      <div class="ch-head">
+        <div class="ch-top">
+          <div class="ch-num">13</div><span class="ch-badge cy">Computation</span>
+        </div>
+        <h2>Automatic Differentiation</h2>
+        <div class="ch-sub">// from formulas to algorithms · forward vs reverse mode · how frameworks implement these
+          rules</div>
+      </div>
+
+      <p>Everything derived so far is a <em>formula</em>. Automatic differentiation (AD) is the <em>algorithm</em> that
+        applies these formulas mechanically, for arbitrary compositions, without a human re-deriving anything.</p>
+
+      <div class="eq cy">
+        <div class="eq-top"><span class="eq-name">Forward vs Reverse Mode — Matrix Calculus View</span><span
+            class="eq-tag">AD Modes</span></div>
+        <div class="eq-body">
+          \[\text{Forward mode: propagate } \dot{\mathbf{x}}\to J_1\dot{\mathbf{x}}\to J_2J_1\dot{\mathbf{x}}\to\cdots
+          \quad\text{(left-to-right Jacobian-vector products, JVPs)}\]
+          \[\text{Reverse mode: propagate } \bar{\mathbf{y}}\to J_n^T\bar{\mathbf{y}}\to
+          J_{n-1}^TJ_n^T\bar{\mathbf{y}}\to\cdots \quad\text{(right-to-left vector-Jacobian products, VJPs)}\]
+          <div class="eq-note">Forward mode is equivalent to augmenting every scalar with an infinitesimal "dual number" \(\epsilon\) such that \(\epsilon^2=0\). 
+            Reverse mode is the workhorse of deep learning because it computes the gradient of one output (the loss) with respect to millions 
+            of parameters in a single backward pass, regardless of network depth.</div>
+        </div>
+      </div>
+
+      <div class="sub">
+        <div class="sh cy">A Minimal Reverse-Mode Engine</div>
+        <div class="cb">
+          <div class="cb-bar">
+            <div class="cb-dots">
+              <div class="cb-dot" style="background:#ff5f57"></div>
+              <div class="cb-dot" style="background:#febc2e"></div>
+              <div class="cb-dot" style="background:#28c840"></div>
+            </div>
+            <div class="cb-lang">Each op stores its own matrix-calculus rule</div>
+          </div>
+          <div class="cb-body">
+            <span class="cmt"># Every operation defines forward AND its local VJP rule</span><br>
+            <span class="kw">class</span> <span class="fn">MatMul</span>:<br>
+            &nbsp;&nbsp;<span class="kw">def</span> <span class="fn">forward</span>(self, W, x): <span
+              class="kw">return</span> W @ x<br>
+            &nbsp;&nbsp;<span class="kw">def</span> <span class="fn">backward</span>(self, grad_z):<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;<span class="cmt"># §05/§12 identities — VJP rules, not re-derived each
+              time</span><br>
+            &nbsp;&nbsp;&nbsp;&nbsp;grad_W = grad_z @ self.x.T &nbsp;<span class="cmt"># δ xᵀ</span><br>
+            &nbsp;&nbsp;&nbsp;&nbsp;grad_x = self.W.T @ grad_z &nbsp;<span class="cmt"># Wᵀ δ</span><br>
+            &nbsp;&nbsp;&nbsp;&nbsp;<span class="kw">return</span> grad_W, grad_x<br><br>
+            <span class="kw">class</span> <span class="fn">Sigmoid</span>:<br>
+            &nbsp;&nbsp;<span class="kw">def</span> <span class="fn">forward</span>(self, z): self.a = sigmoid(z); <span
+              class="kw">return</span> self.a<br>
+            &nbsp;&nbsp;<span class="kw">def</span> <span class="fn">backward</span>(self, grad_a):<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;<span class="cmt"># §03/§10 — diagonal Jacobian → elementwise multiply</span><br>
+            &nbsp;&nbsp;&nbsp;&nbsp;<span class="kw">return</span> grad_a * self.a * (<span class="num">1</span> -
+            self.a)<br><br>
+            <span class="cmt"># AD frameworks are libraries of exactly these (forward, backward) pairs —</span><br>
+            <span class="cmt"># every pair IS one of the identities derived in §03–§08.</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="note cy">
+        <div class="note-icon">▣</div>
+        <div class="note-body">
+          <div class="note-title">The Punchline</div>
+          <p>PyTorch, JAX, and TensorFlow contain no "magic." Every <code>.backward()</code> call walks the computation
+            graph and, at each node, applies a pre-derived matrix calculus identity — exactly the ones catalogued in
+            this reference. Knowing matrix calculus means being able to read and even write
+            <code>autograd.Function</code> implementations from first principles.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ §14 ═════════════════════════════════════════════════ -->
+    <div class="ch" id="c14">
+      <div class="ch-head">
+        <div class="ch-top">
+          <div class="ch-num">14</div><span class="ch-badge c">Errors</span>
+        </div>
+        <h2>Common Pitfalls</h2>
+        <div class="ch-sub">// the mistakes everyone makes · how to catch them fast</div>
+      </div>
+
+      <div class="sub">
+        <div class="sh c">The Six Most Common Errors</div>
+        <ul class="fl c">
+          <li><strong>Shape mismatches:</strong> \(\partial\mathcal{L}/\partial\mathbf{W}\) must have the SAME shape as
+            \(\mathbf{W}\). If you compute something with the wrong shape, you have a transpose error somewhere. Check
+            this first, always.</li>
+          <li><strong>Forgetting the factor of 2:</strong> \(\nabla_\mathbf{x}\|\mathbf{x}\|^2=2\mathbf{x}\), not
+            \(\mathbf{x}\). This single factor of 2 (or its absence) is the most common silent bug — it doesn't change
+            the direction of gradient descent, only the effective learning rate, so it can go unnoticed for a long time.
+          </li>
+          <li><strong>Assuming \(\mathbf{A}\) is symmetric when it isn't:</strong>
+            \(\nabla_\mathbf{x}(\mathbf{x}^T\mathbf{A}\mathbf{x})=(\mathbf{A}+\mathbf{A}^T)\mathbf{x}\), which only
+            simplifies to \(2\mathbf{A}\mathbf{x}\) if \(\mathbf{A}=\mathbf{A}^T\). Many "derivation errors" online
+            silently assume symmetry without stating it.</li>
+          <li><strong>Treating non-commuting matrix products as scalars:</strong>
+            \(d(\mathbf{AB})=(d\mathbf{A})\mathbf{B}+\mathbf{A}(d\mathbf{B})\) — NOT
+            \((d\mathbf{B})\mathbf{A}+\mathbf{B}(d\mathbf{A})\). Order matters, always.</li>
+          <li><strong>Incorrect trace cyclic permutations:</strong>
+            \(\text{tr}(\mathbf{ABC})=\text{tr}(\mathbf{BCA})=\text{tr}(\mathbf{CAB})\), but
+            \(\text{tr}(\mathbf{ABC})\neq\text{tr}(\mathbf{ACB})\) in general (only cyclic shifts are valid, not
+            arbitrary permutations).</li>
+          <li><strong>Mixing numerator/denominator layout mid-derivation:</strong> Pick ONE convention (this page uses
+            denominator/ML layout for gradients, standard m×n for Jacobians) and stay consistent. Switching layouts
+            mid-derivation is the #1 cause of "off by a transpose" errors.</li>
+        </ul>
+      </div>
+
+      <div class="sub">
+        <div class="sh g">Debugging Technique: Numerical Gradient Checking</div>
+        <div class="eq g">
+          <div class="eq-top"><span class="eq-name">Gradient Checking</span><span class="eq-tag">Verification</span>
+          </div>
+          <div class="eq-body">
+            \[\left[\nabla f(\mathbf{x})\right]_i \approx
+            \frac{f(\mathbf{x}+\epsilon\mathbf{e}_i)-f(\mathbf{x}-\epsilon\mathbf{e}_i)}{2\epsilon}, \quad
+            \epsilon\approx10^{-5}\]
+            <div class="eq-note">Compare your analytical formula against this finite-difference approximation for a few
+              random entries. If they disagree beyond ~10⁻⁴ relative error, your analytical derivative has a bug —
+              almost always one of the six pitfalls above. This is the universal "trust but verify" step for any
+              hand-derived gradient.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ §15 ═════════════════════════════════════════════════ -->
+    <div class="ch" id="c15">
+      <div class="ch-head">
+        <div class="ch-top">
+          <div class="ch-num">15</div><span class="ch-badge g">Reference</span>
+        </div>
+        <h2>Cheat Sheet</h2>
+        <div class="ch-sub">// every identity from this page, in one place</div>
+      </div>
+
+      <div class="sub">
+        <div class="sh g">Vectors → Scalars</div>
+        <div class="cheat-grid">
+          <div class="cheat-card" style="border-top-color:var(--green)">
+            <div class="cheat-name" style="color:var(--green)">Linear</div>
+            <div class="cheat-formula">f = aᵀx → ∇f = a</div>
+            <div class="cheat-formula">∇²f = 0</div>
+          </div>
+          <div class="cheat-card" style="border-top-color:var(--amber)">
+            <div class="cheat-name" style="color:var(--amber)">Quadratic (sym A)</div>
+            <div class="cheat-formula">f = xᵀAx → ∇f = 2Ax</div>
+            <div class="cheat-formula">∇²f = 2A</div>
+          </div>
+          <div class="cheat-card" style="border-top-color:var(--coral)">
+            <div class="cheat-name" style="color:var(--coral)">Quadratic (general A)</div>
+            <div class="cheat-formula">f = xᵀAx → ∇f = (A+Aᵀ)x</div>
+          </div>
+          <div class="cheat-card" style="border-top-color:var(--cyan)">
+            <div class="cheat-name" style="color:var(--cyan)">Norm</div>
+            <div class="cheat-formula">f = ‖x‖² → ∇f = 2x</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="sub">
+        <div class="sh a">Matrices → Scalars (Trace Forms)</div>
+        <div class="cheat-grid">
+          <div class="cheat-card" style="border-top-color:var(--green)">
+            <div class="cheat-name" style="color:var(--green)">tr(AX)</div>
+            <div class="cheat-formula">∂/∂X tr(AX) = Aᵀ</div>
+          </div>
+          <div class="cheat-card" style="border-top-color:var(--amber)">
+            <div class="cheat-name" style="color:var(--amber)">tr(XᵀA)</div>
+            <div class="cheat-formula">∂/∂X tr(XᵀA) = A</div>
+          </div>
+          <div class="cheat-card" style="border-top-color:var(--coral)">
+            <div class="cheat-name" style="color:var(--coral)">tr(AXB)</div>
+            <div class="cheat-formula">∂/∂X tr(AXB) = AᵀBᵀ</div>
+          </div>
+          <div class="cheat-card" style="border-top-color:var(--cyan)">
+            <div class="cheat-name" style="color:var(--cyan)">tr(XᵀAX)</div>
+            <div class="cheat-formula">∂/∂X = (A+Aᵀ)X</div>
+          </div>
+          <div class="cheat-card" style="border-top-color:var(--violet)">
+            <div class="cheat-name" style="color:var(--violet)">log|det X|</div>
+            <div class="cheat-formula">∂/∂X = (Xᵀ)⁻¹</div>
+          </div>
+          <div class="cheat-card" style="border-top-color:var(--rose)">
+            <div class="cheat-name" style="color:var(--rose)">‖X‖_F²</div>
+            <div class="cheat-formula">∂/∂X = 2X</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="sub">
+        <div class="sh c">Chain Rule &amp; Backprop Rules</div>
+        <div class="cheat-grid">
+          <div class="cheat-card" style="border-top-color:var(--green)">
+            <div class="cheat-name" style="color:var(--green)">Vector chain rule</div>
+            <div class="cheat-formula">∇ₓL = Jᵥᵀ ∇ᵧL</div>
+          </div>
+          <div class="cheat-card" style="border-top-color:var(--amber)">
+            <div class="cheat-name" style="color:var(--amber)">z = Wx + b</div>
+            <div class="cheat-formula">∂L/∂x = Wᵀδ</div>
+            <div class="cheat-formula">∂L/∂W = δxᵀ, ∂L/∂b = δ</div>
+          </div>
+          <div class="cheat-card" style="border-top-color:var(--coral)">
+            <div class="cheat-name" style="color:var(--coral)">Elementwise σ(z)</div>
+            <div class="cheat-formula">∂L/∂z = σ'(z) ⊙ ∂L/∂a</div>
+          </div>
+          <div class="cheat-card" style="border-top-color:var(--cyan)">
+            <div class="cheat-name" style="color:var(--cyan)">Softmax + CCE</div>
+            <div class="cheat-formula">∂L/∂z = ŷ − y</div>
+          </div>
+          <div class="cheat-card" style="border-top-color:var(--violet)">
+            <div class="cheat-name" style="color:var(--violet)">Sigmoid + BCE</div>
+            <div class="cheat-formula">∂L/∂z = ŷ − y</div>
+          </div>
+          <div class="cheat-card" style="border-top-color:var(--rose)">
+            <div class="cheat-name" style="color:var(--rose)">MSE</div>
+            <div class="cheat-formula">∇w = 2Xᵀ(Xw−y)</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="sub">
+        <div class="sh v">Differential Algebra</div>
+        <div class="cheat-grid">
+          <div class="cheat-card" style="border-top-color:var(--green)">
+            <div class="cheat-name" style="color:var(--green)">Sum / scale</div>
+            <div class="cheat-formula">d(A+B)=dA+dB</div>
+            <div class="cheat-formula">d(αA)=α dA</div>
+          </div>
+          <div class="cheat-card" style="border-top-color:var(--amber)">
+            <div class="cheat-name" style="color:var(--amber)">Product</div>
+            <div class="cheat-formula">d(AB)=(dA)B+A(dB)</div>
+          </div>
+          <div class="cheat-card" style="border-top-color:var(--coral)">
+            <div class="cheat-name" style="color:var(--coral)">Trace</div>
+            <div class="cheat-formula">d(tr A)=tr(dA)</div>
+          </div>
+          <div class="cheat-card" style="border-top-color:var(--cyan)">
+            <div class="cheat-name" style="color:var(--cyan)">Inverse</div>
+            <div class="cheat-formula">d(A⁻¹)=−A⁻¹(dA)A⁻¹</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ §16 ═════════════════════════════════════════════════ -->
+    <div class="ch" id="c16">
+      <div class="ch-head">
+        <div class="ch-top">
+          <div class="ch-num">16</div><span class="ch-badge g">Synthesis</span>
+        </div>
+        <h2>The Complete Mental Model</h2>
+        <div class="ch-sub">// everything connected · one diagram · the unified workflow</div>
+      </div>
+
+      <div class="fig">
+        <div class="fig-box">
+          <svg viewBox="0 0 720 560" xmlns="http://www.w3.org/2000/svg" style="max-width:720px;width:100%">
+            <rect width="720" height="560" fill="#0f1611" />
+            <defs>
+              <marker id="mma" markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto">
+                <path d="M0,0 L0,5 L7,2.5z" fill="#2c4034" />
+              </marker>
+              <marker id="mmg" markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto">
+                <path d="M0,0 L0,5 L7,2.5z" fill="#5fdd9d" />
+              </marker>
+            </defs>
+            <text x="360" y="22" text-anchor="middle" font-family="Space Mono" font-size="9" fill="#2c4034"
+              letter-spacing=".26em">MATRIX CALCULUS — COMPLETE MAP</text>
+
+            <!-- Core: Differential -->
+            <rect x="240" y="38" width="240" height="56" rx="6" fill="#141d17" stroke="#5fdd9d" stroke-width="2" />
+            <text x="360" y="61" text-anchor="middle" font-family="Space Mono" font-size="13" fill="#5fdd9d"
+              font-weight="700">df = (...)ᵀdx</text>
+            <text x="360" y="81" text-anchor="middle" font-family="Space Mono" font-size="8.5" fill="#5f8270">the
+              differential viewpoint (§02)</text>
+
+            <!-- Three pillars -->
+            <rect x="28" y="148" width="195" height="52" rx="5" fill="#141d17" stroke="#ffb86b" stroke-width="1.5" />
+            <text x="125" y="169" text-anchor="middle" font-family="Space Mono" font-size="10" fill="#ffb86b"
+              font-weight="700">JACOBIAN / HESSIAN</text>
+            <text x="125" y="187" text-anchor="middle" font-family="Space Mono" font-size="8.5" fill="#5f8270">§03–04 ·
+              shapes &amp; curvature</text>
+
+            <rect x="263" y="148" width="195" height="52" rx="5" fill="#141d17" stroke="#7dd3fc" stroke-width="1.5" />
+            <text x="360" y="169" text-anchor="middle" font-family="Space Mono" font-size="10" fill="#7dd3fc"
+              font-weight="700">TRACE TRICKS</text>
+            <text x="360" y="187" text-anchor="middle" font-family="Space Mono" font-size="8.5" fill="#5f8270">§06–07 ·
+              matrix gradients</text>
+
+            <rect x="498" y="148" width="195" height="52" rx="5" fill="#141d17" stroke="#ff6b6b" stroke-width="1.5" />
+            <text x="595" y="169" text-anchor="middle" font-family="Space Mono" font-size="10" fill="#ff6b6b"
+              font-weight="700">CHAIN RULE</text>
+            <text x="595" y="187" text-anchor="middle" font-family="Space Mono" font-size="8.5" fill="#5f8270">§05 ·
+              composing Jacobians</text>
+
+            <line x1="300" y1="94" x2="160" y2="146" stroke="#2c4034" stroke-width="1.2" stroke-dasharray="4,3"
+              marker-end="url(#mma)" />
+            <line x1="360" y1="94" x2="360" y2="146" stroke="#2c4034" stroke-width="1.2" stroke-dasharray="4,3"
+              marker-end="url(#mma)" />
+            <line x1="420" y1="94" x2="560" y2="146" stroke="#2c4034" stroke-width="1.2" stroke-dasharray="4,3"
+              marker-end="url(#mma)" />
+
+            <!-- Quadratic forms hub -->
+            <rect x="240" y="258" width="240" height="52" rx="5" fill="#141d17" stroke="#c4a7e7" stroke-width="2" />
+            <text x="360" y="279" text-anchor="middle" font-family="Space Mono" font-size="11" fill="#c4a7e7"
+              font-weight="700">QUADRATIC FORMS xᵀAx</text>
+            <text x="360" y="297" text-anchor="middle" font-family="Space Mono" font-size="8.5" fill="#5f8270">§08 · the
+              universal local model</text>
+
+            <line x1="125" y1="200" x2="280" y2="256" stroke="#2c4034" stroke-width="1" stroke-dasharray="3,2"
+              marker-end="url(#mma)" />
+            <line x1="360" y1="200" x2="360" y2="256" stroke="#2c4034" stroke-width="1" stroke-dasharray="3,2"
+              marker-end="url(#mma)" />
+            <line x1="595" y1="200" x2="440" y2="256" stroke="#2c4034" stroke-width="1" stroke-dasharray="3,2"
+              marker-end="url(#mma)" />
+
+            <!-- Applications row -->
+            <rect x="28" y="368" width="160" height="54" rx="5" fill="#141d17" stroke="#5fdd9d" stroke-width="1.2" />
+            <text x="108" y="388" text-anchor="middle" font-family="Space Mono" font-size="9.5" fill="#5fdd9d">LINEAR
+              REGRESSION</text>
+            <text x="108" y="406" text-anchor="middle" font-family="Space Mono" font-size="8" fill="#5f8270">§09 ·
+              normal equations</text>
+
+            <rect x="198" y="368" width="160" height="54" rx="5" fill="#141d17" stroke="#ff6b6b" stroke-width="1.2" />
+            <text x="278" y="388" text-anchor="middle" font-family="Space Mono" font-size="9.5" fill="#ff6b6b">LOGISTIC
+              REGRESSION</text>
+            <text x="278" y="406" text-anchor="middle" font-family="Space Mono" font-size="8" fill="#5f8270">§10 ·
+              sigmoid + CE</text>
+
+            <rect x="368" y="368" width="160" height="54" rx="5" fill="#141d17" stroke="#c4a7e7" stroke-width="1.2" />
+            <text x="448" y="388" text-anchor="middle" font-family="Space Mono" font-size="9.5"
+              fill="#c4a7e7">PCA</text>
+            <text x="448" y="406" text-anchor="middle" font-family="Space Mono" font-size="8" fill="#5f8270">§11 ·
+              Lagrangian → eigenproblem</text>
+
+            <rect x="538" y="368" width="155" height="54" rx="5" fill="#141d17" stroke="#ffb86b" stroke-width="1.2" />
+            <text x="615" y="388" text-anchor="middle" font-family="Space Mono" font-size="9.5"
+              fill="#ffb86b">BACKPROP</text>
+            <text x="615" y="406" text-anchor="middle" font-family="Space Mono" font-size="8" fill="#5f8270">§12 · chain
+              rule per layer</text>
+
+            <line x1="280" y1="310" x2="108" y2="366" stroke="#2c4034" stroke-width="1" stroke-dasharray="3,2"
+              marker-end="url(#mma)" />
+            <line x1="330" y1="310" x2="278" y2="366" stroke="#2c4034" stroke-width="1" stroke-dasharray="3,2"
+              marker-end="url(#mma)" />
+            <line x1="390" y1="310" x2="448" y2="366" stroke="#2c4034" stroke-width="1" stroke-dasharray="3,2"
+              marker-end="url(#mma)" />
+            <line x1="440" y1="310" x2="615" y2="366" stroke="#2c4034" stroke-width="1" stroke-dasharray="3,2"
+              marker-end="url(#mma)" />
+
+            <!-- Autodiff bottom -->
+            <rect x="20" y="462" width="680" height="80" rx="6" fill="#0a0f0c" stroke="#203026" stroke-width="1" />
+            <text x="360" y="482" text-anchor="middle" font-family="Space Mono" font-size="8.5" fill="#2c4034"
+              letter-spacing=".2em">AUTOMATIC DIFFERENTIATION (§13)</text>
+            <text x="50" y="505" font-family="Space Mono" font-size="8.5" fill="#5fdd9d">Every PyTorch/JAX op = one
+              identity from §03–08, applied mechanically</text>
+            <text x="50" y="525" font-family="Space Mono" font-size="8.5" fill="#7dd3fc">Reverse mode: right-to-left
+              transposed Jacobian products → VJPs</text>
+            <text x="430" y="525" font-family="Space Mono" font-size="8.5" fill="#ff6b6b">Pitfalls (§14): shape checks,
+              factor of 2, symmetry, trace cycles</text>
+
+            <line x1="108" y1="422" x2="150" y2="460" stroke="#2c4034" stroke-width="1" stroke-dasharray="3,2"
+              marker-end="url(#mma)" />
+            <line x1="448" y1="422" x2="450" y2="460" stroke="#2c4034" stroke-width="1" stroke-dasharray="3,2"
+              marker-end="url(#mma)" />
+            <line x1="615" y1="422" x2="600" y2="460" stroke="#2c4034" stroke-width="1" stroke-dasharray="3,2"
+              marker-end="url(#mma)" />
+          </svg>
+        </div>
+        <div class="fig-cap">Fig 1. Complete matrix calculus map — from the differential viewpoint, through
+          Jacobians/Hessians, trace tricks, and the chain rule, into quadratic forms, every major derivation, and
+          automatic differentiation.</div>
+      </div>
+
+      <p style="margin-top:clamp(22px,4vw,36px)">The complete workflow, every time:</p>
+
+      <ol style="padding-left:clamp(16px,3vw,24px);line-height:2.6;font-size:clamp(14px,1.9vw,16px)">
+        <li><strong>Fix shapes and convention.</strong> Determine the shapes of input and output. In ML, gradients of
+          scalars match the shape of the variable (denominator/ML layout).</li>
+        <li><strong>Write the differential.</strong> Express \(df\) (or \(d\mathcal{L}\)) using the algebra of
+          differentials (§02): sum, product, trace rules. This avoids index chasing entirely.</li>
+        <li><strong>Apply the trace trick if matrix-valued.</strong> Use cyclic permutation (§07) to massage the
+          expression into the form \(\text{tr}(\mathbf{A}\,d\mathbf{X})\), then read off \(\partial
+          f/\partial\mathbf{X}=\mathbf{A}^T\) (§06).</li>
+        <li><strong>For compositions, chain Jacobians.</strong>
+          \(\nabla_\mathbf{x}\mathcal{L}=J_\mathbf{f}(\mathbf{x})^T\nabla_\mathbf{f}\mathcal{L}\) (§05) — transpose the
+          local Jacobian and multiply by the upstream gradient. This is the VJP, the atom of reverse-mode AD (§13).</li>
+        <li><strong>Recognize quadratic forms.</strong>
+          \(\mathbf{x}^T\mathbf{A}\mathbf{x}\to(\mathbf{A}+\mathbf{A}^T)\mathbf{x}\) (§08) is the single most common
+          pattern — MSE, regularizers, Mahalanobis distance, Newton's method, PCA variance.</li>
+        <li><strong>Verify with finite differences.</strong> Before trusting any hand-derived formula, check it
+          numerically (§14). This catches the factor-of-2, symmetry, and transpose errors that are otherwise invisible.
+        </li>
+        <li><strong>Apply to real models.</strong> Linear regression (§09), logistic regression (§10), PCA (§11), and
+          every layer of a neural network (§12) are all instances of steps 1–5 applied to specific \(f\).</li>
+      </ol>
+
+      <div class="thm" style="margin-top:clamp(24px,4vw,40px)">
+        <div class="thm-badge">Matrix Calculus Is Scalar Calculus With Bookkeeping</div>
+        <p>There is no new calculus here — only new bookkeeping. Every derivative is still a limit of a difference
+          quotient; every chain rule is still "multiply local derivatives along the path." What matrix calculus adds is
+          a systematic notation (differentials, traces, Jacobians) for tracking which derivative goes with which shape,
+          so that the same five-step workflow above scales from a single scalar \(x\) to a billion-parameter neural
+          network without ever writing an index sum by hand. </p>
+        <p style="margin-top:1rem;">The ultimate mental model is to alternate between <strong>Vectorization</strong> (viewing the system as a whole to see geometric structures like projections and ellipses) and <strong>Scalarization</strong> (viewing individual entries to verify specific partial derivatives). Master the differential viewpoint and the trace trick, and every gradient in this reference — and every gradient PyTorch computes for you — becomes a two-line derivation.</p>
+      </div>
+    </div>
+
+  </div><!-- /page -->
+
+  <!-- ═══ FOOTER ═══ -->
+  <footer class="site-footer">
+    <div class="footer-content">
+      <div class="footer-main">
+        <div class="footer-left">
+          <p class="copyright">&copy; 2025 Shahid Ul Islam</p>
+          <p class="footer-meta">Data Scientist & AI Developer</p>
+        </div>
+        <div class="footer-right">
+          <div class="footer-links">
+            <a href="#" class="back-to-top">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="12" y1="19" x2="12" y2="5"></line>
+                <polyline points="5 12 12 5 19 12"></polyline>
+              </svg>
+              <span>Back to Top</span>
+            </a>
+            <div class="social-links11">
+              <a href="https://github.com/Khanz9664" target="_blank" class="social-link11">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path
+                    d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22" />
+                </svg>
+              </a>
+              <a href="https://linkedin.com/in/shahid-ul-islam-13650998" target="_blank" class="social-link11">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" />
+                  <rect x="2" y="9" width="4" height="12" />
+                  <circle cx="4" cy="4" r="2" />
+                </svg>
+              </a>
+              <a href="mailto:shahid9664@gmail.com" class="social-link11">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
+                  <polyline points="22,6 12,13 2,6" />
+                </svg>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="made-with">
+      <p>Crafted with <span class="heart-icon">❤️</span> By Shahid</p>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js"></script>
+</body>
+
+</html>

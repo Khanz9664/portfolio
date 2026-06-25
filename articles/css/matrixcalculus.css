@@ -86,17 +86,22 @@ body {
   z-index: 1;
   max-width: 1200px;
   margin: 0 auto;
-  margin-top: 2%;
+  margin-top: 4%;
   width: 100%;
   display: grid;
   grid-template-columns: 1fr auto;
   gap: clamp(24px, 4vw, 52px);
   align-items: center;
+  min-width: 0;
 }
 
-@media(width <=700px) {
+@media(width <=768px) {
   .hero-inner {
     grid-template-columns: 1fr
+  }
+
+  .hero-art {
+    display: none
   }
 }
 
@@ -292,7 +297,7 @@ body {
 .page {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 0 clamp(24px, 5vw, 64px) clamp(80px, 12vw, 140px)
+  padding: 0 clamp(24px, 5vw, 64px) clamp(32px, 5vw, 48px)
 }
 
 /* ═══════════════════════════════════════════
@@ -462,12 +467,15 @@ p {
   border-radius: 8px;
   overflow: hidden;
   border: 1px solid var(--rim2);
+  min-width: 0;
 }
 
 .eq-top {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 6px;
   padding: clamp(8px, 1.4vw, 11px) clamp(14px, 2.5vw, 20px);
   border-bottom: 1px solid var(--rim);
   background: var(--bg3);
@@ -495,7 +503,8 @@ p {
   background: var(--bg2);
   padding: clamp(18px, 3vw, 26px) clamp(16px, 3.5vw, 32px);
   overflow-x: auto;
-  -webkit-overflow-scrolling: touch
+  -webkit-overflow-scrolling: touch;
+  min-width: 0
 }
 
 .eq-note {
@@ -598,6 +607,7 @@ p {
   border-radius: 8px;
   padding: clamp(22px, 3.5vw, 34px) clamp(20px, 4vw, 36px);
   margin: clamp(22px, 3.5vw, 36px) 0;
+  min-width: 0
 }
 
 .thm::before {
@@ -629,7 +639,10 @@ p {
 .thm p {
   font-size: clamp(14px, 1.9vw, 16px);
   line-height: 1.85;
-  margin-bottom: 0
+  margin-bottom: 0;
+  min-width: 0;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch
 }
 
 /* ═══════════════════════════════════════════
@@ -643,7 +656,7 @@ p {
   border-radius: 8px;
   padding: clamp(18px, 3vw, 26px);
   margin: clamp(18px, 3vw, 28px) 0;
-  align-items: flex-start;
+  align-items: flex-start
 }
 
 .note-icon {
@@ -653,6 +666,13 @@ p {
   flex-shrink: 0;
   line-height: 1;
   padding-top: 2px;
+}
+
+.note-body {
+  min-width: 0;
+  flex: 1;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch
 }
 
 .note-body .note-title {
@@ -757,6 +777,13 @@ p {
 
 .drv-row:last-child {
   border-bottom: none
+}
+
+/* mirror of backprop: only the child div gets the scroll treatment */
+.drv-row>div {
+  min-width: 0;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch
 }
 
 .dn {

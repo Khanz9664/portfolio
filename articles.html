@@ -175,8 +175,70 @@
 
 
       <!-- Article 03 -->
-      <a href="articles/linear-regression.html" class="article-card" data-category="models">
+      <a href="articles/matrixcalculus.html" class="article-card" data-category="mathematics">
         <div class="card-index">03</div>
+        <div class="card-image-wrapper">
+          <div class="card-visual-header visual-matrix-calculus">
+            <div class="v-matcalc-wrapper">
+              <svg viewBox="0 0 200 150" class="v-matcalc-svg">
+                <!-- scalar -->
+                <circle cx="38" cy="48" r="14" fill="none" stroke="currentColor" stroke-width="2" class="v-mc-scalar"/>
+                <text x="38" y="53" text-anchor="middle" font-family="monospace" font-size="12" fill="currentColor" class="v-mc-label">f</text>
+                <!-- arrow -->
+                <line x1="53" y1="48" x2="71" y2="48" stroke="currentColor" stroke-width="1.5" opacity="0.5" marker-end="url(#mc-arr)"/>
+                <!-- gradient vector -->
+                <rect x="74" y="24" width="18" height="50" rx="3" fill="none" stroke="#f43f5e" stroke-width="2" class="v-mc-grad"/>
+                <line x1="74" y1="40" x2="92" y2="40" stroke="#f43f5e" stroke-width="1" opacity="0.6"/>
+                <line x1="74" y1="56" x2="92" y2="56" stroke="#f43f5e" stroke-width="1" opacity="0.6"/>
+                <text x="83" y="90" text-anchor="middle" font-family="monospace" font-size="7" fill="#f43f5e" opacity="0.7">∇f (n×1)</text>
+                <!-- Jacobian matrix -->
+                <rect x="30" y="102" width="60" height="40" rx="3" fill="none" stroke="#00f2ff" stroke-width="2" class="v-mc-jac"/>
+                <line x1="50" y1="102" x2="50" y2="142" stroke="#00f2ff" stroke-width="1" opacity="0.5"/>
+                <line x1="70" y1="102" x2="70" y2="142" stroke="#00f2ff" stroke-width="1" opacity="0.5"/>
+                <line x1="30" y1="122" x2="90" y2="122" stroke="#00f2ff" stroke-width="1" opacity="0.5"/>
+                <text x="60" y="150" text-anchor="middle" font-family="monospace" font-size="7" fill="#00f2ff" opacity="0.7">J = ∂y/∂x</text>
+                <!-- Hessian -->
+                <rect x="115" y="95" width="55" height="55" rx="3" fill="none" stroke="#c4a7e7" stroke-width="2" class="v-mc-hess"/>
+                <line x1="133" y1="95" x2="133" y2="150" stroke="#c4a7e7" stroke-width="1" opacity="0.4"/>
+                <line x1="151" y1="95" x2="151" y2="150" stroke="#c4a7e7" stroke-width="1" opacity="0.4"/>
+                <line x1="115" y1="113" x2="170" y2="113" stroke="#c4a7e7" stroke-width="1" opacity="0.4"/>
+                <line x1="115" y1="131" x2="170" y2="131" stroke="#c4a7e7" stroke-width="1" opacity="0.4"/>
+                <!-- symmetric diagonal -->
+                <line x1="115" y1="95" x2="170" y2="150" stroke="#c4a7e7" stroke-width="1.5" stroke-dasharray="3 2" opacity="0.35"/>
+                <text x="143" y="158" text-anchor="middle" font-family="monospace" font-size="7" fill="#c4a7e7" opacity="0.7">∇²f (sym)</text>
+                <!-- defs -->
+                <defs>
+                  <marker id="mc-arr" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
+                    <path d="M0,0 L0,5 L6,2.5z" fill="currentColor" opacity="0.5"/>
+                  </marker>
+                </defs>
+              </svg>
+            </div>
+          </div>
+          <div class="card-image-overlay"></div>
+        </div>
+        <div class="card-glare"></div>
+        <div class="card-content-glass">
+          <div class="card-noise"></div>
+          <div class="card-top">
+            <span class="category-tag">Mathematics</span>
+            <div class="tech-spec">[ CALCULUS // V1.0 ]</div>
+          </div>
+          <div class="card-body">
+            <h3>Matrix Calculus</h3>
+            <p>∂y/∂x for every shape. Differentials, Jacobians, trace tricks, and full derivations of linear regression, PCA, and backprop.</p>
+          </div>
+          <div class="card-bottom">
+            <span class="read-time"><i class="far fa-clock"></i> 40 min read</span>
+            <span class="read-more">Analyze <i class="fas fa-chevron-right"></i></span>
+          </div>
+        </div>
+      </a>
+
+
+      <!-- Article 04 -->
+      <a href="articles/linear-regression.html" class="article-card" data-category="models">
+        <div class="card-index">04</div>
         <div class="card-image-wrapper">
           <div class="card-visual-header visual-linear-regression">
             <div class="v-data-points"></div>
@@ -204,9 +266,9 @@
       </a>
 
 
-      <!-- Article 04 -->
+      <!-- Article 05 -->
       <a href="articles/biasvariance.html" class="article-card" data-category="optimization">
-        <div class="card-index">04</div>
+        <div class="card-index">05</div>
         <div class="card-image-wrapper">
           <div class="card-visual-header visual-bias-variance">
             <div class="v-target-ring v-target-ring-1"></div>
@@ -240,9 +302,9 @@
       </a>
 
 
-      <!-- Article 05 -->
+      <!-- Article 06 -->
       <a href="articles/gradient-descent.html" class="article-card" data-category="optimization">
-        <div class="card-index">05</div>
+        <div class="card-index">06</div>
         <div class="card-image-wrapper">
           <div class="card-visual-header visual-gradient-descent">
             <div class="v-ring v-ring-1"></div>
@@ -272,9 +334,9 @@
       </a>
 
 
-      <!-- Article 06 -->
+      <!-- Article 07 -->
       <a href="articles/logistic-regression.html" class="article-card" data-category="models">
-        <div class="card-index">06</div>
+        <div class="card-index">07</div>
         <div class="card-image-wrapper">
           <div class="card-visual-header visual-logistic-regression">
             <div class="v-grid"></div>
@@ -307,9 +369,9 @@
       </a>
 
 
-      <!-- Article 07 -->
+      <!-- Article 08 -->
       <a href="articles/lagrange-multipliers.html" class="article-card" data-category="optimization">
-        <div class="card-index">07</div>
+        <div class="card-index">08</div>
         <div class="card-image-wrapper">
           <div class="card-visual-header visual-lagrange">
             <div class="v-circle v-circle-1"></div>
@@ -339,9 +401,9 @@
       </a>
 
 
-      <!-- Article 08 -->
+      <!-- Article 09 -->
       <a href="articles/convexoptimization.html" class="article-card" data-category="optimization">
-        <div class="card-index">08</div>
+        <div class="card-index">09</div>
         <div class="card-image-wrapper">
           <div class="card-visual-header visual-convex">
             <div class="v-convex-wrapper">
@@ -383,9 +445,9 @@
       </a>
 
 
-      <!-- Article 09 -->
+      <!-- Article 10 -->
       <a href="articles/svd.html" class="article-card" data-category="mathematics">
-        <div class="card-index">09</div>
+        <div class="card-index">10</div>
         <div class="card-image-wrapper">
           <div class="card-visual-header visual-svd">
             <div class="v-svd-wrapper">
@@ -430,9 +492,9 @@
       </a>
 
 
-      <!-- Article 10 -->
+      <!-- Article 11 -->
       <a href="articles/pca.html" class="article-card" data-category="models">
-        <div class="card-index">10</div>
+        <div class="card-index">11</div>
         <div class="card-image-wrapper">
           <div class="card-visual-header visual-pca">
             <div class="v-pca-wrapper">
@@ -467,9 +529,9 @@
       </a>
 
 
-      <!-- Article 11 -->
+      <!-- Article 12 -->
       <a href="articles/bayesian.html" class="article-card" data-category="models">
-        <div class="card-index">11</div>
+        <div class="card-index">12</div>
         <div class="card-image-wrapper">
           <div class="card-visual-header visual-bayesian">
             <div class="v-bayesian-wrapper">
@@ -503,9 +565,9 @@
       </a>
 
 
-      <!-- Article 12 -->
+      <!-- Article 13 -->
       <a href="articles/neuralnets.html" class="article-card" data-category="deep-learning">
-        <div class="card-index">12</div>
+        <div class="card-index">13</div>
         <div class="card-image-wrapper">
           <div class="card-visual-header visual-neural-networks">
             <div class="v-grid-nn"></div>
@@ -550,9 +612,9 @@
       </a>
 
 
-      <!-- Article 13 -->
+      <!-- Article 14 -->
       <a href="articles/backprop.html" class="article-card" data-category="deep-learning">
-        <div class="card-index">13</div>
+        <div class="card-index">14</div>
         <div class="card-image-wrapper">
           <div class="card-visual-header visual-backprop">
             <div class="v-backprop-wrapper">
@@ -604,9 +666,9 @@
       </a>
 
 
-      <!-- Article 14 -->
+      <!-- Article 15 -->
       <a href="articles/transformers.html" class="article-card" data-category="deep-learning">
-        <div class="card-index">14</div>
+        <div class="card-index">15</div>
         <div class="card-image-wrapper">
           <div class="card-visual-header visual-transformers">
             <div class="v-transformers-wrapper">
@@ -645,6 +707,7 @@
           </div>
         </div>
       </a>
+
 
 
     </section>

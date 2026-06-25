@@ -877,6 +877,89 @@
 }
 }
 
+/* Matrix Calculus Visual */
+.visual-matrix-calculus .v-matcalc-wrapper {
+    position: absolute;
+    width: 250px;
+    height: 150px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.visual-matrix-calculus .v-matcalc-svg {
+    width: 100%;
+    height: 100%;
+    color: #f43f5e;
+    filter: drop-shadow(0 0 10px rgb(244 63 94 / 40%));
+}
+
+.visual-matrix-calculus .v-mc-scalar {
+    animation: mcScalarPulse 3s infinite alternate ease-in-out;
+}
+
+.visual-matrix-calculus .v-mc-grad {
+    animation: mcGradFade 3s infinite alternate-reverse ease-in-out;
+}
+
+.visual-matrix-calculus .v-mc-jac {
+    stroke-dasharray: 200;
+    stroke-dashoffset: 200;
+    animation: mcJacDraw 4s infinite alternate ease-in-out;
+}
+
+.visual-matrix-calculus .v-mc-hess {
+    animation: mcHessPulse 4s infinite alternate ease-in-out;
+}
+
+@keyframes mcScalarPulse {
+    0% {
+    r: 12;
+    opacity: 0.6;
+}
+
+    100% {
+    r: 15;
+    opacity: 1;
+}
+}
+
+@keyframes mcGradFade {
+    0% {
+    opacity: 0.4;
+}
+
+    100% {
+    opacity: 1;
+}
+}
+
+@keyframes mcJacDraw {
+    0% {
+    stroke-dashoffset: 200;
+    opacity: 0.3;
+}
+
+    100% {
+    stroke-dashoffset: 0;
+    opacity: 1;
+}
+}
+
+@keyframes mcHessPulse {
+    0% {
+    opacity: 0.4;
+    transform: scale(0.95);
+    transform-origin: 142px 122px;
+}
+
+    100% {
+    opacity: 0.9;
+    transform: scale(1.03);
+    transform-origin: 142px 122px;
+}
+}
+
 /* Backpropagation Visual */
 .visual-backprop .v-backprop-wrapper {
     position: absolute;

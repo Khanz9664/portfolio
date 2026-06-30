@@ -10,6 +10,7 @@
   [![Deploy to GitHub Pages](https://github.com/Khanz9664/portfolio/actions/workflows/deploy.yml/badge.svg)](https://github.com/Khanz9664/portfolio/actions/workflows/deploy.yml)
   [![Lint Code Base](https://github.com/Khanz9664/portfolio/actions/workflows/lint.yml/badge.svg)](https://github.com/Khanz9664/portfolio/actions/workflows/lint.yml)
   [![Playwright Tests](https://github.com/Khanz9664/portfolio/actions/workflows/test.yml/badge.svg)](https://github.com/Khanz9664/portfolio/actions/workflows/test.yml)
+[![CI](https://github.com/Khanz9664/TrustLens/actions/workflows/ci.yml/badge.svg)](https://github.com/Khanz9664/TrustLens/actions)
 
   <br />
 

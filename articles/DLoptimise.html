@@ -1,0 +1,854 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Deep Learning Optimization | Shahid Ul Islam</title>
+  <meta name="description" content="Why gradient descent in deep networks find solutions that generalize" />
+  <meta name="author" content="Shahid Ul Islam" />
+  <link rel="icon" type="image/png" href="../img/plogo.png" />
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Sora:wght@100;200;300;400;500;600;700;800&family=Source+Sans+3:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=JetBrains+Mono:ital,wght@0,300;0,400;0,500;1,300;1,400&display=swap"
+    rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <link rel="stylesheet" href="../css/variables.css" />
+  <link rel="stylesheet" href="../css/navigation.css" />
+  <link rel="stylesheet" href="../css/footer.css" />
+  <link rel="stylesheet" href="css/DLoptimise.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <script defer src="../js/common.js"></script>
+
+</head>
+
+<body>
+  <div class="top-bar">
+    <div class="logo">
+      <img src="../img/plogo.png" alt="Personal Logo" class="logo-icon">
+      <span class="logo-text">SHAHID<span class="logo-accent">||</span>Portfolio</span>
+    </div>
+    <nav class="nav-container">
+      <ul class="nav-links">
+        <li><a href="../index.html" class="nav-link">.Home</a></li>
+        <li><a href="../about.html" class="nav-link">.About</a></li>
+        <li><a href="../skills.html" class="nav-link">.Skills</a></li>
+        <li><a href="../projects.html" class="nav-link">.Projects</a></li>
+        <li><a href="../contact.html" class="nav-link">.Contact</a></li>
+        <li><a href="../articles.html" class="nav-link">.Articles</a></li>
+      </ul>
+      <div class="menu-toggle">
+        <div class="hamburger"></div>
+      </div>
+    </nav>
+  </div>
+
+<!-- ══ HERO ════════════════════════════════════════════════ -->
+<div class="hero">
+  <div class="hero-inner">
+    <div>
+      <div class="hero-kicker">Deep Learning <span>·</span> Optimization Theory <span>·</span> Training Dynamics</div>
+      <h1>
+        <span class="muted">beyond gradient descent</span>
+        Deep Learning <span class="accent">Optimization</span>
+      </h1>
+      <p class="hero-byline">
+        Loss landscapes and their geometry, saddle points, sharp versus flat minima,
+        the role of SGD noise, implicit bias, generalization theory, batch size
+        scaling, warmup schedules, neural scaling laws, and grokking.
+      </p>
+      <div class="hero-extends">
+        ▲ Extends <a href="https://khanz9664.github.io/portfolio/articles/gradient-descent.html">Gradient Descent</a> — that article established first-order optimization mechanics. This one asks a deeper question: <em>why</em> does gradient descent in deep networks find solutions that generalize, and what do the loss landscape's geometry and the optimizer's stochasticity have to do with it?
+      </div>
+      <div class="hero-tags">
+        <span class="htag o">Loss Landscapes</span>
+        <span class="htag b">Saddle Points</span>
+        <span class="htag g">Sharp vs Flat Minima</span>
+        <span class="htag y">SGD Noise</span>
+        <span class="htag v">Implicit Bias</span>
+        <span class="htag r">Generalization</span>
+        <span class="htag o">Batch Size Theory</span>
+        <span class="htag b">LR Warmup</span>
+        <span class="htag g">Scaling Laws</span>
+        <span class="htag y">Grokking</span>
+      </div>
+    </div>
+    <div class="hero-art">
+      <!-- Loss landscape contour curves -->
+      <svg width="clamp(200px,24vw,290px)" height="clamp(200px,24vw,290px)" viewBox="0 0 270 270" xmlns="http://www.w3.org/2000/svg" style="display:block">
+        <defs>
+          <radialGradient id="lg1" cx="38%" cy="70%" r="50%"><stop offset="0%" stop-color="#ff5500" stop-opacity=".18"/><stop offset="100%" stop-color="#ff5500" stop-opacity="0"/></radialGradient>
+          <radialGradient id="lg2" cx="70%" cy="35%" r="40%"><stop offset="0%" stop-color="#3a8eff" stop-opacity=".14"/><stop offset="100%" stop-color="#3a8eff" stop-opacity="0"/></radialGradient>
+        </defs>
+        <rect width="270" height="270" fill="#0a0a0a"/>
+        <!-- level curves — flat minimum (left) -->
+        <ellipse cx="80" cy="175" rx="50" ry="30" fill="none" stroke="rgba(255,85,0,.5)" stroke-width="1.5"/>
+        <ellipse cx="80" cy="175" rx="35" ry="20" fill="none" stroke="rgba(255,85,0,.4)" stroke-width="1.2"/>
+        <ellipse cx="80" cy="175" rx="20" ry="11" fill="none" stroke="rgba(255,85,0,.3)" stroke-width="1"/>
+        <ellipse cx="80" cy="175" rx="8" ry="4.5" fill="rgba(255,85,0,.12)" stroke="rgba(255,85,0,.5)" stroke-width="1"/>
+        <text x="80" y="220" text-anchor="middle" font-family="Roboto Mono" font-size="9" fill="rgba(255,85,0,.7)">flat minimum</text>
+        <rect x="44" y="173" width="72" height="2" rx="1" fill="rgba(255,85,0,.15)"/>
+
+        <!-- level curves — sharp minimum (right) -->
+        <ellipse cx="195" cy="175" rx="25" ry="45" fill="none" stroke="rgba(58,142,255,.5)" stroke-width="1.5"/>
+        <ellipse cx="195" cy="175" rx="17" ry="32" fill="none" stroke="rgba(58,142,255,.4)" stroke-width="1.2"/>
+        <ellipse cx="195" cy="175" rx="9" ry="18" fill="none" stroke="rgba(58,142,255,.3)" stroke-width="1"/>
+        <ellipse cx="195" cy="175" rx="3.5" ry="7" fill="rgba(58,142,255,.12)" stroke="rgba(58,142,255,.5)" stroke-width="1"/>
+        <text x="195" y="220" text-anchor="middle" font-family="Roboto Mono" font-size="9" fill="rgba(58,142,255,.7)">sharp minimum</text>
+        <rect x="183" y="173" width="24" height="2" rx="1" fill="rgba(58,142,255,.15)"/>
+
+        <!-- Saddle point in middle top -->
+        <text x="140" y="90" text-anchor="middle" font-family="Roboto Mono" font-size="9" fill="rgba(34,204,119,.6)">saddle</text>
+        <circle cx="140" cy="110" r="4" fill="none" stroke="rgba(34,204,119,.5)" stroke-width="1.2"/>
+        <line x1="105" y1="75" x2="130" y2="108" stroke="rgba(34,204,119,.3)" stroke-width="1" stroke-dasharray="3,2"/>
+        <line x1="175" y1="75" x2="150" y2="108" stroke="rgba(34,204,119,.3)" stroke-width="1" stroke-dasharray="3,2"/>
+
+        <!-- SGD trajectory (noisy) -->
+        <path d="M195,175 C190,160 183,148 174,138 C165,128 153,120 142,112" fill="none" stroke="rgba(245,196,0,.7)" stroke-width="1.5" stroke-dasharray="4,2"/>
+        <path d="M142,112 C128,100 112,110 100,130 C90,148 82,165 80,175" fill="none" stroke="rgba(245,196,0,.7)" stroke-width="1.5" stroke-dasharray="4,2"/>
+        <text x="140" y="55" text-anchor="middle" font-family="Roboto Mono" font-size="8.5" fill="rgba(245,196,0,.6)">SGD path (noisy)</text>
+
+        <!-- Gradient descent arrow (clean) -->
+        <defs><marker id="arr" markerWidth="6" markerHeight="6" refX="4" refY="2" orient="auto"><path d="M0,0 L0,4 L6,2z" fill="rgba(245,196,0,.7)"/></marker></defs>
+      </svg>
+    </div>
+  </div>
+  <!-- stats strip -->
+  <div class="hero-strip">
+    <div class="hs-cell"><div class="hs-val">O(n)</div><div class="hs-label">Saddle Points</div></div>
+    <div class="hs-cell"><div class="hs-val">flat</div><div class="hs-label">Generalize Better</div></div>
+    <div class="hs-cell"><div class="hs-val">√B</div><div class="hs-label">Effective LR Rule</div></div>
+    <div class="hs-cell"><div class="hs-val">N^c</div><div class="hs-label">Neural Scaling</div></div>
+    <div class="hs-cell"><div class="hs-val">∞</div><div class="hs-label">Grokking Delay</div></div>
+  </div>
+</div>
+
+<!-- ══ TOC ══════════════════════════════════════════════════ -->
+<div class="toc-outer">
+  <div class="toc-grid">
+    <div class="toc-cell"><a href="#c1"><span class="toc-n">01</span>Loss Landscapes</a></div>
+    <div class="toc-cell"><a href="#c2"><span class="toc-n">02</span>Saddle Points</a></div>
+    <div class="toc-cell"><a href="#c3"><span class="toc-n">03</span>Sharp vs Flat Minima</a></div>
+    <div class="toc-cell"><a href="#c4"><span class="toc-n">04</span>SGD Noise</a></div>
+    <div class="toc-cell"><a href="#c5"><span class="toc-n">05</span>Implicit Bias</a></div>
+    <div class="toc-cell"><a href="#c6"><span class="toc-n">06</span>Generalization</a></div>
+    <div class="toc-cell"><a href="#c7"><span class="toc-n">07</span>Batch Size Theory</a></div>
+    <div class="toc-cell"><a href="#c8"><span class="toc-n">08</span>Learning Rate Warmup</a></div>
+    <div class="toc-cell"><a href="#c9"><span class="toc-n">09</span>Neural Scaling Laws</a></div>
+    <div class="toc-cell"><a href="#c10"><span class="toc-n">10</span>Grokking</a></div>
+    <div class="toc-cell"><a href="#c11"><span class="toc-n">11</span>Complete Mental Model</a></div>
+  </div>
+</div>
+
+<div class="page">
+
+<!-- ══ §01 ═════════════════════════════════════════════════ -->
+<div class="ch" id="c1">
+  <div class="ch-head">
+    <div class="ch-top"><div class="ch-num">01</div><span class="ch-badge o">Geometry</span></div>
+    <h2>Loss Landscapes</h2>
+    <div class="ch-sub">// high-dimensional geometry · Hessian structure · loss surface visualization · why intuition fails</div>
+  </div>
+
+  <p>The loss landscape is the function \(\mathcal{L}: \mathbb{R}^P \to \mathbb{R}\) that maps every possible parameter vector to its training loss. For a model with \(P\) parameters, this is a hypersurface in \(\mathbb{R}^{P+1}\). Understanding its geometry — not just at the starting point, but globally — is the prerequisite for understanding everything else in this article.</p>
+
+  <div class="sub">
+    <div class="sh o">The Hessian as a Local Map</div>
+    <div class="eq o">
+      <div class="eq-top"><span class="eq-name">Second-Order Taylor Expansion</span><span class="eq-tag">Local Landscape</span></div>
+      <div class="eq-body">
+        \[\mathcal{L}(\boldsymbol{\theta}+\boldsymbol{\delta}) \approx \mathcal{L}(\boldsymbol{\theta}) + \nabla_{\boldsymbol{\theta}}\mathcal{L}^T\boldsymbol{\delta} + \frac{1}{2}\boldsymbol{\delta}^T\mathbf{H}\boldsymbol{\delta}\]
+        \[\mathbf{H} = \nabla^2_{\boldsymbol{\theta}}\mathcal{L} \in \mathbb{R}^{P\times P}, \quad H_{ij} = \frac{\partial^2\mathcal{L}}{\partial\theta_i\partial\theta_j}\]
+        <div class="eq-note">The Hessian H is the second-order local map of the loss landscape. Its eigenvalues are the principal curvatures: large eigenvalues = steep walls (sharp directions), near-zero eigenvalues = flat valleys. For a model with P=10^10 parameters, H has 10^20 entries — completely intractable to store or compute, yet its spectral structure fundamentally determines every aspect of training dynamics.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sub">
+    <div class="sh b">Why High-Dimensional Geometry Is Counter-Intuitive</div>
+    <div class="two">
+      <div class="tcol">
+        <h4 style="color:var(--orange)">Our 3D intuition</h4>
+        <p>In 3D, "stuck" means surrounded by walls — you need to climb up in every direction to escape. A local minimum in 3D has positive curvature in every direction. Saddle points require finding the one downhill direction.</p>
+      </div>
+      <div class="tcol">
+        <h4 style="color:var(--blue)">Reality in P dimensions</h4>
+        <p>In \(P\sim10^{10}\) dimensions, a point with even <em>one</em> negative Hessian eigenvalue is NOT a local minimum — gradient descent (or noise) will escape it. True local minima require all \(P\) eigenvalues to be positive. The probability of this at a random critical point is astronomically low — <strong>almost no critical points in deep networks are true local minima</strong>.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="sub">
+    <div class="sh g">Visualizing Loss Surfaces</div>
+    <p>Li et al. (2018) introduced filter normalization visualization: project the landscape onto a 2D plane defined by two random Gaussian directions \(\boldsymbol{\delta}_1, \boldsymbol{\delta}_2\) from a trained solution \(\boldsymbol{\theta}^*\), normalized to match filter-wise norms of the parameter matrices (removing the spurious curvature caused by scale differences between layers):</p>
+    <div class="eq g">
+      <div class="eq-top"><span class="eq-name">Filter-Normalized Loss Visualization</span><span class="eq-tag">Li et al. 2018</span></div>
+      <div class="eq-body">
+        \[\mathcal{L}(\alpha,\beta) = \mathcal{L}\!\left(\boldsymbol{\theta}^* + \alpha\frac{\boldsymbol{\delta}_1}{\|\boldsymbol{\delta}_1\|}\cdot\|\boldsymbol{\theta}^*\| + \beta\frac{\boldsymbol{\delta}_2}{\|\boldsymbol{\delta}_2\|}\cdot\|\boldsymbol{\theta}^*\|\right)\]
+        <div class="eq-note">This revealed a stunning visual result: deep networks with skip connections (ResNets) have dramatically smoother, more convex-looking loss landscapes than networks without skip connections — the skip connections literally smooth out the terrain, which is one reason they train more reliably. This is a visual corroboration that architectural choices change landscape geometry, not just parameter count.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="lens o">
+    <div class="lens-icon">▲</div>
+    <div class="lens-content">
+      <div class="lens-title">The Key Question of This Article</div>
+      <p>The loss landscape has many minima. Gradient descent finds one of them. Classical machine learning theory asks "did you find the global minimum?" — and the answer for deep networks is almost certainly "no." But the right question turns out to be: <strong>which minimum did you find, and does it generalize?</strong> The rest of this article is about the geometry of that question.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ══ §02 ═════════════════════════════════════════════════ -->
+<div class="ch" id="c2">
+  <div class="ch-head">
+    <div class="ch-top"><div class="ch-num">02</div><span class="ch-badge b">Escaping</span></div>
+    <h2>Saddle Points</h2>
+    <div class="ch-sub">// critical points · index of a saddle · why SGD escapes · the strict saddle property</div>
+  </div>
+
+  <p>A saddle point is a critical point (\(\nabla\mathcal{L}=\mathbf{0}\)) where the Hessian has both positive and negative eigenvalues — it looks like a local minimum from some directions and a local maximum from others. In high dimensions, they are vastly more common than local minima.</p>
+
+  <div class="eq b">
+    <div class="eq-top"><span class="eq-name">Saddle Point — Formal Definition</span><span class="eq-tag">Characterization</span></div>
+    <div class="eq-body">
+      \[\nabla\mathcal{L}(\boldsymbol{\theta}^*)=\mathbf{0}, \quad \mathbf{H}(\boldsymbol{\theta}^*) \text{ has at least one negative eigenvalue } \lambda_k &lt; 0\]
+      \[\text{Index of the saddle} = \text{number of negative eigenvalues of }\mathbf{H}\]
+      <div class="eq-note">In P dimensions, if the loss has a random critical point structure, the probability that ALL P eigenvalues are positive (true local min) is exponentially small in P. By the Wigner semicircle law for random matrices, roughly half the eigenvalues will be negative for a random critical point at the same loss value as the global minimum — so almost all critical points with low loss are high-index saddles, not true local minima.</div>
+    </div>
+  </div>
+
+  <div class="sub">
+    <div class="sh b">How Gradient Descent Escapes Saddles</div>
+    <div class="drv">
+      <div class="drv-hdr">// Why exact gradient descent can get stuck, but SGD typically doesn't</div>
+      <div class="drv-row">
+        <span class="dn b">1</span>
+        <div>
+          Near a saddle point at \(\boldsymbol{\theta}^*\), the gradient is small. Along the negative-eigenvalue eigenvector \(\mathbf{v}_k\) (i.e., \(\mathbf{H}\mathbf{v}_k=\lambda_k\mathbf{v}_k\), \(\lambda_k&lt;0\)):
+          \[\mathcal{L}(\boldsymbol{\theta}^*+t\mathbf{v}_k)\approx\mathcal{L}(\boldsymbol{\theta}^*)+\frac{t^2}{2}\lambda_k &lt; \mathcal{L}(\boldsymbol{\theta}^*)\]
+        </div>
+      </div>
+      <div class="drv-row">
+        <span class="dn b">2</span>
+        <div>
+          <strong>Exact gradient descent</strong>: if initialized exactly at the saddle (\(\boldsymbol{\theta}_0=\boldsymbol{\theta}^*\)), gradient is zero → no update → stuck forever. In practice, any tiny perturbation causes exponential divergence from the saddle along \(\mathbf{v}_k\) (with rate \(|\lambda_k|\)), but convergence can be <em>extremely slow</em> near a saddle where the negative eigenvalue is small.
+        </div>
+      </div>
+      <div class="drv-row">
+        <span class="dn b">3</span>
+        <div>
+          <strong>SGD</strong>: gradient noise (from mini-batch sampling) has a component along \(\mathbf{v}_k\) with probability 1 (random noise projects onto every direction). The saddle is unstable under perturbation — SGD escapes saddles efficiently in practice.
+          <div class="dnote">Ge et al. (2015) proved that stochastic gradient descent with added noise converges to a second-order stationary point (no negative Hessian eigenvalues) efficiently in polynomial time, under the "strict saddle property" — all saddles have at least one eigenvalue strictly below some negative threshold. Empirically, deep networks satisfy this property.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sub">
+    <div class="sh g">Strict Saddle Property</div>
+    <div class="thm">
+      <div class="thm-badge">Strict Saddle Property (Informal)</div>
+      <p>A function satisfies the strict saddle property if every critical point is either (a) an approximate local minimum (all Hessian eigenvalues \(\geq -\epsilon\)), or (b) a "strict saddle" with at least one eigenvalue \(\leq -\epsilon\) for some fixed \(\epsilon&gt;0\). If a function is strict-saddle, then gradient descent with noise converges to a local minimum in polynomial time — <strong>saddle points are never stable fixed points, only transient obstacles</strong>. Empirically, deep networks with smooth activations appear to satisfy this, which is the leading theoretical explanation for why SGD reliably converges to low-loss solutions despite the non-convexity.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ══ §03 ═════════════════════════════════════════════════ -->
+<div class="ch" id="c3">
+  <div class="ch-head">
+    <div class="ch-top"><div class="ch-num">03</div><span class="ch-badge g">Geometry</span></div>
+    <h2>Sharp vs Flat Minima</h2>
+    <div class="ch-sub">// Hochreiter &amp; Schmidhuber 1997 · sharpness measures · the PAC-Bayes connection · flatness = generalization</div>
+  </div>
+
+  <p>Not all minima are equal. Two parameters sets can achieve identical training loss yet radically different generalization. The key differentiator is the <span class="ho">sharpness</span> of the minimum — how steeply the loss rises when you perturb the parameters.</p>
+
+  <div class="eq g">
+    <div class="eq-top"><span class="eq-name">Sharpness — Maximum Perturbation Sensitivity</span><span class="eq-tag">Keskar et al. 2017</span></div>
+    <div class="eq-body">
+      \[\phi_\epsilon(\boldsymbol{\theta}) = \frac{\max_{\|\boldsymbol{\delta}\|\leq\epsilon}\mathcal{L}(\boldsymbol{\theta}+\boldsymbol{\delta}) - \mathcal{L}(\boldsymbol{\theta})}{1+\mathcal{L}(\boldsymbol{\theta})}\]
+      <div class="eq-note">This measures how much the loss can increase within an ε-ball around θ — the maximum "sensitivity to perturbation." A flat minimum has small φ_ε; a sharp minimum has large φ_ε. At a flat minimum, many nearby parameter settings have approximately the same (low) training loss — at a sharp minimum, even tiny perturbations spike the loss dramatically.</div>
+    </div>
+  </div>
+
+  <div class="sub">
+    <div class="sh g">Why Flat Minima Generalize Better — Intuitive Argument</div>
+    <p>Consider training vs test loss. At any finite sample size \(n\), the training loss and test loss differ — the gap is approximately bounded by complexity measures. Now consider two minima with equal training loss:</p>
+    <ul class="fl g">
+      <li>A <span class="hg">flat minimum</span>: even if the true test loss is shifted slightly from the training loss (due to distribution shift or finite-sample effects), the minimum is still approximately at a flat, low-loss region of the test loss — generalization is robust.</li>
+      <li>A <span class="hb">sharp minimum</span>: a small shift between training and test loss distributions can move the sharp minimum's basin significantly — the test loss at the same parameter setting may be much higher than the training loss, even when the two distributions are nearly identical.</li>
+    </ul>
+  </div>
+
+  <div class="sub">
+    <div class="sh y">PAC-Bayes Connection — Flatness = Compressibility</div>
+    <div class="eq y">
+      <div class="eq-top"><span class="eq-name">PAC-Bayes Generalization Bound</span><span class="eq-tag">Formal Link</span></div>
+      <div class="eq-body">
+        \[\mathcal{L}_{\text{test}}(\boldsymbol{\theta}) \leq \mathcal{L}_{\text{train}}(Q) + \sqrt{\frac{D_{\text{KL}}(Q\|P)+\log(1/\delta)}{2n}}\]
+        <div class="eq-note">In the PAC-Bayes framework, Q is a distribution over parameters (a "fuzzy" version of our deterministic θ), P is a prior. If we set Q = N(θ, σ²I) (Gaussian around our found minimum with standard deviation σ) and P to be a fixed prior, the KL term measures how much "information" is in θ relative to the prior — and a FLAT minimum is one where σ can be chosen LARGE (Q still covers a region of low loss) → small KL → tighter generalization bound. Flatness and compressibility are the same property, seen from two perspectives.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sub">
+    <div class="sh v">SAM — Sharpness-Aware Minimization</div>
+    <div class="eq v">
+      <div class="eq-top"><span class="eq-name">SAM Objective — Foret et al. 2021</span><span class="eq-tag">Optimization Algorithm</span></div>
+      <div class="eq-body">
+        \[\min_{\boldsymbol{\theta}}\max_{\|\boldsymbol{\epsilon}\|\leq\rho}\mathcal{L}(\boldsymbol{\theta}+\boldsymbol{\epsilon})\]
+        \[\text{Update: }\hat{\boldsymbol{\epsilon}}=\rho\frac{\nabla\mathcal{L}(\boldsymbol{\theta})}{\|\nabla\mathcal{L}(\boldsymbol{\theta})\|}, \quad \boldsymbol{\theta}\leftarrow\boldsymbol{\theta}-\eta\nabla\mathcal{L}(\boldsymbol{\theta}+\hat{\boldsymbol{\epsilon}})\]
+        <div class="eq-note">SAM explicitly minimizes the WORST-CASE loss in a ρ-neighborhood — directly minimizing sharpness rather than just training loss. The update is a two-step process: (1) perturb θ to the worst-nearby point (maximization step, approximated by one gradient ascent step normalized to ρ), (2) gradient step at the perturbed point (minimization on the perturbed landscape). SAM consistently improves generalization across vision models, often matching larger models' accuracy with significantly better training efficiency.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ §04 ═════════════════════════════════════════════════ -->
+<div class="ch" id="c4">
+  <div class="ch-head">
+    <div class="ch-top"><div class="ch-num">04</div><span class="ch-badge y">Stochasticity</span></div>
+    <h2>SGD Noise and Its Role</h2>
+    <div class="ch-sub">// gradient noise covariance · effective temperature · annealing · noise as implicit regularization</div>
+  </div>
+
+  <p>The gradient descent article established the update rule. Here we examine the noise structure of stochastic gradient descent in depth — because it turns out the noise is not a nuisance to be minimized, but an active ingredient that shapes which minima are found.</p>
+
+  <div class="eq y">
+    <div class="eq-top"><span class="eq-name">SGD Gradient Noise — Covariance Structure</span><span class="eq-tag">Stochastic Analysis</span></div>
+    <div class="eq-body">
+      \[\mathbf{g}_B(\boldsymbol{\theta}) = \frac{1}{B}\sum_{i\in\mathcal{B}}\nabla_{\boldsymbol{\theta}}\ell_i(\boldsymbol{\theta}) = \nabla\mathcal{L}(\boldsymbol{\theta}) + \boldsymbol{\epsilon}_B\]
+      \[\boldsymbol{\epsilon}_B \approx \mathcal{N}\!\left(0, \frac{\mathbf{C}(\boldsymbol{\theta})}{B}\right), \quad \mathbf{C}(\boldsymbol{\theta}) = \frac{1}{n}\sum_{i=1}^n\nabla\ell_i\nabla\ell_i^T - \nabla\mathcal{L}\nabla\mathcal{L}^T\]
+      <div class="eq-note">The per-sample gradient covariance C(θ) encodes the geometry of the data's loss structure — its eigenvalues in the directions of large gradient variance are the directions where loss changes most unpredictably across samples. Importantly, C(θ)/B DECREASES with larger batch size B — larger batches use a MORE accurate gradient estimate, leaving LESS gradient noise. We'll explore the consequences in §07.</div>
+    </div>
+  </div>
+
+  <div class="sub">
+    <div class="sh y">Effective Temperature Analogy</div>
+    <p>The dynamics of SGD in the vicinity of a minimum can be approximated by a Langevin equation — a stochastic differential equation studied in statistical physics for Brownian motion:</p>
+    <div class="eq y">
+      <div class="eq-top"><span class="eq-name">SGD as Stochastic Differential Equation</span><span class="eq-tag">Langevin View</span></div>
+      <div class="eq-body">
+        \[\boldsymbol{\theta}_{t+1} = \boldsymbol{\theta}_t - \eta\nabla\mathcal{L}(\boldsymbol{\theta}_t) + \sqrt{2T_{\text{eff}}}\,\boldsymbol{\xi}_t, \quad \boldsymbol{\xi}_t\sim\mathcal{N}(0,\mathbf{I})\]
+        \[T_{\text{eff}} = \frac{\eta}{B}\cdot\frac{\text{const}}{2} \propto \frac{\eta}{B}\]
+        <div class="eq-note">The effective temperature T_eff controls the amplitude of parameter fluctuations. In statistical physics, temperature determines which minima are accessible — at high T, the system explores broadly; at low T, it settles into narrow low-energy minima. Here: high η/B (small batch or large step) → high effective temperature → SGD explores broadly and avoids sharp minima (narrow "energy basins"). Low η/B → low effective temperature → SGD freezes near the first acceptable minimum it finds, which may be sharp.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sub">
+    <div class="sh o">Noise as Implicit Regularization</div>
+    <div class="lens o">
+      <div class="lens-icon">T</div>
+      <div class="lens-content">
+        <div class="lens-title">The Subtle Power of Gradient Noise</div>
+        <p>The effective temperature argument makes a testable prediction: everything else equal, high \(\eta/B\) should lead to flatter minima and better generalization — not because the optimizer has any explicit knowledge of flatness, but because high noise makes sharp, narrow minima <em>unstable</em> (the parameter oscillations exceed the basin width and kick the iterate out) while flat, wide minima are thermodynamically stable (the entire broad basin is accessible). Smith &amp; Le (2018) confirmed this empirically: models trained with small batch + large LR (high T) generalize significantly better than those trained with large batch + small LR (low T), even when total gradient steps and final training loss are matched. The noise is doing the work.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ §05 ═════════════════════════════════════════════════ -->
+<div class="ch" id="c5">
+  <div class="ch-head">
+    <div class="ch-top"><div class="ch-num">05</div><span class="ch-badge v">Theory</span></div>
+    <h2>Implicit Bias of Gradient Descent</h2>
+    <div class="ch-sub">// the implicit regularizer · linear networks → minimum norm · deep networks → max margin</div>
+  </div>
+
+  <p>Gradient descent does not just find <em>a</em> solution that fits the training data — it finds a <em>specific</em> solution determined by the optimizer's geometry. This "implicit bias" is a regularization effect that operates entirely without an explicit regularization term, and it is one of the deepest reasons deep networks generalize despite being highly overparameterized.</p>
+
+  <div class="sub">
+    <div class="sh v">Linear Models: Gradient Descent → Minimum Norm</div>
+    <div class="thm">
+      <div class="thm-badge">Theorem: Implicit Bias for Linear Regression</div>
+      <p>For a linear model \(\hat{\mathbf{y}}=\mathbf{X}\boldsymbol{\theta}\) initialized at \(\boldsymbol{\theta}_0=\mathbf{0}\) and trained with gradient descent on the MSE loss until interpolation (\(\mathbf{X}\boldsymbol{\theta}^*=\mathbf{y}\)), gradient descent converges to the <strong>minimum-norm</strong> interpolating solution \(\boldsymbol{\theta}^*=\mathbf{X}^+\mathbf{y}\) (the pseudoinverse solution), regardless of the learning rate and step count, even in the overparameterized setting where \(P \gg n\).</p>
+    </div>
+    <div class="drv">
+      <div class="drv-hdr">// Proof sketch — gradient descent stays in the row space of X</div>
+      <div class="drv-row">
+        <span class="dn v">1</span>
+        <div>
+          The gradient is \(\nabla_{\boldsymbol{\theta}}\mathcal{L} = 2\mathbf{X}^T(\mathbf{X}\boldsymbol{\theta}-\mathbf{y}) \in \text{row-space}(\mathbf{X})\) — always a linear combination of rows of \(\mathbf{X}\).
+        </div>
+      </div>
+      <div class="drv-row">
+        <span class="dn v">2</span>
+        <div>
+          Starting from \(\boldsymbol{\theta}_0=\mathbf{0}\), every gradient descent update adds something in the row-space of \(\mathbf{X}\). By induction, \(\boldsymbol{\theta}_t\in\text{row-space}(\mathbf{X})\) for all \(t\).
+        </div>
+      </div>
+      <div class="drv-row">
+        <span class="dn v">3</span>
+        <div>
+          The unique element of the row-space that satisfies \(\mathbf{X}\boldsymbol{\theta}=\mathbf{y}\) (the interpolation constraint) is precisely \(\boldsymbol{\theta}^*=\mathbf{X}^+\mathbf{y}\), which has minimum \(\ell_2\) norm among all interpolating solutions. ∎
+          <div class="dnote">No explicit L2 regularization was used anywhere. The minimum-norm solution emerged purely from gradient descent's initialization and geometry. This is "free" regularization.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sub">
+    <div class="sh o">Deep Networks: Max Margin</div>
+    <div class="eq o">
+      <div class="eq-top"><span class="eq-name">Implicit Bias — Linear Networks on Classification</span><span class="eq-tag">Soudry et al. 2018</span></div>
+      <div class="eq-body">
+        \[\text{For separable data, gradient descent on logistic loss converges to the }\textbf{maximum L2-margin}\text{ classifier:}\]
+        \[\boldsymbol{\theta}_t/\|\boldsymbol{\theta}_t\| \to \underset{\boldsymbol{\theta}:\|\boldsymbol{\theta}\|=1}{\arg\max}\;\min_i y_i\mathbf{x}_i^T\boldsymbol{\theta} \quad\text{as } t\to\infty\]
+        <div class="eq-note">Gradient descent on logistic/cross-entropy loss (the standard deep learning objective) implicitly converges to the maximum-margin classifier — the same solution found by SVMs with explicit margin maximization! The optimizer finds this solution for FREE, with no explicit max-margin objective in the code. This result extends (with more complex implicit biases) to deep linear networks and, empirically, to deep nonlinear networks trained on real data.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sub">
+    <div class="sh b">Why Implicit Bias Is Crucial for Overparameterization</div>
+    <div class="lens b">
+      <div class="lens-icon">∞</div>
+      <div class="lens-content">
+        <div class="lens-title">Infinitely Many Perfect Training Solutions, One Is Chosen</div>
+        <p>A network with more parameters than data points can fit the training data perfectly with <em>infinitely many</em> different parameter settings. Classical theory provides no guidance about which one gradient descent finds — they could all have wildly different test performance. The implicit bias resolves this: gradient descent is not choosing randomly from this infinite set. It is choosing the <strong>structurally simplest</strong> fitting solution in a sense determined by the optimizer's geometry (minimum norm, maximum margin, or more complex inductive biases for deep networks). This "structured interpolation" is one of the leading explanations for why massive overparameterized networks generalize at all.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ §06 ═════════════════════════════════════════════════ -->
+<div class="ch" id="c6">
+  <div class="ch-head">
+    <div class="ch-top"><div class="ch-num">06</div><span class="ch-badge r">Foundation</span></div>
+    <h2>Generalization — Why Overparameterized Networks Work</h2>
+    <div class="ch-sub">// classical vs modern theory · double descent · benign overfitting · the interpolation threshold</div>
+  </div>
+
+  <p>Classical machine learning theory (VC dimension, Rademacher complexity, bias-variance tradeoff) predicts that interpolating the training data perfectly (zero training loss) leads to catastrophic generalization failure. Deep networks do this routinely — and generalize superbly. Something fundamental in the theory must be missing.</p>
+
+  <div class="sub">
+    <div class="sh r">The Classical Bias-Variance Tradeoff</div>
+    <div class="eq r">
+      <div class="eq-top"><span class="eq-name">Bias-Variance Decomposition</span><span class="eq-tag">Classical Theory</span></div>
+      <div class="eq-body">
+        \[\mathbb{E}\left[(\hat{f}(\mathbf{x})-y)^2\right] = \underbrace{\text{Bias}^2}_{\text{underfitting}} + \underbrace{\text{Variance}}_{\text{overfitting}} + \sigma^2\]
+        \[\text{Classical prediction: variance} \uparrow\text{ monotonically with model complexity}\]
+        <div class="eq-note">Classical theory says: after crossing the interpolation threshold (fitting training data perfectly), variance explodes → generalization collapses. The optimal model is at the bias-variance "sweet spot" just before interpolation. Neural networks empirically violate this prediction at scale.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sub">
+    <div class="sh g">Double Descent</div>
+    <div class="eq g">
+      <div class="eq-top"><span class="eq-name">Double Descent Phenomenon</span><span class="eq-tag">Belkin et al. 2019</span></div>
+      <div class="eq-body">
+        \[\text{Risk}(P) = \begin{cases}\text{classical U-shape} &amp; P &lt; n \text{ (under-parameterized)} \\ \text{peaks} &amp; P \approx n \text{ (interpolation threshold)} \\ \text{decreases again!} &amp; P \gg n \text{ (over-parameterized)}\end{cases}\]
+        <div class="eq-note">Belkin et al. demonstrated that as model size P passes through n (the number of training samples), test error first follows the classical U-shape, then PEAKS at the interpolation threshold (the model is just barely able to fit the training data, in a "rigid," high-variance way), then DECREASES again as P grows further — because overparameterized models have the freedom to find the MINIMUM NORM interpolating solution (§05), which turns out to have low test error. Double descent was observed in random feature models, kernel methods, and neural networks.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sub">
+    <div class="sh o">Benign Overfitting</div>
+    <div class="thm">
+      <div class="thm-badge">Theorem: Benign Overfitting (Bartlett et al. 2020)</div>
+      <p>For linear models in high-dimensional settings where the data covariance has rapidly decaying spectrum, the minimum-norm interpolating solution can have zero training error AND asymptotically optimal test error simultaneously — "benign" because the overfitting causes no generalization harm. The precise condition: the "effective dimensionality" of the covariance's tail (dimensions beyond the top-\(n\)) must be large enough to absorb the noise from memorizing training labels without affecting predictions on unseen test points (which lie primarily in the top-n signal directions).</p>
+    </div>
+    <p>This result provides a formal version of the double-descent intuition: when the model has <em>far more degrees of freedom than training points</em>, it can simultaneously memorize training data (using the many tail dimensions) AND generalize (because the signal-relevant directions are learned correctly and minimally corrupted by the memorization).</p>
+  </div>
+</div>
+
+<!-- ══ §07 ═════════════════════════════════════════════════ -->
+<div class="ch" id="c7">
+  <div class="ch-head">
+    <div class="ch-top"><div class="ch-num">07</div><span class="ch-badge g">Scaling</span></div>
+    <h2>Batch Size Theory</h2>
+    <div class="ch-sub">// the linear scaling rule · critical batch size · gradient noise scale · Goyal et al. 2017</div>
+  </div>
+
+  <p>Batch size is one of the most consequential hyperparameters in deep learning training — it controls the trade-off between throughput (samples per second), wall-clock time, and generalization. The theory of how to scale batch size optimally is surprisingly precise.</p>
+
+  <div class="sub">
+    <div class="sh g">The Linear Scaling Rule</div>
+    <div class="eq g">
+      <div class="eq-top"><span class="eq-name">Linear Scaling Rule (Goyal et al. 2017)</span><span class="eq-tag">Facebook AI Research</span></div>
+      <div class="eq-body">
+        \[\text{If batch size multiplied by } k: \quad \eta \leftarrow k\cdot\eta \quad\text{(multiply learning rate by same } k\text{)}\]
+        <div class="eq-note">Intuition via effective temperature: recall from §04 that T_eff ∝ η/B. To keep T_eff constant when B → kB (training dynamics unchanged), we need η → kη. This works in practice up to some critical batch size B_crit beyond which the linear rule breaks down and additional techniques (warmup, §08) are needed.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sub">
+    <div class="sh y">Critical Batch Size — The Efficiency Frontier</div>
+    <div class="eq y">
+      <div class="eq-top"><span class="eq-name">Critical Batch Size (McCandlish et al. 2018)</span><span class="eq-tag">OpenAI Scaling</span></div>
+      <div class="eq-body">
+        \[B_{\text{crit}} \triangleq \frac{\text{tr}(\mathbf{C}(\boldsymbol{\theta}))}{\|\nabla\mathcal{L}(\boldsymbol{\theta})\|^2} = \frac{\text{gradient noise scale}}{\text{gradient signal scale}}\]
+        \[\text{For } B \ll B_{\text{crit}}: \text{ parallelism is efficient — each sample adds new information}\]
+        \[\text{For } B \gg B_{\text{crit}}: \text{ redundant work — extra samples add diminishing gradient accuracy}\]
+        <div class="eq-note">B_crit is the batch size at which gradient noise and gradient signal are equal in magnitude. Below B_crit, increasing batch size improves gradient accuracy proportionally — linear speedup in training efficiency. Above B_crit, increasing batch size gives diminishing returns in gradient accuracy — you're just averaging away already-negligible noise. This defines the "efficiency frontier" of batch size scaling.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sub">
+    <div class="sh b">Practical Consequences</div>
+    <div class="t-wrap">
+      <table>
+        <thead><tr><th>Regime</th><th>Batch Size</th><th>Steps to Convergence</th><th>Wall-Clock Time</th><th>Generalization</th></tr></thead>
+        <tbody>
+          <tr><td>Small batch SGD</td><td>\(B \ll B_{\text{crit}}\)</td><td>Many steps</td><td>Long (serial)</td><td>Best (high T_eff, flat minima)</td></tr>
+          <tr><td>Critical batch</td><td>\(B \approx B_{\text{crit}}\)</td><td>Optimal efficiency</td><td>Moderate</td><td>Good</td></tr>
+          <tr><td>Large batch SGD</td><td>\(B \gg B_{\text{crit}}\)</td><td>Fewer steps, but redundant</td><td>Shorter (parallel)</td><td>Worse (low T_eff, sharp minima)</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>McCandlish et al. showed that \(B_{\text{crit}}\) grows as training progresses — early in training, the gradient is large and noisy (small \(B_{\text{crit}}\)); late in training, the gradient is small and smooth (large \(B_{\text{crit}}\)), allowing larger batches without efficiency loss. This motivates <span class="hy">increasing batch size during training</span> as an alternative to learning rate decay — both achieve similar effects via the T_eff ratio.</p>
+  </div>
+</div>
+
+<!-- ══ §08 ═════════════════════════════════════════════════ -->
+<div class="ch" id="c8">
+  <div class="ch-head">
+    <div class="ch-top"><div class="ch-num">08</div><span class="ch-badge o">Scheduling</span></div>
+    <h2>Learning Rate Warmup</h2>
+    <div class="ch-sub">// why large LR crashes early training · gradient variance theory · cosine schedule · warmup variants</div>
+  </div>
+
+  <p>Modern large-scale training invariably starts with a <span class="ho">learning rate warmup</span> — gradually increasing the learning rate from near-zero to its target value over the first few hundred to a few thousand steps. This seemingly small detail is critical for training stability and has a precise mathematical justification.</p>
+
+  <div class="sub">
+    <div class="sh o">Why Large LR Crashes at the Start</div>
+    <div class="drv">
+      <div class="drv-hdr">// Mathematical analysis via gradient variance at initialization</div>
+      <div class="drv-row">
+        <span class="dn o">1</span>
+        <div>
+          At initialization, weights are random (e.g., Kaiming uniform/normal). Layer outputs have HIGH variance — small input perturbations can produce wildly different activations. The per-sample gradient variance \(\text{Var}(\nabla\ell_i)\) is correspondingly large: gradients fluctuate dramatically from sample to sample.
+        </div>
+      </div>
+      <div class="drv-row">
+        <span class="dn o">2</span>
+        <div>
+          The effective learning rate for stable GD is bounded by the descent lemma (Convex Optimization masterclass): \(\eta &lt; 2/L\) where \(L = \lambda_{\max}(\mathbf{H})\). At initialization, \(\lambda_{\max}\) is large (large gradient variance → large curvature in many directions) → the stable learning rate is small.
+        </div>
+      </div>
+      <div class="drv-row">
+        <span class="dn o">3</span>
+        <div>
+          Starting with a large learning rate violates the descent-lemma bound → loss spikes. The network never recovers: the catastrophic update at step 1 scrambles all weights, and subsequent steps start from a worse-than-initial position.
+          <div class="dnote">Adam exacerbates this: its second moment estimates start at 0, so the effective step size in early steps is proportional to |gradient|/sqrt(second moment) → potentially very large for well-matched but small early-step second moments. This is why Adam specifically needs warmup — to let the second moment estimates stabilize.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sub">
+    <div class="sh b">Common Warmup + Decay Schedules</div>
+    <div class="eq b">
+      <div class="eq-top"><span class="eq-name">Warmup + Cosine Decay (Standard Modern Schedule)</span><span class="eq-tag">Recipe</span></div>
+      <div class="eq-body">
+        \[\eta(t) = \begin{cases}\eta_{\max}\cdot\frac{t}{T_{\text{warm}}} &amp; t \leq T_{\text{warm}} \quad\text{(linear warmup)} \\ \eta_{\max}\cdot\frac{1}{2}\!\left(1+\cos\!\left(\pi\,\frac{t-T_{\text{warm}}}{T-T_{\text{warm}}}\right)\right) &amp; t &gt; T_{\text{warm}} \quad\text{(cosine decay)}\end{cases}\]
+        <div class="eq-note">T_warm is typically 500–2,000 steps; T is the total training steps. The cosine schedule smoothly decays from η_max to near-zero, with a smooth derivative (no discontinuities) that avoids sudden "learning rate drop" artifacts. The combination (warmup → cosine) is the default schedule across most modern large model training runs (GPT, BERT, LLaMA, ViT, etc.).</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sub">
+    <div class="sh g">Warmup Duration Scaling</div>
+    <div class="lens g">
+      <div class="lens-icon">↑</div>
+      <div class="lens-content">
+        <div class="lens-title">Warmup Scales With Model Size and Batch Size</div>
+        <p>The required warmup duration scales roughly proportionally with the target learning rate and inversely with the initial gradient-step stability. Empirically: larger models (higher \(\lambda_{\max}\) at init due to more layers and parameters) need longer warmup. Larger batch sizes (where the effective step size per epoch is larger) need longer warmup. The Transformer training recipe (Vaswani et al. 2017) used \(T_{\text{warm}} = 4000\) steps for a medium-sized model; modern LLM training (Chinchilla-scale) typically uses 1-5% of total training steps as warmup. A simple rule: warmup should be long enough for the second-moment estimates of Adam to stabilize, which requires \(\approx 1/(1-\beta_2)\) steps (\(\approx 1000\) steps for \(\beta_2=0.999\)).</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ §09 ═════════════════════════════════════════════════ -->
+<div class="ch" id="c9">
+  <div class="ch-head">
+    <div class="ch-top"><div class="ch-num">09</div><span class="ch-badge y">Empirical</span></div>
+    <h2>Neural Scaling Laws</h2>
+    <div class="ch-sub">// Kaplan et al. 2020 · Chinchilla · compute-optimal training · power laws in loss and compute</div>
+  </div>
+
+  <p>Scaling laws are perhaps the most striking empirical regularity in modern deep learning: across many orders of magnitude in model size, dataset size, and compute budget, loss follows precise <span class="hy">power law</span> relationships that allow quantitative predictions about training outcomes before any training is done.</p>
+
+  <div class="eq y">
+    <div class="eq-top"><span class="eq-name">Neural Scaling Laws — Kaplan et al. 2020</span><span class="eq-tag">OpenAI</span></div>
+    <div class="eq-body">
+      \[\mathcal{L}(N) \approx \left(\frac{N_c}{N}\right)^{\alpha_N}, \quad \alpha_N \approx 0.076 \quad\text{(model size, compute-optimal training)}\]
+      \[\mathcal{L}(D) \approx \left(\frac{D_c}{D}\right)^{\alpha_D}, \quad \alpha_D \approx 0.095 \quad\text{(dataset size)}\]
+      \[\mathcal{L}(C) \approx \left(\frac{C_c}{C}\right)^{\alpha_C}, \quad \alpha_C \approx 0.050 \quad\text{(compute budget)}\]
+      <div class="eq-note">N = number of non-embedding parameters, D = dataset size in tokens, C = total FLOPs. These power laws hold across 7+ orders of magnitude in each quantity for language models, with the same exponent remarkably consistent across architectures, tokenizations, and data sources. N_c, D_c, C_c are constants determined by fitting empirical data. The consistent power-law behavior (rather than, say, exponential or linear) is itself a profound and not-fully-explained property of deep learning.</div>
+    </div>
+  </div>
+
+  <div class="sub">
+    <div class="sh g">Chinchilla — Compute-Optimal Scaling</div>
+    <div class="drv">
+      <div class="drv-hdr">// Hoffmann et al. 2022 — finding the optimal N,D for a given compute budget C</div>
+      <div class="drv-row">
+        <span class="dn g">1</span>
+        <div>
+          For a fixed compute budget \(C = 6ND\) FLOPs (approximately, for a transformer with \(N\) parameters trained on \(D\) tokens, where 6 accounts for forward + backward passes):
+          \[\mathcal{L}(N,D) \approx E + \frac{A}{N^{\alpha}} + \frac{B}{D^{\beta}}\]
+        </div>
+      </div>
+      <div class="drv-row">
+        <span class="dn g">2</span>
+        <div>
+          Minimize \(\mathcal{L}\) subject to \(C = 6ND\) (budget constraint). Using Lagrange multipliers (from the Lagrange Multipliers masterclass):
+          \[N_{\text{opt}} \propto C^{0.49}, \quad D_{\text{opt}} \propto C^{0.51}\]
+        </div>
+      </div>
+      <div class="drv-row">
+        <span class="dn g">3</span>
+        <div>
+          Chinchilla's practical rule: <strong>for every doubling of model size \(N\), roughly double the dataset size \(D\) as well</strong>. Or: train approximately 20 tokens per parameter for compute-optimal performance.
+          <div class="dnote">Kaplan et al. underestimated the data scaling exponent — they recommended far too few training tokens relative to model parameters. Chinchilla corrected this: Gopher (280B params, 300B tokens) was undertrained; Chinchilla (70B params, 1.4T tokens) achieved better performance on the same compute budget. The field recalibrated around the ~20 tokens/parameter rule, and subsequent models (LLaMA, Mistral) were trained even more data-efficiently. ∎</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sub">
+    <div class="sh b">Why Power Laws and Not Something Else?</div>
+    <div class="lens b">
+      <div class="lens-icon">α</div>
+      <div class="lens-content">
+        <div class="lens-title">A Partial Explanation</div>
+        <p>Bahri et al. (2021) and others have argued that power laws arise from a "random matrix theory + statistical mechanics" picture: the data distribution can be decomposed into independent "tasks" of varying difficulty, and a model with \(N\) parameters solves tasks in order of decreasing difficulty (easiest first). If task difficulties follow a power-law distribution (itself plausible from Zipf-like statistics of natural language), loss as a function of capacity follows a power law. But this remains partially speculative — the precise mathematical mechanism behind empirical scaling laws is an active area of theoretical research.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ §10 ═════════════════════════════════════════════════ -->
+<div class="ch" id="c10">
+  <div class="ch-head">
+    <div class="ch-top"><div class="ch-num">10</div><span class="ch-badge r">Phenomenon</span></div>
+    <h2>Grokking</h2>
+    <div class="ch-sub">// Power et al. 2022 · sudden generalization long after memorization · phase transition · algorithmic representations</div>
+  </div>
+
+  <p>Grokking (Power et al. 2022) is one of the most surprising optimization discoveries of the 2020s: networks can achieve perfect training accuracy on a task, then show near-zero validation accuracy for tens of thousands of additional training steps — before suddenly, discontinuously, generalizing perfectly. The memorized solution "transmutes" into a generalizing one long after the loss has converged.</p>
+
+  <div class="sub">
+    <div class="sh r">The Canonical Experiment</div>
+    <div class="eq r">
+      <div class="eq-top"><span class="eq-name">Grokking Setup — Modular Arithmetic</span><span class="eq-tag">Power et al. 2022</span></div>
+      <div class="eq-body">
+        \[\text{Task: } (a + b) \bmod p \text{ for } a,b\in\{0,\ldots,p-1\}, \quad p = 97\]
+        \[\text{Observations: } \text{train on } 30\%-70\% \text{ of all } p^2 \text{ pairs; evaluate on the rest}\]
+        \[\text{Training loss: } \to 0 \text{ in } \sim 100 \text{ steps}\quad\text{Validation accuracy: } \to 100\% \text{ in } \sim 10{,}000\text{-}100{,}000 \text{ steps}\]
+        <div class="eq-note">The network memorizes the training set immediately. But memorization and generalization use fundamentally different internal circuits. After memorization, the network continues to be trained with L2 weight decay (which slowly drives weights toward zero). The network gradually replaces its memorizing solution with a generalizing one — but this process can take 100-1000× more steps than the initial memorization.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sub">
+    <div class="sh v">Why Grokking Happens — The Representation Hypothesis</div>
+    <div class="drv">
+      <div class="drv-hdr">// Nanda et al. 2023 mechanistic analysis of grokking in mod-p addition</div>
+      <div class="drv-row">
+        <span class="dn v">1</span>
+        <div>
+          <strong>Memorizing solution</strong>: lookup-table behavior — each (a,b) pair is individually memorized by specific network components. High weight norm (resists L2 penalty), no generalizable structure.
+        </div>
+      </div>
+      <div class="drv-row">
+        <span class="dn v">2</span>
+        <div>
+          <strong>Generalizing solution (revealed by interpretability)</strong>: the network discovers that modular addition has a Fourier structure — specifically, the operation \((a+b)\bmod p\) can be computed via a specific periodic representation using frequencies \(\omega_k = 2\pi k/p\):
+          \[\cos(\omega_k(a+b)) = \cos(\omega_k a)\cos(\omega_k b) - \sin(\omega_k a)\sin(\omega_k b)\]
+          <div class="dnote">The network's activations, when analyzed via Fourier transform, show that the generalizing solution implements EXACTLY this identity — it represents a and b as sets of (cos,sin) pairs at specific frequencies, multiplies them, and reads off the result via another linear layer. This is a genuine "discovery" of mathematical structure by gradient descent.</div>
+        </div>
+      </div>
+      <div class="drv-row">
+        <span class="dn v">3</span>
+        <div>
+          <strong>The phase transition</strong>: L2 regularization continuously penalizes the high-norm memorizing solution and slowly builds up the lower-norm generalizing solution in parallel. When the generalizing solution becomes more efficient (lower total loss after regularization), the network undergoes a sudden phase transition — rapidly discarding memorization in favor of the algorithmic generalizing representation. ∎
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sub">
+    <div class="sh o">Grokking's Broader Significance</div>
+    <ul class="fl o">
+      <li><strong>Memorization is not the end state:</strong> even after achieving 100% training accuracy, gradient descent continues making meaningful updates to the network's internal representations — motivated by regularization rather than loss reduction.</li>
+      <li><strong>Generalization can be sudden:</strong> the standard view that generalization improves gradually alongside training loss is wrong for tasks with clean algorithmic structure. A phase transition separates memorizing and generalizing phases.</li>
+      <li><strong>Regularization is essential for grokking:</strong> without weight decay, grokking does not occur — the memorizing solution is a stable fixed point. Regularization destabilizes it in favor of the more parameter-efficient generalizing solution.</li>
+      <li><strong>Training duration as a hyperparameter:</strong> standard early stopping (stop when validation loss stops improving) would terminate training during the memorization phase, long before the generalizing phase begins. Grokking suggests that patience in training — and careful regularization — can unlock qualitatively better solutions.</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ══ §11 ═════════════════════════════════════════════════ -->
+<div class="ch" id="c11">
+  <div class="ch-head">
+    <div class="ch-top"><div class="ch-num">11</div><span class="ch-badge o">Synthesis</span></div>
+    <h2>The Complete Mental Model</h2>
+    <div class="ch-sub">// everything unified · one diagram · the complete optimization story</div>
+  </div>
+
+  <div class="fig">
+    <div class="fig-box">
+      <svg viewBox="0 0 720 580" xmlns="http://www.w3.org/2000/svg" style="max-width:720px;width:100%">
+        <rect width="720" height="580" fill="#111111"/>
+        <defs>
+          <marker id="da" markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto"><path d="M0,0 L0,5 L7,2.5z" fill="#2e2e2e"/></marker>
+          <marker id="do" markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto"><path d="M0,0 L0,5 L7,2.5z" fill="#ff5500"/></marker>
+        </defs>
+        <text x="360" y="22" text-anchor="middle" font-family="Roboto Mono" font-size="9" fill="#2e2e2e" letter-spacing=".26em">DEEP LEARNING OPTIMIZATION — COMPLETE MAP</text>
+
+        <!-- Central: Loss Landscape -->
+        <rect x="240" y="38" width="240" height="54" rx="6" fill="#1c1c1c" stroke="#ff5500" stroke-width="2"/>
+        <text x="360" y="60" text-anchor="middle" font-family="Lexend Deca" font-size="12" fill="#ff5500" font-weight="700">LOSS LANDSCAPE</text>
+        <text x="360" y="79" text-anchor="middle" font-family="Roboto Mono" font-size="8.5" fill="#5a5a5a">ℒ:ℝᴾ→ℝ · Hessian geometry · §01</text>
+
+        <!-- Saddle pts + Sharp/Flat -->
+        <rect x="28" y="148" width="195" height="52" rx="5" fill="#1c1c1c" stroke="#3a8eff" stroke-width="1.5"/>
+        <text x="125" y="170" text-anchor="middle" font-family="Lexend Deca" font-size="10.5" fill="#3a8eff" font-weight="700">SADDLE POINTS</text>
+        <text x="125" y="187" text-anchor="middle" font-family="Roboto Mono" font-size="8" fill="#5a5a5a">index · strict saddle · SGD escape · §02</text>
+
+        <rect x="263" y="148" width="195" height="52" rx="5" fill="#1c1c1c" stroke="#22cc77" stroke-width="2"/>
+        <text x="360" y="170" text-anchor="middle" font-family="Lexend Deca" font-size="10.5" fill="#22cc77" font-weight="700">SHARP vs FLAT</text>
+        <text x="360" y="187" text-anchor="middle" font-family="Roboto Mono" font-size="8" fill="#5a5a5a">sharpness φ_ε · PAC-Bayes · SAM · §03</text>
+
+        <rect x="498" y="148" width="195" height="52" rx="5" fill="#1c1c1c" stroke="#f5c400" stroke-width="1.5"/>
+        <text x="595" y="170" text-anchor="middle" font-family="Lexend Deca" font-size="10.5" fill="#f5c400" font-weight="700">SGD NOISE</text>
+        <text x="595" y="187" text-anchor="middle" font-family="Roboto Mono" font-size="8" fill="#5a5a5a">T_eff=η/B · Langevin · implicit reg · §04</text>
+
+        <line x1="310" y1="92" x2="155" y2="146" stroke="#2e2e2e" stroke-width="1.2" stroke-dasharray="4,3" marker-end="url(#da)"/>
+        <line x1="360" y1="92" x2="360" y2="146" stroke="#ff5500" stroke-width="1.2" stroke-dasharray="4,3" marker-end="url(#do)"/>
+        <line x1="410" y1="92" x2="565" y2="146" stroke="#2e2e2e" stroke-width="1.2" stroke-dasharray="4,3" marker-end="url(#da)"/>
+
+        <!-- Implicit Bias + Generalization -->
+        <rect x="28" y="258" width="195" height="52" rx="5" fill="#1c1c1c" stroke="#9966ff" stroke-width="1.5"/>
+        <text x="125" y="280" text-anchor="middle" font-family="Lexend Deca" font-size="10.5" fill="#9966ff" font-weight="700">IMPLICIT BIAS</text>
+        <text x="125" y="297" text-anchor="middle" font-family="Roboto Mono" font-size="8" fill="#5a5a5a">min-norm · max-margin · §05</text>
+
+        <rect x="263" y="258" width="195" height="52" rx="5" fill="#1c1c1c" stroke="#ff3355" stroke-width="1.5"/>
+        <text x="360" y="280" text-anchor="middle" font-family="Lexend Deca" font-size="10.5" fill="#ff3355" font-weight="700">GENERALIZATION</text>
+        <text x="360" y="297" text-anchor="middle" font-family="Roboto Mono" font-size="8" fill="#5a5a5a">double descent · benign overfitting · §06</text>
+
+        <rect x="498" y="258" width="195" height="52" rx="5" fill="#1c1c1c" stroke="#f5c400" stroke-width="1.5"/>
+        <text x="595" y="280" text-anchor="middle" font-family="Lexend Deca" font-size="10.5" fill="#f5c400" font-weight="700">BATCH SIZE</text>
+        <text x="595" y="297" text-anchor="middle" font-family="Roboto Mono" font-size="8" fill="#5a5a5a">B_crit · linear scaling rule · §07</text>
+
+        <line x1="125" y1="200" x2="125" y2="256" stroke="#2e2e2e" stroke-width="1" stroke-dasharray="3,2" marker-end="url(#da)"/>
+        <line x1="360" y1="200" x2="360" y2="256" stroke="#2e2e2e" stroke-width="1" stroke-dasharray="3,2" marker-end="url(#da)"/>
+        <line x1="595" y1="200" x2="595" y2="256" stroke="#2e2e2e" stroke-width="1" stroke-dasharray="3,2" marker-end="url(#da)"/>
+
+        <!-- Scheduling + Grokking -->
+        <rect x="28" y="368" width="195" height="52" rx="5" fill="#1c1c1c" stroke="#ff5500" stroke-width="1.5"/>
+        <text x="125" y="390" text-anchor="middle" font-family="Lexend Deca" font-size="10.5" fill="#ff5500" font-weight="700">LR WARMUP</text>
+        <text x="125" y="407" text-anchor="middle" font-family="Roboto Mono" font-size="8" fill="#5a5a5a">variance init · cosine decay · §08</text>
+
+        <rect x="263" y="368" width="195" height="52" rx="5" fill="#1c1c1c" stroke="#22cc77" stroke-width="1.5"/>
+        <text x="360" y="390" text-anchor="middle" font-family="Lexend Deca" font-size="10.5" fill="#22cc77" font-weight="700">SCALING LAWS</text>
+        <text x="360" y="407" text-anchor="middle" font-family="Roboto Mono" font-size="8" fill="#5a5a5a">L∝N^α · Chinchilla · §09</text>
+
+        <rect x="498" y="368" width="195" height="52" rx="5" fill="#1c1c1c" stroke="#ff3355" stroke-width="2"/>
+        <text x="595" y="390" text-anchor="middle" font-family="Lexend Deca" font-size="10.5" fill="#ff3355" font-weight="700">GROKKING</text>
+        <text x="595" y="407" text-anchor="middle" font-family="Roboto Mono" font-size="8" fill="#5a5a5a">phase transition · mem→gen · §10</text>
+
+        <line x1="125" y1="310" x2="125" y2="366" stroke="#2e2e2e" stroke-width="1" stroke-dasharray="3,2" marker-end="url(#da)"/>
+        <line x1="360" y1="310" x2="360" y2="366" stroke="#2e2e2e" stroke-width="1" stroke-dasharray="3,2" marker-end="url(#da)"/>
+        <line x1="595" y1="310" x2="595" y2="366" stroke="#2e2e2e" stroke-width="1" stroke-dasharray="3,2" marker-end="url(#da)"/>
+
+        <!-- Core Insight footer -->
+        <rect x="20" y="456" width="680" height="108" rx="6" fill="#0a0a0a" stroke="#2e2e2e" stroke-width="1"/>
+        <text x="360" y="476" text-anchor="middle" font-family="Roboto Mono" font-size="9" fill="#2e2e2e" letter-spacing=".2em">THE CORE QUESTIONS</text>
+        <text x="50" y="500" font-family="Roboto Mono" font-size="8.5" fill="#ff5500">Which minimum does SGD find?</text>
+        <text x="50" y="518" font-family="Roboto Mono" font-size="8.5" fill="#22cc77">→ Flat (high T_eff=η/B, implicit bias toward min-norm/max-margin)</text>
+        <text x="50" y="536" font-family="Roboto Mono" font-size="8.5" fill="#3a8eff">Does it generalize?</text>
+        <text x="50" y="554" font-family="Roboto Mono" font-size="8.5" fill="#f5c400">→ Yes, if flat + overparameterized + trained long enough (grokking) + scaled right (Chinchilla)</text>
+      </svg>
+    </div>
+    <div class="fig-cap">Fig 1. Deep Learning Optimization complete map — from loss landscape geometry through saddle points, flatness, SGD noise, implicit bias, generalization, batch/schedule engineering, scaling laws, and grokking.</div>
+  </div>
+
+  <p style="margin-top:clamp(22px,4vw,36px)">The complete story, unified:</p>
+
+  <ol style="padding-left:clamp(16px,3vw,24px);line-height:2.6;font-size:clamp(14px,1.9vw,16px)">
+    <li><strong>The loss landscape</strong> is a high-dimensional hypersurface whose local geometry is entirely captured by the Hessian. In \(P\sim10^{10}\) dimensions, our 3D intuition fails — true local minima are extraordinarily rare; almost all critical points are saddle points.</li>
+    <li><strong>Saddle points</strong> have at least one negative Hessian eigenvalue. They are unstable under the gradient noise of SGD — unlike exact gradient descent, which can get stuck. Networks satisfying the strict saddle property allow SGD to efficiently escape every saddle in polynomial time.</li>
+    <li><strong>Not all minima are equal.</strong> Flat minima (small Hessian eigenvalues, broad loss basins) generalize better than sharp minima. The PAC-Bayes framework makes this precise: flatness equals compressibility, and compressibility bounds generalization error.</li>
+    <li><strong>SGD noise is not a problem to minimize — it's a tool.</strong> The effective temperature \(T_{\text{eff}} \propto \eta/B\) determines whether SGD explores broadly (finding flat minima) or settles early (finding sharp ones). High \(\eta/B\) is its own form of implicit regularization.</li>
+    <li><strong>Implicit bias</strong> means gradient descent — even without any explicit regularization term — finds structurally simple solutions: minimum-norm for regression, maximum-margin for classification. This is why overparameterized networks generalize at all: they are not choosing randomly from the infinite set of interpolating solutions.</li>
+    <li><strong>Classical generalization theory is wrong for modern networks.</strong> The double descent phenomenon and benign overfitting show that interpolating the training data perfectly can actually be the best choice when sufficiently overparameterized — provided the implicit bias selects the right interpolant.</li>
+    <li><strong>Batch size and learning rate</strong> are coupled through \(T_{\text{eff}}\). The linear scaling rule maintains \(T_{\text{eff}}\) constant when scaling batch size. The critical batch size \(B_{\text{crit}}\) is the efficiency frontier beyond which larger batches provide diminishing gradient-accuracy returns.</li>
+    <li><strong>Learning rate warmup</strong> is necessary because the Hessian's largest eigenvalue is large at initialization, making large steps unstable. Warmup gradually increases the step size as the landscape becomes more stable and the gradient variance decreases.</li>
+    <li><strong>Neural scaling laws</strong> reveal that loss follows power laws in model size, data size, and compute — allowing quantitative prediction of training outcomes. Chinchilla showed that both model and data must be scaled together for compute-optimal training.</li>
+    <li><strong>Grokking</strong> reveals that training beyond apparent convergence (100% training accuracy) can trigger a phase transition from memorization to genuine generalization — with L2 regularization as the thermodynamic force driving this transition. It shows that training duration is an underappreciated hyperparameter.</li>
+  </ol>
+
+  <div class="thm" style="margin-top:clamp(24px,4vw,40px)">
+    <div class="thm-badge">The Unifying Answer</div>
+    <p>Why does gradient descent in deep networks find solutions that generalize, despite the profound non-convexity and astronomical overparameterization? The answer is a confluence of all ten phenomena in this article: the high-dimensional landscape's saddle-dominated structure funnels SGD toward minima rather than saddles; SGD's gradient noise provides an effective temperature that biases the search toward flat, generalizing minima over sharp, memorizing ones; gradient descent's implicit bias selects the structurally simplest interpolating solution within whatever basin it reaches; and regularization — explicit weight decay or implicit via finite training budget and SGD noise — continuously sculpts the solution toward one that trades training-set fit for representational compactness, which is exactly the property that the PAC-Bayes theorem identifies as the source of generalization. <strong>Generalization in deep learning is not a coincidence or a mystery — it is the accumulated statistical physics of these optimization dynamics, all working in the same direction.</strong></p>
+  </div>
+</div>
+
+</div><!-- /page -->
+
+  <!-- ═══ FOOTER ═══ -->
+  <footer class="site-footer">
+    <div class="footer-content">
+      <div class="footer-main">
+        <div class="footer-left">
+          <p class="copyright">&copy; 2025 Shahid Ul Islam</p>
+          <p class="footer-meta">Data Scientist & AI Developer</p>
+        </div>
+        <div class="footer-right">
+          <div class="footer-links">
+            <a href="#" class="back-to-top">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="12" y1="19" x2="12" y2="5"></line>
+                <polyline points="5 12 12 5 19 12"></polyline>
+              </svg>
+              <span>Back to Top</span>
+            </a>
+            <div class="social-links11">
+              <a href="https://github.com/Khanz9664" target="_blank" class="social-link11">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path
+                    d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22" />
+                </svg>
+              </a>
+              <a href="https://linkedin.com/in/shahid-ul-islam-13650998" target="_blank" class="social-link11">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" />
+                  <rect x="2" y="9" width="4" height="12" />
+                  <circle cx="4" cy="4" r="2" />
+                </svg>
+              </a>
+              <a href="mailto:shahid9664@gmail.com" class="social-link11">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
+                  <polyline points="22,6 12,13 2,6" />
+                </svg>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="made-with">
+      <p>Crafted with <span class="heart-icon">❤️</span> By Shahid</p>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js"></script>
+</body>
+
+</html>

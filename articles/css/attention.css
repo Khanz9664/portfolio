@@ -1259,7 +1259,6 @@ code {
 }
 
 @media(width <=480px) {
-
   /* hero */
   .hero {
     padding-left: clamp(16px, 5vw, 24px);

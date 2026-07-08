@@ -1,0 +1,909 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Attention Mechanisms | Shahid Ul Islam</title>
+  <meta name="description" content="the geometry of focus" />
+  <meta name="author" content="Shahid Ul Islam" />
+  <link rel="icon" type="image/png" href="../img/plogo.png" />
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Sora:wght@100;200;300;400;500;600;700;800&family=Source+Sans+3:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=JetBrains+Mono:ital,wght@0,300;0,400;0,500;1,300;1,400&display=swap"
+    rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <link rel="stylesheet" href="../css/variables.css" />
+  <link rel="stylesheet" href="../css/navigation.css" />
+  <link rel="stylesheet" href="../css/footer.css" />
+  <link rel="stylesheet" href="css/attention.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <script defer src="../js/common.js"></script>
+
+</head>
+
+<body>
+  <div class="top-bar">
+    <div class="logo">
+      <img src="../img/plogo.png" alt="Personal Logo" class="logo-icon">
+      <span class="logo-text">SHAHID<span class="logo-accent">||</span>Portfolio</span>
+    </div>
+    <nav class="nav-container">
+      <ul class="nav-links">
+        <li><a href="../index.html" class="nav-link">.Home</a></li>
+        <li><a href="../about.html" class="nav-link">.About</a></li>
+        <li><a href="../skills.html" class="nav-link">.Skills</a></li>
+        <li><a href="../projects.html" class="nav-link">.Projects</a></li>
+        <li><a href="../contact.html" class="nav-link">.Contact</a></li>
+        <li><a href="../articles.html" class="nav-link">.Articles</a></li>
+      </ul>
+      <div class="menu-toggle">
+        <div class="hamburger"></div>
+      </div>
+    </nav>
+  </div>
+  
+
+<!-- ══ HERO ════════════════════════════════════════════════ -->
+<div class="hero">
+  <div class="hero-inner">
+    <div>
+      <div class="hero-kicker">Sequence Modeling · Mathematical Foundations · Standalone</div>
+      <h1>
+        <span class="it">the geometry of focus</span>
+        <span class="glow">Attention Mechanisms</span>
+      </h1>
+      <p class="hero-byline">
+        From the alignment problem in machine translation, through Bahdanau's
+        additive scoring and Luong's dot-product simplification, to a rigorous
+        derivation of Query, Key, and Value — then outward into information
+        retrieval, kernel regression, expressive power, and scaling laws.
+      </p>
+      <div class="hero-scope">
+        ◉ This page is <strong>independent of the Transformers masterclass</strong>. It treats attention as a mathematical object in its own right — its history, its derivation, its theoretical guarantees and limits — rather than as one component of a larger architecture.
+      </div>
+      <div class="hero-tags">
+        <span class="htag g">Alignment</span>
+        <span class="htag cy">Bahdanau Attention</span>
+        <span class="htag ro">Dot-Product Attention</span>
+        <span class="htag li">QKV Derivation</span>
+        <span class="htag vi">Self-Attention</span>
+        <span class="htag sk">Multi-Head Attention</span>
+        <span class="htag g">Information Retrieval</span>
+        <span class="htag cy">Kernel Methods</span>
+        <span class="htag ro">Expressive Power</span>
+        <span class="htag li">Scaling Laws</span>
+      </div>
+    </div>
+    <div class="hero-art">
+      <!-- Spotlight cone illuminating tokens -->
+      <svg width="clamp(200px,25vw,290px)" height="clamp(220px,27vw,310px)" viewBox="0 0 260 290" xmlns="http://www.w3.org/2000/svg" style="display:block">
+        <defs>
+          <radialGradient id="spot" cx="50%" cy="0%" r="85%">
+            <stop offset="0%" stop-color="#f0a830" stop-opacity=".35"/>
+            <stop offset="100%" stop-color="#f0a830" stop-opacity="0"/>
+          </radialGradient>
+        </defs>
+        <!-- query source at top -->
+        <circle cx="130" cy="28" r="12" fill="none" stroke="#f0a830" stroke-width="2.5"/>
+        <text x="130" y="33" text-anchor="middle" font-family="Red Hat Mono" font-size="11" fill="#f0a830" font-weight="700">q</text>
+        <!-- spotlight cone -->
+        <path d="M130,40 L40,260 L220,260 Z" fill="url(#spot)"/>
+        <path d="M130,40 L40,260" stroke="#f0a830" stroke-width="1" stroke-dasharray="3,3" opacity=".4"/>
+        <path d="M130,40 L220,260" stroke="#f0a830" stroke-width="1" stroke-dasharray="3,3" opacity=".4"/>
+        <!-- key tokens with varying illumination -->
+        <circle cx="70" cy="260" r="13" fill="rgba(94,207,219,0.12)" stroke="#5ecfdb" stroke-width="1.3"/>
+        <text x="70" y="264" text-anchor="middle" font-family="Red Hat Mono" font-size="9" fill="#5ecfdb">k₁</text>
+        <text x="70" y="282" text-anchor="middle" font-family="Red Hat Mono" font-size="8" fill="#8c7c5e">.05</text>
+
+        <circle cx="115" cy="260" r="16" fill="rgba(232,96,122,0.25)" stroke="#e8607a" stroke-width="1.8"/>
+        <text x="115" y="264" text-anchor="middle" font-family="Red Hat Mono" font-size="9" fill="#e8607a">k₂</text>
+        <text x="115" y="282" text-anchor="middle" font-family="Red Hat Mono" font-size="8" fill="#8c7c5e">.62</text>
+
+        <circle cx="160" cy="260" r="14" fill="rgba(168,217,87,0.15)" stroke="#a8d957" stroke-width="1.4"/>
+        <text x="160" y="264" text-anchor="middle" font-family="Red Hat Mono" font-size="9" fill="#a8d957">k₃</text>
+        <text x="160" y="282" text-anchor="middle" font-family="Red Hat Mono" font-size="8" fill="#8c7c5e">.21</text>
+
+        <circle cx="200" cy="260" r="11" fill="rgba(184,150,224,0.08)" stroke="#b896e0" stroke-width="1.1"/>
+        <text x="200" y="264" text-anchor="middle" font-family="Red Hat Mono" font-size="8" fill="#b896e0">k₄</text>
+        <text x="200" y="282" text-anchor="middle" font-family="Red Hat Mono" font-size="8" fill="#8c7c5e">.12</text>
+      </svg>
+    </div>
+  </div>
+
+  <!-- Footlights strip -->
+  <div class="hero-strip">
+    <div class="hf-cell"><div class="hf-dot"></div><div class="hf-label">Alignment</div></div>
+    <div class="hf-cell"><div class="hf-dot"></div><div class="hf-label">Bahdanau</div></div>
+    <div class="hf-cell"><div class="hf-dot"></div><div class="hf-label">QKV Derived</div></div>
+    <div class="hf-cell"><div class="hf-dot"></div><div class="hf-label">Kernel View</div></div>
+    <div class="hf-cell"><div class="hf-dot"></div><div class="hf-label">Scaling</div></div>
+  </div>
+</div>
+
+<!-- ══ TOC ══════════════════════════════════════════════════ -->
+<div class="toc-outer">
+  <div class="toc-grid">
+    <div class="toc-cell"><a href="#c1"><span class="toc-ap">1</span>The Alignment Problem</a></div>
+    <div class="toc-cell"><a href="#c2"><span class="toc-ap">2</span>Bahdanau Attention</a></div>
+    <div class="toc-cell"><a href="#c3"><span class="toc-ap">3</span>Dot-Product Attention</a></div>
+    <div class="toc-cell"><a href="#c4"><span class="toc-ap">4</span>The QKV Derivation</a></div>
+    <div class="toc-cell"><a href="#c5"><span class="toc-ap">5</span>Self-Attention</a></div>
+    <div class="toc-cell"><a href="#c6"><span class="toc-ap">6</span>Scaled Dot-Product</a></div>
+    <div class="toc-cell"><a href="#c7"><span class="toc-ap">7</span>Multi-Head Attention</a></div>
+    <div class="toc-cell"><a href="#c8"><span class="toc-ap">8</span>Information Retrieval</a></div>
+    <div class="toc-cell"><a href="#c9"><span class="toc-ap">9</span>Kernel Methods</a></div>
+    <div class="toc-cell"><a href="#c10"><span class="toc-ap">10</span>Expressive Power</a></div>
+    <div class="toc-cell"><a href="#c11"><span class="toc-ap">11</span>Scaling Laws</a></div>
+    <div class="toc-cell"><a href="#c12"><span class="toc-ap">12</span>Complete Mental Model</a></div>
+  </div>
+</div>
+
+<div class="page">
+
+<!-- ══ §01 ═════════════════════════════════════════════════ -->
+<div class="ch" id="c1">
+  <div class="ch-head">
+    <div class="ch-ap g"><span class="ch-ap-num">1</span></div>
+    <div class="ch-text">
+      <span class="ch-badge g">Origins</span>
+      <h2>The Alignment Problem</h2>
+      <div class="ch-sub">// the encoder bottleneck · statistical MT alignment · why a fixed vector fails</div>
+    </div>
+  </div>
+
+  <p>Before attention existed, sequence-to-sequence models faced a problem with no good solution: how does a decoder know <em>which</em> part of a long input is relevant at each step of generation? The answer attention provides is so foundational that it is easy to forget it was once an open research question with a specific, narrow origin — machine translation.</p>
+
+  <div class="sub">
+    <div class="sh g">The Encoder-Decoder Bottleneck</div>
+    <p>Sutskever et al. (2014) encoded an entire source sentence into a single fixed-length vector \(\mathbf{c}\) — the final hidden state of an RNN — and decoded the target sentence entirely from \(\mathbf{c}\):</p>
+    <div class="eq g">
+      <div class="eq-top"><span class="eq-name">Vanilla Encoder-Decoder</span><span class="eq-tag">Pre-Attention</span></div>
+      <div class="eq-body">
+        \[\mathbf{c} = \mathbf{h}_{T_x} \quad\text{(final encoder hidden state — ALL information must fit here)}\]
+        \[p(y_i \mid y_{&lt;i}, \mathbf{c}) = g(y_{i-1}, s_{i-1}, \mathbf{c}) \quad\text{(every decoder step reuses the SAME }\mathbf{c}\text{)}\]
+        <div class="eq-note">Every target word, regardless of which source words it actually corresponds to, is generated by conditioning on the identical compressed vector c. A 50-word sentence and a 5-word sentence are both squeezed into the same fixed-size c — translation quality degrades sharply as source length grows (Cho et al. 2014 measured this directly).</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sub">
+    <div class="sh cy">Alignment in Classical Statistical MT</div>
+    <p>Long before neural networks, statistical machine translation (Brown et al.'s IBM Models, 1990s) had already formalized the idea that translation requires a <em>latent alignment</em> — a mapping from each target word to the source word(s) it translates:</p>
+    <div class="eq cy">
+      <div class="eq-top"><span class="eq-name">IBM Model Alignment — Classical Formulation</span><span class="eq-tag">Statistical MT</span></div>
+      <div class="eq-body">
+        \[P(\mathbf{y}\mid\mathbf{x}) = \sum_{\mathbf{a}} P(\mathbf{y},\mathbf{a}\mid\mathbf{x}), \quad a_i \in \{1,\ldots,T_x\} \text{ — which source word does } y_i \text{ align to?}\]
+        <div class="eq-note">a is the alignment: a_i = j means target word i is generated from source word j. This sum over all possible (exponentially many) alignments is intractable in general — IBM Models made restrictive independence assumptions to make it tractable. Neural attention would later replace this discrete, hard latent variable with a continuous, differentiable, soft one.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="lens g">
+    <div class="lens-mark">⊙</div>
+    <div class="lens-content">
+      <div class="lens-title">The Reframing That Changed Everything</div>
+      <p>Bahdanau, Cho &amp; Bengio (2014) asked: what if the alignment \(a_i\) — instead of being a discrete latent variable summed over combinatorially — were replaced by a continuous probability distribution over source positions, predicted by a small neural network and trained end-to-end via backpropagation? This single reframing — <strong>hard discrete alignment → soft differentiable alignment</strong> — is the entire conceptual leap that attention represents. Everything in this page is a refinement of that one idea.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ══ §02 ═════════════════════════════════════════════════ -->
+<div class="ch" id="c2">
+  <div class="ch-head">
+    <div class="ch-ap cy"><span class="ch-ap-num">2</span></div>
+    <div class="ch-text">
+      <span class="ch-badge cy">1st Attention</span>
+      <h2>Bahdanau Attention — Additive Alignment</h2>
+      <div class="ch-sub">// the original 2014 mechanism · learned alignment as a small MLP · context vector</div>
+    </div>
+  </div>
+
+  <p>Bahdanau's mechanism (often called "additive" or "concat" attention) was the first working neural attention. It computes a soft alignment score using a small feedforward network, then takes a weighted average of encoder states as the context.</p>
+
+  <div class="eq cy">
+    <div class="eq-top"><span class="eq-name">Bahdanau Attention — Full Specification</span><span class="eq-tag">Additive / Concat</span></div>
+    <div class="eq-body">
+      \[e_{ij} = \mathbf{v}_a^T\tanh(\mathbf{W}_a\mathbf{s}_{i-1} + \mathbf{U}_a\mathbf{h}_j) \quad\text{(alignment score: decoder state }i\text{, encoder state }j\text{)}\]
+      \[\alpha_{ij} = \frac{\exp(e_{ij})}{\sum_{k=1}^{T_x}\exp(e_{ik})} \quad\text{(softmax normalization over source positions)}\]
+      \[\mathbf{c}_i = \sum_{j=1}^{T_x}\alpha_{ij}\mathbf{h}_j \quad\text{(context vector — weighted average of ALL encoder states)}\]
+      <div class="eq-note">s_{i-1} is the decoder's previous hidden state (what it's "looking for"). h_j is the j-th encoder hidden state (what's "available"). W_a, U_a, v_a are learned matrices/vector — together they form a single-hidden-layer MLP scoring function. Every decoder step now gets its OWN context vector c_i, computed freshly from the entire source — solving the fixed-vector bottleneck from §01.</div>
+    </div>
+  </div>
+
+  <div class="sub">
+    <div class="sh cy">Why "Additive"?</div>
+    <p>The score \(e_{ij}\) sums the two projected vectors \(\mathbf{W}_a\mathbf{s}_{i-1}\) and \(\mathbf{U}_a\mathbf{h}_j\) <em>before</em> applying a nonlinearity — hence "additive." This is structurally identical to a one-hidden-layer neural network with a single output unit, applied to the concatenation \([\mathbf{s}_{i-1};\mathbf{h}_j]\):</p>
+    <div class="eq g">
+      <div class="eq-top"><span class="eq-name">Equivalent Concatenation Form</span><span class="eq-tag">Identity</span></div>
+      <div class="eq-body">
+        \[\mathbf{W}_a\mathbf{s}_{i-1} + \mathbf{U}_a\mathbf{h}_j = [\mathbf{W}_a \;\; \mathbf{U}_a]\begin{pmatrix}\mathbf{s}_{i-1}\\\mathbf{h}_j\end{pmatrix} \quad\text{(block matrix times concatenated vector)}\]
+        <div class="eq-note">This is why Luong (2015) later called this variant "concat" attention — it is mathematically the same operation as stacking [W_a U_a] into one matrix and applying it to the concatenated [s;h] vector. The score function is a learned, trainable similarity measure — NOT a fixed dot product. This flexibility comes at a cost: an extra weight matrix and a nonlinearity, evaluated T_x times per decoder step.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sub">
+    <div class="sh ro">Two Proto-Roles Already Present</div>
+    <p>Look closely at the score function: \(\mathbf{s}_{i-1}\) plays the role of <em>what the decoder is searching for</em>, while \(\mathbf{h}_j\) plays a dual role — it is simultaneously used to compute the matching score (inside \(\tanh\)) AND used directly as the content being aggregated in \(\mathbf{c}_i=\sum_j\alpha_{ij}\mathbf{h}_j\). This conflation of "matching role" and "content role" into one vector \(\mathbf{h}_j\) is precisely the inefficiency that the Query-Key-Value framework (§04) will resolve.</p>
+  </div>
+</div>
+
+<!-- ══ §03 ═════════════════════════════════════════════════ -->
+<div class="ch" id="c3">
+  <div class="ch-head">
+    <div class="ch-ap ro"><span class="ch-ap-num">3</span></div>
+    <div class="ch-text">
+      <span class="ch-badge ro">Simplification</span>
+      <h2>Dot-Product Attention</h2>
+      <div class="ch-sub">// Luong's multiplicative scoring · three score variants · the efficiency argument</div>
+    </div>
+  </div>
+
+  <p>One year after Bahdanau, Luong, Pham &amp; Manning (2015) asked a simple question: does the score function need a learned nonlinear MLP at all? Their answer — multiplicative (dot-product) scoring — removed the nonlinearity and the extra hidden layer, replacing both with a single matrix multiplication.</p>
+
+  <div class="eq ro">
+    <div class="eq-top"><span class="eq-name">Luong's Three Score Functions</span><span class="eq-tag">Multiplicative</span></div>
+    <div class="eq-body">
+      \[\text{dot:}\quad e_{ij} = \mathbf{s}_{i-1}^T\mathbf{h}_j\]
+      \[\text{general:}\quad e_{ij} = \mathbf{s}_{i-1}^T\mathbf{W}_a\mathbf{h}_j\]
+      \[\text{concat:}\quad e_{ij} = \mathbf{v}_a^T\tanh(\mathbf{W}_a[\mathbf{s}_{i-1};\mathbf{h}_j]) \quad\text{(Bahdanau's form, included for comparison)}\]
+      <div class="eq-note">"dot" requires NO learned parameters in the score itself — pure geometric similarity between vectors. "general" inserts one learned bilinear matrix W_a between the two vectors, giving a learnable notion of similarity while remaining a single matrix multiply (no nonlinearity, no extra hidden layer). This "general" form is the direct ancestor of the QKV framework derived in §04.</div>
+    </div>
+  </div>
+
+  <div class="sub">
+    <div class="sh ro">The Efficiency Argument</div>
+    <div class="t-wrap">
+      <table>
+        <thead><tr><th>Score Function</th><th>Parameters</th><th>Compute per (i,j) pair</th><th>GPU-Friendly?</th></tr></thead>
+        <tbody>
+          <tr><td>Bahdanau (concat)</td><td>\(\mathbf{W}_a, \mathbf{U}_a, \mathbf{v}_a\)</td><td>2 matmuls + tanh + 1 matmul</td><td>Sequential-ish, awkward to batch across \(j\)</td></tr>
+          <tr><td>Luong general</td><td>\(\mathbf{W}_a\) only</td><td>2 matmuls (\(\mathbf{W}_a\mathbf{h}_j\), then dot with \(\mathbf{s}\))</td><td>Batches as one big matmul: \(\mathbf{S}\mathbf{W}_a\mathbf{H}^T\)</td></tr>
+          <tr><td>Luong dot</td><td>none</td><td>1 matmul: \(\mathbf{S}\mathbf{H}^T\)</td><td>Maximally GPU-friendly</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>The crucial practical insight: computing all \(T_x\) scores for a single query \(\mathbf{s}_{i-1}\) simultaneously is just <em>one matrix-vector product</em> \(\mathbf{H}\mathbf{s}_{i-1}\) (where \(\mathbf{H}\) stacks all \(\mathbf{h}_j\) as rows) — instead of \(T_x\) separate evaluations of a tanh-MLP. Across a whole batch of queries, this becomes a single matrix-matrix product. This is precisely the operation that will become \(\mathbf{Q}\mathbf{K}^T\) in §04 and beyond.</p>
+  </div>
+
+  <div class="lens ro">
+    <div class="lens-mark">·</div>
+    <div class="lens-content">
+      <div class="lens-title">Why Dot Product Measures Similarity</div>
+      <p>\(\mathbf{a}^T\mathbf{b} = \|\mathbf{a}\|\|\mathbf{b}\|\cos\theta\) — the dot product is large precisely when two vectors point in similar directions <em>and</em> have large magnitude. If embeddings are trained so that "semantically related" vectors point in similar directions, dot product becomes a learned, geometric notion of relevance — with zero extra parameters beyond the embeddings themselves.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ══ §04 ═════════════════════════════════════════════════ -->
+<div class="ch" id="c4">
+  <div class="ch-head">
+    <div class="ch-ap li"><span class="ch-ap-num">4</span></div>
+    <div class="ch-text">
+      <span class="ch-badge li">The Core Result</span>
+      <h2>From Alignment Scores to Q, K, V — The Rigorous Derivation</h2>
+      <div class="ch-sub">// the derivation most articles skip · low-rank factorization · decoupling match from content</div>
+    </div>
+  </div>
+
+  <p>Almost every introduction to attention simply <em>asserts</em> that there are three projections — Query, Key, Value — and moves on. This section derives why exactly three objects are needed, and why each one is necessary, starting from the "general" bilinear score of §03.</p>
+
+  <div class="sub">
+    <div class="sh li">Step 1 — Start From the General Bilinear Score</div>
+    <div class="eq li">
+      <div class="eq-top"><span class="eq-name">The Starting Point</span><span class="eq-tag">Luong General</span></div>
+      <div class="eq-body">
+        \[e_{ij} = \mathbf{s}_i^T\mathbf{W}\mathbf{h}_j, \quad \mathbf{W}\in\mathbb{R}^{d_s\times d_h}\]
+        <div class="eq-note">W is a single learned matrix of size d_s × d_h. This already works and trains fine — but it has a hidden inefficiency: W must encode an entire d_s × d_h similarity transform as one monolithic object, and there is no way to separately control "how to search" versus "what to retrieve."</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sub">
+    <div class="sh li">Step 2 — Factor W via Low-Rank Decomposition</div>
+    <div class="drv">
+      <div class="drv-hdr">// Any matrix W admits a (possibly low-rank) factorization W = Wq^T Wk</div>
+      <div class="drv-row">
+        <span class="dn li">1</span>
+        <div>
+          By the SVD (covered in the SVD masterclass), any \(\mathbf{W}\in\mathbb{R}^{d_s\times d_h}\) factors exactly as \(\mathbf{W}=\mathbf{U}\boldsymbol{\Sigma}\mathbf{V}^T\). Truncating to the top \(d_k\) singular values gives a rank-\(d_k\) approximation:
+          \[\mathbf{W} \approx \mathbf{U}_{d_k}\boldsymbol{\Sigma}_{d_k}\mathbf{V}_{d_k}^T = \underbrace{(\mathbf{U}_{d_k}\boldsymbol{\Sigma}_{d_k}^{1/2})}_{\mathbf{W}_Q^T}\underbrace{(\boldsymbol{\Sigma}_{d_k}^{1/2}\mathbf{V}_{d_k}^T)}_{\mathbf{W}_K}\]
+        </div>
+      </div>
+      <div class="drv-row">
+        <span class="dn li">2</span>
+        <div>
+          Substitute back into the score:
+          \[e_{ij} = \mathbf{s}_i^T\mathbf{W}\mathbf{h}_j \approx \mathbf{s}_i^T\mathbf{W}_Q^T\mathbf{W}_K\mathbf{h}_j = (\mathbf{W}_Q\mathbf{s}_i)^T(\mathbf{W}_K\mathbf{h}_j)\]
+        </div>
+      </div>
+      <div class="drv-row">
+        <span class="dn li">3</span>
+        <div>
+          Define \(\mathbf{q}_i \triangleq \mathbf{W}_Q\mathbf{s}_i\) and \(\mathbf{k}_j \triangleq \mathbf{W}_K\mathbf{h}_j\). The score becomes a pure dot product:
+          \[\boxed{e_{ij} = \mathbf{q}_i^T\mathbf{k}_j}\]
+          <div class="dnote">This is not an approximation we're stuck with — instead of deriving Wq, Wk by SVD-factoring a pre-existing W, we simply LEARN Wq and Wk directly via gradient descent from the start. The SVD argument proves that this parametrization loses no expressive power versus a full bilinear W (for d_k ≥ rank(W)), while typically using FAR fewer parameters: 2·d·d_k vs d_s·d_h. ∎</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sub">
+    <div class="sh ro">Step 3 — Why a THIRD Projection Is Needed</div>
+    <p>We've now derived Query and Key from the score function alone. But the score function only tells us <em>how much</em> to attend to position \(j\) — it says nothing about <em>what content</em> gets aggregated. In Bahdanau and Luong, the content is simply the raw \(\mathbf{h}_j\):</p>
+    <div class="eq ro">
+      <div class="eq-top"><span class="eq-name">The Remaining Conflation</span><span class="eq-tag">The Problem</span></div>
+      <div class="eq-body">
+        \[\mathbf{c}_i = \sum_j\alpha_{ij}\mathbf{h}_j \quad\text{— same } \mathbf{h}_j \text{ used for matching (via } \mathbf{k}_j=\mathbf{W}_K\mathbf{h}_j\text{) AND for content}\]
+        <div class="eq-note">Forcing the same h_j to serve double duty — as the basis for the Key projection AND as the raw content aggregated into the context — needlessly couples two different jobs: "what makes me a good match" and "what information I contribute when matched." There's no mathematical reason these should be the same subspace of h_j.</div>
+      </div>
+    </div>
+    <div class="drv">
+      <div class="drv-hdr">// Introducing an independent content projection</div>
+      <div class="drv-row">
+        <span class="dn ro">4</span>
+        <div>
+          Decouple by introducing a third learned projection \(\mathbf{W}_V\), applied to \(\mathbf{h}_j\) <em>only</em> for the purpose of content aggregation:
+          \[\mathbf{v}_j \triangleq \mathbf{W}_V\mathbf{h}_j\]
+        </div>
+      </div>
+      <div class="drv-row">
+        <span class="dn ro">5</span>
+        <div>
+          Replace the context vector definition:
+          \[\mathbf{c}_i = \sum_j\alpha_{ij}\mathbf{v}_j = \sum_j\alpha_{ij}(\mathbf{W}_V\mathbf{h}_j)\]
+          <div class="dnote">Now the "what makes a good match" subspace (Key, via W_K) and the "what content to deliver" subspace (Value, via W_V) are free to be entirely different linear transforms of h_j — learned independently, optimized independently by gradient descent, subject to no shared-parameter constraint whatsoever. ∎</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="thm">
+    <div class="thm-badge">The Complete QKV Theorem</div>
+    <p>Starting from a single learned bilinear alignment score \(\mathbf{s}^T\mathbf{W}\mathbf{h}\), (1) low-rank factorization of \(\mathbf{W}\) produces two independently-learned projections \(\mathbf{W}_Q,\mathbf{W}_K\) whose dot product reconstructs the score with no loss of expressive power (for sufficient rank), and (2) decoupling the content-aggregation vector from the key-matching vector via a third projection \(\mathbf{W}_V\) removes an unnecessary shared-parameter constraint. The result — \(\mathbf{q}=\mathbf{W}_Q\mathbf{s}\), \(\mathbf{k}=\mathbf{W}_K\mathbf{h}\), \(\mathbf{v}=\mathbf{W}_V\mathbf{h}\), \(\text{score}=\mathbf{q}^T\mathbf{k}\), \(\text{output}=\sum\text{softmax}(\text{score})\cdot\mathbf{v}\) — is not an arbitrary architectural choice. It is the unique minimal generalization of Bahdanau/Luong attention that (a) preserves the expressive power of a full bilinear score and (b) removes every avoidable coupling between matching and content.</p>
+  </div>
+</div>
+
+<!-- ══ §05 ═════════════════════════════════════════════════ -->
+<div class="ch" id="c5">
+  <div class="ch-head">
+    <div class="ch-ap vi"><span class="ch-ap-num">5</span></div>
+    <div class="ch-text">
+      <span class="ch-badge vi">Generalization</span>
+      <h2>Self-Attention — Q = K = V From One Sequence</h2>
+      <div class="ch-sub">// cross-attention vs self-attention · removing the recurrent decoder · parallelization</div>
+    </div>
+  </div>
+
+  <p>Everything in §01–§04 was <span class="hvi">cross-attention</span>: a decoder state \(\mathbf{s}_i\) (from one sequence) attends to encoder states \(\mathbf{h}_j\) (from a different sequence). Self-attention makes a single, almost trivial-seeming change: let the query source and the key/value source be the <em>same</em> sequence.</p>
+
+  <div class="eq vi">
+    <div class="eq-top"><span class="eq-name">Self-Attention — Definition</span><span class="eq-tag">Q = K = V Source</span></div>
+    <div class="eq-body">
+      \[\mathbf{X}\in\mathbb{R}^{n\times d} \text{ (single sequence)}, \quad \mathbf{Q}=\mathbf{X}\mathbf{W}_Q,\;\; \mathbf{K}=\mathbf{X}\mathbf{W}_K,\;\; \mathbf{V}=\mathbf{X}\mathbf{W}_V\]
+      \[\text{Output} = \text{softmax}(\mathbf{Q}\mathbf{K}^T)\mathbf{V} \in\mathbb{R}^{n\times d_v}\]
+      <div class="eq-note">Every token in X simultaneously plays the role of query (it asks "what's relevant to me?"), key (it advertises "here's what I contain"), and value (it offers "here's what I'll contribute"). The SAME projections WQ, WK, WV from §04 apply — only the source of the input sequence changed from (decoder, encoder) to (X, X).</div>
+    </div>
+  </div>
+
+  <div class="sub">
+    <div class="sh vi">Why This Seemingly Small Change Is Revolutionary</div>
+    <div class="t-wrap">
+      <table>
+        <thead><tr><th>Aspect</th><th>Cross-Attention (Bahdanau/Luong)</th><th>Self-Attention</th></tr></thead>
+        <tbody>
+          <tr><td>Query source</td><td>Decoder RNN hidden state \(\mathbf{s}_{i-1}\)</td><td>Token \(i\) of the SAME sequence \(\mathbf{X}\)</td></tr>
+          <tr><td>Requires recurrence?</td><td>Yes — \(\mathbf{s}_{i-1}\) depends sequentially on \(\mathbf{s}_{i-2}\), etc.</td><td>No — every \(\mathbf{q}_i\) computed independently and in parallel</td></tr>
+          <tr><td>Captures within-sequence structure?</td><td>No — only source↔target relations</td><td>Yes — directly models token↔token relations within one sequence</td></tr>
+          <tr><td>Path length between any two tokens</td><td>N/A (different sequences)</td><td>\(O(1)\) — direct attention edge, no recurrent chain</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="lens vi">
+    <div class="lens-mark">⇄</div>
+    <div class="lens-content">
+      <div class="lens-title">Historical Precursors</div>
+      <p>Self-attention did not appear fully-formed in "Attention Is All You Need" (2017). Cheng, Dong &amp; Lapata (2016) proposed "intra-attention" inside LSTMs to let a token attend to its own sequence history. Parikh et al. (2016) used "decomposable attention" for natural language inference by attending between two sentences with the same mechanism. Vaswani et al.'s contribution was recognizing that self-attention, stacked and combined with positional encoding, could <strong>entirely replace</strong> the recurrent backbone — not merely augment it.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ══ §06 ═════════════════════════════════════════════════ -->
+<div class="ch" id="c6">
+  <div class="ch-head">
+    <div class="ch-ap g"><span class="ch-ap-num">6</span></div>
+    <div class="ch-text">
+      <span class="ch-badge g">Stability</span>
+      <h2>Scaled Dot-Product Attention</h2>
+      <div class="ch-sub">// why √d_k · variance analysis · softmax saturation</div>
+    </div>
+  </div>
+
+  <p>The dot-product score \(\mathbf{q}^T\mathbf{k}\) from §04 has a subtle numerical problem that only appears at scale: as the dimension \(d_k\) grows, the variance of the score grows with it, eventually breaking the softmax.</p>
+
+  <div class="drv">
+    <div class="drv-hdr">// Deriving the necessity of the 1/√d_k scaling factor</div>
+    <div class="drv-row">
+      <span class="dn g">1</span>
+      <div>
+        Assume \(\mathbf{q},\mathbf{k}\in\mathbb{R}^{d_k}\) have independent components with mean 0, variance 1 (a reasonable assumption near initialization). The dot product is a sum of \(d_k\) independent products:
+        \[\mathbf{q}^T\mathbf{k} = \sum_{i=1}^{d_k}q_ik_i, \quad \mathbb{E}[q_ik_i]=0,\;\;\text{Var}(q_ik_i)=\mathbb{E}[q_i^2]\mathbb{E}[k_i^2]=1\]
+      </div>
+    </div>
+    <div class="drv-row">
+      <span class="dn g">2</span>
+      <div>
+        Since the \(d_k\) terms are independent, variances add:
+        \[\text{Var}(\mathbf{q}^T\mathbf{k}) = \sum_{i=1}^{d_k}\text{Var}(q_ik_i) = d_k\]
+        <div class="dnote">Standard deviation grows as √d_k. For d_k=512 (a typical model dimension): std ≈ 22.6 — scores routinely reach ±60 or more.</div>
+      </div>
+    </div>
+    <div class="drv-row">
+      <span class="dn g">3</span>
+      <div>
+        Examine softmax behavior at this scale. If one score is even moderately larger than the rest (say by 10+ in raw units), softmax saturates:
+        \[\text{softmax}(60, 2, -3, \ldots) \approx (1.0, \approx0, \approx0,\ldots)\]
+        <div class="dnote">The gradient of a saturated softmax is ≈ 0 everywhere except the (already-dominant) max — learning stalls. This is precisely the vanishing gradient problem applied to the attention score itself.</div>
+      </div>
+    </div>
+    <div class="drv-row">
+      <span class="dn g">4</span>
+      <div>
+        Divide scores by \(\sqrt{d_k}\) to restore unit variance:
+        \[\text{Var}\!\left(\frac{\mathbf{q}^T\mathbf{k}}{\sqrt{d_k}}\right) = \frac{d_k}{d_k} = 1 \quad\text{(independent of }d_k\text{!)}\]
+        \[\boxed{\text{Attention}(\mathbf{Q},\mathbf{K},\mathbf{V}) = \text{softmax}\!\left(\frac{\mathbf{QK}^T}{\sqrt{d_k}}\right)\mathbf{V}}\]
+        <div class="dnote">This is exactly the "scaled dot-product attention" formula from Vaswani et al. — now derived from a one-line variance computation rather than asserted. ∎</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="lens g">
+    <div class="lens-mark">σ²</div>
+    <div class="lens-content">
+      <div class="lens-title">Connection to §03</div>
+      <p>Luong's plain "dot" score (§03) has exactly this unscaled-variance problem and was empirically found to underperform the "general" (learned bilinear) variant on large hidden sizes — Luong's own paper noted dot-product attention worked better only for smaller dimensions. The \(1/\sqrt{d_k}\) fix, discovered three years later, is precisely what was needed to make pure dot-product scoring competitive at any dimension.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ══ §07 ═════════════════════════════════════════════════ -->
+<div class="ch" id="c7">
+  <div class="ch-head">
+    <div class="ch-ap cy"><span class="ch-ap-num">7</span></div>
+    <div class="ch-text">
+      <span class="ch-badge cy">Capacity</span>
+      <h2>Multi-Head Attention</h2>
+      <div class="ch-sub">// multiple representation subspaces · why concatenation beats one large head</div>
+    </div>
+  </div>
+
+  <p>A single attention head computes one weighted average per query — one notion of "relevance." Multi-head attention runs several attention computations in parallel, each in a different learned subspace, then combines the results.</p>
+
+  <div class="eq cy">
+    <div class="eq-top"><span class="eq-name">Multi-Head Attention</span><span class="eq-tag">Definition</span></div>
+    <div class="eq-body">
+      \[\text{head}_i = \text{Attention}(\mathbf{X}\mathbf{W}_i^Q, \mathbf{X}\mathbf{W}_i^K, \mathbf{X}\mathbf{W}_i^V), \quad i=1,\ldots,h\]
+      \[\text{MultiHead}(\mathbf{X}) = \text{Concat}(\text{head}_1,\ldots,\text{head}_h)\mathbf{W}^O\]
+      \[\text{typically: } d_k=d_v=d_{\text{model}}/h \quad\text{(so total compute} \approx \text{one full-size head)}\]
+      <div class="eq-note">Splitting d_model into h heads of size d_model/h costs roughly the SAME total compute as one head of the full size d_model — the FLOPs for the QKᵀ step scale as h·(n²·d_model/h) = n²·d_model, independent of h. Multi-head attention is "free" in this sense — you're not paying extra for the extra flexibility.</div>
+    </div>
+  </div>
+
+  <div class="sub">
+    <div class="sh cy">Why Splitting Into Subspaces Increases Expressiveness</div>
+    <div class="lens cy">
+      <div class="lens-mark">⊕</div>
+      <div class="lens-content">
+        <div class="lens-title">One Large Head ≠ Many Small Heads</div>
+        <p>A single attention head produces exactly one attention <em>distribution</em> \(\boldsymbol{\alpha}_i\) per query — one weighting over all keys. Every output dimension of that head is forced to use the <em>same</em> weighting. Multiple heads break this constraint: head 1 might place high weight on syntactically adjacent tokens, head 2 on the most semantically similar token regardless of distance, head 3 on a fixed positional offset. Concatenating these gives an output that simultaneously reflects several <em>different</em> attention distributions — something a single softmax fundamentally cannot produce, no matter how large \(d_k\) is made.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="sub">
+    <div class="sh ro">Empirical Specialization</div>
+    <p>Interpretability studies (Voita et al. 2019, Clark et al. 2019) directly confirm the theoretical motivation: trained heads specialize. Some heads attend almost exclusively to the previous token (positional heads). Others track long-range coreference (pronoun → antecedent). Others attend broadly and seem to compute something closer to a bag-of-words average. This division of labor across heads is not designed by hand — it emerges purely from gradient descent exploiting the architectural freedom that multi-head splitting provides.</p>
+  </div>
+</div>
+
+<!-- ══ §08 ═════════════════════════════════════════════════ -->
+<div class="ch" id="c8">
+  <div class="ch-head">
+    <div class="ch-ap ro"><span class="ch-ap-num">8</span></div>
+    <div class="ch-text">
+      <span class="ch-badge ro">Interpretation I</span>
+      <h2>Attention as Information Retrieval</h2>
+      <div class="ch-sub">// soft content-addressable memory · the expectation viewpoint · Neural Turing Machine lineage</div>
+    </div>
+  </div>
+
+  <p>The most intuitive way to understand attention is as a <em>differentiable</em>, <em>soft</em> generalization of a database lookup — every step of the standard "query a database" workflow has a direct attention analogue.</p>
+
+  <div class="two">
+    <div class="tcol">
+      <h4 style="color:var(--gold)">Hard / Discrete Lookup</h4>
+      <p>A SQL query retrieves exactly the row(s) whose key matches the query exactly. The result is sharp: either a record is returned, or it isn't. There is no gradient — a tiny change to the query either returns the same row or a completely different one.</p>
+    </div>
+    <div class="tcol">
+      <h4 style="color:var(--rose)">Soft / Differentiable Lookup (Attention)</h4>
+      <p>Attention retrieves a weighted blend of <em>every</em> value, where the weight reflects how well each key matches the query. A small change to the query smoothly reweights the blend — the entire operation is differentiable end-to-end, which is exactly why it can be trained with backpropagation.</p>
+    </div>
+  </div>
+
+  <div class="sub">
+    <div class="sh ro">The Expectation Viewpoint</div>
+    <div class="eq ro">
+      <div class="eq-top"><span class="eq-name">Attention as an Expectation</span><span class="eq-tag">Probabilistic Reading</span></div>
+      <div class="eq-body">
+        \[\text{Attention}(\mathbf{q},\{(\mathbf{k}_i,\mathbf{v}_i)\}) = \sum_i\alpha_i\mathbf{v}_i = \mathbb{E}_{i\sim\text{Cat}(\boldsymbol{\alpha})}[\mathbf{v}_i], \quad \boldsymbol{\alpha}=\text{softmax}(\mathbf{q}^T\mathbf{k}_i)\]
+        <div class="eq-note">The softmax output α is literally a categorical probability distribution over "which value to retrieve." The attention output is the EXPECTED VALUE under this distribution — not a sample from it, but the exact expectation (computed in closed form, since the support is finite and known). This view directly connects attention to importance sampling and to the REINFORCE-style hard-attention mechanisms (Xu et al. 2015) that preceded soft attention in image captioning — hard attention samples i ~ Cat(α); soft attention takes the expectation exactly.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sub">
+    <div class="sh g">Lineage: Memory-Augmented Networks</div>
+    <p>Attention's "content-addressable" framing has a direct lineage through memory-augmented neural networks that predate or coincide with Bahdanau's mechanism: Memory Networks (Weston et al. 2014) and Neural Turing Machines (Graves et al. 2014) both equip a network with an external memory bank addressed by <em>content similarity</em> rather than a fixed index — exactly the query-key matching at the heart of attention. The key historical difference: NTMs used attention to read/write an explicit, persistent external memory across many time steps; Transformer self-attention uses the same content-addressing mechanism but treats the <em>current sequence itself</em> as the memory, recomputed fresh at every layer.</p>
+  </div>
+</div>
+
+<!-- ══ §09 ═════════════════════════════════════════════════ -->
+<div class="ch" id="c9">
+  <div class="ch-head">
+    <div class="ch-ap li"><span class="ch-ap-num">9</span></div>
+    <div class="ch-text">
+      <span class="ch-badge li">Interpretation II</span>
+      <h2>Attention as Kernel Methods</h2>
+      <div class="ch-sub">// Nadaraya-Watson kernel regression · the exact equivalence · in-context learning</div>
+    </div>
+  </div>
+
+  <p>A second, equally rigorous lens reveals attention to be a textbook statistical estimator in disguise: the Nadaraya-Watson kernel regression estimator from classical nonparametric statistics (1964) — six decades before "Attention Is All You Need."</p>
+
+  <div class="sub">
+    <div class="sh li">The Nadaraya-Watson Estimator</div>
+    <div class="eq li">
+      <div class="eq-top"><span class="eq-name">Kernel Regression — Classical Form</span><span class="eq-tag">Nadaraya-Watson 1964</span></div>
+      <div class="eq-body">
+        \[\hat{y}(\mathbf{q}) = \frac{\sum_{i=1}^n K(\mathbf{q},\mathbf{k}_i)\,y_i}{\sum_{j=1}^n K(\mathbf{q},\mathbf{k}_j)} \quad\text{(predict } y \text{ at query point } \mathbf{q}\text{, given training pairs }(\mathbf{k}_i,y_i)\text{)}\]
+        <div class="eq-note">K is any kernel function measuring similarity between q and each training input k_i — classically a Gaussian/RBF kernel K(q,k)=exp(−‖q−k‖²/2σ²). This is the original "local averaging" nonparametric regression estimator: predict by averaging nearby training labels, weighted by similarity.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sub">
+    <div class="sh g">The Exact Equivalence</div>
+    <div class="drv">
+      <div class="drv-hdr">// Proving attention IS Nadaraya-Watson with an exponential kernel</div>
+      <div class="drv-row">
+        <span class="dn g">1</span>
+        <div>
+          Choose the kernel \(K(\mathbf{q},\mathbf{k}_i) = \exp(\mathbf{q}^T\mathbf{k}_i/\sqrt{d_k})\) (an exponential / softmax kernel).
+        </div>
+      </div>
+      <div class="drv-row">
+        <span class="dn g">2</span>
+        <div>
+          Substitute into the Nadaraya-Watson formula, with \(y_i \to \mathbf{v}_i\):
+          \[\hat{\mathbf{y}}(\mathbf{q}) = \frac{\sum_i\exp(\mathbf{q}^T\mathbf{k}_i/\sqrt{d_k})\,\mathbf{v}_i}{\sum_j\exp(\mathbf{q}^T\mathbf{k}_j/\sqrt{d_k})}\]
+        </div>
+      </div>
+      <div class="drv-row">
+        <span class="dn g">3</span>
+        <div>
+          This is, term for term, the softmax-weighted average:
+          \[= \sum_i\text{softmax}\!\left(\frac{\mathbf{q}^T\mathbf{k}_i}{\sqrt{d_k}}\right)\mathbf{v}_i = \text{Attention}(\mathbf{q},\mathbf{K},\mathbf{V})\]
+          <div class="dnote">Attention IS Nadaraya-Watson kernel regression, with the kernel given by the exponentiated, scaled dot product, and the "training set" given by the key-value pairs presently in context. No approximation, no analogy — an exact algebraic identity. ∎</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="thm">
+    <div class="thm-badge">Attention = Learned-Kernel Nonparametric Regression</div>
+    <p>Every attention layer performs nonparametric kernel regression at inference time, where the "training data" is the set of key-value pairs in the current context, and the kernel is the (scaled, exponentiated) dot product between learned Query and Key projections. The kernel itself — i.e., which notion of similarity is used — is <em>learned</em> via \(\mathbf{W}_Q,\mathbf{W}_K\), rather than fixed in advance (as a Gaussian RBF kernel's bandwidth would be in classical statistics). This is precisely the "kernel trick" of SVMs and Gaussian Processes, except the kernel itself is now parametrized and trained end to end.</p>
+  </div>
+
+  <div class="sub">
+    <div class="sh cy">Why This View Explains In-Context Learning</div>
+    <div class="lens cy">
+      <div class="lens-mark">↻</div>
+      <div class="lens-content">
+        <div class="lens-title">In-Context Learning as Live Kernel Regression</div>
+        <p>When a large language model performs "in-context learning" — adapting its behavior based on examples placed in the prompt, with no parameter updates — the kernel regression view gives a precise mechanistic explanation: the few-shot examples in the prompt become the key-value training pairs \((\mathbf{k}_i,\mathbf{v}_i)\), and the model's prediction for a new query is literally a kernel-weighted average over those examples, computed fresh at each forward pass. This reframes "in-context learning" not as a mysterious emergent ability but as Nadaraya-Watson regression performed live, once per query, using whatever examples happen to be in the context window.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ §10 ═════════════════════════════════════════════════ -->
+<div class="ch" id="c10">
+  <div class="ch-head">
+    <div class="ch-ap vi"><span class="ch-ap-num">10</span></div>
+    <div class="ch-text">
+      <span class="ch-badge vi">Theory</span>
+      <h2>Expressive Power of Attention</h2>
+      <div class="ch-sub">// the convex-hull limitation · universal approximation · Turing completeness · rank collapse</div>
+    </div>
+  </div>
+
+  <p>Attention is remarkably powerful, but it has a precise, provable limitation that is rarely stated explicitly — and an equally precise theoretical ceiling on what it (plus depth) can achieve.</p>
+
+  <div class="sub">
+    <div class="sh vi">The Convex-Hull Limitation — A Theorem</div>
+    <div class="thm">
+      <div class="thm-badge">Theorem: Attention Output Lies in the Convex Hull of Values</div>
+      <p>For any query \(\mathbf{q}\) and any set of values \(\{\mathbf{v}_1,\ldots,\mathbf{v}_n\}\), the attention output \(\sum_i\alpha_i\mathbf{v}_i\) satisfies \(\sum_i\alpha_i=1\) and \(\alpha_i\geq0\) (softmax guarantees both). Therefore the output is, by definition, a convex combination of the values — it lies in \(\text{conv}(\mathbf{v}_1,\ldots,\mathbf{v}_n)\), and <strong>can never lie outside this convex hull</strong>, no matter how the query is chosen.</p>
+    </div>
+    <p>This is a genuine limitation: a single attention operation cannot <em>extrapolate</em> — it can only interpolate among the values already present. Any function requiring an output beyond the span of available values (e.g., doubling a value, or producing something qualitatively new) cannot be computed by attention alone. This is precisely why every practical architecture pairs attention with position-wise feedforward layers (which CAN extrapolate, having no such convexity constraint) — attention mixes information across positions; the FFN transforms it.</p>
+  </div>
+
+  <div class="sub">
+    <div class="sh g">Universal Approximation — With Enough Depth</div>
+    <div class="eq g">
+      <div class="eq-top"><span class="eq-name">Universal Approximation for Transformers</span><span class="eq-tag">Yun et al. 2020</span></div>
+      <div class="eq-body">
+        \[\text{Transformers (attention + FFN, stacked)} \text{ can approximate any continuous seq-to-seq function } f:\mathcal{X}^n\to\mathcal{Y}^n\]
+        \[\text{to arbitrary precision } \epsilon, \text{ on any compact domain, given sufficient depth and width.}\]
+        <div class="eq-note">The proof strategy: attention layers are used to perform a "contextual shift" that effectively implements a lookup table / quantization of the input, and FFN layers perform the necessary nonlinear value mapping per token — together they can approximate any continuous function on compact sets, in the same spirit as the classical universal approximation theorem for single-hidden-layer networks (covered in the Neural Networks masterclass), but for sequence-to-sequence maps.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sub">
+    <div class="sh ro">Turing Completeness</div>
+    <div class="lens ro">
+      <div class="lens-mark">∞</div>
+      <div class="lens-content">
+        <div class="lens-title">Pérez, Marinković &amp; Barceló (2019)</div>
+        <p>A Transformer with arbitrary numerical precision and unbounded recurrence (i.e., allowed to feed its own output back as input indefinitely, as in autoregressive generation) is <strong>Turing complete</strong> — it can simulate any Turing machine. This result requires idealized (infinite-precision) arithmetic and unbounded generation length; finite-precision, fixed-depth Transformers are formally weaker (closer to bounded-depth threshold circuits), which is an active area of theoretical research (e.g., results placing fixed-depth Transformers within the complexity class \(\mathsf{TC}^0\)).</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="sub">
+    <div class="sh sk">Rank Collapse — A Limitation of Depth</div>
+    <div class="eq sk">
+      <div class="eq-top"><span class="eq-name">Attention Rank &amp; Rank Collapse</span><span class="eq-tag">Dong et al. 2021</span></div>
+      <div class="eq-body">
+        \[\text{rank}(\text{softmax}(\mathbf{QK}^T)) \leq \min(n, d_k) \quad\text{(the attention matrix itself has bounded rank)}\]
+        \[\text{Without skip connections, repeated self-attention layers converge: }\;\; \mathbf{x}_i^{(\ell)} \to \bar{\mathbf{x}}^{(\ell)} \text{ as } \ell\to\infty\]
+        <div class="eq-note">Dong et al. proved that pure self-attention (no residual connections, no FFN) applied repeatedly causes every token's representation to collapse toward the SAME vector — all positional/contextual distinctions wash out doubly-exponentially fast with depth. This is precisely why residual connections (x + Attention(x)) are not a minor implementation detail but a mathematical necessity for deep attention stacks: they prevent the rank-collapse degeneracy by ensuring each layer's output retains a component equal to its input.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ §11 ═════════════════════════════════════════════════ -->
+<div class="ch" id="c11">
+  <div class="ch-head">
+    <div class="ch-ap sk"><span class="ch-ap-num">11</span></div>
+    <div class="ch-text">
+      <span class="ch-badge sk">Computation</span>
+      <h2>Scaling Laws of Attention</h2>
+      <div class="ch-sub">// the quadratic cost · the crossover point · KV-cache memory · entropy dilution at long range</div>
+    </div>
+  </div>
+
+  <p>Attention's mathematical elegance comes with a specific computational price tag — one that scales in a precisely characterizable way with sequence length and model dimension, and that has shaped years of architecture research.</p>
+
+  <div class="sub">
+    <div class="sh sk">The Quadratic-vs-Quadratic Crossover</div>
+    <div class="eq sk">
+      <div class="eq-top"><span class="eq-name">FLOPs Breakdown — Attention vs Projections</span><span class="eq-tag">Compute Scaling</span></div>
+      <div class="eq-body">
+        \[\text{Attention scores + weighted sum (}\mathbf{QK}^T\text{, then }\cdot\mathbf{V}\text{): } O(n^2d)\]
+        \[\text{Q,K,V projections + output projection: } O(nd^2)\]
+        \[\text{Crossover: attention dominates when } n &gt; d; \text{ projections dominate when } n &lt; d\]
+        <div class="eq-note">For typical model dimensions (d ≈ 1,000–10,000) and typical sequence lengths in earlier Transformers (n ≈ 512), the projection cost O(nd²) often dominated. As context lengths have grown into the tens of thousands or beyond, the O(n²d) attention term increasingly dominates — this single crossover is the central motivation behind the entire research program of long-context / efficient attention (sparse attention, linear attention, Flash Attention's IO-optimization).</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sub">
+    <div class="sh ro">KV-Cache Memory at Inference</div>
+    <div class="eq ro">
+      <div class="eq-top"><span class="eq-name">Inference-Time Memory Scaling</span><span class="eq-tag">KV-Cache</span></div>
+      <div class="eq-body">
+        \[\text{KV-cache size per layer} = 2 \times n \times d_k \times h \times (\text{bytes per value})\]
+        \[\text{Total across } L \text{ layers: } O(L\cdot n\cdot d_{\text{model}}) \quad\text{(grows LINEARLY in context length } n\text{, not quadratically)}\]
+        <div class="eq-note">During autoregressive generation, every previously-computed Key and Value vector must be cached and reused (recomputing them from scratch at every new token would be O(n²) wasteful). This KV-cache, not the attention computation itself, is usually the dominant practical memory bottleneck for long-context inference — it is why multi-query attention (sharing K,V across heads) and grouped-query attention exist: they shrink this linear-in-n memory cost by a constant factor (the number of heads), trading a small amount of model quality for substantially reduced cache size.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sub">
+    <div class="sh g">Entropy Dilution at Long Range</div>
+    <div class="lens g">
+      <div class="lens-mark">↓</div>
+      <div class="lens-content">
+        <div class="lens-title">Attention Doesn't Scale Its Focus for Free</div>
+        <p>The softmax in §06 was variance-stabilized independent of \(n\) — but as the number of competing keys \(n\) grows, even a well-conditioned distribution \(\boldsymbol{\alpha}\) tends to spread its probability mass more thinly (higher entropy) unless the scores actively sharpen to compensate. Empirically, attention distributions over very long contexts often become diffuse — many keys receive small but non-negligible weight — which is one contributing factor to the "lost in the middle" phenomenon observed in long-context language models, where information placed in the middle of a long prompt is attended to less reliably than information at the very start or end.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="sub">
+    <div class="sh cy">Sub-Quadratic Alternatives — A Brief Map</div>
+    <div class="t-wrap">
+      <table>
+        <thead><tr><th>Approach</th><th>Complexity</th><th>Core Idea</th></tr></thead>
+        <tbody>
+          <tr><td>Sparse attention (Longformer, BigBird)</td><td>\(O(n\cdot k)\)</td><td>Each query attends to only \(k\ll n\) keys (local window + a few global tokens)</td></tr>
+          <tr><td>Linear attention (Performer, Linear Transformers)</td><td>\(O(nd^2)\)</td><td>Approximate the softmax kernel with a finite-dimensional feature map, avoiding the explicit \(n\times n\) matrix entirely</td></tr>
+          <tr><td>Flash Attention</td><td>\(O(n^2d)\) time, \(O(n)\) memory</td><td>Same exact computation as standard attention, reorganized to avoid materializing the full \(n\times n\) matrix in slow GPU memory</td></tr>
+          <tr><td>State-space models (Mamba)</td><td>\(O(nd)\)</td><td>Not attention at all — a different (recurrent-style) sequence operator entirely</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ══ §12 ═════════════════════════════════════════════════ -->
+<div class="ch" id="c12">
+  <div class="ch-head">
+    <div class="ch-ap g"><span class="ch-ap-num">12</span></div>
+    <div class="ch-text">
+      <span class="ch-badge g">Synthesis</span>
+      <h2>The Complete Mental Model</h2>
+      <div class="ch-sub">// everything unified · one diagram · the full thread from alignment to scaling</div>
+    </div>
+  </div>
+
+  <div class="fig">
+    <div class="fig-box">
+      <svg viewBox="0 0 720 600" xmlns="http://www.w3.org/2000/svg" style="max-width:720px;width:100%">
+        <rect width="720" height="600" fill="#110c08"/>
+        <defs>
+          <marker id="ama" markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto"><path d="M0,0 L0,5 L7,2.5z" fill="#3f301d"/></marker>
+          <marker id="amg" markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto"><path d="M0,0 L0,5 L7,2.5z" fill="#f0a830"/></marker>
+        </defs>
+        <text x="360" y="22" text-anchor="middle" font-family="Red Hat Mono" font-size="9" fill="#3f301d" letter-spacing=".26em">ATTENTION — COMPLETE CONCEPTUAL MAP</text>
+
+        <!-- Origin -->
+        <rect x="240" y="38" width="240" height="54" rx="8" fill="#18120c" stroke="#f0a830" stroke-width="2"/>
+        <text x="360" y="60" text-anchor="middle" font-family="Bricolage Grotesque" font-size="12" fill="#f0a830" font-weight="700">The Alignment Problem</text>
+        <text x="360" y="79" text-anchor="middle" font-family="Red Hat Mono" font-size="8.5" fill="#8c7c5e">hard discrete → soft differentiable</text>
+
+        <!-- Bahdanau / Luong -->
+        <rect x="40" y="150" width="190" height="54" rx="6" fill="#18120c" stroke="#5ecfdb" stroke-width="1.5"/>
+        <text x="135" y="172" text-anchor="middle" font-family="Bricolage Grotesque" font-size="10.5" fill="#5ecfdb" font-weight="700">BAHDANAU (additive)</text>
+        <text x="135" y="190" text-anchor="middle" font-family="Red Hat Mono" font-size="8" fill="#8c7c5e">v^T tanh(Ws+Uh)</text>
+
+        <rect x="265" y="150" width="190" height="54" rx="6" fill="#18120c" stroke="#e8607a" stroke-width="1.5"/>
+        <text x="360" y="172" text-anchor="middle" font-family="Bricolage Grotesque" font-size="10.5" fill="#e8607a" font-weight="700">LUONG (dot/general)</text>
+        <text x="360" y="190" text-anchor="middle" font-family="Red Hat Mono" font-size="8" fill="#8c7c5e">sᵀWh — bilinear score</text>
+
+        <rect x="490" y="150" width="190" height="54" rx="6" fill="#18120c" stroke="#a8d957" stroke-width="2"/>
+        <text x="585" y="172" text-anchor="middle" font-family="Bricolage Grotesque" font-size="10.5" fill="#a8d957" font-weight="700">QKV DERIVATION</text>
+        <text x="585" y="190" text-anchor="middle" font-family="Red Hat Mono" font-size="8" fill="#8c7c5e">low-rank factor + decouple</text>
+
+        <line x1="320" y1="92" x2="155" y2="148" stroke="#3f301d" stroke-width="1.2" stroke-dasharray="4,3" marker-end="url(#ama)"/>
+        <line x1="400" y1="92" x2="380" y2="148" stroke="#3f301d" stroke-width="1.2" stroke-dasharray="4,3" marker-end="url(#ama)"/>
+        <line x1="135" y1="204" x2="380" y2="206" stroke="#3f301d" stroke-width="1" stroke-dasharray="3,2" marker-end="url(#ama)"/>
+        <line x1="360" y1="204" x2="540" y2="206" stroke="#3f301d" stroke-width="1.2" stroke-dasharray="4,3" marker-end="url(#amg)"/>
+
+        <!-- Self-attention + scaling -->
+        <rect x="240" y="262" width="240" height="54" rx="6" fill="#18120c" stroke="#b896e0" stroke-width="2"/>
+        <text x="360" y="284" text-anchor="middle" font-family="Bricolage Grotesque" font-size="11" fill="#b896e0" font-weight="700">SELF-ATTN + SCALING</text>
+        <text x="360" y="302" text-anchor="middle" font-family="Red Hat Mono" font-size="8.5" fill="#8c7c5e">softmax(QKᵀ/√dₖ)V, Q=K=V source</text>
+
+        <line x1="585" y1="204" x2="430" y2="260" stroke="#3f301d" stroke-width="1.2" stroke-dasharray="4,3" marker-end="url(#ama)"/>
+
+        <!-- Multi-head -->
+        <rect x="270" y="374" width="180" height="48" rx="6" fill="#18120c" stroke="#6fa8dc" stroke-width="1.5"/>
+        <text x="360" y="394" text-anchor="middle" font-family="Bricolage Grotesque" font-size="10.5" fill="#6fa8dc" font-weight="700">MULTI-HEAD</text>
+        <text x="360" y="411" text-anchor="middle" font-family="Red Hat Mono" font-size="8" fill="#8c7c5e">parallel subspaces</text>
+
+        <line x1="360" y1="316" x2="360" y2="372" stroke="#3f301d" stroke-width="1.2" stroke-dasharray="4,3" marker-end="url(#ama)"/>
+
+        <!-- Three interpretations row -->
+        <rect x="20" y="460" width="220" height="58" rx="6" fill="#18120c" stroke="#e8607a" stroke-width="1.2"/>
+        <text x="130" y="480" text-anchor="middle" font-family="Bricolage Grotesque" font-size="10" fill="#e8607a" font-weight="700">INFO RETRIEVAL</text>
+        <text x="130" y="497" text-anchor="middle" font-family="Red Hat Mono" font-size="8" fill="#8c7c5e">soft content-addressed</text>
+        <text x="130" y="511" text-anchor="middle" font-family="Red Hat Mono" font-size="8" fill="#8c7c5e">memory lookup</text>
+
+        <rect x="255" y="460" width="220" height="58" rx="6" fill="#18120c" stroke="#a8d957" stroke-width="1.2"/>
+        <text x="365" y="480" text-anchor="middle" font-family="Bricolage Grotesque" font-size="10" fill="#a8d957" font-weight="700">KERNEL REGRESSION</text>
+        <text x="365" y="497" text-anchor="middle" font-family="Red Hat Mono" font-size="8" fill="#8c7c5e">Nadaraya-Watson with</text>
+        <text x="365" y="511" text-anchor="middle" font-family="Red Hat Mono" font-size="8" fill="#8c7c5e">learned exponential kernel</text>
+
+        <rect x="490" y="460" width="210" height="58" rx="6" fill="#18120c" stroke="#b896e0" stroke-width="1.2"/>
+        <text x="595" y="480" text-anchor="middle" font-family="Bricolage Grotesque" font-size="10" fill="#b896e0" font-weight="700">EXPRESSIVE LIMITS</text>
+        <text x="595" y="497" text-anchor="middle" font-family="Red Hat Mono" font-size="8" fill="#8c7c5e">convex hull · universal approx</text>
+        <text x="595" y="511" text-anchor="middle" font-family="Red Hat Mono" font-size="8" fill="#8c7c5e">rank collapse</text>
+
+        <line x1="300" y1="422" x2="135" y2="458" stroke="#3f301d" stroke-width="1" stroke-dasharray="3,2" marker-end="url(#ama)"/>
+        <line x1="360" y1="422" x2="365" y2="458" stroke="#3f301d" stroke-width="1" stroke-dasharray="3,2" marker-end="url(#ama)"/>
+        <line x1="420" y1="422" x2="590" y2="458" stroke="#3f301d" stroke-width="1" stroke-dasharray="3,2" marker-end="url(#ama)"/>
+
+        <!-- Scaling laws footer -->
+        <rect x="20" y="548" width="680" height="38" rx="6" fill="#0a0806" stroke="#2e2316" stroke-width="1"/>
+        <text x="360" y="571" text-anchor="middle" font-family="Red Hat Mono" font-size="9" fill="#8c7c5e">SCALING LAWS: O(n²d) attention · O(nd²) projections · O(n) KV-cache · entropy dilution at long range</text>
+      </svg>
+    </div>
+    <div class="fig-cap">Fig 1. Complete attention mental map — from the alignment problem through Bahdanau and Luong, the rigorous QKV derivation, self-attention with scaling, multi-head splitting, three theoretical interpretations, and the scaling laws that govern its computational cost.</div>
+  </div>
+
+  <p style="margin-top:clamp(22px,4vw,36px)">The complete story in one coherent thread:</p>
+
+  <ol style="padding-left:clamp(16px,3vw,24px);line-height:2.6;font-size:clamp(14px,1.9vw,16px)">
+    <li><strong>Attention solves the alignment problem</strong> — replacing the intractable discrete latent alignment of statistical MT, and the lossy fixed-vector bottleneck of vanilla encoder-decoder RNNs, with a continuous, differentiable, end-to-end-trainable soft alignment.</li>
+    <li><strong>Bahdanau's additive scoring</strong> \(\mathbf{v}_a^T\tanh(\mathbf{W}_a\mathbf{s}+\mathbf{U}_a\mathbf{h})\) was the first working mechanism — flexible but computationally heavier than necessary, and still conflating the "matching" and "content" roles of \(\mathbf{h}_j\).</li>
+    <li><strong>Luong's multiplicative scoring</strong> simplified this to \(\mathbf{s}^T\mathbf{W}\mathbf{h}\) (or plain \(\mathbf{s}^T\mathbf{h}\)) — a single matrix multiply, GPU-friendly, and the direct ancestor of the modern formulation.</li>
+    <li><strong>The QKV framework is a derivation, not an assumption:</strong> factoring the bilinear score matrix \(\mathbf{W}=\mathbf{W}_Q^T\mathbf{W}_K\) (provably lossless for sufficient rank, by the SVD) yields Query and Key as a dot product; introducing an independent \(\mathbf{W}_V\) decouples content from matching. Three projections are the unique minimal generalization that preserves expressiveness while removing unnecessary coupling.</li>
+    <li><strong>Self-attention</strong> applies the identical Q,K,V machinery with the query source and key/value source set to the same sequence — eliminating the sequential decoder dependency entirely and enabling full parallelization.</li>
+    <li><strong>Scaling by \(1/\sqrt{d_k}\)</strong> is a one-line variance computation, not an arbitrary constant — without it, dot-product scores grow with dimension and saturate the softmax, killing gradients.</li>
+    <li><strong>Multi-head attention</strong> runs several attention computations in independent subspaces at roughly no extra FLOP cost, allowing different heads to specialize in different relevance patterns that a single softmax distribution cannot jointly express.</li>
+    <li><strong>Three theoretical lenses</strong> illuminate what attention IS: a differentiable content-addressable memory lookup (information retrieval), an exact instance of Nadaraya-Watson kernel regression with a learned exponential kernel (explaining in-context learning), and a function with a provable convex-hull output limitation alongside universal-approximation power when stacked with FFN layers.</li>
+    <li><strong>Scaling laws</strong> — \(O(n^2d)\) compute, \(O(n)\) KV-cache memory, entropy dilution over long contexts — are the precise mathematical reasons efficient-attention research (sparse, linear, Flash Attention) exists, and why long-context modeling remains an active frontier.</li>
+  </ol>
+
+  <div class="thm" style="margin-top:clamp(24px,4vw,40px)">
+    <div class="thm-badge">What Attention Really Is</div>
+    <p>Strip away every architectural elaboration, and attention is a single, precise mathematical operation: a convex combination of value vectors, weighted by a learned, normalized similarity between a query and a set of keys. Everything else — Bahdanau's MLP, Luong's bilinear form, the \(1/\sqrt{d_k}\) scaling, the multi-head split — is refinement of <em>how that similarity is computed</em>, not a change to <em>what the operation fundamentally does</em>. Understanding attention rigorously means being able to derive Query, Key, and Value from the alignment problem itself, rather than accepting them as three mysteriously-appearing matrices — and recognizing that the same operation simultaneously IS a soft database lookup, IS kernel regression, and IS subject to provable expressive limits that no amount of scale alone can remove.</p>
+  </div>
+</div>
+
+</div><!-- /page -->
+
+  <!-- ═══ FOOTER ═══ -->
+  <footer class="site-footer">
+    <div class="footer-content">
+      <div class="footer-main">
+        <div class="footer-left">
+          <p class="copyright">&copy; 2025 Shahid Ul Islam</p>
+          <p class="footer-meta">Data Scientist & AI Developer</p>
+        </div>
+        <div class="footer-right">
+          <div class="footer-links">
+            <a href="#" class="back-to-top">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="12" y1="19" x2="12" y2="5"></line>
+                <polyline points="5 12 12 5 19 12"></polyline>
+              </svg>
+              <span>Back to Top</span>
+            </a>
+            <div class="social-links11">
+              <a href="https://github.com/Khanz9664" target="_blank" class="social-link11">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path
+                    d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22" />
+                </svg>
+              </a>
+              <a href="https://linkedin.com/in/shahid-ul-islam-13650998" target="_blank" class="social-link11">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" />
+                  <rect x="2" y="9" width="4" height="12" />
+                  <circle cx="4" cy="4" r="2" />
+                </svg>
+              </a>
+              <a href="mailto:shahid9664@gmail.com" class="social-link11">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
+                  <polyline points="22,6 12,13 2,6" />
+                </svg>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="made-with">
+      <p>Crafted with <span class="heart-icon">❤️</span> By Shahid</p>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js"></script>
+</body>
+
+</html>

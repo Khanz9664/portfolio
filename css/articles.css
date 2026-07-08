@@ -1112,6 +1112,76 @@
     }
 }
 
+/* Attention Mechanisms Visual */
+.visual-attention .v-attn-wrapper {
+    position: absolute;
+    width: 250px;
+    height: 150px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.visual-attention .v-attn-svg {
+    width: 100%;
+    height: 100%;
+    filter: drop-shadow(0 0 10px rgb(240 168 48 / 20%));
+}
+
+.visual-attention .v-attn-query {
+    animation: attnQueryPulse 2.8s infinite alternate ease-in-out;
+}
+
+.visual-attention .v-attn-cone {
+    animation: attnConeBreathe 3.5s infinite alternate ease-in-out;
+}
+
+.visual-attention .v-attn-k2 {
+    animation: attnKeyHigh 2.6s infinite alternate ease-in-out;
+}
+
+.visual-attention .v-attn-k3 {
+    animation: attnKeyMid 3s infinite alternate-reverse ease-in-out;
+}
+
+.visual-attention .v-attn-k1 {
+    animation: attnKeyLow 3.4s infinite alternate ease-in-out;
+}
+
+.visual-attention .v-attn-k4 {
+    animation: attnKeyLow 3.8s infinite alternate-reverse ease-in-out;
+}
+
+@keyframes attnQueryPulse {
+    0% {
+        opacity: 0.6;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+@keyframes attnConeBreathe {
+    0% { opacity: 0.5; }
+    100% { opacity: 1; }
+}
+
+@keyframes attnKeyHigh {
+    0% { opacity: 0.4; }
+    100% { opacity: 1; }
+}
+
+@keyframes attnKeyMid {
+    0% { opacity: 0.3; }
+    100% { opacity: 0.8; }
+}
+
+@keyframes attnKeyLow {
+    0% { opacity: 0.2; }
+    100% { opacity: 0.5; }
+}
+
 .card-image-overlay {
     position: absolute;
     top: 0;

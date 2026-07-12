@@ -2,35 +2,56 @@
    TOKENS — academic parchment × forest green
 ═══════════════════════════════════════════ */
 :root {
-  /* Light body */
-  --paper: #f9f7f2;
-  --pap2: #f3f0e8;
-  --pap3: #ede9de;
-  --pap4: #e5e0d2;
-  --line: #d8d2c2;
-  --line2: #c8c0ac;
-  --ink: #1a170d;
-  --ink2: #302c1f;
-  --muted: #8a8070;
-  --faint: #c0b8a4;
+  /* Paper */
+  --paper: #fbfaf6;
+  --pap2: #f6f3eb;
+  --pap3: #efe9dc;
+  --pap4: #e5ddcc;
 
-  /* Hero (dark) */
-  --hero: #0c1a0c;
-  --hero2: #132213;
+  /* Borders */
+  --line: #d5ccba;
+  --line2: #c1b59f;
 
-  /* Accent palette */
-  --green: #1a6b3c;
-  --gk: rgb(26 107 60 / 8%);
-  --rust: #b84c20;
-  --rk: rgb(184 76 32 / 8%);
-  --navy: #1a3f6b;
-  --nk: rgb(26 63 107 / 8%);
-  --gold: #a07c10;
-  --ok: rgb(160 124 16 / 8%);
-  --plum: #6b1a5a;
-  --pk: rgb(107 26 90 / 8%);
-  --slate: #2a4a5a;
-  --sk: rgb(42 74 90 / 8%);
+  /* Text */
+  --ink: #18140d;
+  --ink2: #312b20;
+  --muted: #746a5b;
+  --faint: #b8ae98;
+
+  /* Hero */
+  --hero: #0d1b12;
+  --hero2: #17271a;
+
+  /* Forest */
+  --green: #1f6f43;
+  --gk: rgb(31 111 67 / 10%);
+
+  /* Terracotta */
+  --rust: #c05a2b;
+  --rk: rgb(192 90 43 / 10%);
+
+  /* Heritage Blue */
+  --navy: #234d7a;
+  --nk: rgb(35 77 122 / 10%);
+
+  /* Antique Gold */
+  --gold: #a8861b;
+  --ok: rgb(168 134 27 / 10%);
+
+  /* Burgundy */
+  --plum: #74214f;
+  --pk: rgb(116 33 79 / 10%);
+
+  /* Slate */
+  --slate: #36586a;
+  --sk: rgb(54 88 106 / 10%);
+
+  /* Extras */
+  --shadow: rgb(18 15 10 / 8%);
+  --shadow-lg: rgb(18 15 10 / 16%);
+  --success: #2f7d46;
+  --warning: #d18c1d;
+  --danger: #c74d3f;
 }
 
 *,
@@ -798,7 +819,7 @@ p {
   min-width: 0;
 }
 
-.drv-row > div {
+.drv-row>div {
   min-width: 0;
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;

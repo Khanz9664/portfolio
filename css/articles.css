@@ -1112,6 +1112,60 @@
     }
 }
 
+/* Statistical Learning Theory Visual */
+.visual-statslearn .v-sl-wrapper {
+    position: absolute;
+    width: 240px;
+    height: 150px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.visual-statslearn .v-sl-svg {
+    width: 100%;
+    height: 100%;
+    filter: drop-shadow(0 0 8px rgb(26 107 60 / 18%));
+}
+
+.visual-statslearn .v-sl-p1 {
+    animation: slPointPos 3s infinite alternate ease-in-out;
+}
+
+.visual-statslearn .v-sl-p3 {
+    animation: slPointPos 3.6s infinite alternate-reverse ease-in-out;
+}
+
+.visual-statslearn .v-sl-p2 {
+    animation: slPointNeg 2.8s infinite alternate ease-in-out;
+}
+
+.visual-statslearn .v-sl-line {
+    animation: slBoundary 4s infinite alternate ease-in-out;
+}
+
+@keyframes slPointPos {
+    0% { opacity: 0.5; }
+    100% { opacity: 1; }
+}
+
+@keyframes slPointNeg {
+    0% { opacity: 0.4; }
+    100% { opacity: 0.85; }
+}
+
+@keyframes slBoundary {
+    0% {
+        opacity: 0.4;
+        stroke-dashoffset: 0;
+    }
+
+    100% {
+        opacity: 0.85;
+        stroke-dashoffset: 20;
+    }
+}
+
 /* Attention Mechanisms Visual */
 .visual-attention .v-attn-wrapper {
     position: absolute;

@@ -1,0 +1,929 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Statistical Learning Theory | Shahid Ul Islam</title>
+  <meta name="description" content="the geometry of focus" />
+  <meta name="author" content="Shahid Ul Islam" />
+  <link rel="icon" type="image/png" href="../img/plogo.png" />
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Sora:wght@100;200;300;400;500;600;700;800&family=Source+Sans+3:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=JetBrains+Mono:ital,wght@0,300;0,400;0,500;1,300;1,400&display=swap"
+    rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <link rel="stylesheet" href="../css/variables.css" />
+  <link rel="stylesheet" href="../css/navigation.css" />
+  <link rel="stylesheet" href="../css/footer.css" />
+  <link rel="stylesheet" href="css/statslearn.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <script defer src="../js/common.js"></script>
+
+</head>
+
+<body>
+  <div class="top-bar">
+    <div class="logo">
+      <img src="../img/plogo.png" alt="Personal Logo" class="logo-icon">
+      <span class="logo-text">SHAHID<span class="logo-accent">||</span>Portfolio</span>
+    </div>
+    <nav class="nav-container">
+      <ul class="nav-links">
+        <li><a href="../index.html" class="nav-link">.Home</a></li>
+        <li><a href="../about.html" class="nav-link">.About</a></li>
+        <li><a href="../skills.html" class="nav-link">.Skills</a></li>
+        <li><a href="../projects.html" class="nav-link">.Projects</a></li>
+        <li><a href="../contact.html" class="nav-link">.Contact</a></li>
+        <li><a href="../articles.html" class="nav-link">.Articles</a></li>
+      </ul>
+      <div class="menu-toggle">
+        <div class="hamburger"></div>
+      </div>
+    </nav>
+  </div>
+
+<!-- ══ HERO ════════════════════════════════════════════════ -->
+<div class="hero">
+  <div class="hero-inner">
+    <div>
+      <div class="hero-series">Mathematical Foundations · Probably Approximately Correct</div>
+      <h1>
+        <span class="it">the mathematics of whether machines can learn</span>
+        Statistical <span class="green">Learning</span> Theory
+      </h1>
+      <p class="hero-abstract">
+        ERM, uniform convergence, VC dimension, Rademacher complexity, PAC learning,
+        structural risk minimization, the double-descent paradox — and why classical
+        theory is both essential and profoundly incomplete for modern deep learning.
+      </p>
+      <div class="hero-undertitle">
+        ⊢ Probably the most <strong>underrated topic in all of ML</strong>. Every
+        practitioner speaks of "overfitting" and "generalization" — this is the
+        field that turns those words into precise mathematical statements with
+        provable guarantees, finite-sample bounds, and known limitations.
+      </div>
+      <div class="hero-tags">
+        <span class="htag g">ERM</span><span class="htag r">Uniform Convergence</span>
+        <span class="htag n">Hoeffding Bounds</span><span class="htag o">VC Dimension</span>
+        <span class="htag p">Rademacher Complexity</span><span class="htag s">PAC Learning</span>
+        <span class="htag g">SRM</span><span class="htag r">Regularization Theory</span>
+        <span class="htag n">Double Descent</span><span class="htag o">Modern Theory</span>
+      </div>
+    </div>
+    <div class="hero-art">
+      <!-- VC dimension shattering diagram -->
+      <svg width="clamp(210px,25vw,290px)" height="clamp(220px,26vw,300px)" viewBox="0 0 270 285" xmlns="http://www.w3.org/2000/svg" style="display:block">
+        <!-- 3 points: shattered by lines (VC dim ≥ 3) -->
+        <text x="135" y="20" text-anchor="middle" font-family="JetBrains Mono" font-size="10" fill="rgba(26,107,60,.7)" letter-spacing=".1em">SHATTERING</text>
+        <!-- 8 labelings of 3 points (2^3 = 8) -->
+        <g transform="translate(25,35)">
+          <!-- Row 1 -->
+          <g transform="translate(0,0)">
+            <circle cx="20" cy="20" r="6" fill="rgba(26,107,60,.7)" stroke="none"/>
+            <circle cx="40" cy="35" r="6" fill="rgba(26,107,60,.7)" stroke="none"/>
+            <circle cx="60" cy="18" r="6" fill="rgba(26,107,60,.7)" stroke="none"/>
+            <path d="M5,50 L75,5" stroke="rgba(26,107,60,.35)" stroke-width="1.2"/>
+          </g>
+          <g transform="translate(80,0)">
+            <circle cx="20" cy="20" r="6" fill="rgba(184,76,32,.7)" stroke="none"/>
+            <circle cx="40" cy="35" r="6" fill="rgba(26,107,60,.7)" stroke="none"/>
+            <circle cx="60" cy="18" r="6" fill="rgba(26,107,60,.7)" stroke="none"/>
+            <path d="M5,5 L75,50" stroke="rgba(184,76,32,.35)" stroke-width="1.2"/>
+          </g>
+          <!-- Row 2 -->
+          <g transform="translate(0,70)">
+            <circle cx="20" cy="20" r="6" fill="rgba(26,107,60,.7)" stroke="none"/>
+            <circle cx="40" cy="35" r="6" fill="rgba(184,76,32,.7)" stroke="none"/>
+            <circle cx="60" cy="18" r="6" fill="rgba(26,107,60,.7)" stroke="none"/>
+            <ellipse cx="40" cy="35" rx="18" ry="12" fill="none" stroke="rgba(184,76,32,.35)" stroke-width="1.2"/>
+          </g>
+          <g transform="translate(80,70)">
+            <circle cx="20" cy="20" r="6" fill="rgba(26,107,60,.7)" stroke="none"/>
+            <circle cx="40" cy="35" r="6" fill="rgba(26,107,60,.7)" stroke="none"/>
+            <circle cx="60" cy="18" r="6" fill="rgba(184,76,32,.7)" stroke="none"/>
+            <ellipse cx="60" cy="18" rx="14" ry="12" fill="none" stroke="rgba(184,76,32,.35)" stroke-width="1.2"/>
+          </g>
+          <!-- Row 3 -->
+          <g transform="translate(0,140)">
+            <circle cx="20" cy="20" r="6" fill="rgba(184,76,32,.7)" stroke="none"/>
+            <circle cx="40" cy="35" r="6" fill="rgba(184,76,32,.7)" stroke="none"/>
+            <circle cx="60" cy="18" r="6" fill="rgba(26,107,60,.7)" stroke="none"/>
+            <path d="M55,5 L75,50" stroke="rgba(26,107,60,.35)" stroke-width="1.2"/>
+          </g>
+          <g transform="translate(80,140)">
+            <circle cx="20" cy="20" r="6" fill="rgba(184,76,32,.7)" stroke="none"/>
+            <circle cx="40" cy="35" r="6" fill="rgba(26,107,60,.7)" stroke="none"/>
+            <circle cx="60" cy="18" r="6" fill="rgba(184,76,32,.7)" stroke="none"/>
+            <path d="M30,50 L55,5" stroke="rgba(26,107,60,.35)" stroke-width="1.2"/>
+          </g>
+          <!-- Row 4 -->
+          <g transform="translate(0,210)">
+            <circle cx="20" cy="20" r="6" fill="rgba(26,107,60,.7)" stroke="none"/>
+            <circle cx="40" cy="35" r="6" fill="rgba(184,76,32,.7)" stroke="none"/>
+            <circle cx="60" cy="18" r="6" fill="rgba(184,76,32,.7)" stroke="none"/>
+            <path d="M5,50 L30,5" stroke="rgba(26,107,60,.35)" stroke-width="1.2"/>
+          </g>
+          <g transform="translate(80,210)">
+            <circle cx="20" cy="20" r="6" fill="rgba(184,76,32,.7)" stroke="none"/>
+            <circle cx="40" cy="35" r="6" fill="rgba(184,76,32,.7)" stroke="none"/>
+            <circle cx="60" cy="18" r="6" fill="rgba(184,76,32,.7)" stroke="none"/>
+            <path d="M5,5 L75,50" stroke="rgba(184,76,32,.35)" stroke-width="1.2"/>
+          </g>
+        </g>
+        <text x="135" y="275" text-anchor="middle" font-family="JetBrains Mono" font-size="9" fill="rgba(249,247,242,.35)">2³=8 labelings shattered</text>
+      </svg>
+    </div>
+  </div>
+  <div class="hero-strip">
+    <div class="hs-cell"><div class="hs-val">ERM</div><div class="hs-label">Foundation</div></div>
+    <div class="hs-cell"><div class="hs-val">VC</div><div class="hs-label">Dimension</div></div>
+    <div class="hs-cell"><div class="hs-val">PAC</div><div class="hs-label">Framework</div></div>
+    <div class="hs-cell"><div class="hs-val">O(1/n)</div><div class="hs-label">Sample Complexity</div></div>
+    <div class="hs-cell"><div class="hs-val">???</div><div class="hs-label">Open Problems</div></div>
+  </div>
+</div>
+
+<!-- ══ TOC ══════════════════════════════════════════════════ -->
+<div class="toc-outer">
+  <div class="toc-grid">
+    <div class="toc-cell"><a href="#c1"><span class="toc-n">01</span>What Is Generalization?</a></div>
+    <div class="toc-cell"><a href="#c2"><span class="toc-n">02</span>Empirical Risk Minimization</a></div>
+    <div class="toc-cell"><a href="#c3"><span class="toc-n">03</span>Uniform Convergence</a></div>
+    <div class="toc-cell"><a href="#c4"><span class="toc-n">04</span>Hoeffding Bounds</a></div>
+    <div class="toc-cell"><a href="#c5"><span class="toc-n">05</span>VC Dimension</a></div>
+    <div class="toc-cell"><a href="#c6"><span class="toc-n">06</span>Rademacher Complexity</a></div>
+    <div class="toc-cell"><a href="#c7"><span class="toc-n">07</span>PAC Learning</a></div>
+    <div class="toc-cell"><a href="#c8"><span class="toc-n">08</span>Structural Risk Minimization</a></div>
+    <div class="toc-cell"><a href="#c9"><span class="toc-n">09</span>Regularization Theory</a></div>
+    <div class="toc-cell"><a href="#c10"><span class="toc-n">10</span>Deep Learning Paradox</a></div>
+    <div class="toc-cell"><a href="#c11"><span class="toc-n">11</span>Double Descent</a></div>
+    <div class="toc-cell"><a href="#c12"><span class="toc-n">12</span>Modern Theory</a></div>
+    <div class="toc-cell"><a href="#c13"><span class="toc-n">13</span>Open Problems</a></div>
+    <div class="toc-cell"><a href="#c14"><span class="toc-n">14</span>Complete Mental Model</a></div>
+  </div>
+</div>
+
+<div class="page">
+
+<!-- ══ §01 ═════════════════════════════════════════════════ -->
+<div class="ch" id="c1">
+  <div class="ch-head">
+    <div class="ch-top"><div class="ch-num">01</div><span class="ch-badge g">Foundation</span></div>
+    <h2>What Is Generalization?</h2>
+    <div class="ch-sub">// the central question · formal setup · population vs empirical risk · the generalization gap</div>
+  </div>
+
+  <p>The fundamental question of machine learning is not "can a model fit the training data?" — any sufficiently complex model can memorize any finite dataset. The question is: <em>can a model trained on a finite sample perform well on unseen data drawn from the same distribution?</em> Statistical Learning Theory is the mathematical framework that makes this question precise and answers it rigorously.</p>
+
+  <div class="sub">
+    <div class="sh g">Formal Setup</div>
+    <div class="def g">
+      <div class="def-top"><span class="def-label">Definition 1.1</span><span class="def-title">The Learning Problem</span></div>
+      <div class="def-body">
+        \[\mathcal{D} = \mathcal{X}\times\mathcal{Y} \quad\text{(instance space)}, \quad \mathcal{P} \text{ — unknown distribution over }\mathcal{D}\]
+        \[S = \{(\mathbf{x}_1,y_1),\ldots,(\mathbf{x}_n,y_n)\} \sim \mathcal{P}^n \quad\text{(i.i.d. training sample)}\]
+        \[\mathcal{H} \quad\text{(hypothesis class — the set of functions the learner can choose from)}\]
+        <div class="def-note">All three objects — distribution P, hypothesis class H, and the trade-off between them — must be specified precisely for meaningful theoretical guarantees. "Generalization" is a statement about P, derived from evidence in S alone, while H is fixed in advance as a modeling choice.</div>
+      </div>
+    </div>
+
+    <div class="def n">
+      <div class="def-top"><span class="def-label">Definition 1.2</span><span class="def-title">Population Risk and Empirical Risk</span></div>
+      <div class="def-body">
+        \[L_\mathcal{P}(h) = \mathbb{E}_{(\mathbf{x},y)\sim\mathcal{P}}[\ell(h(\mathbf{x}),y)] \quad\text{(population risk — the TRUE objective, unobservable)}\]
+        \[\hat{L}_S(h) = \frac{1}{n}\sum_{i=1}^n\ell(h(\mathbf{x}_i),y_i) \quad\text{(empirical risk — the OBSERVED proxy, computable from }S\text{)}\]
+        \[\text{Generalization Gap} = L_\mathcal{P}(h) - \hat{L}_S(h)\]
+        <div class="def-note">The population risk L_P(h) is the quantity we actually care about — it measures how well h performs on the entire data distribution. We cannot compute it because P is unknown. We can only compute the empirical risk. All of learning theory is about bounding the gap between these two quantities.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sub">
+    <div class="sh r">The Fundamental Tension</div>
+    <div class="two">
+      <div class="tcol">
+        <h4 style="color:var(--green)">We want to minimize</h4>
+        <p>\[L_\mathcal{P}(h^*) \quad\text{(population risk)}\]</p>
+        <p>This requires knowing \(\mathcal{P}\) — which we don't.</p>
+      </div>
+      <div class="tcol">
+        <h4 style="color:var(--rust)">We can only minimize</h4>
+        <p>\[\hat{L}_S(\hat{h}) \quad\text{(empirical risk)}\]</p>
+        <p>This is computable — but may not reflect \(L_\mathcal{P}\).</p>
+      </div>
+    </div>
+    <p>Statistical Learning Theory provides mathematical conditions under which minimizing the empirical risk provably minimizes (or approximately minimizes) the population risk — and quantifies exactly how many samples \(n\) are needed for these conditions to hold with high probability.</p>
+  </div>
+</div>
+
+<!-- ══ §02 ═════════════════════════════════════════════════ -->
+<div class="ch" id="c2">
+  <div class="ch-head">
+    <div class="ch-top"><div class="ch-num">02</div><span class="ch-badge n">Algorithm</span></div>
+    <h2>Empirical Risk Minimization</h2>
+    <div class="ch-sub">// the ERM principle · consistency · Vapnik's proof · failure modes</div>
+  </div>
+
+  <p>Empirical Risk Minimization (ERM) is the most natural learning algorithm: simply find the hypothesis in \(\mathcal{H}\) that minimizes the training error. Its mathematical justification — and the conditions under which it provably works — are the heart of classical learning theory.</p>
+
+  <div class="def g">
+    <div class="def-top"><span class="def-label">Definition 2.1</span><span class="def-title">Empirical Risk Minimizer</span></div>
+    <div class="def-body">
+      \[\hat{h}_S = \text{ERM}_\mathcal{H}(S) \triangleq \arg\min_{h\in\mathcal{H}}\hat{L}_S(h)\]
+      <div class="def-note">ERM is well-defined when the argmin exists and is unique. For finite H, it always exists. For infinite H (e.g., all linear functions in R^d), existence and uniqueness require additional conditions (coercivity, strict convexity of the loss). In practice, ERM is approximated by gradient descent — which adds the implicit bias discussed in the DL Optimization masterclass.</div>
+    </div>
+  </div>
+
+  <div class="sub">
+    <div class="sh g">When Does ERM Succeed? — Consistency</div>
+    <div class="def r">
+      <div class="def-top"><span class="def-label">Definition 2.2</span><span class="def-title">Consistency of ERM</span></div>
+      <div class="def-body">
+        \[\text{ERM is consistent if: }\quad L_\mathcal{P}(\hat{h}_S) \xrightarrow{P} \min_{h\in\mathcal{H}} L_\mathcal{P}(h) \quad\text{as } n\to\infty\]
+        <div class="def-note">Consistency says: given enough data, ERM will eventually find the best hypothesis in H. This is a minimal requirement — it says nothing about HOW FAST convergence occurs, or how many samples are needed for a specific accuracy. The rate of convergence (sample complexity) is where the theory gets interesting.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sub">
+    <div class="sh n">Decomposing ERM Error</div>
+    <div class="def n">
+      <div class="def-top"><span class="def-label">Theorem 2.1</span><span class="def-title">Approximation-Estimation Decomposition</span></div>
+      <div class="def-body">
+        \[L_\mathcal{P}(\hat{h}_S) - \min_{h^*}\! L_\mathcal{P}(h^*) \leq \underbrace{\left[\min_{h\in\mathcal{H}}L_\mathcal{P}(h) - L_\mathcal{P}(h^*)\right]}_{\text{approximation error (bias)}} + \underbrace{\left[L_\mathcal{P}(\hat{h}_S) - \min_{h\in\mathcal{H}}L_\mathcal{P}(h)\right]}_{\text{estimation error (variance)}}\]
+        <div class="def-note">Approximation error = how well the best hypothesis in H approximates the Bayes optimal classifier h*. This is IRREDUCIBLE with ERM — only changing H (using a richer class) can reduce it. Estimation error = the price of having finite data instead of all of P. ERM's job is to minimize the estimation error. Both terms must be controlled simultaneously — the bias-variance tradeoff in this precise form.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="marg r">
+    <div class="marg-tag">Warning</div>
+    <div class="marg-body"><p>ERM can fail catastrophically when \(\mathcal{H}\) is too rich relative to the sample size. A hypothesis class that can fit any labeling of any \(n\) points will achieve zero training error on any dataset — but the ERM solution may be pure memorization with no generalization whatsoever. This is why the size and complexity of \(\mathcal{H}\) must be controlled.</p></div>
+  </div>
+</div>
+
+<!-- ══ §03 ═════════════════════════════════════════════════ -->
+<div class="ch" id="c3">
+  <div class="ch-head">
+    <div class="ch-top"><div class="ch-num">03</div><span class="ch-badge o">Key Property</span></div>
+    <h2>Uniform Convergence</h2>
+    <div class="ch-sub">// the bridge between empirical and population risk · worst-case over all hypotheses</div>
+  </div>
+
+  <p>Uniform convergence is the mathematical property that makes ERM work: if the empirical risk converges to the population risk <em>uniformly over the entire hypothesis class</em>, then minimizing the empirical risk provably minimizes the population risk.</p>
+
+  <div class="def o">
+    <div class="def-top"><span class="def-label">Definition 3.1</span><span class="def-title">Uniform Convergence</span></div>
+    <div class="def-body">
+      \[\mathcal{H} \text{ has the uniform convergence property if } \forall\epsilon&gt;0,\,\forall\delta&gt;0,\;\exists N\text{ s.t. }n\geq N:\]
+      \[\mathbb{P}_S\!\left[\sup_{h\in\mathcal{H}}\left|\hat{L}_S(h)-L_\mathcal{P}(h)\right| &gt; \epsilon\right] &lt; \delta\]
+      <div class="def-note">Uniform convergence is MUCH stronger than pointwise convergence. For a fixed h, the LLN guarantees L̂_S(h) → L_P(h) as n → ∞. But for the sup over ALL h ∈ H, we need all of them to converge simultaneously — this requires H to be "not too rich." The sup is called the generalization gap, and the condition says it is small with high probability.</div>
+    </div>
+  </div>
+
+  <div class="sub">
+    <div class="sh g">Why Uniform Convergence Suffices for ERM</div>
+    <div class="drv">
+      <div class="drv-hdr">// Proving ERM works under uniform convergence</div>
+      <div class="drv-row">
+        <span class="dn g">1</span>
+        <div>
+          Suppose uniform convergence holds with parameter \(\epsilon/2\): \(\sup_h|\hat{L}_S(h)-L_\mathcal{P}(h)|\leq\epsilon/2\).
+        </div>
+      </div>
+      <div class="drv-row">
+        <span class="dn g">2</span>
+        <div>
+          Then for the ERM solution \(\hat{h}_S\) and the best hypothesis \(h^* = \arg\min_{h\in\mathcal{H}}L_\mathcal{P}(h)\):
+          \[L_\mathcal{P}(\hat{h}_S) \leq \hat{L}_S(\hat{h}_S) + \frac{\epsilon}{2} \leq \hat{L}_S(h^*) + \frac{\epsilon}{2} \leq L_\mathcal{P}(h^*) + \epsilon\]
+          <div class="dnote">Step 2 uses: (a) UC gives L_P ≤ L̂_S + ε/2; (b) ERM definition: L̂_S(ĥ) ≤ L̂_S(h*); (c) UC again: L̂_S(h*) ≤ L_P(h*) + ε/2. ∎</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="thm">
+    <div class="thm-badge">The Fundamental Theorem of Statistical Learning (Informal)</div>
+    <p>For a hypothesis class \(\mathcal{H}\) with loss taking values in \([0,1]\), the following are equivalent: (1) \(\mathcal{H}\) is PAC-learnable, (2) \(\mathcal{H}\) has the uniform convergence property, (3) \(\mathcal{H}\) has finite VC dimension. This equivalence — between learnability, uniform convergence, and combinatorial complexity — is the central result of classical statistical learning theory, unifying three seemingly different properties into one.</p>
+  </div>
+</div>
+
+<!-- ══ §04 ═════════════════════════════════════════════════ -->
+<div class="ch" id="c4">
+  <div class="ch-head">
+    <div class="ch-top"><div class="ch-num">04</div><span class="ch-badge s">Concentration</span></div>
+    <h2>Hoeffding Bounds</h2>
+    <div class="ch-sub">// the workhorse inequality · finite hypothesis classes · the union bound · sample complexity</div>
+  </div>
+
+  <p>Hoeffding's inequality (covered in depth in the Probability Theory masterclass) is the concentration inequality that underlies most sample complexity bounds in learning theory. Combined with the union bound, it provides the first rigorous guarantee for ERM over finite hypothesis classes.</p>
+
+  <div class="def s">
+    <div class="def-top"><span class="def-label">Theorem 4.1</span><span class="def-title">Hoeffding's Inequality</span></div>
+    <div class="def-body">
+      \[\text{If }X_1,\ldots,X_n\text{ i.i.d. with }X_i\in[a,b]\text{ and }\mu=\mathbb{E}[X_i]:\]
+      \[\mathbb{P}\!\left(\bar{X}_n - \mu \geq \epsilon\right) \leq \exp\!\left(-\frac{2n\epsilon^2}{(b-a)^2}\right)\]
+      <div class="def-note">For losses in [0,1] (a=0, b=1): P(L̂_S(h) − L_P(h) ≥ ε) ≤ exp(−2nε²). This bounds the probability that a SINGLE hypothesis h has empirical risk much smaller than its true risk — i.e., the probability of being "lucky" on this specific training set. To control ALL hypotheses simultaneously, we need the union bound.</div>
+    </div>
+  </div>
+
+  <div class="sub">
+    <div class="sh g">Finite Hypothesis Classes: The Union Bound Argument</div>
+    <div class="drv">
+      <div class="drv-hdr">// Deriving the first generalization bound — finite H</div>
+      <div class="drv-row">
+        <span class="dn g">1</span>
+        <div>
+          For a single \(h\in\mathcal{H}\), by Hoeffding (two-sided):
+          \[\mathbb{P}\!\left(\left|\hat{L}_S(h)-L_\mathcal{P}(h)\right|&gt;\epsilon\right)\leq 2e^{-2n\epsilon^2}\]
+        </div>
+      </div>
+      <div class="drv-row">
+        <span class="dn g">2</span>
+        <div>
+          Apply the union bound over all \(|\mathcal{H}|\) hypotheses:
+          \[\mathbb{P}\!\left(\sup_{h\in\mathcal{H}}\left|\hat{L}_S(h)-L_\mathcal{P}(h)\right|&gt;\epsilon\right)\leq \sum_{h\in\mathcal{H}}2e^{-2n\epsilon^2} = 2|\mathcal{H}|e^{-2n\epsilon^2}\]
+        </div>
+      </div>
+      <div class="drv-row">
+        <span class="dn g">3</span>
+        <div>
+          Set this to \(\delta\) and solve for \(\epsilon\): with probability \(\geq 1-\delta\),
+          \[\sup_{h\in\mathcal{H}}\left|\hat{L}_S(h)-L_\mathcal{P}(h)\right|\leq\sqrt{\frac{\log|\mathcal{H}|+\log(2/\delta)}{2n}}\]
+          <div class="dnote">Consequence for ERM: with probability ≥ 1−δ, L_P(ĥ_S) ≤ min_{h∈H} L_P(h) + √((log|H| + log(2/δ))/(2n)). The hypothesis class complexity appears as log|H| — the logarithm of the number of hypotheses. For |H| = 2^B (B-bit descriptions), log|H| = B·log2 — the description length. ∎</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sub">
+    <div class="sh r">Sample Complexity</div>
+    <div class="def r">
+      <div class="def-top"><span class="def-label">Definition 4.1</span><span class="def-title">Sample Complexity</span></div>
+      <div class="def-body">
+        \[m_\mathcal{H}(\epsilon,\delta) \triangleq \text{min. } n \text{ such that ERM is } (\epsilon,\delta)\text{-PAC-accurate for all distributions}\]
+        \[\text{From the Hoeffding bound: } m_\mathcal{H}(\epsilon,\delta) \leq \frac{\log|\mathcal{H}|+\log(2/\delta)}{2\epsilon^2}\]
+        <div class="def-note">The sample complexity tells us: to learn to within accuracy ε with confidence 1−δ, how many training examples do we need? For finite H, this scales logarithmically in |H| — a beautiful result, since |H| can be exponentially large in the number of parameters, yet only log|H| samples are needed. For infinite H (all linear classifiers, all neural networks), this formula gives ∞ — the VC dimension (§05) provides the right generalization.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ §05 ═════════════════════════════════════════════════ -->
+<div class="ch" id="c5">
+  <div class="ch-head">
+    <div class="ch-top"><div class="ch-num">05</div><span class="ch-badge g">Complexity</span></div>
+    <h2>VC Dimension</h2>
+    <div class="ch-sub">// shattering · the growth function · Sauer's Lemma · the fundamental theorem</div>
+  </div>
+
+  <p>VC dimension extends the learnability analysis to <em>infinite</em> hypothesis classes by replacing the explicit size \(|\mathcal{H}|\) with a geometric measure of the class's combinatorial richness: its ability to "shatter" finite sets of points.</p>
+
+  <div class="def g">
+    <div class="def-top"><span class="def-label">Definition 5.1</span><span class="def-title">Shattering</span></div>
+    <div class="def-body">
+      \[\mathcal{H} \text{ shatters a set } C = \{c_1,\ldots,c_m\} \iff \mathcal{H} \text{ can produce ALL } 2^m \text{ labelings of } C:\]
+      \[\forall (b_1,\ldots,b_m)\in\{0,1\}^m,\;\exists h\in\mathcal{H}: h(c_i)=b_i\;\;\forall i\]
+      <div class="def-note">Shattering means the hypothesis class is expressive enough to assign any binary label to any point in C, in any combination. The hero diagram shows: 3 points in R² can be shattered by halfspaces (lines), since all 8 labelings are achievable. 4 points cannot always be shattered — the XOR pattern (one diagonal positive, other diagonal negative) cannot be achieved by a single halfspace.</div>
+    </div>
+  </div>
+
+  <div class="def n">
+    <div class="def-top"><span class="def-label">Definition 5.2</span><span class="def-title">VC Dimension</span></div>
+    <div class="def-body">
+      \[\text{VCdim}(\mathcal{H}) \triangleq \max\{m : \exists C\subseteq\mathcal{X}, |C|=m, \mathcal{H}\text{ shatters }C\}\]
+      <div class="def-note">VCdim(H) = ∞ if H shatters sets of every finite size. If no finite set can be shattered, VCdim = 0. The VC dimension is a single integer that completely characterizes the learnability of H in the PAC model — finite VC dimension is equivalent to PAC learnability (the Fundamental Theorem, §03).</div>
+    </div>
+  </div>
+
+  <div class="sub">
+    <div class="sh o">VC Dimensions of Common Hypothesis Classes</div>
+    <div class="t-wrap">
+      <table>
+        <thead><tr><th>Hypothesis Class</th><th>VCdim</th><th>Intuition</th></tr></thead>
+        <tbody>
+          <tr><td>Halfspaces in \(\mathbb{R}^d\)</td><td>\(d+1\)</td><td>Can shatter any \(d+1\) points in general position; \(d+2\) always has a "XOR" pair</td></tr>
+          <tr><td>Intervals on \(\mathbb{R}\)</td><td>2</td><td>Can shatter any 2 points; 3 points with pattern +-+ are not separable by one interval</td></tr>
+          <tr><td>Rectangles in \(\mathbb{R}^2\)</td><td>4</td><td>Can shatter any 4 points; 5 always has a non-rectangular labeling</td></tr>
+          <tr><td>Polynomials of degree \(\leq k\) in \(\mathbb{R}\)</td><td>\(k+1\)</td><td>Fundamental theorem of algebra: degree-\(k\) polynomial determined by \(k+1\) points</td></tr>
+          <tr><td>Finite class \(|\mathcal{H}|\)</td><td>\(\leq \log_2|\mathcal{H}|\)</td><td>At most \(\log_2|\mathcal{H}|\) points can be shattered (pigeonhole)</td></tr>
+          <tr><td>Sinusoids \(\sin(\theta x)\)</td><td>\(\infty\)</td><td>Can shatter any finite set by appropriate frequency — not PAC-learnable!</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="sub">
+    <div class="sh g">Sauer's Lemma and the Growth Function</div>
+    <div class="def p">
+      <div class="def-top"><span class="def-label">Theorem 5.1</span><span class="def-title">Sauer's Lemma</span></div>
+      <div class="def-body">
+        \[\Pi_\mathcal{H}(m) \triangleq \max_{C:|C|=m}|\{(h(c_1),\ldots,h(c_m)):h\in\mathcal{H}\}|\]
+        \[\text{Sauer: } \Pi_\mathcal{H}(m) \leq \sum_{i=0}^d\binom{m}{i} \leq \left(\frac{em}{d}\right)^d, \quad d = \text{VCdim}(\mathcal{H})\]
+        <div class="def-note">Π_H(m) is the growth function — how many distinct dichotomies (labelings) H can induce on m points. For m ≤ d: Π_H(m) = 2^m (all labelings achievable). For m &gt; d: growth is polynomial in m (at most O(m^d)), not exponential. This polynomial growth is the key — it allows the union bound to yield a finite generalization bound.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="def g">
+    <div class="def-top"><span class="def-label">Theorem 5.2</span><span class="def-title">VC Generalization Bound</span></div>
+    <div class="def-body">
+      \[\text{With probability} \geq 1-\delta:\quad L_\mathcal{P}(\hat{h}_S) \leq \hat{L}_S(\hat{h}_S) + O\!\left(\sqrt{\frac{d\log(n/d)+\log(1/\delta)}{n}}\right)\]
+      \[\text{where } d = \text{VCdim}(\mathcal{H}) \quad\text{(replaces }\log|\mathcal{H}|\text{ from finite case)}\]
+      <div class="def-note">This is the master generalization bound of classical learning theory. The rate O(√(d/n)) is a per-hypothesis complexity cost: d bits of "description complexity" (the VC dimension), spread across n training points. The exact constant matters for the tightness of the bound — the √ factor means we need 4× more data to halve the generalization gap.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ §06 ═════════════════════════════════════════════════ -->
+<div class="ch" id="c6">
+  <div class="ch-head">
+    <div class="ch-top"><div class="ch-num">06</div><span class="ch-badge r">Complexity</span></div>
+    <h2>Rademacher Complexity</h2>
+    <div class="ch-sub">// data-dependent complexity · Rademacher variables · connection to VC · tighter bounds</div>
+  </div>
+
+  <p>While VC dimension is a fixed property of a hypothesis class, Rademacher complexity is <em>data-dependent</em> — it measures the ability of a hypothesis class to fit random noise on the specific sample at hand. This leads to strictly tighter generalization bounds, and applies naturally to real-valued function classes (not just binary classifiers).</p>
+
+  <div class="def r">
+    <div class="def-top"><span class="def-label">Definition 6.1</span><span class="def-title">Rademacher Complexity</span></div>
+    <div class="def-body">
+      \[\sigma_1,\ldots,\sigma_n \sim \text{Uniform}(\{-1,+1\}) \quad\text{(Rademacher variables — random signs)}\]
+      \[\hat{\mathcal{R}}_S(\mathcal{H}) = \mathbb{E}_{\boldsymbol{\sigma}}\!\left[\sup_{h\in\mathcal{H}}\frac{1}{n}\sum_{i=1}^n\sigma_i h(\mathbf{x}_i)\right] \quad\text{(empirical Rademacher complexity)}\]
+      \[\mathcal{R}_n(\mathcal{H}) = \mathbb{E}_{S\sim\mathcal{P}^n}[\hat{\mathcal{R}}_S(\mathcal{H})] \quad\text{(Rademacher complexity)}\]
+      <div class="def-note">Intuition: assign each training point a random ±1 sign. How well can a hypothesis from H correlate with these random labels? High Rademacher complexity = H can fit random noise = H will overfit. Low complexity = H cannot correlate with noise = H generalizes. The sup_{h∈H} captures the best-case correlation — essentially measuring the memorization capacity of H relative to this specific dataset S.</div>
+    </div>
+  </div>
+
+  <div class="def n">
+    <div class="def-top"><span class="def-label">Theorem 6.1</span><span class="def-title">Rademacher Generalization Bound</span></div>
+    <div class="def-body">
+      \[\text{With probability} \geq 1-\delta:\quad \sup_{h\in\mathcal{H}}\left[L_\mathcal{P}(h)-\hat{L}_S(h)\right] \leq 2\mathcal{R}_n(\mathcal{H}) + \sqrt{\frac{\log(1/\delta)}{2n}}\]
+      <div class="def-note">This bound is TIGHTER than VC bounds in several ways: (1) it's data-dependent — if the actual training set happens to be easy, the bound reflects this; (2) it applies directly to real-valued function classes; (3) it can incorporate the structure of the loss function via contraction lemmas (e.g., Talagrand's lemma: Rad(ℓ∘H) ≤ |ℓ|_L · Rad(H) for L-Lipschitz losses).</div>
+    </div>
+  </div>
+
+  <div class="sub">
+    <div class="sh r">Rademacher Complexity of Common Classes</div>
+    <div class="t-wrap">
+      <table>
+        <thead><tr><th>Class</th><th>Rademacher Complexity</th><th>Implications</th></tr></thead>
+        <tbody>
+          <tr><td>Linear \(B\)-bounded: \(\|\mathbf{w}\|\leq B\)</td><td>\(\mathcal{R}_n\leq \frac{BX}{\sqrt{n}}\), \(X=\max\|\mathbf{x}\|\)</td><td>Decreases as \(1/\sqrt{n}\); norm control → generalization</td></tr>
+          <tr><td>Finite \(|\mathcal{H}|\)</td><td>\(\mathcal{R}_n\leq\sqrt{2\log|\mathcal{H}|/n}\)</td><td>Recovers Hoeffding bound (§04)</td></tr>
+          <tr><td>Kernel methods (RKHS ball)</td><td>\(\mathcal{R}_n\leq\frac{\sqrt{\text{tr}(\mathbf{K}/n)}}{\text{radius}}\)</td><td>Complexity from kernel eigenspectrum</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ══ §07 ═════════════════════════════════════════════════ -->
+<div class="ch" id="c7">
+  <div class="ch-head">
+    <div class="ch-top"><div class="ch-num">07</div><span class="ch-badge o">Framework</span></div>
+    <h2>PAC Learning</h2>
+    <div class="ch-sub">// Probably Approximately Correct · Valiant 1984 · agnostic PAC · sample complexity characterization</div>
+  </div>
+
+  <p>PAC (Probably Approximately Correct) learning, introduced by Leslie Valiant in 1984, is the formal framework that makes "learning" a precise mathematical concept — defining what it means for an algorithm to "learn" a concept class in terms of provable sample complexity guarantees.</p>
+
+  <div class="def g">
+    <div class="def-top"><span class="def-label">Definition 7.1</span><span class="def-title">PAC Learnability</span></div>
+    <div class="def-body">
+      \[\mathcal{H} \text{ is PAC-learnable if } \exists \text{ algorithm } A \text{ and } m:\,(0,1)^2\to\mathbb{N} \text{ s.t. }\]
+      \[\forall \epsilon,\delta\in(0,1),\;\forall\mathcal{P},\;\forall h^*\in\mathcal{H}:\quad \mathbb{P}_{S\sim\mathcal{P}^{m(\epsilon,\delta)}}\!\left[L_\mathcal{P}(A(S))&gt;\epsilon\right]&lt;\delta\]
+      <div class="def-note">"Probably approximately correct" = with probability 1−δ (probably), the learned hypothesis has error at most ε (approximately correct). The elegance: a SINGLE algorithm A must work for ALL distributions P and ALL target concepts h* ∈ H. This distribution-freeness is both the framework's greatest strength (universal guarantees) and its limitation (conservative bounds).</div>
+    </div>
+  </div>
+
+  <div class="sub">
+    <div class="sh o">Realizable vs Agnostic PAC Learning</div>
+    <div class="two">
+      <div class="tcol">
+        <h4 style="color:var(--green)">Realizable Setting</h4>
+        <p>There exists a <em>perfect</em> classifier \(h^*\in\mathcal{H}\) with \(L_\mathcal{P}(h^*)=0\). Every training label is correctly predicted by \(h^*\) (the problem is "solvable" within \(\mathcal{H}\)).</p>
+        <p>Sample complexity: \(m_\mathcal{H}^{\text{real}}(\epsilon,\delta)=O\!\left(\frac{d+\log(1/\delta)}{\epsilon}\right)\)</p>
+      </div>
+      <div class="tcol">
+        <h4 style="color:var(--rust)">Agnostic Setting</h4>
+        <p>No assumption that \(\mathcal{H}\) contains a perfect classifier. The algorithm competes with the BEST hypothesis in \(\mathcal{H}\), even if it makes errors.</p>
+        <p>Sample complexity: \(m_\mathcal{H}^{\text{ag}}(\epsilon,\delta)=O\!\left(\frac{d+\log(1/\delta)}{\epsilon^2}\right)\)</p>
+      </div>
+    </div>
+    <p>The extra \(1/\epsilon\) vs \(1/\epsilon^2\) factor is significant: agnostic learning is harder — it requires \(1/\epsilon^2\) samples to achieve accuracy within \(\epsilon\) of the best possible, whereas the realizable setting needs only \(1/\epsilon\). This gap reflects the difference between a "clean" and a "noisy" learning problem.</p>
+  </div>
+
+  <div class="thm">
+    <div class="thm-badge">Fundamental Theorem of Statistical Learning</div>
+    <p>Let \(\mathcal{H}\) be a hypothesis class of binary classifiers. The following are equivalent: (1) \(\mathcal{H}\) is agnostically PAC-learnable. (2) \(\mathcal{H}\) has the uniform convergence property. (3) \(\text{VCdim}(\mathcal{H}) &lt; \infty\). Moreover, in the agnostic setting, the sample complexity satisfies: \[C_1\frac{d+\log(1/\delta)}{\epsilon^2} \leq m_\mathcal{H}^{\text{ag}}(\epsilon,\delta) \leq C_2\frac{d\log(1/\epsilon)+\log(1/\delta)}{\epsilon^2}\] where \(d = \text{VCdim}(\mathcal{H})\) and \(C_1, C_2 &gt; 0\) are universal constants.</p>
+  </div>
+</div>
+
+<!-- ══ §08 ═════════════════════════════════════════════════ -->
+<div class="ch" id="c8">
+  <div class="ch-head">
+    <div class="ch-top"><div class="ch-num">08</div><span class="ch-badge s">Selection</span></div>
+    <h2>Structural Risk Minimization</h2>
+    <div class="ch-sub">// nested hypothesis classes · model selection · the bias-variance tradeoff formalized · Vapnik's SRM</div>
+  </div>
+
+  <p>Given the VC bound — that generalization improves when using simpler (lower VC dimension) hypothesis classes — how should one choose among multiple possible classes? Structural Risk Minimization (SRM) formalizes the model selection problem.</p>
+
+  <div class="def s">
+    <div class="def-top"><span class="def-label">Definition 8.1</span><span class="def-title">Structural Risk Minimization</span></div>
+    <div class="def-body">
+      \[\mathcal{H}_1 \subseteq \mathcal{H}_2 \subseteq \cdots \quad\text{(nested hierarchy of hypothesis classes with increasing capacity)}\]
+      \[\text{For each } \mathcal{H}_k, \text{ compute: } \text{Bound}_k = \hat{L}_S(\hat{h}_{S,k}) + \sqrt{\frac{d_k\log(n/d_k)+\log(K/\delta)}{n}}\]
+      \[\hat{k} = \arg\min_k \text{Bound}_k, \quad \hat{h}_{\text{SRM}} = \hat{h}_{S,\hat{k}}\]
+      <div class="def-note">SRM selects the hypothesis class that minimizes the UPPER BOUND on population risk — trading lower training error (larger class) against better concentration (smaller class). The log(K/δ) accounts for model selection over K classes via union bound. SRM provably achieves the oracle optimal bias-variance tradeoff.</div>
+    </div>
+  </div>
+
+  <div class="marg g">
+    <div class="marg-tag">Key Insight</div>
+    <div class="marg-body"><p>SRM is the formal mathematical version of the bias-variance tradeoff. "Bias" appears as the approximation error (how well the best \(h\in\mathcal{H}_k\) fits the true distribution), and "variance" appears as the generalization gap term \(\sqrt{d_k/n}\). Minimizing their sum gives the optimal model complexity.</p></div>
+  </div>
+</div>
+
+<!-- ══ §09 ═════════════════════════════════════════════════ -->
+<div class="ch" id="c9">
+  <div class="ch-head">
+    <div class="ch-top"><div class="ch-num">09</div><span class="ch-badge g">Application</span></div>
+    <h2>Regularization Theory</h2>
+    <div class="ch-sub">// Tikhonov regularization · the regularized ERM · norm-bounded classes · L2 vs L1</div>
+  </div>
+
+  <p>Regularization — adding a penalty on hypothesis complexity to the empirical risk — is the practical implementation of the SRM principle. Learning theory provides the exact justification for every regularizer used in practice.</p>
+
+  <div class="def g">
+    <div class="def-top"><span class="def-label">Definition 9.1</span><span class="def-title">Regularized ERM (Tikhonov Regularization)</span></div>
+    <div class="def-body">
+      \[\hat{h}_\lambda = \arg\min_{h\in\mathcal{H}}\left[\hat{L}_S(h) + \lambda\,\Omega(h)\right]\]
+      <div class="def-note">Ω(h) is the regularizer — a measure of hypothesis complexity. λ &gt; 0 is the regularization parameter, balancing the desire to fit training data (minimize L̂_S) against the desire to keep h simple (minimize Ω). Different choices of Ω correspond to different notions of "simplicity."</div>
+    </div>
+  </div>
+
+  <div class="sub">
+    <div class="sh g">Theoretical Justification via Rademacher Complexity</div>
+    <div class="def n">
+      <div class="def-top"><span class="def-label">Theorem 9.1</span><span class="def-title">Generalization of Norm-Constrained Linear Classifiers</span></div>
+      <div class="def-body">
+        \[\mathcal{H}_B = \{\mathbf{x}\mapsto\mathbf{w}^T\mathbf{x}:\|\mathbf{w}\|\leq B\}, \quad \mathcal{R}_n(\mathcal{H}_B)\leq\frac{BX}{\sqrt{n}}\]
+        \[\Rightarrow L_\mathcal{P}(\hat{h})\leq\hat{L}_S(\hat{h})+\frac{2BX}{\sqrt{n}}+\sqrt{\frac{\log(1/\delta)}{2n}}\]
+        <div class="def-note">The generalization bound depends only on the NORM of the weight vector, not on the number of parameters d. A linear classifier in R^{1,000,000,000} with ‖w‖ ≤ B generalizes equally well as a linear classifier in R^{10} with the same norm bound — with the same sample complexity! Norm, not dimensionality, is the right complexity measure for norm-bounded classes. This is why L2 regularization (‖w‖² ≤ B²) works: it directly controls the Rademacher complexity.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sub">
+    <div class="sh r">L1 vs L2 — Different Regularizers, Different Complexity Measures</div>
+    <div class="t-wrap">
+      <table>
+        <thead><tr><th>Regularizer</th><th>Constraint</th><th>Complexity Measure</th><th>Practical Effect</th></tr></thead>
+        <tbody>
+          <tr><td>L2: \(\lambda\|\mathbf{w}\|_2^2\)</td><td>\(\|\mathbf{w}\|_2\leq B\)</td><td>Euclidean norm</td><td>Small weights; smooth, distributed solution</td></tr>
+          <tr><td>L1: \(\lambda\|\mathbf{w}\|_1\)</td><td>\(\|\mathbf{w}\|_1\leq B'\)</td><td>L1 norm → sparsity</td><td>Many zero weights; sparse, interpretable solution</td></tr>
+          <tr><td>Elastic Net: \(\lambda_1\|\mathbf{w}\|_1+\lambda_2\|\mathbf{w}\|_2^2\)</td><td>Both</td><td>Both simultaneously</td><td>Sparse + stable; group selection</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ══ §10 ═════════════════════════════════════════════════ -->
+<div class="ch" id="c10">
+  <div class="ch-head">
+    <div class="ch-top"><div class="ch-num">10</div><span class="ch-badge r">Crisis</span></div>
+    <h2>The Deep Learning Paradox</h2>
+    <div class="ch-sub">// classical theory predictions · what deep networks actually do · Zhang et al. 2017</div>
+  </div>
+
+  <p>In 2017, Zhang, Bengio, Hardt, Recht &amp; Vinyals published a paper whose central observation caused a crisis in classical learning theory. They demonstrated, with a series of controlled experiments, that the most widely-used theoretical tools for explaining generalization cannot explain the behavior of modern neural networks.</p>
+
+  <div class="sub">
+    <div class="sh r">The Experiment</div>
+    <div class="def r">
+      <div class="def-top"><span class="def-label">Observation 10.1</span><span class="def-title">Zhang et al. 2017 — "Understanding Deep Learning Requires Rethinking Generalization"</span></div>
+      <div class="def-body">
+        <p>Take a standard neural network (ResNet) trained on CIFAR-10 (50,000 images). Replace the true labels with: (a) completely random labels, (b) partially random labels, (c) random pixels instead of real images.</p>
+        <p>Results: The SAME neural network architecture that achieves 94% test accuracy with true labels achieves <strong>100% training accuracy with random labels</strong> — and the loss curves look nearly identical. The network memorizes any labeling of the training data.</p>
+        <div class="def-note">Implications for classical theory: any VC-based bound for this network is vacuous (the bound exceeds 1) — the network's VC dimension must be at least n (the training set size), since it can shatter n points. Rademacher complexity is Θ(1) — again vacuous. Yet the network generalizes when given meaningful labels. Classical theory cannot distinguish between the two cases.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sub">
+    <div class="sh n">Why Classical Bounds Are Vacuous for Deep Networks</div>
+    <div class="t-wrap">
+      <table>
+        <thead><tr><th>Network</th><th>Parameters P</th><th>VC Bound</th><th>Actual Test Error</th></tr></thead>
+        <tbody>
+          <tr><td>ResNet-50 on ImageNet</td><td>~25 million</td><td>\(\gg 1\) (vacuous)</td><td>~7%</td></tr>
+          <tr><td>GPT-3</td><td>175 billion</td><td>\(\gg\gg 1\) (catastrophically vacuous)</td><td>SOTA on many benchmarks</td></tr>
+          <tr><td>Linear SVM</td><td>~d (features)</td><td>Non-vacuous if \(d \ll n\)</td><td>As predicted by theory</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>For any modern neural network, \(P \gg n\) (far more parameters than training points). VC dimension bounds scale at least linearly in \(P\), giving bounds on test error of the form "\(\text{training error} + C\sqrt{P/n}\)" — which for GPT-3 evaluated on a dataset of size \(n=1{,}000\) would give a bound exceeding \(10{,}000\). The bound says nothing.</p>
+  </div>
+
+  <div class="marg o">
+    <div class="marg-tag">The Open Question</div>
+    <div class="marg-body"><p>The correct theoretical explanation for why neural networks generalize is the defining open problem of modern learning theory. Several partial answers exist — implicit bias (§05 of DL Optimization), PAC-Bayes flatness (§03), algorithmic stability — but none fully explains the observed generalization of large language models at scale.</p></div>
+  </div>
+</div>
+
+<!-- ══ §11 ═════════════════════════════════════════════════ -->
+<div class="ch" id="c11">
+  <div class="ch-head">
+    <div class="ch-top"><div class="ch-num">11</div><span class="ch-badge p">Phenomenon</span></div>
+    <h2>Double Descent</h2>
+    <div class="ch-sub">// beyond the classical U-curve · the interpolation threshold · Belkin et al. 2019</div>
+  </div>
+
+  <p>Double descent (introduced in the DL Optimization masterclass from a training-dynamics perspective) has an equally important learning-theoretic interpretation: it reveals that the classical bias-variance U-curve is not wrong — it is simply incomplete, applying only below the interpolation threshold.</p>
+
+  <div class="def p">
+    <div class="def-top"><span class="def-label">Theorem 11.1</span><span class="def-title">Double Descent for Minimum-Norm Interpolators</span></div>
+    <div class="def-body">
+      \[\hat{\mathbf{w}}_{\text{MN}} = \mathbf{X}^+\mathbf{y} \quad\text{(minimum-norm interpolant, no regularization)}\]
+      \[\text{Risk}(P,n) = \begin{cases}\sigma^2\cdot\frac{d-n}{n} + \text{bias}^2 &amp; P&gt;n \text{ (over-param., bias+variance)} \\ \sigma^2 + \infty\text{ near }P=n &amp; P\approx n \text{ (interpolation threshold)} \\ \text{classical growth} &amp; P &lt; n \end{cases}\]
+      <div class="def-note">Bartlett et al. (2020) and others proved analytically that for Gaussian features and min-norm interpolants: (1) Below the threshold (P &lt; n): classical regime, risk grows with model size. (2) At the threshold (P ≈ n): risk peaks — the model barely interpolates, with high variance. (3) Above the threshold (P ≫ n): risk DECREASES — the model interpolates many ways and chooses the minimum-norm one, which happens to have low test error for well-conditioned data.</div>
+    </div>
+  </div>
+
+  <div class="fig">
+    <div class="fig-box">
+      <svg viewBox="0 0 620 240" xmlns="http://www.w3.org/2000/svg" style="max-width:620px;width:100%">
+        <rect width="620" height="240" fill="#fff"/>
+        <!-- Axes -->
+        <line x1="60" y1="200" x2="580" y2="200" stroke="#c8c0ac" stroke-width="1.5"/>
+        <line x1="60" y1="200" x2="60" y2="20" stroke="#c8c0ac" stroke-width="1.5"/>
+        <text x="590" y="205" font-family="JetBrains Mono" font-size="10" fill="#8a8070">P/n</text>
+        <text x="30" y="18" font-family="JetBrains Mono" font-size="10" fill="#8a8070">Risk</text>
+
+        <!-- Classical U-curve (P < n) -->
+        <path d="M70,60 C100,180 150,190 200,185 C230,182 245,180 260,183 C265,184 268,185 270,188 C272,195 274,205 276,220" fill="none" stroke="rgba(26,107,60,.7)" stroke-width="2.5"/>
+
+        <!-- Interpolation threshold marker -->
+        <line x1="276" y1="20" x2="276" y2="200" stroke="rgba(184,76,32,.4)" stroke-width="1.5" stroke-dasharray="4,3"/>
+        <text x="276" y="16" text-anchor="middle" font-family="JetBrains Mono" font-size="9" fill="rgba(184,76,32,.8)">P=n</text>
+        <text x="276" y="215" text-anchor="middle" font-family="JetBrains Mono" font-size="8.5" fill="rgba(184,76,32,.6)">threshold</text>
+
+        <!-- Second descent (P > n) -->
+        <path d="M276,220 C280,200 295,140 320,100 C355,55 420,45 480,42 C520,40 555,40 575,40" fill="none" stroke="rgba(26,63,107,.7)" stroke-width="2.5"/>
+
+        <!-- Labels -->
+        <text x="165" y="50" font-family="JetBrains Mono" font-size="9" fill="rgba(26,107,60,.8)">classical regime</text>
+        <text x="375" y="30" font-family="JetBrains Mono" font-size="9" fill="rgba(26,63,107,.8)">modern (over-param.) regime</text>
+        <text x="165" y="62" font-family="JetBrains Mono" font-size="9" fill="rgba(26,107,60,.6)">U-shaped risk</text>
+        <text x="375" y="42" font-family="JetBrains Mono" font-size="9" fill="rgba(26,63,107,.6)">decreasing risk</text>
+
+        <!-- Bayes optimal line -->
+        <line x1="60" y1="120" x2="580" y2="120" stroke="#c8c0ac" stroke-width="1" stroke-dasharray="3,3"/>
+        <text x="66" y="115" font-family="JetBrains Mono" font-size="8.5" fill="#8a8070">Bayes optimal risk</text>
+      </svg>
+    </div>
+    <div class="fig-cap">Fig 1. Double descent risk curve: classical U-shape in the underparameterized regime (P &lt; n), a peak at the interpolation threshold (P = n), and a second descent as overparameterization grows (P ≫ n).</div>
+  </div>
+</div>
+
+<!-- ══ §12 ═════════════════════════════════════════════════ -->
+<div class="ch" id="c12">
+  <div class="ch-head">
+    <div class="ch-top"><div class="ch-num">12</div><span class="ch-badge n">Frontier</span></div>
+    <h2>Modern Theory</h2>
+    <div class="ch-sub">// PAC-Bayes · algorithmic stability · margin theory · neural tangent kernel · mean field theory</div>
+  </div>
+
+  <p>Several modern theoretical frameworks provide partial explanations for why deep networks generalize, each capturing a different aspect of the training-and-generalization story. None is complete, but each reveals something genuine.</p>
+
+  <div class="sub">
+    <div class="sh n">PAC-Bayes Theory</div>
+    <div class="def n">
+      <div class="def-top"><span class="def-label">Theorem 12.1</span><span class="def-title">PAC-Bayes Bound (McAllester 1999)</span></div>
+      <div class="def-body">
+        \[\text{For any prior } P \text{ and any posterior } Q \text{ (depending on }S\text{)}:\]
+        \[\text{With prob.} \geq 1-\delta:\quad \mathbb{E}_{h\sim Q}[L_\mathcal{P}(h)] \leq \mathbb{E}_{h\sim Q}[\hat{L}_S(h)] + \sqrt{\frac{D_{\text{KL}}(Q\|P)+\ln(n/\delta)}{2(n-1)}}\]
+        <div class="def-note">The complexity measure is the KL divergence between the posterior Q (a distribution around the trained network) and the prior P (fixed before seeing the data). For flat minima (§03 of DL Optimization): choosing Q = N(θ, σ²I) for large σ still gives low expected training loss → KL term small → tight generalization bound. PAC-Bayes is currently the only classical framework capable of producing non-vacuous generalization bounds for MNIST-scale neural networks (Dziugaite &amp; Roy, 2017).</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sub">
+    <div class="sh g">Algorithmic Stability</div>
+    <div class="def g">
+      <div class="def-top"><span class="def-label">Definition 12.1</span><span class="def-title">Uniform Stability</span></div>
+      <div class="def-body">
+        \[\text{Algorithm } A \text{ is } \beta\text{-uniformly stable if: for all } S, S' \text{ differing in one example:}\]
+        \[\sup_{(\mathbf{x},y)}\left|\ell(A(S),\mathbf{x},y)-\ell(A(S'),\mathbf{x},y)\right|\leq\beta\]
+        \[\text{Generalization gap} \leq 2\beta + O\!\left(\sqrt{\frac{\log(1/\delta)}{n}}\right)\]
+        <div class="def-note">Stability captures a different notion of complexity: if changing one training point barely changes the learned hypothesis, the algorithm is stable and generalizes. SGD on Lipschitz convex losses is O(L²/λn)-stable (where λ is regularization strength). Stability bounds depend on the ALGORITHM, not just the hypothesis class — explaining why regularized algorithms generalize even when the unregularized class is very complex.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sub">
+    <div class="sh r">Neural Tangent Kernel</div>
+    <p>Jacot et al. (2018) showed that infinitely wide neural networks trained with gradient descent behave equivalently to kernel machines with a specific kernel — the <em>Neural Tangent Kernel</em> (NTK). In this regime, classical kernel learning theory applies — providing generalization bounds. The NTK regime is a useful theoretical framework but describes the network's behavior only near initialization, not the complex learned representations of practical deep networks.</p>
+  </div>
+</div>
+
+<!-- ══ §13 ═════════════════════════════════════════════════ -->
+<div class="ch" id="c13">
+  <div class="ch-head">
+    <div class="ch-top"><div class="ch-num">13</div><span class="ch-badge r">Frontier</span></div>
+    <h2>Open Problems</h2>
+    <div class="ch-sub">// the theory-practice gap · what we don't understand · active research directions</div>
+  </div>
+
+  <p>Statistical learning theory is one of the most intellectually active areas of ML research precisely because it has the hardest open questions. Each of the following problems has significant practical importance and remains mathematically unresolved:</p>
+
+  <ul class="fl r">
+    <li><strong>Non-vacuous generalization bounds for large language models.</strong> PAC-Bayes gives non-vacuous bounds for MNIST-scale networks. For GPT-3 or GPT-4 scale (10^11 parameters), no known theoretical tool gives a bound less than 1. This is not a limitation of current proofs — it may require entirely new mathematics.</li>
+    <li><strong>Why does in-context learning work, and what does it memorize vs generalize?</strong> Large language models "learn" from examples in their prompt without weight updates — a phenomenon entirely outside the classical IID learning framework. Bayesian and kernel perspectives provide partial intuitions (Attention masterclass, §09) but no tight theory.</li>
+    <li><strong>The role of data distribution in double descent.</strong> Current double descent theory assumes Gaussian features. For realistic data distributions (images, text), the exact form of the double descent curve and the conditions under which it occurs are not well-understood.</li>
+    <li><strong>Benign vs malignant overfitting — when does interpolation help or hurt?</strong> The conditions under which minimum-norm interpolation generalizes well (benign overfitting, §06) vs causes catastrophic generalization failure are known only for Gaussian linear models. For nonlinear models and realistic data, the boundary is unknown.</li>
+    <li><strong>Generalization of transformers.</strong> The attention mechanism's unique computational properties — content-addressable memory, in-context learning, quadratic interactions between tokens — are not captured by any existing complexity measure. A theory of transformer generalization would be one of the most important advances in the field.</li>
+    <li><strong>The implicit regularization of Adam.</strong> Gradient descent on linear models converges to the max-margin / min-norm solution. What is the corresponding implicit bias of Adam (the optimizer used to train virtually all large models in practice)? This question is open even for linear models.</li>
+  </ul>
+
+  <div class="marg s">
+    <div class="marg-tag">Why It Matters</div>
+    <div class="marg-body"><p>These are not merely academic questions. A theory of generalization for modern deep learning would tell us: when can we trust a model's predictions on out-of-distribution data? How many examples do we need to safely deploy a medical AI? What is the right way to regularize a trillion-parameter model? The inability to answer these questions rigorously is the deepest reason AI safety and reliability remain engineering problems rather than mathematical ones.</p></div>
+  </div>
+</div>
+
+<!-- ══ §14 ═════════════════════════════════════════════════ -->
+<div class="ch" id="c14">
+  <div class="ch-head">
+    <div class="ch-top"><div class="ch-num">14</div><span class="ch-badge g">Synthesis</span></div>
+    <h2>The Complete Mental Model</h2>
+    <div class="ch-sub">// everything unified · one diagram · the arc from first principles to open problems</div>
+  </div>
+
+  <div class="fig">
+    <div class="fig-box">
+      <svg viewBox="0 0 720 580" xmlns="http://www.w3.org/2000/svg" style="max-width:720px;width:100%">
+        <rect width="720" height="580" fill="#fff"/>
+        <defs>
+          <marker id="gma" markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto"><path d="M0,0 L0,5 L7,2.5z" fill="#c8c0ac"/></marker>
+          <marker id="gmg" markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto"><path d="M0,0 L0,5 L7,2.5z" fill="#1a6b3c"/></marker>
+        </defs>
+        <text x="360" y="22" text-anchor="middle" font-family="Josefin Sans" font-size="9" fill="#c8c0ac" letter-spacing=".22em">STATISTICAL LEARNING THEORY — COMPLETE MAP</text>
+
+        <!-- Central: Generalization Gap -->
+        <rect x="205" y="38" width="310" height="58" rx="4" fill="#f9f7f2" stroke="#1a6b3c" stroke-width="2"/>
+        <text x="360" y="63" text-anchor="middle" font-family="Josefin Sans" font-size="12" fill="#1a6b3c" font-weight="700">GENERALIZATION GAP</text>
+        <text x="360" y="83" text-anchor="middle" font-family="JetBrains Mono" font-size="8.5" fill="#8a8070">L_P(h) − L̂_S(h) — §01</text>
+
+        <!-- Row 2 -->
+        <rect x="20" y="152" width="210" height="52" rx="4" fill="#f9f7f2" stroke="#b84c20" stroke-width="1.5"/>
+        <text x="125" y="174" text-anchor="middle" font-family="Josefin Sans" font-size="10.5" fill="#b84c20" font-weight="700">ERM PRINCIPLE</text>
+        <text x="125" y="192" text-anchor="middle" font-family="JetBrains Mono" font-size="8" fill="#8a8070">ĥ = argmin L̂_S — §02</text>
+
+        <rect x="255" y="152" width="210" height="52" rx="4" fill="#f9f7f2" stroke="#1a3f6b" stroke-width="1.5"/>
+        <text x="360" y="174" text-anchor="middle" font-family="Josefin Sans" font-size="10.5" fill="#1a3f6b" font-weight="700">UNIFORM CONVERGENCE</text>
+        <text x="360" y="192" text-anchor="middle" font-family="JetBrains Mono" font-size="8" fill="#8a8070">sup_h |L̂−L_P|≤ε — §03</text>
+
+        <rect x="490" y="152" width="210" height="52" rx="4" fill="#f9f7f2" stroke="#1a6b3c" stroke-width="1.5"/>
+        <text x="595" y="174" text-anchor="middle" font-family="Josefin Sans" font-size="10.5" fill="#1a6b3c" font-weight="700">HOEFFDING BOUNDS</text>
+        <text x="595" y="192" text-anchor="middle" font-family="JetBrains Mono" font-size="8" fill="#8a8070">∝ √(log|H|/n) — §04</text>
+
+        <line x1="295" y1="96" x2="155" y2="150" stroke="#c8c0ac" stroke-width="1.2" stroke-dasharray="4,3" marker-end="url(#gma)"/>
+        <line x1="360" y1="96" x2="360" y2="150" stroke="#1a6b3c" stroke-width="1.2" stroke-dasharray="4,3" marker-end="url(#gmg)"/>
+        <line x1="425" y1="96" x2="565" y2="150" stroke="#c8c0ac" stroke-width="1.2" stroke-dasharray="4,3" marker-end="url(#gma)"/>
+
+        <!-- Complexity Row -->
+        <rect x="20" y="258" width="210" height="52" rx="4" fill="#f9f7f2" stroke="#a07c10" stroke-width="2"/>
+        <text x="125" y="280" text-anchor="middle" font-family="Josefin Sans" font-size="10.5" fill="#a07c10" font-weight="700">VC DIMENSION</text>
+        <text x="125" y="298" text-anchor="middle" font-family="JetBrains Mono" font-size="8" fill="#8a8070">shattering · growth fn · §05</text>
+
+        <rect x="255" y="258" width="210" height="52" rx="4" fill="#f9f7f2" stroke="#6b1a5a" stroke-width="1.5"/>
+        <text x="360" y="280" text-anchor="middle" font-family="Josefin Sans" font-size="10.5" fill="#6b1a5a" font-weight="700">RADEMACHER COMPLEXITY</text>
+        <text x="360" y="298" text-anchor="middle" font-family="JetBrains Mono" font-size="8" fill="#8a8070">data-dependent · §06</text>
+
+        <rect x="490" y="258" width="210" height="52" rx="4" fill="#f9f7f2" stroke="#1a3f6b" stroke-width="2"/>
+        <text x="595" y="280" text-anchor="middle" font-family="Josefin Sans" font-size="10.5" fill="#1a3f6b" font-weight="700">PAC LEARNING</text>
+        <text x="595" y="298" text-anchor="middle" font-family="JetBrains Mono" font-size="8" fill="#8a8070">sample complexity · §07</text>
+
+        <line x1="125" y1="204" x2="125" y2="256" stroke="#c8c0ac" stroke-width="1" stroke-dasharray="3,2" marker-end="url(#gma)"/>
+        <line x1="360" y1="204" x2="360" y2="256" stroke="#c8c0ac" stroke-width="1" stroke-dasharray="3,2" marker-end="url(#gma)"/>
+        <line x1="595" y1="204" x2="595" y2="256" stroke="#c8c0ac" stroke-width="1" stroke-dasharray="3,2" marker-end="url(#gma)"/>
+
+        <!-- Applications Row -->
+        <rect x="20" y="364" width="210" height="52" rx="4" fill="#f9f7f2" stroke="#2a4a5a" stroke-width="1.5"/>
+        <text x="125" y="386" text-anchor="middle" font-family="Josefin Sans" font-size="10" fill="#2a4a5a" font-weight="700">SRM + REGULARIZATION</text>
+        <text x="125" y="404" text-anchor="middle" font-family="JetBrains Mono" font-size="8" fill="#8a8070">§08–§09</text>
+
+        <rect x="255" y="364" width="210" height="52" rx="4" fill="#f9f7f2" stroke="#b84c20" stroke-width="2"/>
+        <text x="360" y="386" text-anchor="middle" font-family="Josefin Sans" font-size="10" fill="#b84c20" font-weight="700">DL PARADOX</text>
+        <text x="360" y="404" text-anchor="middle" font-family="JetBrains Mono" font-size="8" fill="#8a8070">classical bounds vacuous · §10–§11</text>
+
+        <rect x="490" y="364" width="210" height="52" rx="4" fill="#f9f7f2" stroke="#6b1a5a" stroke-width="1.5"/>
+        <text x="595" y="386" text-anchor="middle" font-family="Josefin Sans" font-size="10" fill="#6b1a5a" font-weight="700">MODERN THEORY</text>
+        <text x="595" y="404" text-anchor="middle" font-family="JetBrains Mono" font-size="8" fill="#8a8070">PAC-Bayes · stability · NTK · §12</text>
+
+        <line x1="125" y1="310" x2="125" y2="362" stroke="#c8c0ac" stroke-width="1" stroke-dasharray="3,2" marker-end="url(#gma)"/>
+        <line x1="360" y1="310" x2="360" y2="362" stroke="#c8c0ac" stroke-width="1" stroke-dasharray="3,2" marker-end="url(#gma)"/>
+        <line x1="595" y1="310" x2="595" y2="362" stroke="#c8c0ac" stroke-width="1" stroke-dasharray="3,2" marker-end="url(#gma)"/>
+
+        <!-- Open Problems footer -->
+        <rect x="20" y="450" width="680" height="110" rx="4" fill="#f9f7f2" stroke="#c8c0ac" stroke-width="1"/>
+        <text x="360" y="470" text-anchor="middle" font-family="Josefin Sans" font-size="9" fill="#c8c0ac" font-weight="700" letter-spacing=".2em">OPEN PROBLEMS — §13</text>
+        <text x="40" y="494" font-family="JetBrains Mono" font-size="8.5" fill="#8a8070">Non-vacuous bounds for LLMs</text>
+        <text x="40" y="512" font-family="JetBrains Mono" font-size="8.5" fill="#8a8070">Why in-context learning works</text>
+        <text x="40" y="530" font-family="JetBrains Mono" font-size="8.5" fill="#8a8070">Double descent for real data</text>
+        <text x="380" y="494" font-family="JetBrains Mono" font-size="8.5" fill="#8a8070">Benign vs malignant overfitting</text>
+        <text x="380" y="512" font-family="JetBrains Mono" font-size="8.5" fill="#8a8070">Transformer generalization theory</text>
+        <text x="380" y="530" font-family="JetBrains Mono" font-size="8.5" fill="#8a8070">Implicit bias of Adam optimizer</text>
+        <text x="40" y="550" font-family="Josefin Sans" font-size="8.5" fill="#a07c10" letter-spacing=".1em">THE THEORY OF DEEP LEARNING GENERALIZATION REMAINS MATHEMATICS' MOST IMPORTANT OPEN PROBLEM IN ML</text>
+
+        <line x1="125" y1="416" x2="200" y2="448" stroke="#c8c0ac" stroke-width="1" stroke-dasharray="3,2" marker-end="url(#gma)"/>
+        <line x1="360" y1="416" x2="360" y2="448" stroke="#c8c0ac" stroke-width="1" stroke-dasharray="3,2" marker-end="url(#gma)"/>
+        <line x1="595" y1="416" x2="520" y2="448" stroke="#c8c0ac" stroke-width="1" stroke-dasharray="3,2" marker-end="url(#gma)"/>
+      </svg>
+    </div>
+    <div class="fig-cap">Fig 2. Statistical Learning Theory complete map — from the generalization gap through ERM, uniform convergence, complexity measures (VC dimension, Rademacher complexity), PAC learning, SRM, regularization, and into the modern open frontier.</div>
+  </div>
+
+  <p style="margin-top:clamp(22px,4vw,36px)">The complete argument, stated precisely:</p>
+
+  <ol style="padding-left:clamp(16px,3vw,24px);line-height:2.7;font-size:clamp(14.5px,1.95vw,17px)">
+    <li><strong>The fundamental problem</strong> is the generalization gap: we observe the empirical risk but care about the population risk. All of learning theory is about bounding this gap.</li>
+    <li><strong>ERM</strong> minimizes the empirical risk. It is consistent — provably converges to the best hypothesis in \(\mathcal{H}\) — and its error decomposes into approximation error (bias, determined by \(\mathcal{H}\)) and estimation error (variance, determined by \(n\)).</li>
+    <li><strong>Uniform convergence</strong> is the bridge: if the empirical risk converges to the population risk uniformly over all of \(\mathcal{H}\), then minimizing the empirical risk minimizes the population risk. Hoeffding's inequality plus the union bound gives the first quantitative bound, scaling as \(\sqrt{\log|\mathcal{H}|/n}\) for finite classes.</li>
+    <li><strong>VC dimension</strong> extends this to infinite classes: \(\text{VCdim}(\mathcal{H}) &lt; \infty \iff\) PAC-learnable \(\iff\) uniform convergence holds. The generalization gap scales as \(\sqrt{d/n}\) where \(d\) is the VC dimension — a combinatorial measure of \(\mathcal{H}\)'s richness.</li>
+    <li><strong>Rademacher complexity</strong> gives tighter, data-dependent bounds and applies to real-valued function classes. Norm-bounded linear classifiers have Rademacher complexity scaling as \(B/\sqrt{n}\) — norm, not parameter count, is the right complexity measure.</li>
+    <li><strong>SRM and regularization</strong> formalize the bias-variance tradeoff: choose the hypothesis class (or regularization strength) that minimizes the upper bound on population risk. Every practical regularizer has a learning-theoretic justification as a complexity control.</li>
+    <li><strong>The deep learning paradox</strong> shatters the classical framework: neural networks memorize random labels, have vacuous VC bounds, yet generalize beautifully on real data. Classical theory cannot distinguish these cases.</li>
+    <li><strong>Modern theory</strong> — PAC-Bayes (flatness = compressibility), algorithmic stability, NTK — provides partial explanations, but no complete theory exists for why deep networks at scale generalize as they do. The open problems in §13 are not gaps to be plugged — they represent the frontier where new mathematics must be invented.</li>
+  </ol>
+
+  <div class="thm" style="margin-top:clamp(24px,4vw,40px)">
+    <div class="thm-badge">What Statistical Learning Theory Actually Is</div>
+    <p>Statistical Learning Theory is not merely a collection of bounds. It is the mathematical discipline that asks: <em>what must be true about a hypothesis class, a training algorithm, and a data distribution for learning to be provably possible at all?</em> The framework's greatest contribution is not the specific constants in specific bounds — it is the identification of the RIGHT QUESTIONS: when is generalization possible? what is the minimum number of samples required? what complexity measure controls the generalization gap? These questions, precisely formulated and rigorously answered for classical hypothesis classes, remain the standard-setters against which all modern theory must eventually be measured. The deep learning paradox (§10) is not a failure of the theory — it is the theory working correctly, revealing that something genuinely new is happening in the generalization of modern deep networks, and demanding a new mathematical framework to explain it.</p>
+  </div>
+</div>
+
+</div><!-- /page -->
+
+  <!-- ═══ FOOTER ═══ -->
+  <footer class="site-footer">
+    <div class="footer-content">
+      <div class="footer-main">
+        <div class="footer-left">
+          <p class="copyright">&copy; 2025 Shahid Ul Islam</p>
+          <p class="footer-meta">Data Scientist & AI Developer</p>
+        </div>
+        <div class="footer-right">
+          <div class="footer-links">
+            <a href="#" class="back-to-top">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="12" y1="19" x2="12" y2="5"></line>
+                <polyline points="5 12 12 5 19 12"></polyline>
+              </svg>
+              <span>Back to Top</span>
+            </a>
+            <div class="social-links11">
+              <a href="https://github.com/Khanz9664" target="_blank" class="social-link11">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path
+                    d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22" />
+                </svg>
+              </a>
+              <a href="https://linkedin.com/in/shahid-ul-islam-13650998" target="_blank" class="social-link11">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" />
+                  <rect x="2" y="9" width="4" height="12" />
+                  <circle cx="4" cy="4" r="2" />
+                </svg>
+              </a>
+              <a href="mailto:shahid9664@gmail.com" class="social-link11">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
+                  <polyline points="22,6 12,13 2,6" />
+                </svg>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="made-with">
+      <p>Crafted with <span class="heart-icon">❤️</span> By Shahid</p>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js"></script>
+</body>
+
+</html>
